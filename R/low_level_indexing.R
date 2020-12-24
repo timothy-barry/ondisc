@@ -29,14 +29,13 @@ return_spMatrix_from_contiguous_index <- function(h5_file, h5_group, contiguous_
 #' @param idx indexes to extract
 #' @param col_idx boolean; extract column indexes (true) or row indexes (false)
 #'
-#' @export
 #' @return a sparse matrix of class Matrix.
 #' @examples
 #' h5_file <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
 #' if (h5_file != "") {
 #' idx <- 2:3
 #' col_idx <- TRUE
-#' return_spMatrix_from_index(h5_file, idx, col_idx)
+#' # return_spMatrix_from_index(h5_file, idx, col_idx)
 #' }
 return_spMatrix_from_index <- function(h5_file, idx, col_idx) {
   # assume idx is a list of non-negative, unique integers. First, determine if idx is sorted.
@@ -65,9 +64,9 @@ return_spMatrix_from_index <- function(h5_file, idx, col_idx) {
   Dim <- rhdf5::h5read(file = h5_file, name = "metadata/dimension") %>% as.integer()
   dim_to_pass <- if (col_idx) c(Dim[1], length(idx)) else c(length(idx), Dim[2])
   if (col_idx) {
-    ret <- new(Class = "dgCMatrix", x = as.numeric(full_matrix_data[,2]), i = full_matrix_data[,1], p = full_p, Dim = dim_to_pass)
+    ret <- new(getClass(Class = "dgCMatrix", where = "Matrix"), x = as.numeric(full_matrix_data[,2]), i = full_matrix_data[,1], p = full_p, Dim = dim_to_pass)
   } else {
-    ret <- new(Class = "dgRMatrix", x = as.numeric(full_matrix_data[,2]), j = full_matrix_data[,1], p = full_p, Dim = dim_to_pass)
+    ret <- new(getClass(Class = "dgRMatrix", where = "Matrix"), x = as.numeric(full_matrix_data[,2]), j = full_matrix_data[,1], p = full_p, Dim = dim_to_pass)
   }
   # Finally, if the indexes were unsorted, reorder the matrix.
   if (idx_unsorted) ret <- if (col_idx) ret[,Matrix::invPerm(permutation)] else ret[Matrix::invPerm(permutation),]

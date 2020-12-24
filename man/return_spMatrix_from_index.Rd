@@ -24,6 +24,6 @@ h5_file <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
 if (h5_file != "") {
 idx <- 2:3
 col_idx <- TRUE
-return_spMatrix_from_index(h5_file, idx, col_idx)
+# return_spMatrix_from_index(h5_file, idx, col_idx)
 }
 }

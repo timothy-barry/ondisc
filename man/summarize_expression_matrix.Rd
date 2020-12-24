@@ -17,3 +17,10 @@ a list containing the cell-specific and gene-specific covariate matrices
 \description{
 Takes an on_disc_matrix that contains gene-by-cell expressions (x), and outputs the cell-specific and gene-specific covariate matrices.
 }
+\examples{
+exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
+if (exp_mat_loc != "") {
+x <- on_disc_matrix(h5_file = exp_mat_loc)
+covariate_matrices <- summarize_expression_matrix(x)
+}
+}

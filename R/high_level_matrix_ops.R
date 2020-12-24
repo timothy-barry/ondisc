@@ -172,6 +172,12 @@ on_disc_apply_across_chunks <- function(x, col_apply, chunk_function, chunk_size
 #'
 #' @return a list containing the cell-specific and gene-specific covariate matrices
 #' @export
+#' @examples
+#' exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
+#' if (exp_mat_loc != "") {
+#' x <- on_disc_matrix(h5_file = exp_mat_loc)
+#' covariate_matrices <- summarize_expression_matrix(x)
+#' }
 summarize_expression_matrix <- function(x, chunk_size = 4000) {
   # Obtain the gene_names (constant across cell chunks)
   gene_ids <- get_gene_names(x)
