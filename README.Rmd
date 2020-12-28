@@ -8,12 +8,12 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
+  fig.path = "man/figures/",
   out.width = "100%"
 )
 ```
 
-# `ondisc`
+# ondisc <img src="man/figures/hex.png" align="right" alt="" width="160" />
 
 `ondisc` powers large-scale single-cell analysis.
 
