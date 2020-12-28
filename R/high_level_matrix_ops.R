@@ -191,9 +191,9 @@ summarize_expression_matrix <- function(x, chunk_size = 4000) {
     cell_wise_umi_total <- Matrix::colSums(curr_m)
     # cell-wise mitochondrial UMI count
     if (length(mt_genes) >= 1) {
-      cell_wise_mito_umi_total <-  Matrix::colSums(curr_m[mt_genes,])
+      cell_wise_mito_umi_total <- Matrix::colSums(curr_m[mt_genes,])
     } else {
-      cell_wise_mito_umi_total <- numeric(length = ncol(x))
+      cell_wise_mito_umi_total <- numeric(length = ncol(curr_m))
     }
     # gene-wise total UMI count
     gene_wise_umi_total <-  Matrix::rowSums(curr_m)

@@ -56,8 +56,8 @@ save_random_matrix_as_10x <- function(m, data_dir, idx = NULL) {
 #'
 #' @return a character vector containing file paths to the simulation data
 get_simulation_data_fps <- function(data_dir, idx) {
-  f_names <- paste0(paste0(c("matrix", "barcodes", "features", "r_matrix", "on_disc_matrix")), if (is.null(idx)) "" else paste0("_", idx), c(".mtx", ".tsv", ".tsv", ".rds", ".rds"))
-  to_save_locs <- purrr::set_names(paste0(data_dir, "/", f_names),  c("mtx", "barcodes", "features", "r_matrix", "on_disc_matrix"))
+  f_names <- paste0(paste0(c("matrix", "barcodes", "features", "r_matrix", "on_disc_matrix", "on_disc_matrix")), if (is.null(idx)) "" else paste0("_", idx), c(".mtx", ".tsv", ".tsv", ".rds", ".rds", ".h5"))
+  to_save_locs <- purrr::set_names(paste0(data_dir, "/", f_names),  c("mtx", "barcodes", "features", "r_matrix", "on_disc_matrix",  "on_disc_matrix_h5"))
   return(to_save_locs)
 }
 
@@ -115,7 +115,7 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, n_col = NULL, seed = NULL) {
   if (!is.null(seed)) set.seed(seed)
   for (i in 1:n_datasets) {
-    cat(paste0("Generating dataset ", i, ".\n"))
+    if (n_datasets > 1) cat(paste0("Generating dataset ", i, ".\n"))
     m <- create_random_matrix(n_row = n_row, n_col = n_col)
     if (i %% 3 == 0) {
       n_row <- nrow(m)

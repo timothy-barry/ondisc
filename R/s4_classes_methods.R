@@ -2,7 +2,7 @@
 
 
 # Classes and constructor
-#######################
+#########################
 #' The on_disc_matrix class
 #'
 #' An on_disc_matrix represents a gene-by-cell expression matrix stored on disk.
@@ -24,10 +24,17 @@ setClassUnion("index_vec", members =  c("numeric", "logical", "character"))
 ######################################
 
 # 1. dim
+#' dim
+#' Print dimension of on_disc_matrix
+#' @param x an on_disc_matrix
 #' @export
+#' @return an integer vector containing the dimension of the matrix
 setMethod("dim", signature("on_disc_matrix"), function(x) get_dim(x))
 
 # 2. show
+#' print first few rows and columns of an on_disc_matrix to the console; also display object class
+#' @param object an on_dist_matrix to show
+#' @return NULL
 #' @export
 setMethod("show", signature = signature("on_disc_matrix"), function(object) {
   x_dim <- dim(object)
@@ -35,7 +42,10 @@ setMethod("show", signature = signature("on_disc_matrix"), function(object) {
 })
 
 # 3. head
+#' print first rows and columns of an on_disc_matrix
 #' @export
+#' @param x an on_disc_mnatrix
+#' @return NULL
 setMethod("head", signature = signature("on_disc_matrix"), function(x) {
   x_dim <- dim(x)
   n_row_to_show <- min(5, x_dim[1])
@@ -53,42 +63,39 @@ setMethod("head", signature = signature("on_disc_matrix"), function(x) {
 #' @param x An \linkS4class{on_disc_matrix} object (Do not pass as an argument to \code{`[`}).
 #' @param i Vector (numeric, logical, or character) indicating genes to keep.
 #' @param j Vector (numeric, logical, or character) indicating cells to keep.
+#' @param drop not used
 #' @return A subset \linkS4class{on_disc_matrix} object.
 #' @examples
-#' exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-#' if (exp_mat_loc != "") {
-#' x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
-#' x_sub <- x[1:10,1:10] # subset first 10 genes and cells
-#' }
+#' # exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
+#' # if (exp_mat_loc != "") {
+#' # x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
+#' # x_sub <- x[1:10,1:10] # subset first 10 genes and cells
+#' # }
 #' @name subset-odm
 NULL
 
-# 1. Subset nothing
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
-          signature = signature(x = "on_disc_matrix", i = "missing", j = "missing"),
-          definition = function(x, i, j) return(x))
+          signature = signature(x = "on_disc_matrix", i = "missing", j = "missing", drop = "missing"),
+          definition = function(x, i, j, drop) return(x))
 
-# 2. Subset by gene
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
-          signature = signature(x = "on_disc_matrix", i = "index_vec", j = "missing"),
+          signature = signature(x = "on_disc_matrix", i = "index_vec", j = "missing", drop = "missing"),
           definition = function(x, i, j) subset_by_gene_or_cell(x = x, idx = i, subset_on_cell = FALSE))
 
-# 3. Subset by cell
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
-          signature = signature(x = "on_disc_matrix", i = "missing", j = "index_vec"),
+          signature = signature(x = "on_disc_matrix", i = "missing", j = "index_vec", drop = "missing"),
           definition = function(x, i, j) subset_by_gene_or_cell(x = x, idx = j, subset_on_cell = TRUE))
 
-# 4. Subset by both cell and gene
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
-          signature = signature(x = "on_disc_matrix", i = "index_vec", j = "index_vec"),
+          signature = signature(x = "on_disc_matrix", i = "index_vec", j = "index_vec", drop = "missing"),
           definition = function(x, i, j) {
             subset_by_gene_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% subset_by_gene_or_cell(x = ., idx = j, subset_on_cell = TRUE)
           })
@@ -96,26 +103,46 @@ setMethod(f = "[",
 
 # Extract expression data methods
 #################################
+
+#' Extract an on_disc_matrix
+#' Pull a submatrix of an \linkS4class{on_disc_matrix} into memory using the \code{`[[`} operator.
+#' @param x An \linkS4class{on_disc_matrix} object (Do not pass as an argument to \code{`[[`}).
+#' @param i Vector (numeric, logical, or character) indicating genes to keep.
+#' @param j Vector (numeric, logical, or character) indicating cells to keep.
+#' @return A matrix object (of class Matrix)
+#' @examples
+#' # exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
+#' # if (exp_mat_loc != "") {
+#' # x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
+#' # x_mem <- x[[1:10,1:10]] # subset first 10 genes and cells
+#' # }
+#' @name extract-odm
+NULL
+
 # 1. Extract nothing (return error).
 #' @export
+#' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "on_disc_matrix", i = "missing", j = "missing"),
           definition = function(x, i, j) stop("Specify row or column indices to extract a sub-matrix."))
 
 # 2. Extract by gene
 #' @export
+#' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "on_disc_matrix", i = "index_vec", j = "missing"),
           definition = function(x, i, j) subset_by_gene_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% extract_matrix())
 
 # 3. Extract by cell
 #' @export
+#' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "on_disc_matrix", i = "missing", j = "index_vec"),
           definition = function(x, i, j) subset_by_gene_or_cell(x = x, idx = j, subset_on_cell = TRUE) %>% extract_matrix())
 
 # 4. Extract by both gene and cell
 #' @export
+#' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "on_disc_matrix", i = "index_vec", j = "index_vec"),
           definition = function(x, i, j) subset_by_gene_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% subset_by_gene_or_cell(x = ., idx = j, subset_on_cell = TRUE) %>% extract_matrix())
@@ -125,6 +152,12 @@ setMethod(f = "[[",
 #' @export
 setGeneric(name = "apply", def = function(X, MARGIN, FUN, ...) standardGeneric("apply"))
 
+#' apply
+#' apply a function to the rows or columns of an on_disc_matrix.
+#' @param X an on_disc_matrix
+#' @param MARGIN apply to rows (1) or columns (2)
+#' @param FUN a function to apply
+#' @param chunk_size number of rows or columns to load at a time; default 4000
 #' @export
 setMethod(f = "apply",
           signature = signature("on_disc_matrix"),

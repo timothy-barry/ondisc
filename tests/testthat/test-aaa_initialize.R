@@ -1,5 +1,7 @@
 # This is a setup script. Its purpose is to ensure the synthetic data are in in place.
 
+cat("\nEnsure synthetic data are in place.\n")
+
 # Obtain test parameters given test type.
 test_params <- get_test_parameters(get_test_type())
 

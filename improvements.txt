@@ -1,5 +1,0 @@
-Improvement areas:
-
-1. 64-bit integers
-2. Eliminate redundancy in sorting
-3. Load h5 files, data frames

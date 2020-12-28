@@ -51,7 +51,6 @@ create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, 
   transpose_on_disc_csc_matrix(h5_loc, cell_chunk_size = 5000)
 
   # Return the newly created on_disc_matrix object
-  # ret <- new(Class = "on_disc_matrix", h5_file = h5_loc)
-  ret <- h5_loc
+  ret <- on_disc_matrix(h5_file = h5_loc)
   return(ret)
 }

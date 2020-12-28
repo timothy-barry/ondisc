@@ -2,20 +2,20 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{subset-odm}
 \alias{subset-odm}
-\alias{[,on_disc_matrix,missing,missing,ANY-method}
-\alias{[,on_disc_matrix,index_vec,missing,ANY-method}
-\alias{[,on_disc_matrix,missing,index_vec,ANY-method}
-\alias{[,on_disc_matrix,index_vec,index_vec,ANY-method}
+\alias{[,on_disc_matrix,missing,missing,missing-method}
+\alias{[,on_disc_matrix,index_vec,missing,missing-method}
+\alias{[,on_disc_matrix,missing,index_vec,missing-method}
+\alias{[,on_disc_matrix,index_vec,index_vec,missing-method}
 \title{Subset an on_disc_matrix
 Subset an \linkS4class{on_disc_matrix} using the \code{`[`} operator.}
 \usage{
-\S4method{[}{on_disc_matrix,missing,missing,ANY}(x, i, j)
+\S4method{[}{on_disc_matrix,missing,missing,missing}(x, i, j, drop)
 
-\S4method{[}{on_disc_matrix,index_vec,missing,ANY}(x, i, j)
+\S4method{[}{on_disc_matrix,index_vec,missing,missing}(x, i, j)
 
-\S4method{[}{on_disc_matrix,missing,index_vec,ANY}(x, i, j)
+\S4method{[}{on_disc_matrix,missing,index_vec,missing}(x, i, j)
 
-\S4method{[}{on_disc_matrix,index_vec,index_vec,ANY}(x, i, j)
+\S4method{[}{on_disc_matrix,index_vec,index_vec,missing}(x, i, j)
 }
 \arguments{
 \item{x}{An \linkS4class{on_disc_matrix} object (Do not pass as an argument to \code{`[`}).}
@@ -23,6 +23,8 @@ Subset an \linkS4class{on_disc_matrix} using the \code{`[`} operator.}
 \item{i}{Vector (numeric, logical, or character) indicating genes to keep.}
 
 \item{j}{Vector (numeric, logical, or character) indicating cells to keep.}
+
+\item{drop}{not used}
 }
 \value{
 A subset \linkS4class{on_disc_matrix} object.
@@ -32,9 +34,9 @@ Subset an on_disc_matrix
 Subset an \linkS4class{on_disc_matrix} using the \code{`[`} operator.
 }
 \examples{
-exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-if (exp_mat_loc != "") {
-x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
-x_sub <- x[1:10,1:10] # subset first 10 genes and cells
-}
+# exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
+# if (exp_mat_loc != "") {
+# x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
+# x_sub <- x[1:10,1:10] # subset first 10 genes and cells
+# }
 }
