@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ondisc <img src="man/figures/hex.png" align="right" alt="" width="160" />
+# ondisc <img src="man/figures/hex.png" align="right" alt="" width="180" />
 
 `ondisc` powers large-scale single-cell analysis.
 
