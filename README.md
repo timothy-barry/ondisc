@@ -3,6 +3,12 @@
 
 # ondisc <img src="man/figures/hex.png" align="right" alt="" width="180" />
 
+<!-- badges: start -->
+
+[![R build
+status](https://github.com/Timothy-Barry/ondisc/workflows/R-CMD-check/badge.svg)](https://github.com/Timothy-Barry/ondisc/actions)
+<!-- badges: end -->
+
 `ondisc` powers large-scale single-cell analysis.
 
 ## Installation
