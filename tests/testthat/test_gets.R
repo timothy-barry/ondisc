@@ -1,3 +1,5 @@
+if (FALSE) {
+
 test_params <- get_test_parameters(get_test_type())
 set.seed(test_params$seed)
 
@@ -42,3 +44,5 @@ test_that("gets after subset", {
       }
     }
 })
+
+}
