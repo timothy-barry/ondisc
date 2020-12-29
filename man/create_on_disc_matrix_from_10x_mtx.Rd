@@ -29,12 +29,12 @@ Create on_disc_matrix from 10x .mtx file
 Creates an on_disc_matrix from a 10x .mtx file.
 }
 \examples{
-mtx_fp <- system.file("extdata", "matrix.mtx", package = "ondisc")
-barcode_fp <- system.file("extdata", "barcodes.tsv", package = "ondisc")
-features_fp <- system.file("extdata", "features.tsv", package = "ondisc")
-on_disc_dir <- system.file("extdata", package = "ondisc")
-if (system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc") == "") {
+# mtx_fp <- system.file("extdata", "matrix.mtx", package = "ondisc")
+# barcode_fp <- system.file("extdata", "barcodes.tsv", package = "ondisc")
+# features_fp <- system.file("extdata", "features.tsv", package = "ondisc")
+# on_disc_dir <- system.file("extdata", package = "ondisc")
+# if (system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc") == "") {
 # if on_disc_matrix does not exist, create it.
-exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp, barcode_fp, features_fp, on_disc_dir)
-}
+# exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp, barcode_fp, features_fp, on_disc_dir)
+# }
 }
