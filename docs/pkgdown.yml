@@ -3,5 +3,8 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   using_ondisc: using_ondisc.html
-last_built: 2020-12-29T16:22Z
+last_built: 2020-12-29T17:52Z
+urls:
+  reference: https://readr.tidyverse.org/reference
+  article: https://readr.tidyverse.org/articles
 

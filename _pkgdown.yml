@@ -1,0 +1,46 @@
+url: https://readr.tidyverse.org
+
+authors:
+  "Tim Barry":
+    href: https://timothy-barry.github.io/
+
+development:
+  mode: auto
+
+template:
+  params:
+    bootswatch: lumen
+
+navbar:
+  type: default
+
+reference:
+- title: Initialize
+  desc: >
+    These functions initialize an `on_disc_matrix` from an existing source of data.
+  contents:
+  - create_on_disc_matrix_from_10x_mtx
+
+- title: Extract basic information
+  desc: >
+    These functions extract basic information from an `on_disc_matrix`.
+  contents:
+  - get_cell_barcodes
+  - get_gene_ids
+  - get_gene_names
+  - dim
+  - head
+
+- title: Subset, pull submatrix into memory
+  desc: >
+    Subset an `on_disc_matrix` with `[`, and pull a submatrix into memory with ``[[``.
+  contents:
+  - "["
+  - "[["
+
+- title: Operate on all rows or columns
+  desc: >
+    These functions operate on all rows or all columns (or both) of an `on_disc_matrix`.
+  contents:
+  - summarize_expression_matrix
+  - apply

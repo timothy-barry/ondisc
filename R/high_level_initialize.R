@@ -1,5 +1,7 @@
 #' Create on_disc_matrix from 10x .mtx file
+#'
 #' Creates an on_disc_matrix from a 10x .mtx file.
+#'
 #' @param mtx_fp file path to the .mtx file
 #' @param barcode_fp file path to the barcode.tsv file.
 #' @param features_fp file path to the features.tsv file.

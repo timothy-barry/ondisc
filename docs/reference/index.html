@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -133,8 +133,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-initialize" class="hasAnchor"><a href="#section-initialize" class="anchor"></a>Initialize</h2>
+          <p class="section-desc"><p>These functions initialize an <code>on_disc_matrix</code> from an existing source of data.</p></p>
         </th>
       </tr>
       
@@ -145,226 +145,61 @@
       <tr>
         
         <td>
-          <p><code><a href="apply-on_disc_matrix-method.html">apply(<i>&lt;on_disc_matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>apply
-apply a function to the rows or columns of an on_disc_matrix.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="combine_results.html">combine_results()</a></code> </p>
-        </td>
-        <td><p>Combine results</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="compare_Mat_on_disc_extract.html">compare_Mat_on_disc_extract()</a></code> </p>
-        </td>
-        <td><p>Compare R sparse Matrix object to on_disc object on extract</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="convert_mtx_to_csc.html">convert_mtx_to_csc()</a></code> </p>
-        </td>
-        <td><p>Convert mtx file to compressed sparse column</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_h5_file_on_disk.html">create_h5_file_on_disk()</a></code> </p>
-        </td>
-        <td><p>Create h5 file on disk</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="create_on_disc_matrix_from_10x_mtx.html">create_on_disc_matrix_from_10x_mtx()</a></code> </p>
         </td>
         <td><p>Create on_disc_matrix from 10x .mtx file
 Creates an on_disc_matrix from a 10x .mtx file.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_random_matrix.html">create_random_matrix()</a></code> </p>
-        </td>
-        <td><p>Create a random matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_synthetic_data.html">create_synthetic_data()</a></code> </p>
-        </td>
-        <td><p>Create synthetic data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dim-on_disc_matrix-method.html">dim(<i>&lt;on_disc_matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>dim
-Print dimension of on_disc_matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract-odm.html">`[[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;index_vec&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;index_vec&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Extract an on_disc_matrix
-Pull a submatrix of an on_disc_matrix into memory using the <code>`[[`</code> operator.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract_matrix.html">extract_matrix()</a></code> </p>
-        </td>
-        <td><p>Extract matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate_on_disc_matrix_name.html">generate_on_disc_matrix_name()</a></code> </p>
-        </td>
-        <td><p>Generate on disc_matrix_name</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-extract-basic-information" class="hasAnchor"><a href="#section-extract-basic-information" class="anchor"></a>Extract basic information</h2>
+          <p class="section-desc"><p>These functions extract basic information from an <code>on_disc_matrix</code>.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="get_cell_barcodes.html">get_cell_barcodes()</a></code> <code><a href="get_cell_barcodes.html">get_gene_ids()</a></code> <code><a href="get_cell_barcodes.html">get_gene_names()</a></code> </p>
         </td>
         <td><p>Get names</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_chunks_sequence.html">get_chunks_sequence()</a></code> </p>
-        </td>
-        <td><p>Get a chunks sequence</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_dim.html">get_dim()</a></code> </p>
-        </td>
-        <td><p>Get dim</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_names.html">get_names()</a></code> </p>
-        </td>
-        <td><p>Get names helper function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_simulation_data_fps.html">get_simulation_data_fps()</a></code> </p>
-        </td>
-        <td><p>Get simulation data filepaths</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_subset_vector.html">get_subset_vector()</a></code> </p>
-        </td>
-        <td><p>Get on_disc subset vector</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_test_parameters.html">get_test_parameters()</a></code> </p>
-        </td>
-        <td><p>Get test parameters</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_test_type.html">get_test_type()</a></code> </p>
-        </td>
-        <td><p>get test type</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="head-on_disc_matrix-method.html">head(<i>&lt;on_disc_matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>print first rows and columns of an on_disc_matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="increment_indices.html">increment_indices()</a></code> </p>
-        </td>
-        <td><p>Increment indices</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="index_vec-class.html">index_vec-class</a></code> </p>
-        </td>
-        <td><p>index_vec class
-A union of the numeric, logical, and character classes. Used for indexing of on_disc_matrices. Idea borrowed from Matrix package.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="load_on_disc_and_mat.html">load_on_disc_and_mat()</a></code> </p>
-        </td>
-        <td><p>Load on disc matrix and R sparse matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="on_disc_apply_across_chunks.html">on_disc_apply_across_chunks()</a></code> </p>
-        </td>
-        <td><p>On disc apply across chunks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="on_disc_matrix-class.html">on_disc_matrix-class</a></code> </p>
-        </td>
-        <td><p>The on_disc_matrix class</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ondisc.html">ondisc</a></code> </p>
-        </td>
-        <td><p>ondisc: A package for out-of-memory computing on single-cell data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="print_checkmark.html">print_checkmark()</a></code> </p>
-        </td>
-        <td><p>Print checkmark
-prints a checkmark</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="return_spMatrix_from_contiguous_index.html">return_spMatrix_from_contiguous_index()</a></code> </p>
-        </td>
-        <td><p>Return sparse matrix from contiguous index</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="return_spMatrix_from_index.html">return_spMatrix_from_index()</a></code> </p>
-        </td>
-        <td><p>Return sparse matrix from index</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="save_random_matrix_as_10x.html">save_random_matrix_as_10x()</a></code> </p>
-        </td>
-        <td><p>Save random matrix as a 10X object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="show-on_disc_matrix-method.html">show(<i>&lt;on_disc_matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>print first few rows and columns of an on_disc_matrix to the console; also display object class</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="subset-odm.html">`[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Subset an on_disc_matrix
-Subset an on_disc_matrix using the <code>`[`</code> operator.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="subset_by_gene_or_cell.html">subset_by_gene_or_cell()</a></code> </p>
-        </td>
-        <td><p>Subset by gene or cell</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-subset-pull-submatrix-into-memory" class="hasAnchor"><a href="#section-subset-pull-submatrix-into-memory" class="anchor"></a>Subset, pull submatrix into memory</h2>
+          <p class="section-desc"><p>Subset an <code>on_disc_matrix</code> with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, and pull a submatrix into memory with <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-operate-on-all-rows-or-all-columns" class="hasAnchor"><a href="#section-operate-on-all-rows-or-all-columns" class="anchor"></a>Operate on all rows or all columns</h2>
+          <p class="section-desc"><p>These functions operate on all rows or all columns (or both) of an <code>on_disc_matrix</code>.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="summarize_expression_matrix.html">summarize_expression_matrix()</a></code> </p>
         </td>
         <td><p>Summarize expression matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transpose_on_disc_csc_matrix.html">transpose_on_disc_csc_matrix()</a></code> </p>
-        </td>
-        <td><p>Transpose on-disc CSC matrix.</p></td>
       </tr>
     </tbody>
     </table>
@@ -380,7 +215,7 @@ Subset an on_disc_matrix using the <code>`[`</code> operator.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by <a href='https://timothy-barry.github.io/'>Tim Barry</a>.</p>
 </div>
 
 <div class="pkgdown">
