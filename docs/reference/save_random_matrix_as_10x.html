@@ -129,7 +129,14 @@
     <p>This function stores a matrix in .mtx format, along with features and barcodes .tsv files for the cells and genes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>save_random_matrix_as_10x</span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>data_dir</span>, idx <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>save_random_matrix_as_10x</span><span class='op'>(</span>
+  <span class='va'>m</span>,
+  <span class='va'>data_dir</span>,
+  idx <span class='op'>=</span> <span class='cn'>NULL</span>,
+  cell_barcodes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  gene_names <span class='op'>=</span> <span class='cn'>NULL</span>,
+  gene_ids <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,6 +152,18 @@
     <tr>
       <th>idx</th>
       <td><p>(optional) an index to append to the file names</p></td>
+    </tr>
+    <tr>
+      <th>cell_barcodes</th>
+      <td><p>(optional) the cell barcodes</p></td>
+    </tr>
+    <tr>
+      <th>gene_names</th>
+      <td><p>(optional) the gene names</p></td>
+    </tr>
+    <tr>
+      <th>gene_ids</th>
+      <td><p>(optional) the gene ids</p></td>
     </tr>
     </table>
 

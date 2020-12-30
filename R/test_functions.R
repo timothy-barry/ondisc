@@ -26,18 +26,21 @@ create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matr
 #'
 #' @param m a sparse Matrix object
 #' @param data_dir the directory in which to store the matrix
+#' @param cell_barcodes (optional) the cell barcodes
+#' @param gene_names (optional) the gene names
+#' @param gene_ids (optional) the gene ids
 #' @param idx (optional) an index to append to the file names
 #'
 #' @return the file paths to the matrix.mtx, barcodes.tsv, and features.tsv files.
-save_random_matrix_as_10x <- function(m, data_dir, idx = NULL) {
+save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = NULL, gene_names = NULL, gene_ids = NULL) {
   if (!dir.exists(data_dir)) dir.create(path = data_dir, recursive = TRUE)
   to_save_locs <- get_simulation_data_fps(data_dir, idx)
   # save the matrix in .mtx format.
   Matrix::writeMM(obj = m, file = to_save_locs[["mtx"]])
   # create the barcode and feature files
-  cell_barcodes <- paste0("cell_", 1:ncol(m))
-  gene_names <- paste0("gene_", 1:nrow(m))
-  gene_ids <- paste0("ENSG000", 1:nrow(m))
+  if (is.null(cell_barcodes)) cell_barcodes <- paste0("cell_", 1:ncol(m))
+  if (is.null(gene_names)) gene_names <- paste0("gene_", 1:nrow(m))
+  if (is.null(gene_ids)) gene_ids <- paste0("ENSG000", 1:nrow(m))
   # save the files
   readr::write_tsv(x = dplyr::tibble(cell_barcodes), file = to_save_locs[["barcodes"]], col_names = FALSE)
   readr::write_tsv(x = dplyr::tibble(gene_ids, gene_names, "Gene Expression"), file = to_save_locs[["features"]], col_names = FALSE)

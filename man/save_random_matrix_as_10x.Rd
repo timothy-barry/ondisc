@@ -4,7 +4,14 @@
 \alias{save_random_matrix_as_10x}
 \title{Save random matrix as a 10X object}
 \usage{
-save_random_matrix_as_10x(m, data_dir, idx = NULL)
+save_random_matrix_as_10x(
+  m,
+  data_dir,
+  idx = NULL,
+  cell_barcodes = NULL,
+  gene_names = NULL,
+  gene_ids = NULL
+)
 }
 \arguments{
 \item{m}{a sparse Matrix object}
@@ -12,6 +19,12 @@ save_random_matrix_as_10x(m, data_dir, idx = NULL)
 \item{data_dir}{the directory in which to store the matrix}
 
 \item{idx}{(optional) an index to append to the file names}
+
+\item{cell_barcodes}{(optional) the cell barcodes}
+
+\item{gene_names}{(optional) the gene names}
+
+\item{gene_ids}{(optional) the gene ids}
 }
 \value{
 the file paths to the matrix.mtx, barcodes.tsv, and features.tsv files.

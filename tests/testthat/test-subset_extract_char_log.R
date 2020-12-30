@@ -1,3 +1,5 @@
+if (FALSE) {
+
 test_params <- get_test_parameters(get_test_type())
 n_datasets <- test_params$n_datasets
 simulated_data_dir <- test_params$synthetic_data_dir
@@ -133,3 +135,4 @@ test_that("subset by gene id", {
     expect_error(on_disc_mat[FALSE,][[,1]])
   }
 })
+}

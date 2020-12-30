@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • ondisc</title>
+<title>Convert to Seurat object — convert_to_seurat_object • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Convert to Seurat object — convert_to_seurat_object" />
+<meta property="og:description" content="Converts an on_disc_matrix to a Suerat object." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -117,93 +118,50 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Convert to Seurat object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/high_level_matrix_ops.R'><code>R/high_level_matrix_ops.R</code></a></small>
+    <div class="hidden name"><code>convert_to_seurat_object.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Converts an on_disc_matrix to a Suerat object.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>convert_to_seurat_object</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  project <span class='op'>=</span> <span class='st'>"CreateSeuratObject"</span>,
+  assay <span class='op'>=</span> <span class='st'>"RNA"</span>,
+  cell_covariate_matrix <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-initialize" class="hasAnchor"><a href="#section-initialize" class="anchor"></a>Initialize</h2>
-          <p class="section-desc"><p>These functions initialize an <code>on_disc_matrix</code> from an existing source of data.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="create_on_disc_matrix_from_10x_mtx.html">create_on_disc_matrix_from_10x_mtx()</a></code> </p>
-        </td>
-        <td><p>Create on_disc_matrix from 10x .mtx file</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-extract-basic-information" class="hasAnchor"><a href="#section-extract-basic-information" class="anchor"></a>Extract basic information</h2>
-          <p class="section-desc"><p>These functions extract basic information from an <code>on_disc_matrix</code>.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="get_cell_barcodes.html">get_cell_barcodes()</a></code> <code><a href="get_cell_barcodes.html">get_gene_ids()</a></code> <code><a href="get_cell_barcodes.html">get_gene_names()</a></code> </p>
-        </td>
-        <td><p>Get names</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-subset-pull-submatrix-into-memory" class="hasAnchor"><a href="#section-subset-pull-submatrix-into-memory" class="anchor"></a>Subset, pull submatrix into memory</h2>
-          <p class="section-desc"><p>Subset an <code>on_disc_matrix</code> with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, and pull a submatrix into memory with <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-operate-on-all-rows-or-columns" class="hasAnchor"><a href="#section-operate-on-all-rows-or-columns" class="anchor"></a>Operate on all rows or columns</h2>
-          <p class="section-desc"><p>These functions operate on all rows or all columns (or both) of an <code>on_disc_matrix</code>.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="summarize_expression_matrix.html">summarize_expression_matrix()</a></code> </p>
-        </td>
-        <td><p>Summarize expression matrix</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>an on_disc_matrix</p></td>
+    </tr>
+    <tr>
+      <th>project</th>
+      <td><p>(default "CreateSeuratObject") project name of the Seurat object</p></td>
+    </tr>
+    <tr>
+      <th>assay</th>
+      <td><p>(default "RNA") name of the initial assay</p></td>
+    </tr>
+    <tr>
+      <th>cell_covariate_matrix</th>
+      <td><p>(default none) cell-level covariate matrix</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a Seurat object</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

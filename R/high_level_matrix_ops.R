@@ -219,3 +219,27 @@ summarize_expression_matrix <- function(x, chunk_size = 4000) {
   colnames(gene_covariate_matrix) <- c("total_umis", "n_cells_expressed")
   return(list(cell_covariate_matrix = cell_covariate_matrix, gene_covariate_matrix = gene_covariate_matrix))
 }
+
+
+#' Convert to Seurat object
+#'
+#' Converts an on_disc_matrix to a Suerat object.
+#'
+#' @param x an on_disc_matrix
+#' @param project (default "CreateSeuratObject") project name of the Seurat object
+#' @param assay (default "RNA") name of the initial assay
+#' @param cell_covariate_matrix (default none) cell-level covariate matrix
+#'
+#' @return a Seurat object
+#' @export
+convert_to_seurat_object <- function(x, project = "CreateSeuratObject", assay = "RNA", cell_covariate_matrix = NULL) {
+  gene_ids <- get_gene_ids(x)
+  cell_barcodes <- get_cell_barcodes(x)
+  m <- extract_matrix(x)
+  row.names(m) <- gene_ids
+  colnames(m) <- cell_barcodes
+  out <- Seurat::CreateSeuratObject(counts = m, project = project,
+                                    assay = assay,
+                                    meta.data = cell_covariate_matrix)
+  return(out)
+}

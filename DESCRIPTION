@@ -18,12 +18,12 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 URL: https://github.com/Timothy-Barry/ondisc
-biocViews: Infrastructure, DataImport
+biocViews: Infrastructure, DataImport, Sequencing, SingleCell
 Suggests: 
     testthat,
-    stats,
     knitr,
-    rmarkdown
+    rmarkdown,
+    Seurat
 Imports: 
     utils,
     dplyr,
@@ -35,5 +35,6 @@ Imports:
     data.table,
     purrr,
     Matrix,
-    R.utils
+    R.utils,
+    stats
 VignetteBuilder: knitr

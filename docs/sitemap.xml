@@ -16,6 +16,9 @@
     <loc>https://readr.tidyverse.org/reference/convert_mtx_to_csc.html</loc>
   </url>
   <url>
+    <loc>https://readr.tidyverse.org/reference/convert_to_seurat_object.html</loc>
+  </url>
+  <url>
     <loc>https://readr.tidyverse.org/reference/create_h5_file_on_disk.html</loc>
   </url>
   <url>
