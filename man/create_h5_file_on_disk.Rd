@@ -11,7 +11,8 @@ create_h5_file_on_disk(
   n_data_points,
   cell_barcodes,
   gene_ids,
-  gene_names
+  gene_names,
+  file_name
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ create_h5_file_on_disk(
 \item{gene_ids}{the gene ids}
 
 \item{gene_names}{the gene names}
+
+\item{file_name}{name if the file to create; if null, generate_on_disc_matrix_name is called.}
 }
 \value{
 location of h5 file on disk.

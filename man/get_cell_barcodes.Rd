@@ -25,3 +25,15 @@ The gene names of this on-disc matrix.
 \description{
 Functions to extract cell barcodes, gene ids, and gene names from an on_disc_matrix.
 }
+\examples{
+# NOTE: You must create the HDF5 file "example.h5" to run this example.
+# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") { # if required file exists, ...
+odm <- on_disc_matrix(h5_file = odm_fp)
+barcodes <- get_cell_barcodes(odm)
+gene_ids <- get_gene_ids(odm)
+gene_names <- get_gene_names(odm)
+}
+}

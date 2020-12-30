@@ -3,7 +3,7 @@
 \name{dim,on_disc_matrix-method}
 \alias{dim,on_disc_matrix-method}
 \title{dim
-Print dimension of on_disc_matrix}
+Print dimension of on_disc_matrix.}
 \usage{
 \S4method{dim}{on_disc_matrix}(x)
 }
@@ -15,5 +15,15 @@ an integer vector containing the dimension of the matrix
 }
 \description{
 dim
-Print dimension of on_disc_matrix
+Print dimension of on_disc_matrix.
+}
+\examples{
+# NOTE: You must create the HDF5 file "example.h5" to run this example.
+# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") { # if required file exists, ...
+odm <- on_disc_matrix(h5_file = odm_fp)
+dim(odm)
+}
 }

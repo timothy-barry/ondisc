@@ -50,6 +50,17 @@ get_names <- function(x, name_to_get) {
 #' @param x An on_disc_matrix.
 #' @return The cell barcodes of this on-disc matrix.
 #' @export
+#' @examples
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' barcodes <- get_cell_barcodes(odm)
+#' gene_ids <- get_gene_ids(odm)
+#' gene_names <- get_gene_names(odm)
+#' }
 get_cell_barcodes <- function(x) {
   get_names(x, "cell_barcodes")
 }
@@ -168,15 +179,18 @@ on_disc_apply_across_chunks <- function(x, col_apply, chunk_function, chunk_size
 #' Takes an on_disc_matrix that contains gene-by-cell expressions (x), and outputs the cell-specific and gene-specific covariate matrices.
 #'
 #' @param x an on_disc_matrix
-#' @param chunk_size number of cells to process at a time
+#' @param chunk_size (optional) number of cells to process at a time
 #'
 #' @return a list containing the cell-specific and gene-specific covariate matrices
 #' @export
 #' @examples
-#' exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-#' if (exp_mat_loc != "") {
-#' x <- on_disc_matrix(h5_file = exp_mat_loc)
-#' covariate_matrices <- summarize_expression_matrix(x)
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' covariate_matrices <- summarize_expression_matrix(odm)
 #' }
 summarize_expression_matrix <- function(x, chunk_size = 4000) {
   # Obtain the gene_names (constant across cell chunks)
@@ -232,6 +246,15 @@ summarize_expression_matrix <- function(x, chunk_size = 4000) {
 #'
 #' @return a Seurat object
 #' @export
+#' @examples
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' seurat_obj <- convert_to_seurat_object(odm)
+#' }
 convert_to_seurat_object <- function(x, project = "CreateSeuratObject", assay = "RNA", cell_covariate_matrix = NULL) {
   gene_ids <- get_gene_ids(x)
   cell_barcodes <- get_cell_barcodes(x)

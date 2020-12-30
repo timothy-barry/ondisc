@@ -1,23 +1,27 @@
 #' Create on_disc_matrix from 10x .mtx file
 #'
-#' Creates an on_disc_matrix from a 10x .mtx file.
-#'
+#' @description
+#' This function creates an on_disc_matrix from a 10x .mtx file. The name of the created file (by default) is on_disc_matrix_x.h5, where x is an integer. The integer starts at 1; if there already exists a file called on_disc_matrix_1.h5, then the data will be saved in on_disc_matrix_2.h5, and so on. To override this behavior, explicitly specify the file name (WITHOUT the .h5 extension).
 #' @param mtx_fp file path to the .mtx file
 #' @param barcode_fp file path to the barcode.tsv file.
 #' @param features_fp file path to the features.tsv file.
 #' @param on_disc_dir directory in which to store the initialized HDF5 object
-#' @export
+#' @param file_name (optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is an integer.
 #' @return an on_disc_matrix object
+#' @export
 #' @examples
-#' # mtx_fp <- system.file("extdata", "matrix.mtx", package = "ondisc")
-#' # barcode_fp <- system.file("extdata", "barcodes.tsv", package = "ondisc")
-#' # features_fp <- system.file("extdata", "features.tsv", package = "ondisc")
-#' # on_disc_dir <- system.file("extdata", package = "ondisc")
-#' # if (system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc") == "") {
-#' # if on_disc_matrix does not exist, create it.
-#' # exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp, barcode_fp, features_fp, on_disc_dir)
-#' # }
-create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, on_disc_dir) {
+#' mtx_fp <- system.file("extdata", "matrix_1.mtx", package = "ondisc")
+#' barcode_fp <- system.file("extdata", "barcodes_1.tsv", package = "ondisc")
+#' features_fp <- system.file("extdata", "features_1.tsv", package = "ondisc")
+#' on_disc_dir <- system.file("extdata", package = "ondisc")
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") file.remove(odm_fp)
+#' exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp,
+#' barcode_fp,
+#' features_fp,
+#' on_disc_dir,
+#' "example")
+create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, on_disc_dir, file_name = NULL) {
   # First, work with the .mtx file. Determine the number of rows containing comments.
   n_rows_with_comments <- 0
   repeat {
@@ -43,7 +47,7 @@ create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, 
   gene_names <- all_genes %>% dplyr::pull("gene_name")
 
   # Initialize the h5 file on disk
-  h5_loc <- create_h5_file_on_disk(on_disc_dir, n_genes, n_cells, n_data_points, cell_barcodes, gene_ids, gene_names)
+  h5_loc <- create_h5_file_on_disk(on_disc_dir, n_genes, n_cells, n_data_points, cell_barcodes, gene_ids, gene_names, file_name)
   rm(cell_barcodes, all_genes, gene_ids, gene_names); invisible(gc())
 
   # Load expression data into matrix in compressed sparse column format; output from this function the number of nonzero entries in each row.

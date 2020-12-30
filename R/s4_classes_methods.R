@@ -1,4 +1,4 @@
-# Class definition and functions for on_disc_matrix
+# Class definition and methods for on_disc_matrix
 
 
 # Classes and constructor
@@ -12,6 +12,14 @@
 #' @slot gene_subset an integer vector storing the genes currently in use
 #'
 #' @export on_disc_matrix
+#' @examples
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' }
 on_disc_matrix <- setClass("on_disc_matrix",
                            representation(h5_file = "character", cell_subset = "integer", gene_subset = "integer"),
                            prototype(h5_file = NA_character_, cell_subset = NA_integer_, gene_subset = NA_integer_))
@@ -25,27 +33,54 @@ setClassUnion("index_vec", members =  c("numeric", "logical", "character"))
 
 # 1. dim
 #' dim
-#' Print dimension of on_disc_matrix
+#' Print dimension of on_disc_matrix.
 #' @param x an on_disc_matrix
 #' @export
 #' @return an integer vector containing the dimension of the matrix
+#' @examples
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' dim(odm)
+#' }
 setMethod("dim", signature("on_disc_matrix"), function(x) get_dim(x))
 
 # 2. show
-#' print first few rows and columns of an on_disc_matrix to the console; also display object class
+#' Print first few rows and columns of an on_disc_matrix to the console; also display object class, number of rows, and number of columns.
 #' @param object an on_dist_matrix to show
 #' @return NULL
 #' @export
+#' @examples
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' show(odm)
+#' }
 setMethod("show", signature = signature("on_disc_matrix"), function(object) {
   x_dim <- dim(object)
   cat(paste0("An on_disc_matrix with ", crayon::blue(x_dim[1]), " gene", if (x_dim[1] == 1) "" else "s" ," and ", crayon::blue(x_dim[2]), " cell", if (x_dim[2] == 1) "" else "s", ".\n"))
 })
 
 # 3. head
-#' print first rows and columns of an on_disc_matrix
+#' Print first rows and columns of an on_disc_matrix.
 #' @export
 #' @param x an on_disc_mnatrix
 #' @return NULL
+#' @examples
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' head(odm)
+#' }
 setMethod("head", signature = signature("on_disc_matrix"), function(x) {
   x_dim <- dim(x)
   n_row_to_show <- min(5, x_dim[1])
@@ -59,19 +94,31 @@ setMethod("head", signature = signature("on_disc_matrix"), function(x) {
 ########################
 
 #' Subset an on_disc_matrix
-#' Subset an \linkS4class{on_disc_matrix} using the \code{`[`} operator.
-#' @param x An \linkS4class{on_disc_matrix} object (Do not pass as an argument to \code{`[`}).
-#' @param i Vector (numeric, logical, or character) indicating genes to keep.
-#' @param j Vector (numeric, logical, or character) indicating cells to keep.
+#' Subset an on_disc_matrix using the \code{`[`} operator.
+#'
+#' The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns).
+#' @param x An on_disc_matrix object
+#' @param i Vector (numeric, logical, or character) indicating genes to keep
+#' @param j Vector (numeric, logical, or character) indicating cells to keep
 #' @param drop not used
-#' @return A subset \linkS4class{on_disc_matrix} object.
-#' @examples
-#' # exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-#' # if (exp_mat_loc != "") {
-#' # x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
-#' # x_sub <- x[1:10,1:10] # subset first 10 genes and cells
-#' # }
+#' @return A subset on_disc_matrix object.
 #' @name subset-odm
+#' @examples
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' # keep cells 100-110
+#' x <- odm[,100:110]
+#' # keep genes ENSG00000260528, ENSG00000258908, and ENSG00000081913
+#' x <- odm[c("ENSG00000260528", "ENSG00000258908", "ENSG00000081913"),]
+#' # keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT
+#' x <- odm[,c("ACAGCCGCAGAAACCG", "CTACTATAGTGTACCT")]
+#' # keep all genes except ENSG00000167525 and ENSG00000235815
+#' x <- odm[!(get_gene_ids(odm) %in% c("ENSG00000167525", "ENSG00000235815")),]
+#' }
 NULL
 
 #' @rdname subset-odm
@@ -104,18 +151,28 @@ setMethod(f = "[",
 # Extract expression data methods
 #################################
 
-#' Extract an on_disc_matrix
-#' Pull a submatrix of an \linkS4class{on_disc_matrix} into memory using the \code{`[[`} operator.
-#' @param x An \linkS4class{on_disc_matrix} object (Do not pass as an argument to \code{`[[`}).
-#' @param i Vector (numeric, logical, or character) indicating genes to keep.
-#' @param j Vector (numeric, logical, or character) indicating cells to keep.
-#' @return A matrix object (of class Matrix)
+#' Pull a submatrix into memory
+#' Pull a submatrix of an on_disc_matrix into memory using the \code{`[[`} operator.
+#'
+#' The user can pass logical, character, of numeric vectors to \code{`[[`}. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns).
+#' @param x An on_disc_matrix object
+#' @param i Vector (numeric, logical, or character) indicating genes to keep
+#' @param j Vector (numeric, logical, or character) indicating cells to keep
+#' @return A matrix (of class Matrix)
 #' @examples
-#' # exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-#' # if (exp_mat_loc != "") {
-#' # x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
-#' # x_mem <- x[[1:10,1:10]] # subset first 10 genes and cells
-#' # }
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' # keep cells 100-110
+#' x <- odm[[,100:110]]
+#' # keep genes ENSG00000260528, ENSG00000258908, and ENSG00000081913
+#' x <- odm[[c("ENSG00000260528", "ENSG00000258908", "ENSG00000081913"),]]
+#' # keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT
+#' x <- odm[[,c("ACAGCCGCAGAAACCG", "CTACTATAGTGTACCT")]]
+#' }
 #' @name extract-odm
 NULL
 
@@ -147,8 +204,8 @@ setMethod(f = "[[",
           signature = signature(x = "on_disc_matrix", i = "index_vec", j = "index_vec"),
           definition = function(x, i, j) subset_by_gene_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% subset_by_gene_or_cell(x = ., idx = j, subset_on_cell = TRUE) %>% extract_matrix())
 
-# Col/Row sums methods, and more general apply/reduce methods
-#############################################################
+# Summarize method, and more general apply/reduce methods
+##########################################################
 #' @export
 setGeneric(name = "apply", def = function(X, MARGIN, FUN, ...) standardGeneric("apply"))
 
@@ -159,6 +216,18 @@ setGeneric(name = "apply", def = function(X, MARGIN, FUN, ...) standardGeneric("
 #' @param FUN a function to apply
 #' @param chunk_size number of rows or columns to load at a time; default 4000
 #' @export
+#' @examples
+#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
+#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+#' if (odm_fp != "") { # if required file exists, ...
+#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' gene_means_and_sds <- apply(X = odm,
+#' MARGIN = 1,
+#' FUN = function(r) c(mean = mean(r), sd = sd(r)),
+#' chunk_size = 500)
+#' }
 setMethod(f = "apply",
           signature = signature("on_disc_matrix"),
           definition = function(X, MARGIN, FUN, chunk_size = 4000) {

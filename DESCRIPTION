@@ -37,4 +37,5 @@ Imports:
     Matrix,
     R.utils,
     stats
+Depends: R (>= 3.5.0)
 VignetteBuilder: knitr

@@ -26,3 +26,13 @@ a Seurat object
 \description{
 Converts an on_disc_matrix to a Suerat object.
 }
+\examples{
+# NOTE: You must create the HDF5 file "example.h5" to run this example.
+# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") { # if required file exists, ...
+odm <- on_disc_matrix(h5_file = odm_fp)
+seurat_obj <- convert_to_seurat_object(odm)
+}
+}

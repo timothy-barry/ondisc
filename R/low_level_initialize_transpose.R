@@ -14,7 +14,7 @@ generate_on_disc_matrix_name <- function(on_disc_dir) {
     existing_names <- fs[idxs]
     ints_in_use <- gsub(pattern = paste0(base_name, "(\\d+).h5"), replacement = "\\1", x = existing_names) %>% as.integer()
     new_int <- max(ints_in_use) + 1
-    name <- paste0(base_name, new_int,".h5")
+    name <- paste0(base_name, new_int, ".h5")
   }
   return(paste0(on_disc_dir, "/", name))
 }
@@ -28,11 +28,11 @@ generate_on_disc_matrix_name <- function(on_disc_dir) {
 #' @param cell_barcodes cell barcodes
 #' @param gene_ids the gene ids
 #' @param gene_names the gene names
-#'
+#' @param file_name name if the file to create; if null, generate_on_disc_matrix_name is called.
 #' @return location of h5 file on disk.
-create_h5_file_on_disk <- function(on_disc_dir, n_genes, n_cells, n_data_points, cell_barcodes, gene_ids, gene_names) {
+create_h5_file_on_disk <- function(on_disc_dir, n_genes, n_cells, n_data_points, cell_barcodes, gene_ids, gene_names, file_name) {
   cat("Initializing the on_disc_matrix...")
-  on_disc_location <- generate_on_disc_matrix_name(on_disc_dir)
+  on_disc_location <- if (is.null(file_name)) generate_on_disc_matrix_name(on_disc_dir) else paste0(on_disc_dir, "/", file_name, ".h5")
   # Remove the -1 tags from the cell barcodes
   cell_barcodes <- gsub(pattern = '*-1', replacement = "", x = cell_barcodes)
   # Initialize the group structure.

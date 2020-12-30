@@ -9,7 +9,7 @@ summarize_expression_matrix(x, chunk_size = 4000)
 \arguments{
 \item{x}{an on_disc_matrix}
 
-\item{chunk_size}{number of cells to process at a time}
+\item{chunk_size}{(optional) number of cells to process at a time}
 }
 \value{
 a list containing the cell-specific and gene-specific covariate matrices
@@ -18,9 +18,12 @@ a list containing the cell-specific and gene-specific covariate matrices
 Takes an on_disc_matrix that contains gene-by-cell expressions (x), and outputs the cell-specific and gene-specific covariate matrices.
 }
 \examples{
-exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-if (exp_mat_loc != "") {
-x <- on_disc_matrix(h5_file = exp_mat_loc)
-covariate_matrices <- summarize_expression_matrix(x)
+# NOTE: You must create the HDF5 file "example.h5" to run this example.
+# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") { # if required file exists, ...
+odm <- on_disc_matrix(h5_file = odm_fp)
+covariate_matrices <- summarize_expression_matrix(odm)
 }
 }

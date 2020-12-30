@@ -8,7 +8,8 @@ create_on_disc_matrix_from_10x_mtx(
   mtx_fp,
   barcode_fp,
   features_fp,
-  on_disc_dir
+  on_disc_dir,
+  file_name = NULL
 )
 }
 \arguments{
@@ -19,20 +20,25 @@ create_on_disc_matrix_from_10x_mtx(
 \item{features_fp}{file path to the features.tsv file.}
 
 \item{on_disc_dir}{directory in which to store the initialized HDF5 object}
+
+\item{file_name}{(optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is an integer.}
 }
 \value{
 an on_disc_matrix object
 }
 \description{
-Creates an on_disc_matrix from a 10x .mtx file.
+This function creates an on_disc_matrix from a 10x .mtx file. The name of the created file (by default) is on_disc_matrix_x.h5, where x is an integer. The integer starts at 1; if there already exists a file called on_disc_matrix_1.h5, then the data will be saved in on_disc_matrix_2.h5, and so on. To override this behavior, explicitly specify the file name (WITHOUT the .h5 extension).
 }
 \examples{
-# mtx_fp <- system.file("extdata", "matrix.mtx", package = "ondisc")
-# barcode_fp <- system.file("extdata", "barcodes.tsv", package = "ondisc")
-# features_fp <- system.file("extdata", "features.tsv", package = "ondisc")
-# on_disc_dir <- system.file("extdata", package = "ondisc")
-# if (system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc") == "") {
-# if on_disc_matrix does not exist, create it.
-# exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp, barcode_fp, features_fp, on_disc_dir)
-# }
+mtx_fp <- system.file("extdata", "matrix_1.mtx", package = "ondisc")
+barcode_fp <- system.file("extdata", "barcodes_1.tsv", package = "ondisc")
+features_fp <- system.file("extdata", "features_1.tsv", package = "ondisc")
+on_disc_dir <- system.file("extdata", package = "ondisc")
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") file.remove(odm_fp)
+exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp,
+barcode_fp,
+features_fp,
+on_disc_dir,
+"example")
 }

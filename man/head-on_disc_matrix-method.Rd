@@ -2,7 +2,7 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{head,on_disc_matrix-method}
 \alias{head,on_disc_matrix-method}
-\title{print first rows and columns of an on_disc_matrix}
+\title{Print first rows and columns of an on_disc_matrix.}
 \usage{
 \S4method{head}{on_disc_matrix}(x)
 }
@@ -10,5 +10,15 @@
 \item{x}{an on_disc_mnatrix}
 }
 \description{
-print first rows and columns of an on_disc_matrix
+Print first rows and columns of an on_disc_matrix.
+}
+\examples{
+# NOTE: You must create the HDF5 file "example.h5" to run this example.
+# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") { # if required file exists, ...
+odm <- on_disc_matrix(h5_file = odm_fp)
+head(odm)
+}
 }

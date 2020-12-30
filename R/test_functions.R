@@ -143,7 +143,6 @@ create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, 
 #' @param test_type "small" or "big," indicating which set of tests to run.
 #'
 #' @return a list of parameters: synthetic_data_dir, n_datasets, n_reps_per_dataset
-#' @export
 get_test_parameters <- function(test_type) {
   if (test_type == "small") {
     out <- list(synthetic_data_dir = system.file("extdata", package = "ondisc"), n_datasets = 1, n_reps_per_dataset = 3, seed = 4, n_row = 300, n_col = 900)

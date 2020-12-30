@@ -18,3 +18,12 @@ An on_disc_matrix represents a gene-by-cell expression matrix stored on disk.
 \item{\code{gene_subset}}{an integer vector storing the genes currently in use}
 }}
 
+\examples{
+# NOTE: You must create the HDF5 file "example.h5" to run this example.
+# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") { # if required file exists, ...
+odm <- on_disc_matrix(h5_file = odm_fp)
+}
+}

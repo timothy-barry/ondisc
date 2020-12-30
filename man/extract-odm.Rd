@@ -6,8 +6,8 @@
 \alias{[[,on_disc_matrix,index_vec,missing-method}
 \alias{[[,on_disc_matrix,missing,index_vec-method}
 \alias{[[,on_disc_matrix,index_vec,index_vec-method}
-\title{Extract an on_disc_matrix
-Pull a submatrix of an \linkS4class{on_disc_matrix} into memory using the \code{`[[`} operator.}
+\title{Pull a submatrix into memory
+Pull a submatrix of an on_disc_matrix into memory using the \code{`[[`} operator.}
 \usage{
 \S4method{[[}{on_disc_matrix,missing,missing}(x, i, j)
 
@@ -18,23 +18,30 @@ Pull a submatrix of an \linkS4class{on_disc_matrix} into memory using the \code{
 \S4method{[[}{on_disc_matrix,index_vec,index_vec}(x, i, j)
 }
 \arguments{
-\item{x}{An \linkS4class{on_disc_matrix} object (Do not pass as an argument to \code{`[[`}).}
+\item{x}{An on_disc_matrix object}
 
-\item{i}{Vector (numeric, logical, or character) indicating genes to keep.}
+\item{i}{Vector (numeric, logical, or character) indicating genes to keep}
 
-\item{j}{Vector (numeric, logical, or character) indicating cells to keep.}
+\item{j}{Vector (numeric, logical, or character) indicating cells to keep}
 }
 \value{
-A matrix object (of class Matrix)
+A matrix (of class Matrix)
 }
 \description{
-Extract an on_disc_matrix
-Pull a submatrix of an \linkS4class{on_disc_matrix} into memory using the \code{`[[`} operator.
+The user can pass logical, character, of numeric vectors to \code{`[[`}. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns).
 }
 \examples{
-# exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-# if (exp_mat_loc != "") {
-# x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
-# x_mem <- x[[1:10,1:10]] # subset first 10 genes and cells
-# }
+# NOTE: You must create the HDF5 file "example.h5" to run this example.
+# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") { # if required file exists, ...
+odm <- on_disc_matrix(h5_file = odm_fp)
+# keep cells 100-110
+x <- odm[[,100:110]]
+# keep genes ENSG00000260528, ENSG00000258908, and ENSG00000081913
+x <- odm[[c("ENSG00000260528", "ENSG00000258908", "ENSG00000081913"),]]
+# keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT
+x <- odm[[,c("ACAGCCGCAGAAACCG", "CTACTATAGTGTACCT")]]
+}
 }

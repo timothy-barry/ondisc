@@ -7,7 +7,7 @@
 \alias{[,on_disc_matrix,missing,index_vec,missing-method}
 \alias{[,on_disc_matrix,index_vec,index_vec,missing-method}
 \title{Subset an on_disc_matrix
-Subset an \linkS4class{on_disc_matrix} using the \code{`[`} operator.}
+Subset an on_disc_matrix using the \code{`[`} operator.}
 \usage{
 \S4method{[}{on_disc_matrix,missing,missing,missing}(x, i, j, drop)
 
@@ -18,25 +18,34 @@ Subset an \linkS4class{on_disc_matrix} using the \code{`[`} operator.}
 \S4method{[}{on_disc_matrix,index_vec,index_vec,missing}(x, i, j)
 }
 \arguments{
-\item{x}{An \linkS4class{on_disc_matrix} object (Do not pass as an argument to \code{`[`}).}
+\item{x}{An on_disc_matrix object}
 
-\item{i}{Vector (numeric, logical, or character) indicating genes to keep.}
+\item{i}{Vector (numeric, logical, or character) indicating genes to keep}
 
-\item{j}{Vector (numeric, logical, or character) indicating cells to keep.}
+\item{j}{Vector (numeric, logical, or character) indicating cells to keep}
 
 \item{drop}{not used}
 }
 \value{
-A subset \linkS4class{on_disc_matrix} object.
+A subset on_disc_matrix object.
 }
 \description{
-Subset an on_disc_matrix
-Subset an \linkS4class{on_disc_matrix} using the \code{`[`} operator.
+The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns).
 }
 \examples{
-# exp_mat_loc <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-# if (exp_mat_loc != "") {
-# x <- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix
-# x_sub <- x[1:10,1:10] # subset first 10 genes and cells
-# }
+# NOTE: You must create the HDF5 file "example.h5" to run this example.
+# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
+# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
+if (odm_fp != "") { # if required file exists, ...
+odm <- on_disc_matrix(h5_file = odm_fp)
+# keep cells 100-110
+x <- odm[,100:110]
+# keep genes ENSG00000260528, ENSG00000258908, and ENSG00000081913
+x <- odm[c("ENSG00000260528", "ENSG00000258908", "ENSG00000081913"),]
+# keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT
+x <- odm[,c("ACAGCCGCAGAAACCG", "CTACTATAGTGTACCT")]
+# keep all genes except ENSG00000167525 and ENSG00000235815
+x <- odm[!(get_gene_ids(odm) \%in\% c("ENSG00000167525", "ENSG00000235815")),]
+}
 }
