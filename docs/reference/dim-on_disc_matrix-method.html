@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>dim
-Print dimension of on_disc_matrix — dim,on_disc_matrix-method • ondisc</title>
+Print dimension of on_disc_matrix. — dim,on_disc_matrix-method • ondisc</title>
 
 
 <!-- jquery -->
@@ -41,9 +41,9 @@ Print dimension of on_disc_matrix — dim,on_disc_matrix-method • ondisc</titl
 
 
 <meta property="og:title" content="dim
-Print dimension of on_disc_matrix — dim,on_disc_matrix-method" />
+Print dimension of on_disc_matrix. — dim,on_disc_matrix-method" />
 <meta property="og:description" content="dim
-Print dimension of on_disc_matrix" />
+Print dimension of on_disc_matrix." />
 
 
 
@@ -124,14 +124,14 @@ Print dimension of on_disc_matrix" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>dim
-Print dimension of on_disc_matrix</h1>
+Print dimension of on_disc_matrix.</h1>
     <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/s4_classes_methods.R'><code>R/s4_classes_methods.R</code></a></small>
     <div class="hidden name"><code>dim-on_disc_matrix-method.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>dim
-Print dimension of on_disc_matrix</p>
+Print dimension of on_disc_matrix.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for on_disc_matrix</span>
@@ -150,6 +150,16 @@ Print dimension of on_disc_matrix</p>
 
     <p>an integer vector containing the dimension of the matrix</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># NOTE: You must create the HDF5 file "example.h5" to run this example.</span>
+<span class='co'># Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"</span>
+<span class='co'># (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.</span>
+<span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"example.h5"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='va'>odm_fp</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>{</span> <span class='co'># if required file exists, ...</span>
+<span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='on_disc_matrix-class.html'>on_disc_matrix</a></span><span class='op'>(</span>h5_file <span class='op'>=</span> <span class='va'>odm_fp</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>odm</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

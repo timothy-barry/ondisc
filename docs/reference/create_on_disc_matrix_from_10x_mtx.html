@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Create on_disc_matrix from 10x .mtx file — create_on_disc_matrix_from_10x_mtx" />
-<meta property="og:description" content="Creates an on_disc_matrix from a 10x .mtx file." />
+<meta property="og:description" content="This function creates an on_disc_matrix from a 10x .mtx file. The name of the created file (by default) is on_disc_matrix_x.h5, where x is an integer. The integer starts at 1; if there already exists a file called on_disc_matrix_1.h5, then the data will be saved in on_disc_matrix_2.h5, and so on. To override this behavior, explicitly specify the file name (WITHOUT the .h5 extension)." />
 
 
 
@@ -126,14 +126,15 @@
     </div>
 
     <div class="ref-description">
-    <p>Creates an on_disc_matrix from a 10x .mtx file.</p>
+    <p>This function creates an on_disc_matrix from a 10x .mtx file. The name of the created file (by default) is on_disc_matrix_x.h5, where x is an integer. The integer starts at 1; if there already exists a file called on_disc_matrix_1.h5, then the data will be saved in on_disc_matrix_2.h5, and so on. To override this behavior, explicitly specify the file name (WITHOUT the .h5 extension).</p>
     </div>
 
     <pre class="usage"><span class='fu'>create_on_disc_matrix_from_10x_mtx</span><span class='op'>(</span>
   <span class='va'>mtx_fp</span>,
   <span class='va'>barcode_fp</span>,
   <span class='va'>features_fp</span>,
-  <span class='va'>on_disc_dir</span>
+  <span class='va'>on_disc_dir</span>,
+  file_name <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -155,6 +156,10 @@
       <th>on_disc_dir</th>
       <td><p>directory in which to store the initialized HDF5 object</p></td>
     </tr>
+    <tr>
+      <th>file_name</th>
+      <td><p>(optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is an integer.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -162,15 +167,18 @@
     <p>an on_disc_matrix object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># mtx_fp &lt;- system.file("extdata", "matrix.mtx", package = "ondisc")</span>
-<span class='co'># barcode_fp &lt;- system.file("extdata", "barcodes.tsv", package = "ondisc")</span>
-<span class='co'># features_fp &lt;- system.file("extdata", "features.tsv", package = "ondisc")</span>
-<span class='co'># on_disc_dir &lt;- system.file("extdata", package = "ondisc")</span>
-<span class='co'># if (system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc") == "") {</span>
-<span class='co'># if on_disc_matrix does not exist, create it.</span>
-<span class='co'># exp_mat &lt;- create_on_disc_matrix_from_10x_mtx(mtx_fp, barcode_fp, features_fp, on_disc_dir)</span>
-<span class='co'># }</span>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>mtx_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"matrix_1.mtx"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span><span class='op'>)</span>
+<span class='va'>barcode_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"barcodes_1.tsv"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span><span class='op'>)</span>
+<span class='va'>features_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"features_1.tsv"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span><span class='op'>)</span>
+<span class='va'>on_disc_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span><span class='op'>)</span>
+<span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"example.h5"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='va'>odm_fp</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span><span class='op'>(</span><span class='va'>odm_fp</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='va'>exp_mat</span> <span class='op'>&lt;-</span> <span class='fu'>create_on_disc_matrix_from_10x_mtx</span><span class='op'>(</span><span class='va'>mtx_fp</span>,
+<span class='va'>barcode_fp</span>,
+<span class='va'>features_fp</span>,
+<span class='va'>on_disc_dir</span>,
+<span class='st'>"example"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: file("") only supports open = "w+" and open = "w+b": using the former</span></div><div class='output co'>#&gt; <span class='error'>Error in utils::read.table(mtx_fp, nrows = 1, skip = n_rows_with_comments,     header = FALSE, sep = "\n"): no lines available in input</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

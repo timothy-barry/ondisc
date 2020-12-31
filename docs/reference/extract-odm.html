@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract an on_disc_matrix
+<title>Pull a submatrix into memory
 Pull a submatrix of an on_disc_matrix into memory using the `[[` operator. — extract-odm • ondisc</title>
 
 
@@ -40,10 +40,9 @@ Pull a submatrix of an on_disc_matrix into memory using the `[[` operator. — e
 
 
 
-<meta property="og:title" content="Extract an on_disc_matrix
+<meta property="og:title" content="Pull a submatrix into memory
 Pull a submatrix of an on_disc_matrix into memory using the `[[` operator. — extract-odm" />
-<meta property="og:description" content="Extract an on_disc_matrix
-Pull a submatrix of an on_disc_matrix into memory using the `[[` operator." />
+<meta property="og:description" content="The user can pass logical, character, of numeric vectors to `[[`. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns)." />
 
 
 
@@ -123,15 +122,14 @@ Pull a submatrix of an on_disc_matrix into memory using the `[[` operator." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract an on_disc_matrix
-Pull a submatrix of an <a href='on_disc_matrix-class.html'>on_disc_matrix</a> into memory using the <code>`[[`</code> operator.</h1>
+    <h1>Pull a submatrix into memory
+Pull a submatrix of an on_disc_matrix into memory using the <code>`[[`</code> operator.</h1>
     <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/s4_classes_methods.R'><code>R/s4_classes_methods.R</code></a></small>
     <div class="hidden name"><code>extract-odm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract an on_disc_matrix
-Pull a submatrix of an <a href='on_disc_matrix-class.html'>on_disc_matrix</a> into memory using the <code><a href='https://rdrr.io/r/base/Extract.html'>`[[`</a></code> operator.</p>
+    <p>The user can pass logical, character, of numeric vectors to <code><a href='https://rdrr.io/r/base/Extract.html'>`[[`</a></code>. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns).</p>
     </div>
 
     <pre class="usage"># S4 method for on_disc_matrix,missing,missing
@@ -151,28 +149,36 @@ Pull a submatrix of an <a href='on_disc_matrix-class.html'>on_disc_matrix</a> in
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An <a href='on_disc_matrix-class.html'>on_disc_matrix</a> object (Do not pass as an argument to <code><a href='https://rdrr.io/r/base/Extract.html'>`[[`</a></code>).</p></td>
+      <td><p>An on_disc_matrix object</p></td>
     </tr>
     <tr>
       <th>i</th>
-      <td><p>Vector (numeric, logical, or character) indicating genes to keep.</p></td>
+      <td><p>Vector (numeric, logical, or character) indicating genes to keep</p></td>
     </tr>
     <tr>
       <th>j</th>
-      <td><p>Vector (numeric, logical, or character) indicating cells to keep.</p></td>
+      <td><p>Vector (numeric, logical, or character) indicating cells to keep</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A matrix object (of class Matrix)</p>
+    <p>A matrix (of class Matrix)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># exp_mat_loc &lt;- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")</span>
-<span class='co'># if (exp_mat_loc != "") {</span>
-<span class='co'># x &lt;- on_disc_matrix(h5_file = exp_mat_loc) # initialze an on_disc_matrix</span>
-<span class='co'># x_mem &lt;- x[[1:10,1:10]] # subset first 10 genes and cells</span>
-<span class='co'># }</span>
+    <pre class="examples"><div class='input'><span class='co'># NOTE: You must create the HDF5 file "example.h5" to run this example.</span>
+<span class='co'># Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"</span>
+<span class='co'># (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.</span>
+<span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"example.h5"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='va'>odm_fp</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>{</span> <span class='co'># if required file exists, ...</span>
+<span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='on_disc_matrix-class.html'>on_disc_matrix</a></span><span class='op'>(</span>h5_file <span class='op'>=</span> <span class='va'>odm_fp</span><span class='op'>)</span>
+<span class='co'># keep cells 100-110</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>odm</span><span class='op'>[[</span>,<span class='fl'>100</span><span class='op'>:</span><span class='fl'>110</span><span class='op'>]</span><span class='op'>]</span>
+<span class='co'># keep genes ENSG00000260528, ENSG00000258908, and ENSG00000081913</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>odm</span><span class='op'>[[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ENSG00000260528"</span>, <span class='st'>"ENSG00000258908"</span>, <span class='st'>"ENSG00000081913"</span><span class='op'>)</span>,<span class='op'>]</span><span class='op'>]</span>
+<span class='co'># keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>odm</span><span class='op'>[[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ACAGCCGCAGAAACCG"</span>, <span class='st'>"CTACTATAGTGTACCT"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>]</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
