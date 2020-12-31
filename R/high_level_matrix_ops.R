@@ -43,7 +43,7 @@ get_names <- function(x, name_to_get) {
 }
 
 
-#' Get names
+#' Get gene names, gene IDs, and cell barcodes
 #'
 #' Functions to extract cell barcodes, gene ids, and gene names from an on_disc_matrix.
 #'
@@ -174,10 +174,9 @@ on_disc_apply_across_chunks <- function(x, col_apply, chunk_function, chunk_size
 }
 
 
-#' Summarize expression matrix
+#' Get essential gene- and cell-wise summary statistics
 #'
 #' Takes an on_disc_matrix that contains gene-by-cell expressions (x), and outputs the cell-specific and gene-specific covariate matrices.
-#'
 #' @param x an on_disc_matrix
 #' @param chunk_size (optional) number of cells to process at a time
 #'
@@ -235,7 +234,7 @@ summarize_expression_matrix <- function(x, chunk_size = 4000) {
 }
 
 
-#' Convert to Seurat object
+#' Convert an `on_disc_matrix` to a Seurat object
 #'
 #' Converts an on_disc_matrix to a Suerat object.
 #'

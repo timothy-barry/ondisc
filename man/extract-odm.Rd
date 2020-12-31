@@ -6,8 +6,7 @@
 \alias{[[,on_disc_matrix,index_vec,missing-method}
 \alias{[[,on_disc_matrix,missing,index_vec-method}
 \alias{[[,on_disc_matrix,index_vec,index_vec-method}
-\title{Pull a submatrix into memory
-Pull a submatrix of an on_disc_matrix into memory using the \code{`[[`} operator.}
+\title{Pull a submatrix into memory with \code{[[}}
 \usage{
 \S4method{[[}{on_disc_matrix,missing,missing}(x, i, j)
 

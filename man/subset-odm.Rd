@@ -6,8 +6,7 @@
 \alias{[,on_disc_matrix,index_vec,missing,missing-method}
 \alias{[,on_disc_matrix,missing,index_vec,missing-method}
 \alias{[,on_disc_matrix,index_vec,index_vec,missing-method}
-\title{Subset an on_disc_matrix
-Subset an on_disc_matrix using the \code{`[`} operator.}
+\title{Subset an \code{on_disc_matrix} with \code{[}}
 \usage{
 \S4method{[}{on_disc_matrix,missing,missing,missing}(x, i, j, drop)
 

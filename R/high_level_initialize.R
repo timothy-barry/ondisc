@@ -1,4 +1,4 @@
-#' Create on_disc_matrix from 10x .mtx file
+#' Create an on_disc_matrix from a .mtx file
 #'
 #' @description
 #' This function creates an on_disc_matrix from a 10x .mtx file. The name of the created file (by default) is on_disc_matrix_x.h5, where x is an integer. The integer starts at 1; if there already exists a file called on_disc_matrix_1.h5, then the data will be saved in on_disc_matrix_2.h5, and so on. To override this behavior, explicitly specify the file name (WITHOUT the .h5 extension).

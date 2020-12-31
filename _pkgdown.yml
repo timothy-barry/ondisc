@@ -13,34 +13,43 @@ template:
 
 navbar:
   type: default
+  left:
+  - text: Function reference
+    href: reference/index.html
+  - text: Basic usage
+    href: articles/using_ondisc.html
 
 reference:
 - title: Initialize
-  desc: >
-    These functions initialize an `on_disc_matrix` from an existing source of data.
+  desc: Initialize an `on_disc_matrix` from raw count data or from an existing `on_disc_matrix.h5` file.
   contents:
   - create_on_disc_matrix_from_10x_mtx
+  - on_disc_matrix
 
-- title: Extract basic information
-  desc: >
-    These functions extract basic information from an `on_disc_matrix`.
+- title: Obtain basic information
+  desc: Obtain basic information from an `on_disc_matrix`, like gene names and cell barcodes.
   contents:
+  - dim,on_disc_matrix-method
   - get_cell_barcodes
   - get_gene_ids
   - get_gene_names
-  - dim
-  - head
+  - head,on_disc_matrix-method
+  - show,on_disc_matrix-method
 
-- title: Subset, pull submatrix into memory
-  desc: >
-    Subset an `on_disc_matrix` with `[`, and pull a submatrix into memory with ``[[``.
+
+- title: Subset, extract submatrix
+  desc: Subset an `on_disc_matrix`, or pull a submatrix of an `on_disc_matrix` into memory.
   contents:
-  - "["
-  - "[["
+  - subset-odm
+  - extract-odm
 
 - title: Operate on all rows or columns
-  desc: >
-    These functions operate on all rows or all columns (or both) of an `on_disc_matrix`.
+  desc: Obtain gene-wise and cell-wise summary statistics.
   contents:
   - summarize_expression_matrix
-  - apply
+  - apply,on_disc_matrix-method
+
+- title: Interface with other packages
+  contents:
+  - convert_to_seurat_object
+

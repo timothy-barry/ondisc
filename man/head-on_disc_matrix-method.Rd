@@ -2,7 +2,7 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{head,on_disc_matrix-method}
 \alias{head,on_disc_matrix-method}
-\title{Print first rows and columns of an on_disc_matrix.}
+\title{Print the first few rows and columns}
 \usage{
 \S4method{head}{on_disc_matrix}(x)
 }
@@ -10,7 +10,7 @@
 \item{x}{an on_disc_mnatrix}
 }
 \description{
-Print first rows and columns of an on_disc_matrix.
+Print the first few rows and columns
 }
 \examples{
 # NOTE: You must create the HDF5 file "example.h5" to run this example.

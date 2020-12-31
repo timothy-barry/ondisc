@@ -2,7 +2,7 @@
 % Please edit documentation in R/high_level_initialize.R
 \name{create_on_disc_matrix_from_10x_mtx}
 \alias{create_on_disc_matrix_from_10x_mtx}
-\title{Create on_disc_matrix from 10x .mtx file}
+\title{Create an on_disc_matrix from a .mtx file}
 \usage{
 create_on_disc_matrix_from_10x_mtx(
   mtx_fp,

@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = FALSE
+  eval = TRUE
 )
 ```
 
@@ -42,7 +42,6 @@ barcode_fp <- paste0(data_sub_dir, "/barcodes.tsv")
 features_fp <- paste0(data_sub_dir, "/features.tsv")
 ```
 
-
 ```{r, include=FALSE}
 # execute this in the absence of evaluating the above two chunks.
 data_dir <- "/Users/timbarry/Box/onDisc_all/onDisc_offsite/raw_data" # change this file path!
@@ -67,14 +66,14 @@ if (FALSE) { # change to TRUE if you instead would like to use a small, pre-pack
 
 ## Initialize an `on_disc_matrix`
 
-Next, we initialize an `on_disc_matrix` using the expression data. An `on_disc_matrix` is the core object implemented by `ondisc`; its purpose is to store a gene-by-cell expression matrix on-disk rather than in-memory, facilitating large-scale computations on expression matrices. We initialize an `on_disc_matrix` from a `.mtx` file using the function `create_on_disc_matrix_from_10x_mtx`. We pass the file paths of `matrix.mtx`, `barcodes.tsv`, and `features.tsv` as arguments to the function, as well as the on-disk directory in which we would like to store the expression data.
+Next, we initialize an `on_disc_matrix` that will contain the expression data. An `on_disc_matrix` is the core object implemented by `ondisc`; its purpose is to store a gene-by-cell expression matrix on-disk rather than in-memory, facilitating large-scale computations on expression matrices. We initialize an `on_disc_matrix` from a `.mtx` file using the function `create_on_disc_matrix_from_10x_mtx`. We pass the file paths of `matrix.mtx`, `barcodes.tsv`, and `features.tsv` as arguments to the function, as well as the on-disk directory in which we would like to store the expression data.
 
 ```{r, eval=FALSE}
 on_disc_dir <- data_sub_dir
 expression_matrix <- create_on_disc_matrix_from_10x_mtx(mtx_fp = mtx_fp, barcode_fp = barcode_fp, features_fp = features_fp, on_disc_dir = on_disc_dir)
 ```
 
-The function `create_on_disc_matrix_from_10x_mtx` reads the expression data from the `.mtx` and `.tsv` files, manipulates the data, and then stores the data in a specially-formatted HDF5 file named `on_disc_matrix_1.h5`. (If there already exists a file named `on_disc_matrix_1.h5` in the specified directory, then `create_on_disc_matrix_from_10x_mtx` instead stores the expression data in a file called `on_disc_matrix_2.h5`, and so on.) `create_on_disc_matrix_from_10x_mtx` returns an R object of class `on_disc_matrix`, which in the above example, we saved to the variable `expression_matrix`. An `on_disc_matrix` is an S4 object that contains three slots: a path to the on-disk HDF5 file that stores the expression data, an integer vector storing the cells currently in use, and an integer vector storing the genes currently in use. Thus, `on_disc_matrix` objects typically have quite a small memory footprint (in our example, about 1.2 KB or 1200 bytes). 
+The function `create_on_disc_matrix_from_10x_mtx` reads the expression data from the `.mtx` and `.tsv` files, manipulates the data, and then stores the data in a specially-formatted HDF5 file named `on_disc_matrix_1.h5`. (If there already exists a file named `on_disc_matrix_1.h5` in the specified directory, then `create_on_disc_matrix_from_10x_mtx` instead stores the expression data in a file called `on_disc_matrix_2.h5`, and so on.) `create_on_disc_matrix_from_10x_mtx` returns an R object of class `on_disc_matrix`, which in the above example, we save to the variable `expression_matrix`. An `on_disc_matrix` is an S4 object that contains three slots: a path to the on-disk HDF5 file that stores the expression data, an integer vector storing the cells currently in use, and an integer vector storing the genes currently in use. Thus, `on_disc_matrix` objects typically have quite a small memory footprint (in this example, only about 1.2 KB or 1200 bytes). 
 
 ```{r}
 str(expression_matrix)
@@ -168,7 +167,7 @@ Recall that, when working with lists, single brackets return a subsetted list an
 
 ## Operate on an entire `on_disc_matrix`
 
-A common step in many single-cell analysis pipelines is to compute cell-wise and gene-wise summary statistics. The function `summarize_expression_matrix` takes an `on_disc_matrix` as an argument and returns some useful cell-wise summary statistics (namely, total UMI count per cell, total number of genes expressed per cell, and percentage of UMIs that are mitochondrial per cell) and gene-wise summary statistics (namely, total UMI count per gene, total number of cells in which gene is expressed). The function works by partitioning the expression data into chunks, loading each chunk into memory, computing the relevant summary statistics on each chunk, and combining the results across chunks. `summarize_expression_matrix` takes about thirty seconds to run on the real data and a second on the small, in-package data. The running time of `summarize_expression_matrix` is longer than that of other functions because `summarize_expression_matrix` must load the entire dataset into memory (piece-by-piece, in general).
+A common step in many single-cell analysis pipelines is to compute cell-wise and gene-wise summary statistics. The function `summarize_expression_matrix` takes an `on_disc_matrix` as an argument and returns some useful cell-wise summary statistics (namely, total UMI count per cell, total number of genes expressed per cell, and percentage of UMIs that are mitochondrial per cell) and gene-wise summary statistics (namely, total UMI count per gene and total number of cells in which gene is expressed). The function works by partitioning the expression data into chunks, loading each chunk into memory, computing the relevant summary statistics for each chunk, and combining the results across chunks. `summarize_expression_matrix` takes about thirty seconds to run on the real data and about a second to run on the in-package example data. The running time of `summarize_expression_matrix` is longer than that of other functions because `summarize_expression_matrix` must load the entire dataset into memory (piece-by-piece).
 
 ```{r}
 covariate_matrices <- summarize_expression_matrix(expression_matrix)

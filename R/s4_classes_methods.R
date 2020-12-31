@@ -3,9 +3,9 @@
 
 # Classes and constructor
 #########################
-#' The on_disc_matrix class
+#' `on_disc_matrix` class constructor
 #'
-#' An on_disc_matrix represents a gene-by-cell expression matrix stored on disk.
+#' An on_disc_matrix represents a gene-by-cell expression matrix stored on disk. Use this function to obtain an `on_disc_matrix` from an already-initialized on-disk on_disc_matrix.h5 file.
 #'
 #' @slot h5_file path to an expression matrix (created by one of the initialization functions in this package) stored on disk
 #' @slot cell_subset an integer vector storing the cells currently in use
@@ -31,9 +31,9 @@ setClassUnion("index_vec", members =  c("numeric", "logical", "character"))
 # Basic information extraction methods
 ######################################
 
-# 1. dim
-#' dim
-#' Print dimension of on_disc_matrix.
+#' Return dimension
+#'
+#' Return dimension of on_disc_matrix.
 #' @param x an on_disc_matrix
 #' @export
 #' @return an integer vector containing the dimension of the matrix
@@ -48,8 +48,9 @@ setClassUnion("index_vec", members =  c("numeric", "logical", "character"))
 #' }
 setMethod("dim", signature("on_disc_matrix"), function(x) get_dim(x))
 
-# 2. show
-#' Print first few rows and columns of an on_disc_matrix to the console; also display object class, number of rows, and number of columns.
+#' Print basic information to console
+#'
+#' Also display object class, number of rows, and number of columns.
 #' @param object an on_dist_matrix to show
 #' @return NULL
 #' @export
@@ -67,8 +68,7 @@ setMethod("show", signature = signature("on_disc_matrix"), function(object) {
   cat(paste0("An on_disc_matrix with ", crayon::blue(x_dim[1]), " gene", if (x_dim[1] == 1) "" else "s" ," and ", crayon::blue(x_dim[2]), " cell", if (x_dim[2] == 1) "" else "s", ".\n"))
 })
 
-# 3. head
-#' Print first rows and columns of an on_disc_matrix.
+#' Print the first few rows and columns
 #' @export
 #' @param x an on_disc_mnatrix
 #' @return NULL
@@ -93,8 +93,7 @@ setMethod("head", signature = signature("on_disc_matrix"), function(x) {
 # Subset methods and doc
 ########################
 
-#' Subset an on_disc_matrix
-#' Subset an on_disc_matrix using the \code{`[`} operator.
+#' Subset an `on_disc_matrix` with `[`
 #'
 #' The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns).
 #' @param x An on_disc_matrix object
@@ -151,8 +150,7 @@ setMethod(f = "[",
 # Extract expression data methods
 #################################
 
-#' Pull a submatrix into memory
-#' Pull a submatrix of an on_disc_matrix into memory using the \code{`[[`} operator.
+#' Pull a submatrix into memory with `[[`
 #'
 #' The user can pass logical, character, of numeric vectors to \code{`[[`}. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns).
 #' @param x An on_disc_matrix object
@@ -209,8 +207,7 @@ setMethod(f = "[[",
 #' @export
 setGeneric(name = "apply", def = function(X, MARGIN, FUN, ...) standardGeneric("apply"))
 
-#' apply
-#' apply a function to the rows or columns of an on_disc_matrix.
+#' Apply an arbitrary function to all rows or columns
 #' @param X an on_disc_matrix
 #' @param MARGIN apply to rows (1) or columns (2)
 #' @param FUN a function to apply

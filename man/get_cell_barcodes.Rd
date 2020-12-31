@@ -4,7 +4,7 @@
 \alias{get_cell_barcodes}
 \alias{get_gene_ids}
 \alias{get_gene_names}
-\title{Get names}
+\title{Get gene names, gene IDs, and cell barcodes}
 \usage{
 get_cell_barcodes(x)
 

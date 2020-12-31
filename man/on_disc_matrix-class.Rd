@@ -4,9 +4,9 @@
 \name{on_disc_matrix-class}
 \alias{on_disc_matrix-class}
 \alias{on_disc_matrix}
-\title{The on_disc_matrix class}
+\title{\code{on_disc_matrix} class constructor}
 \description{
-An on_disc_matrix represents a gene-by-cell expression matrix stored on disk.
+An on_disc_matrix represents a gene-by-cell expression matrix stored on disk. Use this function to obtain an \code{on_disc_matrix} from an already-initialized on-disk on_disc_matrix.h5 file.
 }
 \section{Slots}{
 

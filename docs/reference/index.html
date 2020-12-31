@@ -78,25 +78,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../reference/index.html">Function reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/using_ondisc.html">Using ondisc</a>
-    </li>
-  </ul>
+  <a href="../articles/using_ondisc.html">Basic usage</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -134,7 +119,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-initialize" class="hasAnchor"><a href="#section-initialize" class="anchor"></a>Initialize</h2>
-          <p class="section-desc"><p>These functions initialize an <code>on_disc_matrix</code> from an existing source of data.</p></p>
+          <p class="section-desc"><p>Initialize an <code>on_disc_matrix</code> from raw count data or from an existing <code>on_disc_matrix.h5</code> file.</p></p>
         </th>
       </tr>
       
@@ -147,13 +132,19 @@
         <td>
           <p><code><a href="create_on_disc_matrix_from_10x_mtx.html">create_on_disc_matrix_from_10x_mtx()</a></code> </p>
         </td>
-        <td><p>Create on_disc_matrix from 10x .mtx file</p></td>
+        <td><p>Create an on_disc_matrix from a .mtx file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="on_disc_matrix-class.html">on_disc_matrix-class</a></code> </p>
+        </td>
+        <td><p><code>on_disc_matrix</code> class constructor</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-extract-basic-information" class="hasAnchor"><a href="#section-extract-basic-information" class="anchor"></a>Extract basic information</h2>
-          <p class="section-desc"><p>These functions extract basic information from an <code>on_disc_matrix</code>.</p></p>
+          <h2 id="section-obtain-basic-information" class="hasAnchor"><a href="#section-obtain-basic-information" class="anchor"></a>Obtain basic information</h2>
+          <p class="section-desc"><p>Obtain basic information from an <code>on_disc_matrix</code>, like gene names and cell barcodes.</p></p>
         </th>
       </tr>
       
@@ -164,15 +155,33 @@
       <tr>
         
         <td>
+          <p><code><a href="dim-on_disc_matrix-method.html">dim(<i>&lt;on_disc_matrix&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Return dimension</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="get_cell_barcodes.html">get_cell_barcodes()</a></code> <code><a href="get_cell_barcodes.html">get_gene_ids()</a></code> <code><a href="get_cell_barcodes.html">get_gene_names()</a></code> </p>
         </td>
-        <td><p>Get names</p></td>
+        <td><p>Get gene names, gene IDs, and cell barcodes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="head-on_disc_matrix-method.html">head(<i>&lt;on_disc_matrix&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print the first few rows and columns</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="show-on_disc_matrix-method.html">show(<i>&lt;on_disc_matrix&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print basic information to console</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-subset-pull-submatrix-into-memory" class="hasAnchor"><a href="#section-subset-pull-submatrix-into-memory" class="anchor"></a>Subset, pull submatrix into memory</h2>
-          <p class="section-desc"><p>Subset an <code>on_disc_matrix</code> with <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code>, and pull a submatrix into memory with <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code>.</p></p>
+          <h2 id="section-subset-extract-submatrix" class="hasAnchor"><a href="#section-subset-extract-submatrix" class="anchor"></a>Subset, extract submatrix</h2>
+          <p class="section-desc"><p>Subset an <code>on_disc_matrix</code>, or pull a submatrix of an <code>on_disc_matrix</code> into memory.</p></p>
         </th>
       </tr>
       
@@ -180,12 +189,24 @@
     </tbody><tbody>
       
       
-      
+      <tr>
+        
+        <td>
+          <p><code><a href="subset-odm.html">`[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Subset an <code>on_disc_matrix</code> with <code>[</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="extract-odm.html">`[[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;index_vec&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;on_disc_matrix&gt;</i>,<i>&lt;index_vec&gt;</i>,<i>&lt;index_vec&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Pull a submatrix into memory with <code>[[</code></p></td>
+      </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-operate-on-all-rows-or-columns" class="hasAnchor"><a href="#section-operate-on-all-rows-or-columns" class="anchor"></a>Operate on all rows or columns</h2>
-          <p class="section-desc"><p>These functions operate on all rows or all columns (or both) of an <code>on_disc_matrix</code>.</p></p>
+          <p class="section-desc"><p>Obtain gene-wise and cell-wise summary statistics.</p></p>
         </th>
       </tr>
       
@@ -198,7 +219,32 @@
         <td>
           <p><code><a href="summarize_expression_matrix.html">summarize_expression_matrix()</a></code> </p>
         </td>
-        <td><p>Summarize expression matrix</p></td>
+        <td><p>Get essential gene- and cell-wise summary statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="apply-on_disc_matrix-method.html">apply(<i>&lt;on_disc_matrix&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Apply an arbitrary function to all rows or columns</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-interface-with-other-packages" class="hasAnchor"><a href="#section-interface-with-other-packages" class="anchor"></a>Interface with other packages</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="convert_to_seurat_object.html">convert_to_seurat_object()</a></code> </p>
+        </td>
+        <td><p>Convert an <code>on_disc_matrix</code> to a Seurat object</p></td>
       </tr>
     </tbody>
     </table>

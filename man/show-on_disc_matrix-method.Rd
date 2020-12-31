@@ -2,7 +2,7 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{show,on_disc_matrix-method}
 \alias{show,on_disc_matrix-method}
-\title{Print first few rows and columns of an on_disc_matrix to the console; also display object class, number of rows, and number of columns.}
+\title{Print basic information to console}
 \usage{
 \S4method{show}{on_disc_matrix}(object)
 }
@@ -10,7 +10,7 @@
 \item{object}{an on_dist_matrix to show}
 }
 \description{
-Print first few rows and columns of an on_disc_matrix to the console; also display object class, number of rows, and number of columns.
+Also display object class, number of rows, and number of columns.
 }
 \examples{
 # NOTE: You must create the HDF5 file "example.h5" to run this example.

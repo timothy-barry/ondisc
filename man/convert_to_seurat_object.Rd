@@ -2,7 +2,7 @@
 % Please edit documentation in R/high_level_matrix_ops.R
 \name{convert_to_seurat_object}
 \alias{convert_to_seurat_object}
-\title{Convert to Seurat object}
+\title{Convert an \code{on_disc_matrix} to a Seurat object}
 \usage{
 convert_to_seurat_object(
   x,

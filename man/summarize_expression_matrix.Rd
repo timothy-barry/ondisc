@@ -2,7 +2,7 @@
 % Please edit documentation in R/high_level_matrix_ops.R
 \name{summarize_expression_matrix}
 \alias{summarize_expression_matrix}
-\title{Summarize expression matrix}
+\title{Get essential gene- and cell-wise summary statistics}
 \usage{
 summarize_expression_matrix(x, chunk_size = 4000)
 }

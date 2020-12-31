@@ -2,8 +2,7 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{dim,on_disc_matrix-method}
 \alias{dim,on_disc_matrix-method}
-\title{dim
-Print dimension of on_disc_matrix.}
+\title{Return dimension}
 \usage{
 \S4method{dim}{on_disc_matrix}(x)
 }
@@ -14,8 +13,7 @@ Print dimension of on_disc_matrix.}
 an integer vector containing the dimension of the matrix
 }
 \description{
-dim
-Print dimension of on_disc_matrix.
+Return dimension of on_disc_matrix.
 }
 \examples{
 # NOTE: You must create the HDF5 file "example.h5" to run this example.

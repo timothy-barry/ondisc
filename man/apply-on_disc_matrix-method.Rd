@@ -2,8 +2,7 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{apply,on_disc_matrix-method}
 \alias{apply,on_disc_matrix-method}
-\title{apply
-apply a function to the rows or columns of an on_disc_matrix.}
+\title{Apply an arbitrary function to all rows or columns}
 \usage{
 \S4method{apply}{on_disc_matrix}(X, MARGIN, FUN, chunk_size = 4000)
 }
@@ -17,8 +16,7 @@ apply a function to the rows or columns of an on_disc_matrix.}
 \item{chunk_size}{number of rows or columns to load at a time; default 4000}
 }
 \description{
-apply
-apply a function to the rows or columns of an on_disc_matrix.
+Apply an arbitrary function to all rows or columns
 }
 \examples{
 # NOTE: You must create the HDF5 file "example.h5" to run this example.
