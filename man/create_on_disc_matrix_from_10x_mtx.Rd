@@ -36,9 +36,9 @@ features_fp <- system.file("extdata", "features_1.tsv", package = "ondisc")
 on_disc_dir <- system.file("extdata", package = "ondisc")
 odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
 if (odm_fp != "") file.remove(odm_fp)
-exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp,
-barcode_fp,
-features_fp,
-on_disc_dir,
-"example")
+exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp = mtx_fp,
+barcode_fp = barcode_fp,
+features_fp = features_fp,
+on_disc_dir = on_disc_dir,
+file_name = "example")
 }

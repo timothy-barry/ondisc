@@ -41,7 +41,7 @@
   <a href="../reference/index.html">Function reference</a>
 </li>
 <li>
-  <a href="../articles/using_ondisc_static.html">Basic usage</a>
+  <a href="../articles/using_ondisc.html">Basic usage</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -112,7 +112,12 @@
 <p>The function <code>create_on_disc_matrix_from_10x_mtx</code> reads the expression data from the <code>.mtx</code> and <code>.tsv</code> files, manipulates the data, and then stores the data in a specially-formatted HDF5 file named <code>on_disc_matrix_1.h5</code>. (If there already exists a file named <code>on_disc_matrix_1.h5</code> in the specified directory, then <code>create_on_disc_matrix_from_10x_mtx</code> instead stores the expression data in a file called <code>on_disc_matrix_2.h5</code>, and so on.) <code>create_on_disc_matrix_from_10x_mtx</code> returns an R object of class <code>on_disc_matrix</code>, which in the above example, we save to the variable <code>expression_matrix</code>. An <code>on_disc_matrix</code> is an S4 object that contains three slots: a path to the on-disk HDF5 file that stores the expression data, an integer vector storing the cells currently in use, and an integer vector storing the genes currently in use. Thus, <code>on_disc_matrix</code> objects typically have quite a small memory footprint (in this example, only about 1.2 KB or 1200 bytes).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/object.size.html">object.size</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span></code></pre></div>
+<span class="co">#&gt; Formal class 'on_disc_matrix' [package "ondisc"] with 3 slots</span>
+<span class="co">#&gt;   ..@ h5_file    : chr "/Users/timbarry/Box/onDisc_all/onDisc_offsite/raw_data/filtered_feature_bc_matrix/on_disc_matrix_1.h5"</span>
+<span class="co">#&gt;   ..@ cell_subset: int NA</span>
+<span class="co">#&gt;   ..@ gene_subset: int NA</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/object.size.html">object.size</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
+<span class="co">#&gt; 1192 bytes</span></code></pre></div>
 <p>The algorithm underlying <code>create_on_disc_matrix_from_10x_mtx</code> is highly efficient. However, <code>on_disc_matrices</code> are stored as HDF5 files under the hood, and because HDF5 does not currently support multithreaded write, <code>create_on_disc_matrix_from_10x_mtx</code> is in practice slower than one might expect. The code in the above chunk takes about fifteen minutes to run on the real data and a few seconds to run on the in-package example data. However, <code>create_on_disc_matrix_from_10x_mtx</code> only needs to be run once per dataset, even after closing and starting new R sessions. Additionally, the designers of HDF5 are <a href="https://forum.hdfgroup.org/t/multi-threading-in-the-hdf5-library/6462">considering</a> implementing multithreaded read and write. <code>create_on_disc_matrix_from_10x_mtx</code> will become faster if and when this feature becomes available.</p>
 <p>It is also possible to initialize an <code>on_disc_matrix</code> from an .h5 file or an in-memory R matrix. See the article XXX.</p>
 </div>
@@ -122,23 +127,40 @@
 </h2>
 <p>The newly-created variable <code>expression_matrix</code> is an object of class <code>on_disc_matrix</code>. Evaluating <code>expression_matrix</code> in the console prints its class, as well as the number of genes and cells in the matrix.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">expression_matrix</span></code></pre></div>
+<code class="sourceCode R"><span class="va">expression_matrix</span>
+<span class="co">#&gt; An on_disc_matrix with 36601 genes and 10194 cells.</span></code></pre></div>
 <p>Calling <code>head</code> prints the expressions of the first few genes and cells.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
+<span class="co">#&gt; Showing 5 of 36601 genes and 6 of 10194 cells:</span>
+<span class="co">#&gt; Loading required package: Matrix</span>
+<span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span>
+<span class="co">#&gt; [1,]    0    0    0    0    0    0</span>
+<span class="co">#&gt; [2,]    0    0    0    0    0    0</span>
+<span class="co">#&gt; [3,]    0    0    0    0    0    0</span>
+<span class="co">#&gt; [4,]    0    0    0    0    0    0</span>
+<span class="co">#&gt; [5,]    0    0    0    0    0    0</span></code></pre></div>
 <p>The functions <code>get_gene_ids</code>, <code>get_gene_names</code>, and <code>get_cell_barcodes</code> return the gene IDs, (human-readable) gene names, and cell barcodes, respectively.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gene_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_cell_barcodes.html">get_gene_ids</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
 <span class="va">gene_ids</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
+<span class="co">#&gt; [1] "ENSG00000243485" "ENSG00000237613" "ENSG00000186092" "ENSG00000238009"</span>
+<span class="co">#&gt; [5] "ENSG00000239945"</span>
 <span class="va">gene_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_cell_barcodes.html">get_gene_names</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
 <span class="va">gene_names</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
+<span class="co">#&gt; [1] "MIR1302-2HG" "FAM138A"     "OR4F5"       "AL627309.1"  "AL627309.3"</span>
 <span class="va">cell_barcodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_cell_barcodes.html">get_cell_barcodes</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
-<span class="va">cell_barcodes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></code></pre></div>
+<span class="va">cell_barcodes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
+<span class="co">#&gt; [1] "AAACCCACATAACTCG" "AAACCCACATGTAACC" "AAACCCAGTGAGTCAG" "AAACCCAGTGCTTATG"</span>
+<span class="co">#&gt; [5] "AAACGAACAGTCAGTT"</span></code></pre></div>
 <p>Finally, <code>dim</code>, <code>nrow</code>, and <code>ncol</code> return the dimension, number of rows (i.e., number of genes), and number of columns (i.e., number of cells) of the expression matrix.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
+<span class="co">#&gt; [1] 36601 10194</span>
 <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span></code></pre></div>
+<span class="co">#&gt; [1] 36601</span>
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
+<span class="co">#&gt; [1] 10194</span></code></pre></div>
 </div>
 <div id="subset" class="section level2">
 <h2 class="hasAnchor">
@@ -148,7 +170,8 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">expression_matrix</span><span class="op">[</span><span class="fl">100</span><span class="op">:</span><span class="fl">110</span>,<span class="op">]</span> <span class="co"># keep genes 100-110</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">expression_matrix</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">20</span><span class="op">)</span><span class="op">]</span> <span class="co"># keep all cells except cells 10 and 20</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">expression_matrix</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">:</span><span class="fl">250</span><span class="op">)</span>, <span class="fl">300</span><span class="op">:</span><span class="fl">500</span><span class="op">]</span> <span class="co"># keep genes 1-100, 200-250 and cells 300-500</span>
-<span class="va">x</span> <span class="co"># x has class on_disc_matrix, just like expression_matrix</span></code></pre></div>
+<span class="va">x</span> <span class="co"># x has class on_disc_matrix, just like expression_matrix</span>
+<span class="co">#&gt; An on_disc_matrix with 151 genes and 201 cells.</span></code></pre></div>
 <p>We also can subset <code>on_disc_matrices</code> using logical or character vectors. Character vectors correspond to <em>gene ID</em> and <em>cell barcode</em>, respectively.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">expression_matrix</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ENSG00000260528"</span>, <span class="st">"ENSG00000258908"</span>, <span class="st">"ENSG00000081913"</span><span class="op">)</span>,<span class="op">]</span> <span class="co"># keep these three genes</span>
@@ -156,7 +179,8 @@
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">expression_matrix</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="fu"><a href="../reference/get_cell_barcodes.html">get_gene_ids</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ENSG00000167525"</span>, <span class="st">"ENSG00000235815"</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span> <span class="co"># keep all genes except ENSG00000167525 and ENSG00000235815</span></code></pre></div>
 <p>Subsetting an <code>on_disc_matrix</code> leaves the original object unchanged.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">expression_matrix</span> <span class="co"># unchanged</span></code></pre></div>
+<code class="sourceCode R"><span class="va">expression_matrix</span> <span class="co"># unchanged</span>
+<span class="co">#&gt; An on_disc_matrix with 36601 genes and 10194 cells.</span></code></pre></div>
 <p>This important property, called <em>object persistence</em>, makes programming with <code>on_disc_matrices</code> easier and more intuitive.</p>
 </div>
 <div id="pull-submatrix-into-memory" class="section level2">
@@ -169,7 +193,10 @@
 <span class="va">m</span> <span class="op">&lt;-</span> <span class="va">expression_matrix</span><span class="op">[[</span><span class="fl">100</span><span class="op">:</span><span class="fl">110</span>, <span class="fl">200</span><span class="op">:</span><span class="fl">250</span><span class="op">]</span><span class="op">]</span> <span class="co"># pull genes 100-110 and cells 200-250 into memory</span></code></pre></div>
 <p>The output of a double-bracket “pull into-memory” operation is a sparse matrix, implemented by the package <code>Matrix</code>. <code>Matrix</code> provides many useful functions for working with sparse matrices, in addition to all the standard matrix operations.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="co"># m is of class Matrix</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="co"># m is of class Matrix</span>
+<span class="co">#&gt; [1] "dgTMatrix"</span>
+<span class="co">#&gt; attr(,"package")</span>
+<span class="co">#&gt; [1] "Matrix"</span></code></pre></div>
 <p>Like with subsetting, we can pull submatrices into memory using a character vector or logical vector instead of a numeric vector.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">expression_matrix</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ENSG00000260528"</span>, <span class="st">"ENSG00000258908"</span>, <span class="st">"ENSG00000081913"</span><span class="op">)</span>,<span class="op">]</span><span class="op">]</span> <span class="co"># pull genes ENSG00000260528, ENSG00000258908, and ENSG00000081913 into memory</span>
@@ -183,13 +210,43 @@
 <p>A common step in many single-cell analysis pipelines is to compute cell-wise and gene-wise summary statistics. The function <code>summarize_expression_matrix</code> takes an <code>on_disc_matrix</code> as an argument and returns some useful cell-wise summary statistics (namely, total UMI count per cell, total number of genes expressed per cell, and percentage of UMIs that are mitochondrial per cell) and gene-wise summary statistics (namely, total UMI count per gene and total number of cells in which gene is expressed). The function works by partitioning the expression data into chunks, loading each chunk into memory, computing the relevant summary statistics for each chunk, and combining the results across chunks. <code>summarize_expression_matrix</code> takes about thirty seconds to run on the real data and about a second to run on the in-package example data. The running time of <code>summarize_expression_matrix</code> is longer than that of other functions because <code>summarize_expression_matrix</code> must load the entire dataset into memory (piece-by-piece).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">covariate_matrices</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_expression_matrix.html">summarize_expression_matrix</a></span><span class="op">(</span><span class="va">expression_matrix</span><span class="op">)</span>
+<span class="co">#&gt; Processing chunk 1 of 3.</span>
+<span class="co">#&gt; Processing chunk 2 of 3.</span>
+<span class="co">#&gt; Processing chunk 3 of 3.</span>
+<span class="co">#&gt; All chunks processed.  ✓</span>
 <span class="va">cell_covariate_matrix</span> <span class="op">&lt;-</span> <span class="va">covariate_matrices</span><span class="op">$</span><span class="va">cell_covariate_matrix</span>
 <span class="va">gene_covariate_matrix</span> <span class="op">&lt;-</span> <span class="va">covariate_matrices</span><span class="op">$</span><span class="va">gene_covariate_matrix</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">cell_covariate_matrix</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">gene_covariate_matrix</span><span class="op">)</span></code></pre></div>
+<span class="co">#&gt;      total_umis n_genes_expressed percent_mito</span>
+<span class="co">#&gt; [1,]      22575              4803     5.333333</span>
+<span class="co">#&gt; [2,]       7758              2233     8.842485</span>
+<span class="co">#&gt; [3,]      21733              4324     6.322183</span>
+<span class="co">#&gt; [4,]        860               343    31.511628</span>
+<span class="co">#&gt; [5,]      15311              4143     7.909346</span>
+<span class="co">#&gt; [6,]      10013              2332     7.779886</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">gene_covariate_matrix</span><span class="op">)</span>
+<span class="co">#&gt;      total_umis n_cells_expressed</span>
+<span class="co">#&gt; [1,]          0                 0</span>
+<span class="co">#&gt; [2,]          0                 0</span>
+<span class="co">#&gt; [3,]          0                 0</span>
+<span class="co">#&gt; [4,]         40                40</span>
+<span class="co">#&gt; [5,]          0                 0</span>
+<span class="co">#&gt; [6,]          0                 0</span></code></pre></div>
 <p>We can use <code>apply</code> to apply more general functions to the rows and columns on an <code>on_disc_matrix</code>. Below, we use <code>apply</code> to calculate the standard deviation and mean of each gene’s expression.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gene_means_and_sds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span>X <span class="op">=</span> <span class="va">expression_matrix</span>, MARGIN <span class="op">=</span> <span class="fl">1</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">gene_means_and_sds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span>X <span class="op">=</span> <span class="va">expression_matrix</span>, MARGIN <span class="op">=</span> <span class="fl">1</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Chunk size: 4000</span>
+<span class="co">#&gt; Processing chunk 1 of 10.</span>
+<span class="co">#&gt; Processing chunk 2 of 10.</span>
+<span class="co">#&gt; Processing chunk 3 of 10.</span>
+<span class="co">#&gt; Processing chunk 4 of 10.</span>
+<span class="co">#&gt; Processing chunk 5 of 10.</span>
+<span class="co">#&gt; Processing chunk 6 of 10.</span>
+<span class="co">#&gt; Processing chunk 7 of 10.</span>
+<span class="co">#&gt; Processing chunk 8 of 10.</span>
+<span class="co">#&gt; Processing chunk 9 of 10.</span>
+<span class="co">#&gt; Processing chunk 10 of 10.</span>
+<span class="co">#&gt; All chunks processed.  ✓</span></code></pre></div>
 <p><code>summarize_expression_matrix</code> is much faster than the equivalent calls to <code>apply</code>. Thus, to obtain basic cell-wise and gene-wise summary statistics, it is best to use <code>summarize_expression_matrix</code>.</p>
 </div>
 <div id="saving-and-loading-on_disc_matrices" class="section level2">
@@ -218,7 +275,10 @@
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">expression_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">-</span><span class="op">(</span><span class="fl">300</span><span class="op">:</span><span class="fl">399</span><span class="op">)</span><span class="op">]</span>
 <span class="va">seurat_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convert_to_seurat_object.html">convert_to_seurat_object</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span>
-<span class="va">seurat_obj</span></code></pre></div>
+<span class="va">seurat_obj</span>
+<span class="co">#&gt; An object of class Seurat </span>
+<span class="co">#&gt; 100 features across 10094 samples within 1 assay </span>
+<span class="co">#&gt; Active assay: RNA (100 features, 0 variable features)</span></code></pre></div>
 </div>
   </div>
 

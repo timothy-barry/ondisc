@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = TRUE
+  eval = FALSE
 )
 ```
 
@@ -144,7 +144,7 @@ This important property, called *object persistence*, makes programming with `on
 
 We can pull submatrices of an `on_disc_matrix` into memory, allowing us to perform operations on subsets of the data, like regressing on a subset of genes or examining the distribution of a subset of cells. To pull a submatrix into memory, specify the genes and/or cells to extract using *double* (as opposed to *single*) square brackets.
 
-```{r}
+```{r, cache=TRUE}
 m <- expression_matrix[[6, ]] # pull gene 6 into memory
 m <- expression_matrix[[,100]] # pull cell 100 into memory
 m <- expression_matrix[[100:110, 200:250]] # pull genes 100-110 and cells 200-250 into memory
@@ -169,7 +169,7 @@ Recall that, when working with lists, single brackets return a subsetted list an
 
 A common step in many single-cell analysis pipelines is to compute cell-wise and gene-wise summary statistics. The function `summarize_expression_matrix` takes an `on_disc_matrix` as an argument and returns some useful cell-wise summary statistics (namely, total UMI count per cell, total number of genes expressed per cell, and percentage of UMIs that are mitochondrial per cell) and gene-wise summary statistics (namely, total UMI count per gene and total number of cells in which gene is expressed). The function works by partitioning the expression data into chunks, loading each chunk into memory, computing the relevant summary statistics for each chunk, and combining the results across chunks. `summarize_expression_matrix` takes about thirty seconds to run on the real data and about a second to run on the in-package example data. The running time of `summarize_expression_matrix` is longer than that of other functions because `summarize_expression_matrix` must load the entire dataset into memory (piece-by-piece).
 
-```{r}
+```{r, cache=TRUE}
 covariate_matrices <- summarize_expression_matrix(expression_matrix)
 cell_covariate_matrix <- covariate_matrices$cell_covariate_matrix
 gene_covariate_matrix <- covariate_matrices$gene_covariate_matrix
@@ -178,7 +178,7 @@ head(gene_covariate_matrix)
 ```
 We can use `apply` to apply more general functions to the rows and columns on an `on_disc_matrix`. Below, we use `apply` to calculate the standard deviation and mean of each gene's expression.
 
-```{r}
+```{r, cache=TRUE}
 gene_means_and_sds <- apply(X = expression_matrix, MARGIN = 1, FUN = function(r) c(mean = mean(r), sd = sd(r)))
 ```
 
@@ -214,7 +214,7 @@ You should not call `create_on_disc_matrix_from_10x_mtx` more than once on the s
 
 `Seurat` is a popular R package for analyzing single-cell data in memory. We can convert an `on_disc_matrix` object to a `Seurat` object using the function `convert_to_seurat_object`. Because the data contained in an `on_disc_matrix` might not fit entirely into memory, it is often a good idea to first subset the `on_disc_matrix` before calling `convert_to_seurat_object`. Below, we define a new `on_disc_matrix` `x` that is a subset of `expression_matrix`. Then, we call `convert_to_seurat_object` on `x`.
 
-```{r}
+```{r, cache=TRUE}
 x <- expression_matrix[1:100, -(300:399)]
 seurat_obj <- convert_to_seurat_object(x = x)
 seurat_obj

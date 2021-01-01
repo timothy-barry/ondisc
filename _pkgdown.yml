@@ -17,7 +17,7 @@ navbar:
   - text: Function reference
     href: reference/index.html
   - text: Basic usage
-    href: articles/using_ondisc.html
+    href: articles/using_ondisc_static.html
 
 reference:
 - title: Initialize
