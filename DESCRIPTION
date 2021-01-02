@@ -23,8 +23,7 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    Seurat,
-    covr
+    Seurat
 Imports: 
     utils,
     dplyr,
