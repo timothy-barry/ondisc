@@ -4,12 +4,12 @@
 \alias{summarize_expression_matrix}
 \title{Get essential gene- and cell-wise summary statistics}
 \usage{
-summarize_expression_matrix(x, chunk_size = 4000)
+summarize_expression_matrix(x, n_cells_to_process_at_time = 10000)
 }
 \arguments{
 \item{x}{an on_disc_matrix}
 
-\item{chunk_size}{(optional) number of cells to process at a time}
+\item{n_cells_to_process_at_time}{(optional; default 10000) number of cells to process at a time}
 }
 \value{
 a list containing the cell-specific and gene-specific covariate matrices

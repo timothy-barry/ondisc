@@ -178,7 +178,7 @@ on_disc_apply_across_chunks <- function(x, col_apply, chunk_function, chunk_size
 #'
 #' Takes an on_disc_matrix that contains gene-by-cell expressions (x), and outputs the cell-specific and gene-specific covariate matrices.
 #' @param x an on_disc_matrix
-#' @param chunk_size (optional) number of cells to process at a time
+#' @param n_cells_to_process_at_time (optional; default 10000) number of cells to process at a time
 #'
 #' @return a list containing the cell-specific and gene-specific covariate matrices
 #' @export
@@ -191,11 +191,11 @@ on_disc_apply_across_chunks <- function(x, col_apply, chunk_function, chunk_size
 #' odm <- on_disc_matrix(h5_file = odm_fp)
 #' covariate_matrices <- summarize_expression_matrix(odm)
 #' }
-summarize_expression_matrix <- function(x, chunk_size = 4000) {
+summarize_expression_matrix <- function(x, n_cells_to_process_at_time = 10000) {
   # Obtain the gene_names (constant across cell chunks)
   gene_ids <- get_gene_names(x)
   mt_genes <- grep(pattern = "^MT-", x = gene_ids)
-  sequence <- get_chunks_sequence(n_items = ncol(x), chunk_size = chunk_size)
+  sequence <- get_chunks_sequence(n_items = ncol(x), chunk_size = n_cells_to_process_at_time)
   res_list <- purrr::map(.x = 1:(length(sequence)-1), .f = function(i) {
     curr_idx <- (sequence[i] + 1):(sequence[i + 1])
     cat(paste0("Processing chunk ", crayon::blue(i), " of ", crayon::blue(length(sequence) - 1), ".\n"))
@@ -204,7 +204,7 @@ summarize_expression_matrix <- function(x, chunk_size = 4000) {
     cell_wise_umi_total <- Matrix::colSums(curr_m)
     # cell-wise mitochondrial UMI count
     if (length(mt_genes) >= 1) {
-      cell_wise_mito_umi_total <- Matrix::colSums(curr_m[mt_genes,])
+      cell_wise_mito_umi_total <- Matrix::colSums(curr_m[mt_genes,,drop=FALSE])
     } else {
       cell_wise_mito_umi_total <- numeric(length = ncol(curr_m))
     }

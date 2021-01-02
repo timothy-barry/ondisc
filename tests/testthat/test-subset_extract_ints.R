@@ -3,12 +3,10 @@
 ########
 test_that("extract single, contiguous submatrix", {
   for (i in 1:n_datasets) {
-    if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {
-      cat(paste0("\tRunning subtest ", j, ".\n"))
       # Generate consecutive indices
       col_idxs_range <- sample(x = 1:ncol(Mat), size = 2, replace = FALSE) %>% sort()
       col_idxs <- col_idxs_range[1]:col_idxs_range[2]
@@ -29,13 +27,11 @@ test_that("extract single, contiguous submatrix", {
 ########
 test_that("extract multiple, contiguous submatrices", {
   for (i in 1:n_datasets) {
-    if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     if (nrow(Mat) >= 6 && ncol(Mat) >= 6) {
       for (j in 1:n_reps) {
-        cat(paste0("\tRunning subtest ", j, ".\n"))
         # Generate consecutive indices
         col_idxs_range <- sample(x = 1:ncol(Mat), size = 6, replace = FALSE) %>% sort()
         col_idxs <- c(col_idxs_range[1]:col_idxs_range[2], col_idxs_range[3]:col_idxs_range[4], col_idxs_range[5]:col_idxs_range[6])
@@ -57,12 +53,10 @@ test_that("extract multiple, contiguous submatrices", {
 ########
 test_that("Extract arbitrary submatrices", {
   for (i in 1:n_datasets) {
-    if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {
-      cat(paste0("\tRunning subtest ", j, ".\n"))
       subset_size_col <- sample(1:(ceiling(ncol(Mat)/30)), 1)
       subset_size_row <- sample(1:(ceiling(nrow(Mat)/30)), 1)
       col_idxs <- sample(x = 1:ncol(Mat), size = subset_size_col)
@@ -77,7 +71,6 @@ test_that("Extract arbitrary submatrices", {
 ########
 test_that("Illegal subsets and extracts", {
   for (i in 1:n_datasets) {
-    if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     m <- test_obj$on_disc_matrix
     # index OOB
@@ -86,6 +79,8 @@ test_that("Illegal subsets and extracts", {
     # duplicate indexes
     expect_error(m[c(1,1),])
     expect_error(m[,c(1,1)])
+    # extracting nothing
+    expect_error(m[[,]])
   }
 })
 
@@ -94,7 +89,6 @@ test_that("Illegal subsets and extracts", {
 ########
 test_that("Test correct dimensions after subset", {
   for (i in 1:n_datasets) {
-    if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
@@ -134,12 +128,10 @@ test_that("Test correct dimensions after subset", {
 ########
 test_that("Extract arbitrary submatrices after subset", {
   for (i in 1:n_datasets) {
-    if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {
-      cat(paste0("\tRunning subtest ", j, ".\n"))
       subset_size_col <- sample(1:(ceiling(ncol(Mat)/10)), 1)
       subset_size_row <- sample(1:(ceiling(nrow(Mat)/10)), 1)
       col_idxs <- sample(x = 1:ncol(Mat), size = subset_size_col)
@@ -160,6 +152,27 @@ test_that("Extract arbitrary submatrices after subset", {
       compare_Mat_on_disc_extract(Mat = Mat_row_sub, on_disc_mat = on_disc_mat_row_sub, col_idxs = col_idxs, row_idxs = row_idxs_sub) # Row subset
       compare_Mat_on_disc_extract(Mat = Mat_col_sub, on_disc_mat = on_disc_mat_col_sub, col_idxs = col_idxs_sub, row_idxs = row_idxs)
       compare_Mat_on_disc_extract(Mat = Mat_sub, on_disc_mat = on_disc_mat_sub, col_idxs = col_idxs_sub, row_idxs = row_idxs_sub)
+    }
+  }
+})
+
+########
+# Test 7
+########
+test_that("Subset/extract corner cases", {
+  for (i in 1:n_datasets) {
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
+    m <- test_obj$r_Matrix
+    on_disc_mat <- test_obj$on_disc_matrix
+    # subset nothing
+    on_dist_mat_sub <- on_disc_mat[]
+    expect_identical(on_disc_mat, on_dist_mat_sub)
+    # find a row of all zeros
+    zero_rows <- which(Matrix::rowSums(m) == 0)
+    if (length(zero_rows) >= 1) {
+      idx <- zero_rows[1]
+      zero_extract <- as.numeric(on_disc_mat[[idx,]])
+      expect_equal(zero_extract, rep(0, ncol(m)))
     }
   }
 })

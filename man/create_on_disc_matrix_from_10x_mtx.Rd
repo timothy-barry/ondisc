@@ -9,6 +9,7 @@ create_on_disc_matrix_from_10x_mtx(
   barcode_fp,
   features_fp,
   on_disc_dir,
+  n_cells_to_process_at_time = 10000,
   file_name = NULL
 )
 }
@@ -21,7 +22,9 @@ create_on_disc_matrix_from_10x_mtx(
 
 \item{on_disc_dir}{directory in which to store the initialized HDF5 object}
 
-\item{file_name}{(optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is an integer.}
+\item{n_cells_to_process_at_time}{(optional, default 10000) number of cells to process at a given time}
+
+\item{file_name}{(optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is a unique integer starting at 1.}
 }
 \value{
 an on_disc_matrix object
@@ -46,5 +49,6 @@ exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp = mtx_fp,
 barcode_fp = barcode_fp,
 features_fp = features_fp,
 on_disc_dir = on_disc_dir,
+n_cells_to_process_at_time = 500,
 file_name = "example")
 }

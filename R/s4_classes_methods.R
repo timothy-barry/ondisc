@@ -211,7 +211,7 @@ setGeneric(name = "apply", def = function(X, MARGIN, FUN, ...) standardGeneric("
 #' @param X an on_disc_matrix
 #' @param MARGIN apply to rows (1) or columns (2)
 #' @param FUN a function to apply
-#' @param chunk_size number of rows or columns to load at a time; default 4000
+#' @param chunk_size number of rows (genes) or columns (cells) to load at a time; default 10000
 #' @export
 #' @examples
 #' # NOTE: You must create the HDF5 file "example.h5" to run this example.
@@ -227,7 +227,7 @@ setGeneric(name = "apply", def = function(X, MARGIN, FUN, ...) standardGeneric("
 #' }
 setMethod(f = "apply",
           signature = signature("on_disc_matrix"),
-          definition = function(X, MARGIN, FUN, chunk_size = 4000) {
+          definition = function(X, MARGIN, FUN, chunk_size = 10000) {
             closure <- function(chunk) apply(X = as.matrix(chunk), MARGIN = MARGIN, FUN = FUN)
             on_disc_apply_across_chunks(x = X, col_apply = (MARGIN == 2), chunk_function = closure, chunk_size = chunk_size)
           })

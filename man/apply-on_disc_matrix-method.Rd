@@ -4,7 +4,7 @@
 \alias{apply,on_disc_matrix-method}
 \title{Apply an arbitrary function to all rows or columns}
 \usage{
-\S4method{apply}{on_disc_matrix}(X, MARGIN, FUN, chunk_size = 4000)
+\S4method{apply}{on_disc_matrix}(X, MARGIN, FUN, chunk_size = 10000)
 }
 \arguments{
 \item{X}{an on_disc_matrix}
@@ -13,7 +13,7 @@
 
 \item{FUN}{a function to apply}
 
-\item{chunk_size}{number of rows or columns to load at a time; default 4000}
+\item{chunk_size}{number of rows (genes) or columns (cells) to load at a time; default 10000}
 }
 \description{
 Apply an arbitrary function to all rows or columns

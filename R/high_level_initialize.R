@@ -6,7 +6,8 @@
 #' @param barcode_fp file path to the barcode.tsv file.
 #' @param features_fp file path to the features.tsv file.
 #' @param on_disc_dir directory in which to store the initialized HDF5 object
-#' @param file_name (optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is an integer.
+#' @param n_cells_to_process_at_time (optional, default 10000) number of cells to process at a given time
+#' @param file_name (optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is a unique integer starting at 1.
 #' @return an on_disc_matrix object
 #' @export
 #' @examples
@@ -26,8 +27,9 @@
 #' barcode_fp = barcode_fp,
 #' features_fp = features_fp,
 #' on_disc_dir = on_disc_dir,
+#' n_cells_to_process_at_time = 500,
 #' file_name = "example")
-create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, on_disc_dir, file_name = NULL) {
+create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, on_disc_dir, n_cells_to_process_at_time = 10000, file_name = NULL) {
   # First, work with the .mtx file. Determine the number of rows containing comments.
   n_rows_with_comments <- 0
   repeat {
@@ -45,6 +47,8 @@ create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, 
   n_genes <- metadata %>% dplyr::pull(1)
   n_cells <- metadata %>% dplyr::pull(2)
   n_data_points <- metadata %>% dplyr::pull(3)
+  n_data_points_per_cell <- n_data_points/n_cells
+  n_data_points_to_process_at_time <- floor(n_data_points_per_cell * n_cells_to_process_at_time)
 
   # Grab the cell barcodes, gene_ids, and gene_names.
   cell_barcodes <- invisible(readr::read_tsv(file = barcode_fp, col_types = "c", col_names = FALSE) %>% dplyr::pull())
@@ -57,10 +61,10 @@ create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, 
   rm(cell_barcodes, all_genes, gene_ids, gene_names); invisible(gc())
 
   # Load expression data into matrix in compressed sparse column format; output from this function the number of nonzero entries in each row.
-  convert_mtx_to_csc(mtx_fp, h5_loc, n_rows_with_comments, chunk_size = 1e7)
+  convert_mtx_to_csc(mtx_fp, h5_loc, n_rows_with_comments, chunk_size = n_data_points_to_process_at_time)
 
   # Finally, transpose the CSC matrix to create a CSR matrix
-  transpose_on_disc_csc_matrix(h5_loc, cell_chunk_size = 5000)
+  transpose_on_disc_csc_matrix(h5_loc, cell_chunk_size = n_cells_to_process_at_time)
 
   # Return the newly created on_disc_matrix object
   ret <- on_disc_matrix(h5_file = h5_loc)
