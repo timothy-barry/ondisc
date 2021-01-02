@@ -10,12 +10,18 @@
 #' @return an on_disc_matrix object
 #' @export
 #' @examples
-#' mtx_fp <- system.file("extdata", "matrix_1.mtx", package = "ondisc")
-#' barcode_fp <- system.file("extdata", "barcodes_1.tsv", package = "ondisc")
-#' features_fp <- system.file("extdata", "features_1.tsv", package = "ondisc")
+#' # Example .mtx and .tsv files are stored in the "extdata" directory:
+#' list.files(system.file("extdata", package = "ondisc"))
+#' # Save the file paths of these files to the following variables
+#' mtx_fp <- system.file("extdata", "matrix.mtx", package = "ondisc")
+#' barcode_fp <- system.file("extdata", "barcodes.tsv", package = "ondisc")
+#' features_fp <- system.file("extdata", "features.tsv", package = "ondisc")
+#' # Set directory in which to save the on_disc_matrix .h5 file
 #' on_disc_dir <- system.file("extdata", package = "ondisc")
+#' # Verify the .h5 file does not exist; if so, remove it
 #' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
 #' if (odm_fp != "") file.remove(odm_fp)
+#' # run function
 #' exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp = mtx_fp,
 #' barcode_fp = barcode_fp,
 #' features_fp = features_fp,

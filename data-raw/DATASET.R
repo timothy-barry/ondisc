@@ -6,7 +6,7 @@ data_dir <- "/Users/timbarry/Box/onDisc_all/onDisc_offsite/raw_data" # change th
 package_dir <- "/Users/timbarry/Box/onDisc_all/ondisc/" # change this filepath as well!
 
 # Load package via load_all (to access non-exported functions)
-load_all(path = package_dir)
+load_all(path = package_dir, helpers = FALSE)
 ext_data_dir <- paste0(package_dir, "inst/extdata")
 
 # Load barcodes and gene ids, names
@@ -24,4 +24,4 @@ my_gene_ids <- samped_gene_ids_and_names %>% pull(gene_id)
 my_gene_names <- samped_gene_ids_and_names %>% pull(gene_name)
 
 m <- create_random_matrix(n_row = 300, n_col = 900)
-save_random_matrix_as_10x(m = m, data_dir = ext_data_dir, idx = 1, cell_barcodes = my_cell_barcodes, gene_names = my_gene_names, gene_ids = my_gene_ids)
+save_random_matrix_as_10x(m = m, data_dir = ext_data_dir, idx = NULL, cell_barcodes = my_cell_barcodes, gene_names = my_gene_names, gene_ids = my_gene_ids, save_r_matrix = FALSE)

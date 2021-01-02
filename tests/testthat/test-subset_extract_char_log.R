@@ -1,11 +1,3 @@
-if (FALSE) {
-
-test_params <- get_test_parameters(get_test_type())
-n_datasets <- test_params$n_datasets
-simulated_data_dir <- test_params$synthetic_data_dir
-n_reps <- test_params$n_reps_per_dataset
-set.seed(test_params$seed)
-
 ########
 # Test 1
 ########
@@ -13,12 +5,12 @@ test_that("extract by gene id", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     # Set row and column names for Matrix object
-    row.names(Mat) <- paste0("ENSG000", 1:nrow(Mat))
-    colnames(Mat) <- paste0("cell_", 1:ncol(Mat))
+    row.names(Mat) <- get_gene_ids(on_disc_mat)
+    colnames(Mat) <- get_cell_barcodes(on_disc_mat)
     for (j in 1:n_reps) {
       cat(paste0("\tRunning sub-test ", j, ".\n"))
       # Test arbitrary subsets of rows and columns
@@ -38,7 +30,7 @@ test_that("extract by logical vector", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {
@@ -59,7 +51,7 @@ test_that("extract by gene id on subset matrix", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     row.names(Mat) <- paste0("ENSG000", 1:nrow(Mat))
     colnames(Mat) <- paste0("cell_", 1:ncol(Mat))
@@ -93,7 +85,7 @@ test_that("Extract by logical vector on subset matrix", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {
@@ -119,7 +111,7 @@ test_that("subset by gene id", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     on_disc_mat <- test_obj$on_disc_matrix
     # Elements not present
     expect_error(on_disc_mat[,c("cell_1", "bogus name")])
@@ -135,4 +127,3 @@ test_that("subset by gene id", {
     expect_error(on_disc_mat[FALSE,][[,1]])
   }
 })
-}

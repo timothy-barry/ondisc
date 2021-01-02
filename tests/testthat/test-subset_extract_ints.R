@@ -1,16 +1,10 @@
-test_params <- get_test_parameters(get_test_type())
-n_datasets <- test_params$n_datasets
-simulated_data_dir <- test_params$synthetic_data_dir
-n_reps <- test_params$n_reps_per_dataset
-set.seed(test_params$seed)
-
 ########
 # Test 1
 ########
 test_that("extract single, contiguous submatrix", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {
@@ -36,7 +30,7 @@ test_that("extract single, contiguous submatrix", {
 test_that("extract multiple, contiguous submatrices", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     if (nrow(Mat) >= 6 && ncol(Mat) >= 6) {
@@ -64,7 +58,7 @@ test_that("extract multiple, contiguous submatrices", {
 test_that("Extract arbitrary submatrices", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {
@@ -84,7 +78,7 @@ test_that("Extract arbitrary submatrices", {
 test_that("Illegal subsets and extracts", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     m <- test_obj$on_disc_matrix
     # index OOB
     expect_error(m[,ncol(m) + 10])
@@ -101,7 +95,7 @@ test_that("Illegal subsets and extracts", {
 test_that("Test correct dimensions after subset", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     subset_size_col <- sample(1:(ceiling(ncol(Mat)/30)), 1)
@@ -141,7 +135,7 @@ test_that("Test correct dimensions after subset", {
 test_that("Extract arbitrary submatrices after subset", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
-    test_obj <- load_on_disc_and_mat(data_dir = simulated_data_dir, idx = i)
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     Mat <- test_obj$r_Matrix
     on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {

@@ -1,10 +1,6 @@
-test_params <- get_test_parameters(get_test_type())
-n_datasets <- test_params$n_datasets
-simulated_data_dir <- test_params$synthetic_data_dir
-
 test_that("summarize expression matrix", {
-  for (i in 1:test_params$n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = test_params$synthetic_data_dir, idx = i)
+  for (i in 1:n_datasets) {
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     m <- test_obj$r_Matrix
     on_disc_obj <- test_obj$on_disc_matrix
     cov_mats <- summarize_expression_matrix(x = on_disc_obj, chunk_size = floor(ncol(on_disc_obj)/3))
@@ -20,8 +16,8 @@ test_that("summarize expression matrix", {
 
 
 test_that("apply", {
-  for (i in 1:test_params$n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = test_params$synthetic_data_dir, idx = i)
+  for (i in 1:n_datasets) {
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     m <- test_obj$r_Matrix
     on_disc_obj <- test_obj$on_disc_matrix
 

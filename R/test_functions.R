@@ -16,7 +16,7 @@ create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matr
   m <- matrix(data = sample(x = matrix_values, size = n_row * n_col, replace = TRUE), nrow = n_row, ncol = n_col)
   r <- matrix(data = stats::rbinom(n =  n_row * n_col, size = 1, prob = 1 - p_zero), nrow = n_row, ncol = n_col)
   out <- m * r
-  out <- as(object = out, Class = "TsparseMatrix")
+  return(Matrix::Matrix(data = out, sparse = TRUE))
 }
 
 
@@ -30,9 +30,10 @@ create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matr
 #' @param gene_names (optional) the gene names
 #' @param gene_ids (optional) the gene ids
 #' @param idx (optional) an index to append to the file names
+#' @param save_r_matrix (optional) save the corresponding R matrix?
 #'
 #' @return the file paths to the matrix.mtx, barcodes.tsv, and features.tsv files.
-save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = NULL, gene_names = NULL, gene_ids = NULL) {
+save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = NULL, gene_names = NULL, gene_ids = NULL, save_r_matrix = TRUE) {
   if (!dir.exists(data_dir)) dir.create(path = data_dir, recursive = TRUE)
   to_save_locs <- get_simulation_data_fps(data_dir, idx)
   # save the matrix in .mtx format.
@@ -45,7 +46,7 @@ save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = N
   readr::write_tsv(x = dplyr::tibble(cell_barcodes), file = to_save_locs[["barcodes"]], col_names = FALSE)
   readr::write_tsv(x = dplyr::tibble(gene_ids, gene_names, "Gene Expression"), file = to_save_locs[["features"]], col_names = FALSE)
   # Finally, save the original R Matrix object
-  saveRDS(object = m, file = to_save_locs[["r_matrix"]])
+  if (save_r_matrix) saveRDS(object = m, file = to_save_locs[["r_matrix"]])
   return(to_save_locs)
 }
 
@@ -133,31 +134,4 @@ create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, 
     locs <- save_random_matrix_as_10x(m, simulated_data_dir, i)
   }
   invisible()
-}
-
-
-#' Get test parameters
-#'
-#' Obtain the parameters for a run of test. The "small" test is lightweight and can easily be run on any machine on which ondisc is installed. The "large" test, by contrast, is heavier duty and takes a bit more effort to set up.
-#'
-#' @param test_type "small" or "big," indicating which set of tests to run.
-#'
-#' @return a list of parameters: synthetic_data_dir, n_datasets, n_reps_per_dataset
-get_test_parameters <- function(test_type) {
-  if (test_type == "small") {
-    out <- list(synthetic_data_dir = system.file("extdata", package = "ondisc"), n_datasets = 1, n_reps_per_dataset = 3, seed = 4, n_row = 300, n_col = 900)
-  }
-  if (test_type == "big") {
-    out <- list(synthetic_data_dir = "/Users/timbarry/Box/onDisc_all/onDisc_offsite/simulated_data", n_datasets = 15, n_reps_per_dataset = 10, seed = 4, n_row = NULL, n_col = NULL)
-  }
-  return(out)
-}
-
-
-#' get test type
-#'
-#' @return the type of the test, either "small" or "big."
-get_test_type <- function() {
-  out <- c("small", "big")[1]
-  return(out)
 }

@@ -1,12 +1,7 @@
-if (FALSE) {
-
-test_params <- get_test_parameters(get_test_type())
-set.seed(test_params$seed)
-
 test_that("gets, no subsets", {
-  for (i in 1:test_params$n_datasets) {
-    if (test_params$n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
-    test_obj <- load_on_disc_and_mat(data_dir = test_params$synthetic_data_dir, idx = i)
+  for (i in 1:n_datasets) {
+    if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     on_disc_mat <- test_obj$on_disc_matrix
     all(paste0("gene_", 1:nrow(on_disc_mat)) == get_gene_names(on_disc_mat)) %>% expect_true()
     all(paste0("ENSG000", 1:nrow(on_disc_mat)) == get_gene_ids(on_disc_mat)) %>% expect_true()
@@ -14,12 +9,13 @@ test_that("gets, no subsets", {
     }
 })
 
+
 test_that("gets after subset", {
-  for (i in 1:test_params$n_datasets) {
-    if (test_params$n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
-    test_obj <- load_on_disc_and_mat(data_dir = test_params$synthetic_data_dir, idx = i)
+  for (i in 1:n_datasets) {
+    if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
+    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
     on_disc_mat <- test_obj$on_disc_matrix
-      for (j in 1:test_params$n_reps_per_dataset) {
+      for (j in 1:n_reps) {
         cat(paste0("\tRunning sub-test ", j, ".\n"))
         subset_size_col <- sample(1:(ceiling(ncol(on_disc_mat)/10)), 1)
         subset_size_row <- sample(1:(ceiling(nrow(on_disc_mat)/10)), 1)
@@ -44,5 +40,3 @@ test_that("gets after subset", {
       }
     }
 })
-
-}

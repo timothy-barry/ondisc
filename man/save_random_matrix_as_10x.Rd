@@ -10,7 +10,8 @@ save_random_matrix_as_10x(
   idx = NULL,
   cell_barcodes = NULL,
   gene_names = NULL,
-  gene_ids = NULL
+  gene_ids = NULL,
+  save_r_matrix = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ save_random_matrix_as_10x(
 \item{gene_names}{(optional) the gene names}
 
 \item{gene_ids}{(optional) the gene ids}
+
+\item{save_r_matrix}{(optional) save the corresponding R matrix?}
 }
 \value{
 the file paths to the matrix.mtx, barcodes.tsv, and features.tsv files.
