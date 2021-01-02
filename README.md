@@ -3,6 +3,12 @@
 
 # `ondisc` <img src="man/figures/hex.png" align="right" alt="" width="180" />
 
+<!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg)](https://codecov.io/gh/Timothy-Barry/ondisc?branch=main)
+<!-- badges: end -->
+
 Single-cell datasets can be large and are growing in size as sequencing
 costs drop. `ondisc` (short for **on-di**sk **s**ingle-**c**ell ) is an
 R package that powers large-scale analyses of single-cell data. `ondisc`
