@@ -9,7 +9,8 @@
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test
 coverage](https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg)](https://codecov.io/gh/Timothy-Barry/ondisc?branch=main)
-
+[![R build
+status](https://github.com/Timothy-Barry/ondisc/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/Timothy-Barry/ondisc/actions)
 <!-- badges: end -->
 
 Single-cell datasets can be large and are growing in size as sequencing

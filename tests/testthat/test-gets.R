@@ -1,4 +1,3 @@
-if (FALSE) {
 test_that("gets, no subsets", {
   for (i in 1:n_datasets) {
     if (n_datasets > 1) cat(paste0("Running test ", i, ".\n"))
@@ -41,4 +40,3 @@ test_that("gets after subset", {
       }
     }
 })
-}
