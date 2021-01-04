@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ondisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S4 method for on_disc_matrix</span>
-<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>MARGIN</span>, <span class='va'>FUN</span>, chunk_size <span class='op'>=</span> <span class='fl'>4000</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>MARGIN</span>, <span class='va'>FUN</span>, chunk_size <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -134,7 +134,7 @@
     </tr>
     <tr>
       <th>chunk_size</th>
-      <td><p>number of rows or columns to load at a time; default 4000</p></td>
+      <td><p>number of rows (genes) or columns (cells) to load at a time; default 10000</p></td>
     </tr>
     </table>
 

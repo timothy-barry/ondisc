@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ondisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -119,6 +119,7 @@
   <span class='va'>barcode_fp</span>,
   <span class='va'>features_fp</span>,
   <span class='va'>on_disc_dir</span>,
+  n_cells_to_process_at_time <span class='op'>=</span> <span class='fl'>10000</span>,
   file_name <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
@@ -142,8 +143,12 @@
       <td><p>directory in which to store the initialized HDF5 object</p></td>
     </tr>
     <tr>
+      <th>n_cells_to_process_at_time</th>
+      <td><p>(optional, default 10000) number of cells to process at a given time</p></td>
+    </tr>
+    <tr>
       <th>file_name</th>
-      <td><p>(optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is an integer.</p></td>
+      <td><p>(optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is a unique integer starting at 1.</p></td>
     </tr>
     </table>
 
@@ -168,9 +173,13 @@
 barcode_fp <span class='op'>=</span> <span class='va'>barcode_fp</span>,
 features_fp <span class='op'>=</span> <span class='va'>features_fp</span>,
 on_disc_dir <span class='op'>=</span> <span class='va'>on_disc_dir</span>,
+n_cells_to_process_at_time <span class='op'>=</span> <span class='fl'>500</span>,
 file_name <span class='op'>=</span> <span class='st'>"example"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Initializing the on_disc_matrix...<span style='color: #00BB00;'>  ✓</span><span>
-#&gt; Loading data from disk.</div></span></pre>
+#&gt; Loading chunk of data from disk.
+#&gt; Data chunk 1 of 2 loaded.
+#&gt; Loading chunk of data from disk.
+#&gt; Data chunk 2 of 2 loaded.</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
