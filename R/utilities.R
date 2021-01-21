@@ -38,3 +38,58 @@ combine_results <- function(res_list) {
   }
   return(out)
 }
+
+
+#' Get n rows with comments
+#'
+#' Returns the number of rows with comments in an mtx file.
+#'
+#' @param mtx_fp a file path to an mtx file
+#'
+#' @return the number of rows with comments at the top of the file
+get_n_rows_with_comments_mtx <- function(mtx_fp) {
+  n_rows_with_comments <- 0
+  repeat {
+    curr_row <- utils::read.table(mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = "\n") %>% dplyr::pull()
+    is_comment <- substr(curr_row, start = 1, stop = 1) == "%"
+    if (!is_comment) {
+      break()
+    } else {
+      n_rows_with_comments <- n_rows_with_comments + 1
+    }
+  }
+  return(n_rows_with_comments)
+}
+
+
+#' Get mtx metadata
+#'
+#' @param mtx_fp filepath to the mtx file
+#' @param n_rows_with_comments number of rows with comments (at top of file)
+#'
+#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the sparsity (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical
+get_mtx_metadata <- function(mtx_fp, n_rows_with_comments) {
+  metadata <- utils::read.table(file = mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = " ", colClasses = c("integer", "integer", "integer"))
+  n_genes <- metadata %>% dplyr::pull(1)
+  n_cells <- metadata %>% dplyr::pull(2)
+  n_data_points <- metadata %>% dplyr::pull(3)
+  sparsity <- 1 - n_entries / (n_genes * n_cells)
+  first_row <- utils::read.table(file = mtx_fp, nrows = 1, skip = n_rows_with_comments + 1, header = FALSE, sep = " ", colClasses = c("integer", "integer", "integer"))
+  is_logical <- ncol(first_row) == 2
+  return(list(n_genes = n_genes, n_cells = n_cells, n_data_points = n_data_points, sparsity = sparsity, is_logical = is_logical))
+}
+
+
+#' n GB to entries
+#'
+#' @param n_gb number of gigabytes to process per chunk
+#' @param logical_mtx number of
+#'
+#' @return
+#' @export
+#'
+#' @examples
+n_gb_to_n_entries <- function(n_gb, logical_mtx) {
+  multiplicative_factor <- 1e9 * (if (logical_mtx) 8.0 else 12.0)
+  return (multiplicative_factor * n_gb)
+}
