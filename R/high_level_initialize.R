@@ -1,72 +1,42 @@
-#' Create an on_disc_matrix from a .mtx file
+#' Create an ondisc_matrix from a .mtx file.
 #'
-#' @description
-#' This function creates an on_disc_matrix from a 10x .mtx file. The name of the created file (by default) is on_disc_matrix_x.h5, where x is an integer. The integer starts at 1; if there already exists a file called on_disc_matrix_1.h5, then the data will be saved in on_disc_matrix_2.h5, and so on. To override this behavior, explicitly specify the file name (WITHOUT the .h5 extension).
-#' @param mtx_fp file path to the .mtx file
-#' @param barcode_fp file path to the barcode.tsv file.
-#' @param features_fp file path to the features.tsv file.
-#' @param on_disc_dir directory in which to store the initialized HDF5 object
-#' @param n_cells_to_process_at_time (optional, default 10000) number of cells to process at a given time
-#' @param file_name (optional) name of the .h5 file in which data are saved; defaults to on_disc_matrix_x.h5, where x is a unique integer starting at 1.
-#' @return an on_disc_matrix object
+#' Initializes an ondisc_matrix object from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix R object along with cell-specific and feature-specific covariate matrices.
+#'
+#' @param mtx_fp file path to a .mtx file storing the expression data. The .mtx file can represent either an integer matrix or a logical (i.e., binary) matrix. If the .mtx file contains only two columns (after the initial three-column row of metadata), then the .mtx file is assumed to represent a logical matrix.
+#' @param barcodes_fp file path to the .tsv file containing the cell barcodes.
+#' @param features_fp file path to the features.tsv file. The first column (required) should contain the feature IDs (e.g., ENSG00000186092), and the second column (optional) should contain the human-readable feature names (e.g., OR4F5). Any subsequent columns are discarded.
+#' @param n_gb_per_chunk (optional) amount of data (in GB) to process per chunk. Defaults to 4 GB.
+#' @param on_disc_dir (optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.
+#' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
+#'
+#' @return
 #' @export
-#' @examples
-#' # Example .mtx and .tsv files are stored in the "extdata" directory:
-#' list.files(system.file("extdata", package = "ondisc"))
-#' # Save the file paths of these files to the following variables
-#' mtx_fp <- system.file("extdata", "matrix.mtx", package = "ondisc")
-#' barcode_fp <- system.file("extdata", "barcodes.tsv", package = "ondisc")
-#' features_fp <- system.file("extdata", "features.tsv", package = "ondisc")
-#' # Set directory in which to save the on_disc_matrix .h5 file
-#' on_disc_dir <- system.file("extdata", package = "ondisc")
-#' # Verify the .h5 file does not exist; if so, remove it
-#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-#' if (odm_fp != "") file.remove(odm_fp)
-#' # run function
-#' exp_mat <- create_on_disc_matrix_from_10x_mtx(mtx_fp = mtx_fp,
-#' barcode_fp = barcode_fp,
-#' features_fp = features_fp,
-#' on_disc_dir = on_disc_dir,
-#' n_cells_to_process_at_time = 500,
-#' file_name = "example")
-create_on_disc_matrix_from_10x_mtx <- function(mtx_fp, barcode_fp, features_fp, on_disc_dir, n_cells_to_process_at_time = 10000, file_name = NULL) {
-  # First, work with the .mtx file. Determine the number of rows containing comments.
-  n_rows_with_comments <- 0
-  repeat {
-    curr_row <- utils::read.table(mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = "\n") %>% dplyr::pull()
-    is_comment <- substr(curr_row, start = 1, stop = 1) == "%"
-    if (!is_comment) {
-      break()
-    } else {
-      n_rows_with_comments <- n_rows_with_comments + 1
-    }
-  }
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb_per_chunk = 4, on_disc_dir = NULL, file_name = NULL) {
+  # extract .mtx metadata
+  n_rows_with_comments <- get_n_rows_with_comments_mtx(mtx_fp)
+  mtx_metadata <- get_mtx_metadata(mtx_fp, n_rows_with_comments)
 
-  # Extract the number of rows, columns, and total data points in the expression matrix.
-  metadata <- utils::read.table(mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE)
-  n_genes <- metadata %>% dplyr::pull(1)
-  n_cells <- metadata %>% dplyr::pull(2)
-  n_data_points <- metadata %>% dplyr::pull(3)
-  n_data_points_per_cell <- n_data_points/n_cells
-  n_data_points_to_process_at_time <- floor(n_data_points_per_cell * n_cells_to_process_at_time)
+  # Define bag_of_variables environment
+  bag_of_variables <- new.env()
 
-  # Grab the cell barcodes, gene_ids, and gene_names.
-  cell_barcodes <- invisible(readr::read_tsv(file = barcode_fp, col_types = "c", col_names = FALSE) %>% dplyr::pull())
-  all_genes <- invisible(readr::read_tsv(file = features_fp, col_types = "ccc", col_names = c("gene_id", "gene_name", "feature_type")))
-  gene_ids <- all_genes %>% dplyr::pull("gene_id")
-  gene_names <- all_genes %>% dplyr::pull("gene_name")
+  # extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
+  features_metadata <- get_features_metadata(features_fp, bag_of_variables)
 
-  # Initialize the h5 file on disk
-  h5_loc <- create_h5_file_on_disk(on_disc_dir, n_genes, n_cells, n_data_points, cell_barcodes, gene_ids, gene_names, file_name)
-  rm(cell_barcodes, all_genes, gene_ids, gene_names); invisible(gc())
+  # set the on_disc_dir, if necessary
+  if (is.null(on_disc_dir)) on_disc_dir <- gsub(pattern = '/[^/]*$', replacement = "", x = mtx_fp)
 
-  # Load expression data into matrix in compressed sparse column format; output from this function the number of nonzero entries in each row.
-  convert_mtx_to_csc(mtx_fp, h5_loc, n_rows_with_comments, chunk_size = n_data_points_to_process_at_time)
+  # Generate a name for the ondisc_matrix .h5 file, if necessary
+  if (is.null(file_name)) h5_fp <- generate_on_disc_matrix_name(on_disc_dir)
 
-  # Finally, transpose the CSC matrix to create a CSR matrix
-  transpose_on_disc_csc_matrix(h5_loc, cell_chunk_size = n_cells_to_process_at_time)
+  # Initialize the .h5 file on-disk
+  initialize_h5_file_on_disk <- initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp)
 
-  # Return the newly created on_disc_matrix object
-  ret <- on_disc_matrix(h5_file = h5_loc)
-  return(ret)
+  # Determine which covariataes to compute
+
+
+  # Determine which terminal symbols to compute
+
+
+  # step 1: compute row_ptr
+  # step 2: perform core algorithm (a: compute covariate matrices; b: lay down CSC; c: lay down CSR)
 }
