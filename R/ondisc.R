@@ -3,8 +3,11 @@ utils::globalVariables(c("gene_idx", "expression", "."))
 #' ondisc: A package for out-of-memory computing on single-cell data
 #'
 #' Single-cell datasets are large and are growing in size as sequencing costs drop. The ondisc package is designed to facilitate large-scale computing on single-cell expression data by providing access to expression matrices out-of-memory. ondisc is functional (i.e., all objects are persistent) and efficient (i.e., all algorithms are theoretically optimal in time).
+#' @useDynLib ondisc, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
 #' @importFrom magrittr %>%
 #' @import methods
 #' @docType package
+#'
 #' @name ondisc
 NULL

@@ -12,12 +12,13 @@
 #' @return
 #' @export
 create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb_per_chunk = 4, on_disc_dir = NULL, file_name = NULL) {
+  # Define "bag_of_variables" environment for storing args
+  bag_of_variables <- new.env()
+
   # extract .mtx metadata
   n_rows_with_comments <- get_n_rows_with_comments_mtx(mtx_fp)
   mtx_metadata <- get_mtx_metadata(mtx_fp, n_rows_with_comments)
-
-  # Define bag_of_variables environment
-  bag_of_variables <- new.env()
+  bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
 
   # extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
   features_metadata <- get_features_metadata(features_fp, bag_of_variables)
@@ -34,6 +35,12 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
   # Determine which covariataes to compute
   covariates <- map_inputs_to_covariates(mtx_metadata, features_metadata)
 
+  # Obtain grammar
+  grammar <- initialize_grammar()
+
   # Determine which terminal symbols to compute
-  terminal_symbols <-
+  terminal_symbols <- lapply(unlist(covariates),
+                             get_terminals_for_covariate, grammar = grammar) %>% unlist() %>% unique()
+
+
 }

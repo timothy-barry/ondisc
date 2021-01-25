@@ -2,18 +2,43 @@
 #' Function to return a simple "enum" of all symbols (terminal and nonterminal) used in the grammar; helps to reduce number of string literals in the code.
 #' @return an environment
 symbols_enum <- function() {
-  covariates <- c("mean_expression_feature",
-                  "coef_of_variation_feature",
-                  "n_nonzero_feature",
-                  "n_nonzero_cell",
-                  "n_umis_cell",
-                  "p_mito_cell",
-                  "mean_sq_expression_feature",
-                  "n_mito_cell",
-                  "sd_expression_feature")
-  list2env(setNames(as.list(covariates), covariates))
+  symbols <- c("mean_expression_feature",
+                "coef_of_variation_feature",
+                "n_nonzero_feature",
+                "n_nonzero_cell",
+                "n_umis_cell",
+                "p_mito_cell",
+                "mean_sq_expression_feature",
+                "n_mito_cell",
+                "sd_expression_feature")
+  list2env(setNames(as.list(symbols), symbols))
 }
 
+
+#' Accumulator function Enum
+#' Function to return a simple enum of the accumulator functions
+#' @return
+accumulator_functs_enum <- function() {
+  accumulator_functs <- c("inc_mean_count",
+                          "inc_n_entries",
+                          "inc_mean_sq_count",
+                          "inc_count",
+                          "inc_count_conditional")
+  list2env(setNames(as.list(accumulator_functs), accumulator_functs))
+}
+
+
+#' Arguments Enum
+#' Function to return a simple enum of the possible arguments to the accumulator functions
+#' @return
+arguments_enum <- function() {
+  arguments <- c("feature_idxs",
+                 "cell_idxs",
+                 "umi_counts",
+                 "mt_gene_bool",
+                 "n_cells")
+  list2env(setNames(as.list(arguments), arguments))
+}
 
 #' Initialize grammar
 #'
@@ -63,7 +88,7 @@ initialize_grammar <- function() {
 #' @return a list of two entries: feature_covariates and cell_covariates; each entry lists the covariates to compute
 map_inputs_to_covariates <- function(mtx_metadata, features_metadata) {
   # Obtain enum
-  sym_enum <- symbol_enum()
+  sym_enum <- symbols_enum()
   # First, get feature covariates
   feature_covariates <- if (!mtx_metadata$is_logical) {
     # integer matrix
@@ -102,15 +127,50 @@ map_inputs_to_covariates <- function(mtx_metadata, features_metadata) {
 #' @param grammar a grammar, as initialized by initialize_grammar.
 #'
 #' @return character vector of nonterminals
-get_nonterminals_for_covariate <- function(covariate, grammar) {
+get_terminals_for_covariate <- function(covariate, grammar) {
   if (grammar[[covariate]]$terminal) {
     ret <- covariate
   } else {
     ret <- lapply(grammar[[covariate]]$symbols,
-                  function(s) get_nonterminals_for_covariate(s, grammar))
+                  get_terminals_for_covariate, grammar = grammar)
     ret <- unique(unlist(ret))
   }
   return(ret)
 }
 
 
+get_terminal_acc_and_args <- function(terminal_symbol) {
+  sym_enum <- symbols_enum()
+  acc_enum <- accumulator_functs_enum()
+  arg_enum <- arguments_enum()
+  # Mean UMI count of feature
+  if (terminal_symbol == sym_enum$mean_expression_feature) {
+    acc_funct <- acc_enum$inc_mean_count
+    acc_args <- c(arg_enum$feature_idxs, arg_enum$umi_counts, arg_enum$n_cells)
+  }
+  # Mean squared UMI count of feature
+  else if (terminal_symbol == sym_enum$mean_sq_expression_feature) {
+    acc_funct <- acc_enum$inc_mean_sq_count
+    acc_args <- c(arg_enum$feature_idxs, arg_enum$umi_counts, arg_enum$n_cells)
+  }
+  # N nonzero entries feature
+  else if (terminal_symbol == sym_enum$n_nonzero_feature) {
+    acc_funct <- acc_enum$inc_n_entries
+    acc_args <- c(arg_enum$feature_idxs)
+  }
+  # N nonzero entries cell
+  else if (terminal_symbol == sym_enum$n_nonzero_cell) {
+    acc_funct <- acc_enum$inc_n_entries
+    acc_args <- c(arg_enum$cell_idxs)
+  }
+  # UMI count cell
+  else if (terminal_symbol == sym_enum$n_umis_cell) {
+    acc_funct <- acc_enum$inc_count
+    acc_args <- c(arg_enum$cell_idxs, arg_enum$umi_counts)
+  }
+  else if (terminal_symbol == sym_enum$n_mito_cell) {
+    acc_funct <- acc_enum$inc_count_conditional
+    acc_args <- c(arg_enum$cell_idxs, arg_enum$umi_counts, arg_enum$feature_idxs, arg_enum$mt_gene_bool)
+  }
+  return(list(acc_funct = acc_funct, acc_args = acc_args))
+}

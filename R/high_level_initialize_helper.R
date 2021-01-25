@@ -55,7 +55,7 @@ get_features_metadata <- function(features_fp, bag_of_variables) {
     mt_genes <- grepl(pattern = "^MT-", x = gene_names)
     if (any(mt_genes)) {
       mt_genes_present <- TRUE
-      bag_of_variables$mt_genes <- mt_genes
+      bag_of_variables[[arguments_enum()$mt_gene_bool]] <- mt_genes
     }
   }
   return(list(feature_names = feature_names, n_cols = n_cols, mt_genes_present = mt_genes_present))

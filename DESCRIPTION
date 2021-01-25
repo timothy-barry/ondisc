@@ -36,6 +36,9 @@ Imports:
     purrr,
     Matrix,
     R.utils,
-    stats
+    stats,
+    Rcpp
 Depends: R (>= 3.5.0)
 VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp
