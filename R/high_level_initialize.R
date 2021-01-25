@@ -28,15 +28,12 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
   # Generate a name for the ondisc_matrix .h5 file, if necessary
   if (is.null(file_name)) h5_fp <- generate_on_disc_matrix_name(on_disc_dir)
 
-  # Initialize the .h5 file on-disk
-  initialize_h5_file_on_disk <- initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp)
+  # Initialize the .h5 file on-disk (side-effect)
+  initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp)
 
   # Determine which covariataes to compute
-
+  covariates <- map_inputs_to_covariates(mtx_metadata, features_metadata)
 
   # Determine which terminal symbols to compute
-
-
-  # step 1: compute row_ptr
-  # step 2: perform core algorithm (a: compute covariate matrices; b: lay down CSC; c: lay down CSR)
+  terminal_symbols <-
 }
