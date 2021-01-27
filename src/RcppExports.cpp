@@ -5,20 +5,87 @@
 
 using namespace Rcpp;
 
-// timesTwo
-int timesTwo(int x);
-RcppExport SEXP _ondisc_timesTwo(SEXP xSEXP) {
+// inc_mean_count
+void inc_mean_count(NumericVector acc_vect, IntegerVector idxs, IntegerVector umi_counts, double n);
+RcppExport SEXP _ondisc_inc_mean_count(SEXP acc_vectSEXP, SEXP idxsSEXP, SEXP umi_countsSEXP, SEXP nSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(timesTwo(x));
-    return rcpp_result_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type acc_vect(acc_vectSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type idxs(idxsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type umi_counts(umi_countsSEXP);
+    Rcpp::traits::input_parameter< double >::type n(nSEXP);
+    inc_mean_count(acc_vect, idxs, umi_counts, n);
+    return R_NilValue;
+END_RCPP
+}
+// inc_n_entries
+void inc_n_entries(IntegerVector acc_vect, IntegerVector idxs);
+RcppExport SEXP _ondisc_inc_n_entries(SEXP acc_vectSEXP, SEXP idxsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type acc_vect(acc_vectSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type idxs(idxsSEXP);
+    inc_n_entries(acc_vect, idxs);
+    return R_NilValue;
+END_RCPP
+}
+// inc_mean_sq_count
+void inc_mean_sq_count(NumericVector acc_vect, IntegerVector idxs, IntegerVector umi_counts, double n);
+RcppExport SEXP _ondisc_inc_mean_sq_count(SEXP acc_vectSEXP, SEXP idxsSEXP, SEXP umi_countsSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type acc_vect(acc_vectSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type idxs(idxsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type umi_counts(umi_countsSEXP);
+    Rcpp::traits::input_parameter< double >::type n(nSEXP);
+    inc_mean_sq_count(acc_vect, idxs, umi_counts, n);
+    return R_NilValue;
+END_RCPP
+}
+// inc_count
+void inc_count(IntegerVector acc_vect, IntegerVector idxs, IntegerVector umi_counts);
+RcppExport SEXP _ondisc_inc_count(SEXP acc_vectSEXP, SEXP idxsSEXP, SEXP umi_countsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type acc_vect(acc_vectSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type idxs(idxsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type umi_counts(umi_countsSEXP);
+    inc_count(acc_vect, idxs, umi_counts);
+    return R_NilValue;
+END_RCPP
+}
+// inc_cell_count_if_feature_condition
+void inc_cell_count_if_feature_condition(IntegerVector acc_vect, IntegerVector feature_idxs, IntegerVector cell_idxs, IntegerVector umi_counts, LogicalVector bool_vect);
+RcppExport SEXP _ondisc_inc_cell_count_if_feature_condition(SEXP acc_vectSEXP, SEXP feature_idxsSEXP, SEXP cell_idxsSEXP, SEXP umi_countsSEXP, SEXP bool_vectSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type acc_vect(acc_vectSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type feature_idxs(feature_idxsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type cell_idxs(cell_idxsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type umi_counts(umi_countsSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type bool_vect(bool_vectSEXP);
+    inc_cell_count_if_feature_condition(acc_vect, feature_idxs, cell_idxs, umi_counts, bool_vect);
+    return R_NilValue;
+END_RCPP
+}
+// decrement_idxs
+void decrement_idxs(IntegerVector idxs);
+RcppExport SEXP _ondisc_decrement_idxs(SEXP idxsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type idxs(idxsSEXP);
+    decrement_idxs(idxs);
+    return R_NilValue;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_ondisc_timesTwo", (DL_FUNC) &_ondisc_timesTwo, 1},
+    {"_ondisc_inc_mean_count", (DL_FUNC) &_ondisc_inc_mean_count, 4},
+    {"_ondisc_inc_n_entries", (DL_FUNC) &_ondisc_inc_n_entries, 2},
+    {"_ondisc_inc_mean_sq_count", (DL_FUNC) &_ondisc_inc_mean_sq_count, 4},
+    {"_ondisc_inc_count", (DL_FUNC) &_ondisc_inc_count, 3},
+    {"_ondisc_inc_cell_count_if_feature_condition", (DL_FUNC) &_ondisc_inc_cell_count_if_feature_condition, 5},
+    {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {NULL, NULL, 0}
 };
 

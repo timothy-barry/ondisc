@@ -19,6 +19,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
   n_rows_with_comments <- get_n_rows_with_comments_mtx(mtx_fp)
   mtx_metadata <- get_mtx_metadata(mtx_fp, n_rows_with_comments)
   bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
+  bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
 
   # extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
   features_metadata <- get_features_metadata(features_fp, bag_of_variables)
@@ -32,15 +33,14 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
   # Initialize the .h5 file on-disk (side-effect)
   initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp)
 
-  # Determine which covariataes to compute
+  # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(mtx_metadata, features_metadata)
 
-  # Obtain grammar
-  grammar <- initialize_grammar()
+  # Get number of elements to load per chunk
+  is_logical <- mtx_metadata$is_logical
+  n_elem_per_chunk <- n_gb_to_n_entries(n_gb_per_chunk, is_logical)
+  n_rows_to_skip <- n_rows_with_comments + 1
 
-  # Determine which terminal symbols to compute
-  terminal_symbols <- lapply(unlist(covariates),
-                             get_terminals_for_covariate, grammar = grammar) %>% unlist() %>% unique()
-
-
+  # Run core algorithm
+  run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_elem_per_chunk, n_rows_to_skip)
 }

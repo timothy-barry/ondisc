@@ -23,7 +23,7 @@ accumulator_functs_enum <- function() {
                           "inc_n_entries",
                           "inc_mean_sq_count",
                           "inc_count",
-                          "inc_count_conditional")
+                          "inc_cell_count_if_feature_condition")
   list2env(setNames(as.list(accumulator_functs), accumulator_functs))
 }
 
@@ -36,9 +36,12 @@ arguments_enum <- function() {
                  "cell_idxs",
                  "umi_counts",
                  "mt_gene_bool",
-                 "n_cells")
+                 "n_cells",
+                 "n_features",
+                 "acc_vect")
   list2env(setNames(as.list(arguments), arguments))
 }
+
 
 #' Initialize grammar
 #'
@@ -71,9 +74,6 @@ initialize_grammar <- function() {
                                                   f = function(p1, p2) p1 / p2,
                                                   symbols = c(sym_enum$sd_expression_feature,
                                                               sym_enum$mean_expression_feature))
-
-  # Finally, store the symbol enum for convenience
-  e[["sym_enum"]] <- sym_enum
   return(e)
 }
 
@@ -139,6 +139,13 @@ get_terminals_for_covariate <- function(covariate, grammar) {
 }
 
 
+#' Get terminal accumulator and args
+#'
+#' Returns the accumulator function and ordered argument set for a given terminal symbol.
+#'
+#' @param terminal_symbol a terminal symbol
+#'
+#' @return a list containing (i) the name of the function, and (ii) the ordered argument names.
 get_terminal_acc_and_args <- function(terminal_symbol) {
   sym_enum <- symbols_enum()
   acc_enum <- accumulator_functs_enum()
@@ -147,30 +154,42 @@ get_terminal_acc_and_args <- function(terminal_symbol) {
   if (terminal_symbol == sym_enum$mean_expression_feature) {
     acc_funct <- acc_enum$inc_mean_count
     acc_args <- c(arg_enum$feature_idxs, arg_enum$umi_counts, arg_enum$n_cells)
+    acc_constructor <- numeric
+    acc_length <- arg_enum$n_features
   }
   # Mean squared UMI count of feature
   else if (terminal_symbol == sym_enum$mean_sq_expression_feature) {
     acc_funct <- acc_enum$inc_mean_sq_count
     acc_args <- c(arg_enum$feature_idxs, arg_enum$umi_counts, arg_enum$n_cells)
+    acc_constructor <- numeric
+    acc_length <- arg_enum$n_features
   }
   # N nonzero entries feature
   else if (terminal_symbol == sym_enum$n_nonzero_feature) {
     acc_funct <- acc_enum$inc_n_entries
     acc_args <- c(arg_enum$feature_idxs)
+    acc_constructor <- integer
+    acc_length <- arg_enum$n_features
   }
   # N nonzero entries cell
   else if (terminal_symbol == sym_enum$n_nonzero_cell) {
     acc_funct <- acc_enum$inc_n_entries
     acc_args <- c(arg_enum$cell_idxs)
+    acc_constructor <- integer
+    acc_length <- arg_enum$n_cells
   }
   # UMI count cell
   else if (terminal_symbol == sym_enum$n_umis_cell) {
     acc_funct <- acc_enum$inc_count
     acc_args <- c(arg_enum$cell_idxs, arg_enum$umi_counts)
+    acc_constructor <- integer
+    acc_length <- arg_enum$n_cells
   }
   else if (terminal_symbol == sym_enum$n_mito_cell) {
-    acc_funct <- acc_enum$inc_count_conditional
-    acc_args <- c(arg_enum$cell_idxs, arg_enum$umi_counts, arg_enum$feature_idxs, arg_enum$mt_gene_bool)
+    acc_funct <- acc_enum$inc_cell_count_if_feature_condition
+    acc_args <- c(arg_enum$feature_idxs, arg_enum$cell_idxs, arg_enum$umi_counts, arg_enum$mt_gene_bool)
+    acc_constructor <- integer
+    acc_length <- arg_enum$n_cells
   }
-  return(list(acc_funct = acc_funct, acc_args = acc_args))
+  return(list(acc_funct = acc_funct, acc_args = acc_args, acc_constructor = acc_constructor, acc_length = acc_length))
 }
