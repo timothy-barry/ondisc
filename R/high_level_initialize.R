@@ -28,7 +28,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
   if (is.null(on_disc_dir)) on_disc_dir <- gsub(pattern = '/[^/]*$', replacement = "", x = mtx_fp)
 
   # Generate a name for the ondisc_matrix .h5 file, if necessary
-  if (is.null(file_name)) h5_fp <- generate_on_disc_matrix_name(on_disc_dir)
+  if (is.null(file_name)) file_name <- generate_on_disc_matrix_name(on_disc_dir)
+  h5_fp <- paste0(on_disc_dir, "/", file_name)
 
   # Initialize the .h5 file on-disk (side-effect)
   initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp)
@@ -42,5 +43,5 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
   n_rows_to_skip <- n_rows_with_comments + 1
 
   # Run core algorithm
-  run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_elem_per_chunk, n_rows_to_skip)
+  cov_mats <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_elem_per_chunk, n_rows_to_skip)
 }

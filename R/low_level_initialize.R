@@ -61,6 +61,8 @@ get_accumulator_funct_arg_list <- function(terminal_symbol) {
 }
 
 
+
+
 #' Run subtask 2a
 #'
 #' Runs subtask a of part 2 of mtx algorithm: updates the accumulator of each terminal symbol.
@@ -70,7 +72,7 @@ get_accumulator_funct_arg_list <- function(terminal_symbol) {
 #' @param acc the accumulator list
 #'
 #' @return NULL
-run_subtask_2a <- function(x, bag_of_variables, acc) {
+run_subtask_2a <- function(x, bag_of_variables, acc, terminal_functs_args) {
   arguments <- arguments_enum()
   bag_of_variables[[arguments$cell_idxs]] <- x$cell_idxs
   bag_of_variables[[arguments$feature_idxs]] <- x$feature_idxs
@@ -98,7 +100,7 @@ run_subtask_2a <- function(x, bag_of_variables, acc) {
 #' @param initial_accumulators list of starting accumulators
 #' @param terminal_functs_args list of accumulator function names and arguments
 #'
-#' @return
+#' @return a list containing the values of the terminals
 run_mtx_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_elem_per_chunk, n_rows_to_skip, initial_accumulators, terminal_functs_args) {
   # Define closure to be called by readr::read_delim_chunked
   closure <- function(x, pos, acc) {
@@ -108,25 +110,42 @@ run_mtx_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_e
     decrement_idxs(x$cell_idxs)
 
     # subtask a: loop through accumulators and update
-    run_subtask_2a(x, bag_of_variables, acc)
-
+    run_subtask_2a(x, bag_of_variables, acc, terminal_functs_args)
     # subtask b:
     # subtask c:
     return(acc)
   }
-
+  arguments <- arguments_enum()
   terminals <- readr::read_delim_chunked(file = mtx_fp,
                             chunk_size = n_elem_per_chunk,
                             skip = n_rows_to_skip,
                             callback = readr::AccumulateCallback$new(closure, acc = initial_accumulators),
                             delim = " ",
-                            col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (is_logical) NULL else arguments$umi_counts ),
+                            col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (is_logical) NULL else arguments$umi_counts),
                             progress = TRUE,
                             col_types = if (is_logical) "ii" else "iii")
   return(terminals)
 }
 
 
+#' Run core mtx algo
+#'
+#' Runs to core algorithm for mtx files. There are two steps:
+#' (i) compute the row pointer
+#' (ii) write CSC matrix, write CSR matrix, compute covariate matrices
+#'
+#' @param h5_fp file path to h5 file
+#' @param mtx_fp file path to .mtx file
+#' @param is_logical (logical) is expression matrix logical?
+#' @param covariates a list of two elements: the feature covariates and the cell covariates
+#' @param bag_of_variables environment containing named variables
+#' @param n_elem_per_chunk number of elements to load per chunk
+#' @param n_rows_to_skip number of rows to skip in .mtx file
+#'
+#' @return
+#' @export
+#'
+#' @examples
 run_core_mtx_algo <- function(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_elem_per_chunk, n_rows_to_skip) {
   grammar <- initialize_grammar()
 
@@ -140,10 +159,18 @@ run_core_mtx_algo <- function(h5_fp, mtx_fp, is_logical, covariates, bag_of_vari
 
   # Run step 1 of core algorithm
 
+
   # Run step 2 of core algorithm
-  terminals <- run_mtx_algo_step_2(h5_fp, mtx_fp, is_logical, bag_of_variables, n_elem_per_chunk,
+  terminal_values <- run_mtx_algo_step_2(h5_fp, mtx_fp, is_logical, bag_of_variables, n_elem_per_chunk,
                                    n_rows_to_skip, initial_accumulators, terminal_functs_args)
 
   # compute the covariate matrices
-
+  for (i in 1:length(terminal_symbols)) grammar[[terminal_symbols[i]]]$value <- terminal_values[[i]]
+  cov_mats <- lapply(covariates, function(covariate_vect) {
+    out <- lapply(covariate_vect, evaluate_grammar, grammar) %>% list2DF
+    colnames(out) <- gsub('_(feature|cell)', "", covariate_vect)
+    return(out)
+  })
+  # return covariate matrices
+  return(cov_mats)
 }

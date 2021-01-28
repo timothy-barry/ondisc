@@ -2,9 +2,9 @@
 #' Function to return a simple "enum" of all symbols (terminal and nonterminal) used in the grammar; helps to reduce number of string literals in the code.
 #' @return an environment
 symbols_enum <- function() {
-  symbols <- c("mean_expression_feature",
+  symbols <- c("n_nonzero_feature",
+               "mean_expression_feature",
                 "coef_of_variation_feature",
-                "n_nonzero_feature",
                 "n_nonzero_cell",
                 "n_umis_cell",
                 "p_mito_cell",
@@ -65,7 +65,7 @@ initialize_grammar <- function() {
   e[[sym_enum$p_mito_cell]] <- list(terminal = FALSE,
                                     f = function(p1, p2) p1 / p2,
                                     symbols = c(sym_enum$n_mito_cell,
-                                                sym_enum$n_nonzero_cell))
+                                                sym_enum$n_umis_cell))
   e[[sym_enum$sd_expression_feature]] <- list(terminal = FALSE,
                                               f = function(p1, p2) p1 - p2^2,
                                               symbols = c(sym_enum$mean_sq_expression_feature,
@@ -192,4 +192,25 @@ get_terminal_acc_and_args <- function(terminal_symbol) {
     acc_length <- arg_enum$n_cells
   }
   return(list(acc_funct = acc_funct, acc_args = acc_args, acc_constructor = acc_constructor, acc_length = acc_length))
+}
+
+
+
+#' Evaluate grammar
+#'
+#' Evaluates the grammar given a symbol name
+#'
+#' @param symbol_name name of a symbol
+#' @param grammar an environment representing a grammar
+#'
+#' @return the value of the symbol
+evaluate_grammar <- function(symbol_name, grammar) {
+  if (grammar[[symbol_name]]$terminal) {
+    ret <- grammar[[symbol_name]]$value
+  } else {
+    symbols_to_evaluate <- grammar[[symbol_name]]$symbols
+    evaluated_symbols <- lapply(symbols_to_evaluate, evaluate_grammar, grammar = grammar)
+    ret <- do.call(what = grammar[[symbol_name]]$f, args = evaluated_symbols)
+  }
+  return(ret)
 }

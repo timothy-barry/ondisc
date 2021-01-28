@@ -80,7 +80,7 @@ generate_on_disc_matrix_name <- function(on_disc_dir) {
     new_int <- max(ints_in_use) + 1
     name <- paste0(base_name, new_int, ".h5")
   }
-  return(paste0(on_disc_dir, "/", name))
+  return(name)
 }
 
 
