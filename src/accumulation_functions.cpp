@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+//' @title increment mean count
 //' @param acc_vect a numeric accumulator vector
 //' @param idxs 0-based integer vector of indexes (e.g., feature indexes)
 //' @param umi_counts integer vector of UMI counts
@@ -13,6 +14,7 @@ void inc_mean_count(NumericVector acc_vect, IntegerVector idxs, IntegerVector um
 }
 
 
+//' @title increment n entries
 //' @param acc_vect an integer accumulator vector
 //' @param idxs 0-based integer vector of indexes
 // [[Rcpp::export]]
@@ -23,6 +25,7 @@ void inc_n_entries(IntegerVector acc_vect, IntegerVector idxs) {
 }
 
 
+//' @title increment mean squared count
 //' @param acc_vect a numeric accumulator vector
 //' @param idxs 0-based integer vector of indexes (e.g., feature indexes)
 //' @param umi_counts integer vector of UMI counts
@@ -37,6 +40,7 @@ void inc_mean_sq_count(NumericVector acc_vect, IntegerVector idxs, IntegerVector
 }
 
 
+//' @title increment count
 //' @param acc_vect an integer accumulator vector
 //' @param idxs 0-based integer vector of indexes
 //' @param umi_counts integer vector of UMI counts
@@ -48,6 +52,7 @@ void inc_count(IntegerVector acc_vect, IntegerVector idxs, IntegerVector umi_cou
 }
 
 
+//' @title increment count (if condition on feature holds)
 //' @param acc_vect an integer accumulator vector
 //' @param feature_idxs 0-based integer vector of feature indexes
 //' @param cell_idxs 0-based integer vector of cell_idxs
@@ -63,10 +68,22 @@ void inc_cell_count_if_feature_condition(IntegerVector acc_vect, IntegerVector f
 }
 
 
+//' @title decrement a vector of indexes
 //' @param idxs an integer vector of indexes
 // [[Rcpp::export]]
 void decrement_idxs(IntegerVector idxs) {
   for (int i = 0; i < idxs.size(); i ++) {
     idxs[i] --;
+  }
+}
+
+
+//' @title add vectors in-place
+//' @param v1 the vector to be modified in-place
+//' @param v2 the vector to add element-wise to vector v1; note: v1 may be longer than v2
+// [[Rcpp::export]]
+void sum_in_place(IntegerVector v1, IntegerVector v2) {
+  for (int i = 0; i < v2.size(); i ++) {
+    v1[i] += v2[i];
   }
 }

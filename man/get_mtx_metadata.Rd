@@ -12,7 +12,7 @@ get_mtx_metadata(mtx_fp, n_rows_with_comments)
 \item{n_rows_with_comments}{number of rows with comments (at top of file)}
 }
 \value{
-a list containing (i) n_genes, (ii) n_cells, (iii) the sparsity (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical
+a list containing (i) n_genes, (ii) n_cells, (iii) the numer of data points (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical
 }
 \description{
 Get mtx metadata

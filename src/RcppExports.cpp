@@ -78,6 +78,17 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// sum_in_place
+void sum_in_place(IntegerVector v1, IntegerVector v2);
+RcppExport SEXP _ondisc_sum_in_place(SEXP v1SEXP, SEXP v2SEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type v1(v1SEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type v2(v2SEXP);
+    sum_in_place(v1, v2);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_inc_mean_count", (DL_FUNC) &_ondisc_inc_mean_count, 4},
@@ -86,6 +97,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_inc_count", (DL_FUNC) &_ondisc_inc_count, 3},
     {"_ondisc_inc_cell_count_if_feature_condition", (DL_FUNC) &_ondisc_inc_cell_count_if_feature_condition, 5},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
+    {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},
     {NULL, NULL, 0}
 };
 

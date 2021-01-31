@@ -25,13 +25,13 @@ get_n_rows_with_comments_mtx <- function(mtx_fp) {
 #' @param mtx_fp filepath to the mtx file
 #' @param n_rows_with_comments number of rows with comments (at top of file)
 #'
-#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the sparsity (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical
+#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the numer of data points (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical
 get_mtx_metadata <- function(mtx_fp, n_rows_with_comments) {
   metadata <- utils::read.table(file = mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = " ", colClasses = c("integer", "integer", "integer"))
   n_features <- metadata %>% dplyr::pull(1)
   n_cells <- metadata %>% dplyr::pull(2)
   n_data_points <- metadata %>% dplyr::pull(3)
-  # sparsity <- 1 - n_data_points / (n_features * n_cells)
+  if (n_data_points > .Machine$integer.max) stop("Numer of rows exceeds maximum value.")
   first_row <- utils::read.table(file = mtx_fp, nrows = 1, skip = n_rows_with_comments + 1, header = FALSE, sep = " ", colClasses = "integer")
   is_logical <- ncol(first_row) == 2
   return(list(n_features = n_features, n_cells = n_cells, n_data_points = n_data_points, is_logical = is_logical))
@@ -91,6 +91,10 @@ generate_on_disc_matrix_name <- function(on_disc_dir) {
 #'
 #' @return
 n_gb_to_n_entries <- function(n_gb, logical_mtx) {
-  multiplicative_factor <- 1e9 * (if (logical_mtx) 8.0 else 12.0)
-  return (multiplicative_factor * n_gb)
+  # conversion is the approximate number of rows per GB
+  conversion <- 78600000 * (if (logical_mtx) (3/2) else 1)
+  if (n_gb > .Machine$integer.max / conversion - .1) {
+    stop("n_gb exceeds maximum chunk size; please decrease n_gb.")
+  }
+  as.integer(conversion * n_gb)
 }
