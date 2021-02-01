@@ -2,15 +2,15 @@
 % Please edit documentation in R/high_level_matrix_ops.R
 \name{get_cell_barcodes}
 \alias{get_cell_barcodes}
-\alias{get_gene_ids}
-\alias{get_gene_names}
-\title{Get gene names, gene IDs, and cell barcodes}
+\alias{get_feature_ids}
+\alias{get_feature_names}
+\title{Get feature names, feature IDs, and cell barcodes}
 \usage{
 get_cell_barcodes(x)
 
-get_gene_ids(x)
+get_feature_ids(x)
 
-get_gene_names(x)
+get_feature_names(x)
 }
 \arguments{
 \item{x}{An on_disc_matrix.}
@@ -18,12 +18,12 @@ get_gene_names(x)
 \value{
 The cell barcodes of this on-disc matrix.
 
-The cell gene ids of this on-disc matrix.
+The cell feature ids of this on-disc matrix.
 
-The gene names of this on-disc matrix.
+The feature names of this on-disc matrix.
 }
 \description{
-Functions to extract cell barcodes, gene ids, and gene names from an on_disc_matrix.
+Functions to extract cell barcodes, feature ids, and feature names from an on_disc_matrix.
 }
 \examples{
 # NOTE: You must create the HDF5 file "example.h5" to run this example.
@@ -33,7 +33,7 @@ odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
 if (odm_fp != "") { # if required file exists, ...
 odm <- on_disc_matrix(h5_file = odm_fp)
 barcodes <- get_cell_barcodes(odm)
-gene_ids <- get_gene_ids(odm)
-gene_names <- get_gene_names(odm)
+feature_ids <- get_feature_ids(odm)
+feature_names <- get_feature_names(odm)
 }
 }

@@ -12,7 +12,9 @@ run_mtx_algo_step_2(
   n_elem_per_chunk,
   n_rows_to_skip,
   initial_accumulators,
-  terminal_functs_args
+  terminal_functs_args,
+  row_ptr,
+  n_nonzero_features_per_chunk
 )
 }
 \arguments{

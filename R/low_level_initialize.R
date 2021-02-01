@@ -157,10 +157,15 @@ run_subtask_2b <- function(x, pos, h5_fp, is_logical) {
 
 #' Run subtask 2c
 #'
-#' @return
-#' @export
+#' @param x a data.table
+#' @param h5_fp file path to on-disk h5 file
+#' @param is_logical (boolean) is the matrix logical?
+#' @param row_ptr the (accumulated) row pointer
+#' @param n_nonzero_features_per_chunk a list of the number of nonzero features in each chunk
+#' @param chunk_no the current chunk number
+#' @param n_features total number of features in matrix
 #'
-#' @examples
+#' @return
 run_subtask_2c <- function(x, h5_fp, is_logical, row_ptr, n_nonzero_features_per_chunk, chunk_no, n_features) {
   arguments <- arguments_enum()
   data.table::setorderv(x, arguments$feature_idxs)

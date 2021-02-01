@@ -9,7 +9,7 @@ get_names(x, name_to_get)
 \arguments{
 \item{x}{an on_disc_matrix}
 
-\item{name_to_get}{the names to extract from x (one of cell_barcodes, gene_ids, gene_names)}
+\item{name_to_get}{the names to extract from x (one of cell_barcodes, feature_ids, feature_names)}
 }
 \value{
 a character vector containing the requested names

@@ -2,34 +2,34 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{subset-odm}
 \alias{subset-odm}
-\alias{[,on_disc_matrix,missing,missing,missing-method}
-\alias{[,on_disc_matrix,index_vec,missing,missing-method}
-\alias{[,on_disc_matrix,missing,index_vec,missing-method}
-\alias{[,on_disc_matrix,index_vec,index_vec,missing-method}
-\title{Subset an \code{on_disc_matrix} with \code{[}}
+\alias{[,ondisc_matrix,missing,missing,missing-method}
+\alias{[,ondisc_matrix,ANY,missing,missing-method}
+\alias{[,ondisc_matrix,missing,ANY,missing-method}
+\alias{[,ondisc_matrix,ANY,ANY,missing-method}
+\title{Subset an \code{ondisc_matrix} with \code{[}}
 \usage{
-\S4method{[}{on_disc_matrix,missing,missing,missing}(x, i, j, drop)
+\S4method{[}{ondisc_matrix,missing,missing,missing}(x, i, j, drop)
 
-\S4method{[}{on_disc_matrix,index_vec,missing,missing}(x, i, j)
+\S4method{[}{ondisc_matrix,ANY,missing,missing}(x, i, j)
 
-\S4method{[}{on_disc_matrix,missing,index_vec,missing}(x, i, j)
+\S4method{[}{ondisc_matrix,missing,ANY,missing}(x, i, j)
 
-\S4method{[}{on_disc_matrix,index_vec,index_vec,missing}(x, i, j)
+\S4method{[}{ondisc_matrix,ANY,ANY,missing}(x, i, j)
 }
 \arguments{
-\item{x}{An on_disc_matrix object}
+\item{x}{An ondisc_matrix object}
 
-\item{i}{Vector (numeric, logical, or character) indicating genes to keep}
+\item{i}{Vector (numeric, logical, or character) indicating features to keep}
 
 \item{j}{Vector (numeric, logical, or character) indicating cells to keep}
 
 \item{drop}{not used}
 }
 \value{
-A subset on_disc_matrix object.
+A subset ondisc_matrix object.
 }
 \description{
-The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to gene IDs (for rows) and cell barcodes (for columns).
+The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to feature IDs (for rows) and cell barcodes (for columns).
 }
 \examples{
 # NOTE: You must create the HDF5 file "example.h5" to run this example.
@@ -37,14 +37,14 @@ The user can pass logical, character, of numeric vectors to \code{`[`}. Characte
 # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
 odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
 if (odm_fp != "") { # if required file exists, ...
-odm <- on_disc_matrix(h5_file = odm_fp)
+odm <- ondisc_matrix(h5_file = odm_fp)
 # keep cells 100-110
 x <- odm[,100:110]
-# keep genes ENSG00000260528, ENSG00000258908, and ENSG00000081913
+# keep features ENSG00000260528, ENSG00000258908, and ENSG00000081913
 x <- odm[c("ENSG00000260528", "ENSG00000258908", "ENSG00000081913"),]
 # keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT
 x <- odm[,c("ACAGCCGCAGAAACCG", "CTACTATAGTGTACCT")]
-# keep all genes except ENSG00000167525 and ENSG00000235815
-x <- odm[!(get_gene_ids(odm) \%in\% c("ENSG00000167525", "ENSG00000235815")),]
+# keep all features except ENSG00000167525 and ENSG00000235815
+x <- odm[!(get_feature_ids(odm) \%in\% c("ENSG00000167525", "ENSG00000235815")),]
 }
 }

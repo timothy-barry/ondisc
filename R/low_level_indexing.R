@@ -72,3 +72,7 @@ return_spMatrix_from_index <- function(h5_file, idx, col_idx) {
   if (idx_unsorted) ret <- if (col_idx) ret[,Matrix::invPerm(permutation)] else ret[Matrix::invPerm(permutation),]
   return(ret)
 }
+
+# lgRMatrix
+# lgCMatrix
+# These are the logical matrix classes for row and column, respectively.

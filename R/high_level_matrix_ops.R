@@ -1,30 +1,35 @@
 #' Get on_disc subset vector
 #'
-#' Returns the subset vector (either gene or cell) for an on_disc_matrix object.
+#' Returns the subset vector and order vector (either feature or cell) for an ondisc_matrix object.
 #'
-#' @param x the on_disc_matrix.
-#' @param cell_idx (boolean) TRUE = cell, FALSE = gene.
+#' @param x the ondisc_matrix.
+#' @param cell_idx (boolean) TRUE = cell, FALSE = feature.
 #'
 #' @return the requested subset indexes
 get_subset_vector <- function(x, cell_idx) {
-  idx_slot <- paste0(if (cell_idx) "cell" else "gene", "_subset")
+  idx_slot <- paste0(if (cell_idx) "cell" else "feature", "_subset")
   return(slot(x, idx_slot))
 }
 
+#' @rdname get_subset_vector
+get_order_vector <- function(x, cell_idx) {
+  idx_slot <- paste0(if (cell_idx) "cell" else "feature", "_subset_order")
+  return(slot(x, idx_slot))
+}
 
 #' Get dim
 #'
 #' Returns the dimension of an on_disc matrix.
 #'
-#' @param x an on_disc_matrix object
+#' @param x an ondisc_matrix object
 #'
 #' @return the dimension
 get_dim <- function(x) {
   cell_unsubset <- identical(x@cell_subset, NA_integer_)
-  gene_unsubset <- identical(x@gene_subset, NA_integer_)
+  feature_unsubset <- identical(x@feature_subset, NA_integer_)
 
-  if (cell_unsubset || gene_unsubset) dim_h5 <- rhdf5::h5read(file = x@h5_file, name = "/metadata/dimension") %>% as.integer()
-  n_row_out <- if (gene_unsubset) dim_h5[1] else length(x@gene_subset)
+  if (cell_unsubset || feature_unsubset) dim_h5 <- rhdf5::h5read(file = x@h5_file, name = "dimension") %>% as.integer()
+  n_row_out <- if (feature_unsubset) dim_h5[1] else length(x@feature_subset)
   n_col_out <- if (cell_unsubset) dim_h5[2] else length(x@cell_subset)
   return(c(n_row_out, n_col_out))
 }
@@ -32,34 +37,34 @@ get_dim <- function(x) {
 
 #' Get names helper function
 #'
-#' @param x an on_disc_matrix
-#' @param name_to_get the names to extract from x (one of cell_barcodes, gene_ids, gene_names)
+#' @param x an ondisc_matrix
+#' @param name_to_get the names to extract from x (one of cell_barcodes, feature_ids, feature_names)
 #'
 #' @return a character vector containing the requested names
 get_names <- function(x, name_to_get) {
-  names_out <- rhdf5::h5read(file = x@h5_file, name = paste0("metadata/", name_to_get)) %>% as.character()
+  names_out <- rhdf5::h5read(file = x@h5_file, name = name_to_get) %>% as.character()
   idx <- get_subset_vector(x, name_to_get == "cell_barcodes")
   if (identical(idx, NA_integer_)) names_out else names_out[idx]
 }
 
 
-#' Get gene names, gene IDs, and cell barcodes
+#' Get feature names, feature IDs, and cell barcodes
 #'
-#' Functions to extract cell barcodes, gene ids, and gene names from an on_disc_matrix.
+#' Functions to extract cell barcodes, feature ids, and feature names from an ondisc_matrix.
 #'
-#' @param x An on_disc_matrix.
+#' @param x An ondisc_matrix.
 #' @return The cell barcodes of this on-disc matrix.
 #' @export
 #' @examples
 #' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_10x_mtx"
+#' # (via ?create_ondisc_matrix_from_10x_mtx), and execute the code in the example.
 #' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
 #' if (odm_fp != "") { # if required file exists, ...
-#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' odm <- ondisc_matrix(h5_file = odm_fp)
 #' barcodes <- get_cell_barcodes(odm)
-#' gene_ids <- get_gene_ids(odm)
-#' gene_names <- get_gene_names(odm)
+#' feature_ids <- get_feature_ids(odm)
+#' feature_names <- get_feature_names(odm)
 #' }
 get_cell_barcodes <- function(x) {
   get_names(x, "cell_barcodes")
@@ -67,178 +72,110 @@ get_cell_barcodes <- function(x) {
 
 
 #' @rdname get_cell_barcodes
-#' @param x An on_disc_matrix.
+#' @param x An ondisc_matrix.
 #' @export
-#' @return The cell gene ids of this on-disc matrix.
-get_gene_ids <- function(x) {
-  get_names(x, "gene_ids")
+#' @return The cell feature ids of this on-disc matrix.
+get_feature_ids <- function(x) {
+  get_names(x, "feature_ids")
 }
 
 
 #' @rdname get_cell_barcodes
-#' @param x An on_disc_matrix.
+#' @param x An ondisc_matrix.
 #' @export
-#' @return The gene names of this on-disc matrix.
-get_gene_names <- function(x) {
-  get_names(x, "gene_names")
+#' @return The feature names of this on-disc matrix.
+get_feature_names <- function(x) {
+  get_names(x, "feature_names")
 }
 
 
-#' Subset by gene or cell
+#' Subset by feature or cell
 #'
-#' Subsets an on_disc_matrix by either gene or cell, as specified.
+#' Subsets an ondisc_matrix by either feature or cell.
 #'
-#' @param x an on_disc_matrix
-#' @param idx a set of integer, logical, or character indexes.
-#' @param subset_on_cell boolean indicating whether to subset on cell (TRUE) or gene (FALSE)
+#' @param x an ondisc_matrix
+#' @param idx a numeric, character, or logical index
+#' @param subset_on_cell (boolean) subset on cell (TRUE) or feature (FALSE)
 #'
-#' @return a subset on_disc_matrix.
-subset_by_gene_or_cell <- function(x, idx, subset_on_cell) {
-  n_elements <- if (subset_on_cell) ncol(x) else nrow(x)
-  subset_slot <- paste0(if (subset_on_cell) "cell" else "gene", "_subset")
+#' @return a subset ondisc_matrix
+subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
+  subset_slot <- paste0(if (subset_on_cell) "cell" else "feature", "_subset")
+  order_slot <- paste0(subset_slot, "_order")
   if (identical(slot(x, subset_slot), NA_integer_)) {
-    slot(x, subset_slot) <- 1:n_elements
+    n_elements <- if (subset_on_cell) ncol(x) else nrow(x)
+    slot(x, subset_slot) <- seq(1, n_elements)
   }
-  # Ensure input not too long
-  if (length(idx) > n_elements) stop("Index vector too long.")
-  # perform subset based on class of idx
-  if (class(idx) %in% c("logical", "numeric", "integer")) {
-    # Check if index is out of bounds
-    if (max(idx) > length(slot(x, subset_slot))) stop("Index out of bounds.")
+  # perform different subset operation based on class of idx
+  if (is(idx, "numeric")) {
+    if (max(idx) > length(slot(x, subset_slot))) stop("Numeric index out of bounds.")
     slot(x, subset_slot) <- slot(x, subset_slot)[idx]
-  }
-  if (class(idx) == "character") {
-    all_ids <- rhdf5::h5read(file = x@h5_file, name = paste0("metadata/", if (subset_on_cell) "cell_barcodes" else "gene_ids"))
+  } else if (is(idx, "logical")) {
+    if (length(idx) > length(slot(x, subset_slot))) stop("Logical vector too long.")
+    slot(x, subset_slot) <- slot(x, subset_slot)[idx]
+  } else if (is(idx, "character")) {
+    all_ids <- rhdf5::h5read(file = x@h5_file, name = if (subset_on_cell) "cell_barcodes" else "feature_ids")
     curr_ids <- all_ids[slot(x, subset_slot)]
     within_cur_ids_idxs <- match(x = idx, table = curr_ids)
-    if (any(is.na(within_cur_ids_idxs))) stop(paste(if(subset_on_cell) "Cell barcode" else "Gene id","not present in data."))
+    if (any(is.na(within_cur_ids_idxs))) stop(paste(if(subset_on_cell) "Cell barcode" else "feature id","not present in data."))
     slot(x, subset_slot) <- slot(x, subset_slot)[within_cur_ids_idxs]
+  } else {
+    stop("idx must be of type numeric, character, or logical.")
   }
-  # Finally, verify that the indexes are not duplicated
-  tmp <- rle(sort(slot(x, subset_slot), method = "radix"))
-  if (any(tmp$lengths >= 2)) stop("Duplicate indices not allowed.")
+  # check for duplicates and store ordering
+  l <- length(slot(x, subset_slot))
+  ordering <- order(slot(x, subset_slot), method = "radix")
+  tmp <- rle(slot(x, subset_slot)[ordering])
+  if (any(tmp$lengths >= 2L)) stop("Duplicate indices not allowed.")
+  if (any(ordering != seq(1L,l))) slot(x, order_slot) <- ordering
   return(x)
 }
 
 
 #' Extract matrix
 #'
-#' @param x an on_disc matrix
+#' @param x an ondisc_matrix.
 #'
-#' @return a sparse Matrix object corresponding to the in-memory version of x.
+#' @return an in-memory version of x
 extract_matrix <- function(x) {
   # First, determine which axis to index on; always index on the shorter axis.
   x_dim <- dim(x)
-  if (x_dim[1] == 0 || x_dim[2] == 0) stop("On_disc_matrix has 0 rows or columns; cannot extract sub-matrix into memory.")
+  if (x_dim[1] == 0 || x_dim[2] == 0) {
+    stop("ondisc_matrix has 0 rows or columns; cannot extract sub-matrix into memory.")
+  }
   index_on_cell <- x_dim[2] < x_dim[1]
-  # In rare cases, the subset vector may be NA; for now, just initialze the subset vector of the (deep-copied) on_disc_matrix to 1:nrow or 1:ncol. Later, maybe optimize by passing NULL to rhdf5 to load entire dataset.
-  curr_subset <- paste0(if (index_on_cell) "cell" else "gene", "_subset")
-  if (identical(slot(x, curr_subset), NA_integer_)) slot(x, curr_subset) <- if (index_on_cell) 1:x_dim[2] else 1:x_dim[1]
-  # Next, pull data from memory according to the correct matrix axis.
-  out <- return_spMatrix_from_index(h5_file = x@h5_file, idx = if (index_on_cell) x@cell_subset else x@gene_subset, col_idx = index_on_cell)
-  # Next, subset the sparse matrix according to the other dimension.
+  subset_vector <- get_subset_vector(x, index_on_cell)
+  order_vector <- get_order_vector(x, index_on_cell)
+  # if subset_vector is NA, initialize it as an integer vector (this will happen only rarely)
+  if (identical(subset_vector, NA_integer_)) {
+    subset_vector <- seq(1, if (index_on_cell) x_dim[2] else x_dim[1])
+  }
+  # if necessary, order the subset vector before passing to return_spMatrix_from_index.
+  subset_vector_ordered <- identical(order_vector, NA_integer_)
+  if (!subset_vector_ordered) {
+    subset_vector <- subset_vector[order_vector]
+  }
+  # return submatrix, ordered (and subset) along main axis, and unsubset along secondary axis.
+  out <- return_spMatrix_from_index(h5_file = x@h5_file, idx = subset_vector, col_idx = index_on_cell)
+  # Two additional post-processing tasks:
+  # First, reorder the rows/columns of the matrix (if necessary).
+  if (!subset_vector_ordered) {
+    inv_perm <- Matrix::invPerm(order_vector)
+    out <- if (index_on_cell) out[,inv_perm,drop=FALSE] else out[inv_perm,,drop=FALSE]
+  }
+  # Second, if necessary, subset along the other axis
   second_subset <- get_subset_vector(x, !index_on_cell)
-  if (!identical(second_subset, NA_integer_)) { # If we have to perform a subset,
-    if (index_on_cell) { # then subset by gene by we extracted by cell.
-      out <- out[second_subset,,drop=FALSE]
-    } else { # Or subset by cell if we extracted by gene.
-      out <- out[,second_subset,drop=FALSE]
-    }
+  if (!identical(second_subset, NA_integer_)) {
+    out <- if (index_on_cell) out[second_subset,,drop=FALSE] else out[,second_subset,drop=FALSE]
   }
   return(out)
 }
 
 
-#' On disc apply across chunks
+#' Convert an `ondisc_matrix` to a Seurat object
 #'
-#' Applies a function across chunks of an on_disc_matrix.
+#' Converts an ondisc_matrix to a Suerat object.
 #'
-#' @param x an on_disc matrix
-#' @param col_apply (boolean) apply across columns (TRUE) or rows (FALSE)
-#' @param chunk_function function to apply to each chunk
-#' @param chunk_size size of the chunks to load
-#'
-#' @return a vector or matrix containing the results of applying the function to the on_disc matrix.
-on_disc_apply_across_chunks <- function(x, col_apply, chunk_function, chunk_size) {
-  cat(paste0("Chunk size: ", chunk_size, "\n"))
-  sequence <- get_chunks_sequence(n_items = if (col_apply) ncol(x) else nrow(x), chunk_size = chunk_size)
-  res_list <- purrr::map(.x = 1:(length(sequence)-1), .f = function(i) {
-    curr_idx <- (sequence[i] + 1):(sequence[i + 1])
-    cat(paste0("Processing chunk ", crayon::blue(i), " of ", crayon::blue(length(sequence) - 1), ".\n"))
-    curr_m <- subset_by_gene_or_cell(x = x, idx = curr_idx, subset_on_cell = col_apply) %>% extract_matrix()
-    chunk_function(curr_m)
-  })
-  cat("All chunks processed."); print_checkmark()
-  # Finally, combine all the results
-  combine_results(res_list)
-}
-
-
-#' Get essential gene- and cell-wise summary statistics
-#'
-#' Takes an on_disc_matrix that contains gene-by-cell expressions (x), and outputs the cell-specific and gene-specific covariate matrices.
-#' @param x an on_disc_matrix
-#' @param n_cells_to_process_at_time (optional; default 10000) number of cells to process at a time
-#'
-#' @return a list containing the cell-specific and gene-specific covariate matrices
-#' @export
-#' @examples
-#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-#' if (odm_fp != "") { # if required file exists, ...
-#' odm <- on_disc_matrix(h5_file = odm_fp)
-#' covariate_matrices <- summarize_expression_matrix(odm)
-#' }
-summarize_expression_matrix <- function(x, n_cells_to_process_at_time = 10000) {
-  # Obtain the gene_names (constant across cell chunks)
-  gene_ids <- get_gene_names(x)
-  mt_genes <- grep(pattern = "^MT-", x = gene_ids)
-  sequence <- get_chunks_sequence(n_items = ncol(x), chunk_size = n_cells_to_process_at_time)
-  res_list <- purrr::map(.x = 1:(length(sequence)-1), .f = function(i) {
-    curr_idx <- (sequence[i] + 1):(sequence[i + 1])
-    cat(paste0("Processing chunk ", crayon::blue(i), " of ", crayon::blue(length(sequence) - 1), ".\n"))
-    curr_m <- subset_by_gene_or_cell(x = x, idx = curr_idx, subset_on_cell = TRUE) %>% extract_matrix()
-    # cell-wise total UMI count
-    cell_wise_umi_total <- Matrix::colSums(curr_m)
-    # cell-wise mitochondrial UMI count
-    if (length(mt_genes) >= 1) {
-      cell_wise_mito_umi_total <- Matrix::colSums(curr_m[mt_genes,,drop=FALSE])
-    } else {
-      cell_wise_mito_umi_total <- numeric(length = ncol(curr_m))
-    }
-    # gene-wise total UMI count
-    gene_wise_umi_total <-  Matrix::rowSums(curr_m)
-    # Convert curr_m to binary matrix
-    curr_m@x <- rep(1, length(curr_m@x))
-    # cell-wise n genes expressed
-    cell_wise_n_genes_exp <-  Matrix::colSums(curr_m)
-    # gene-wise n-cells expressed
-    gene_wise_n_cells_exp <-  Matrix::rowSums(curr_m)
-    # Return data in two matrices: a gene covaraite matrix and cell covariate matrix
-    gene_covariate_matrix <- cbind(gene_wise_umi_total, gene_wise_n_cells_exp)
-    cell_covariate_matrix <- cbind(cell_wise_umi_total, cell_wise_n_genes_exp, cell_wise_mito_umi_total)
-    list(gene_covariate_matrix = gene_covariate_matrix, cell_covariate_matrix = cell_covariate_matrix)
-  })
-  cat("All chunks processed."); print_checkmark()
-  # Finally, combine all the results: for genes, reduce over sum; for cells, do.call over rbind.
-  cell_covariate_matrix_temp <- do.call(rbind, purrr::map(.x = res_list, .f = function(i) i[["cell_covariate_matrix"]]))
-  p_mito <- (cell_covariate_matrix_temp[,"cell_wise_mito_umi_total"]/cell_covariate_matrix_temp[,"cell_wise_umi_total"]) * 100
-  cell_covariate_matrix <- cbind(cell_covariate_matrix_temp[,c("cell_wise_umi_total", "cell_wise_n_genes_exp")], p_mito = p_mito)
-  colnames(cell_covariate_matrix) <- c("total_umis", "n_genes_expressed", "percent_mito")
-  gene_cov_mat_dim <- dim(res_list[[1]][["gene_covariate_matrix"]])
-  gene_covariate_matrix <- Reduce(f = "+", x = purrr::map(.x = res_list, .f = function(i) i[["gene_covariate_matrix"]]), init = matrix(data = 0, nrow = gene_cov_mat_dim[1], ncol = gene_cov_mat_dim[2]))
-  colnames(gene_covariate_matrix) <- c("total_umis", "n_cells_expressed")
-  return(list(cell_covariate_matrix = cell_covariate_matrix, gene_covariate_matrix = gene_covariate_matrix))
-}
-
-
-#' Convert an `on_disc_matrix` to a Seurat object
-#'
-#' Converts an on_disc_matrix to a Suerat object.
-#'
-#' @param x an on_disc_matrix
+#' @param x an ondisc_matrix
 #' @param project (default "CreateSeuratObject") project name of the Seurat object
 #' @param assay (default "RNA") name of the initial assay
 #' @param cell_covariate_matrix (default none) cell-level covariate matrix
@@ -247,18 +184,18 @@ summarize_expression_matrix <- function(x, n_cells_to_process_at_time = 10000) {
 #' @export
 #' @examples
 #' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_10x_mtx"
+#' # (via ?create_ondisc_matrix_from_10x_mtx), and execute the code in the example.
 #' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
 #' if (odm_fp != "") { # if required file exists, ...
-#' odm <- on_disc_matrix(h5_file = odm_fp)
+#' odm <- ondisc_matrix(h5_file = odm_fp)
 #' seurat_obj <- convert_to_seurat_object(odm)
 #' }
 convert_to_seurat_object <- function(x, project = "CreateSeuratObject", assay = "RNA", cell_covariate_matrix = NULL) {
-  gene_ids <- get_gene_ids(x)
+  feature_ids <- get_feature_ids(x)
   cell_barcodes <- get_cell_barcodes(x)
   m <- extract_matrix(x)
-  row.names(m) <- gene_ids
+  row.names(m) <- feature_ids
   colnames(m) <- cell_barcodes
   out <- Seurat::CreateSeuratObject(counts = m, project = project,
                                     assay = assay,

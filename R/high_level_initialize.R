@@ -43,6 +43,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
   n_rows_to_skip <- n_rows_with_comments + 1
 
   # Run core algorithm
-  cov_mats <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_elem_per_chunk, n_rows_to_skip)
-  return(cov_mats)
+  out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_elem_per_chunk, n_rows_to_skip)
+  odm <- ondisc_matrx(h5_fp)
+  out$ondisc_matrix <- odm
+  return(out)
 }
