@@ -21,23 +21,39 @@
 #' odm <- ondisc_matrix(h5_file = odm_fp)
 #' }
 ondisc_matrix <- setClass("ondisc_matrix",
-                           representation(h5_file = "character",
-                                          logical_mat = "logical",
-                                          cell_subset = "integer",
-                                          cell_subset_order = "integer",
-                                          feature_subset = "integer",
-                                          feature_subset_order = "integer"),
-                           prototype(h5_file = NA_character_,
-                                     logical_mat = FALSE,
-                                     cell_subset = NA_integer_,
-                                     cell_subset_order = NA_integer_,
-                                     feature_subset = NA_integer_,
-                                     feature_subset_order = NA_integer_)
-                          )
+                           slots = list(h5_file = "character",
+                                        logical_mat = "logical",
+                                        cell_subset = "integer",
+                                        cell_subset_order = "integer",
+                                        feature_subset = "integer",
+                                        feature_subset_order = "integer"),
+                           prototype = list(h5_file = NA_character_,
+                                            logical_mat = FALSE,
+                                            cell_subset = NA_integer_,
+                                            cell_subset_order = NA_integer_,
+                                            feature_subset = NA_integer_,
+                                            feature_subset_order = NA_integer_))
 
-#' index_vec class
-#' A union of the numeric, logical, and character classes. Used for indexing of on_disc_matrices. Idea borrowed from Matrix package.
-# setClassUnion("index_vec", members =  c("numeric", "logical", "character"))
+
+#' ovariate_odm class constructor
+#'
+#' A covariate_odm (short for "covariate ondisc_matrix") is an object that stores and ondisc_matrix, along with its cell-specific and feature-specific covariate matrices.
+#'
+#' @slot ondisc_matrix an ondisc_matrix.
+#' @slot cell_covariates a data frame on cell covariates.
+#' @slot feature_covariates a data frame of feature covariates.
+#'
+#' @return a covariate_odm object
+#' @export
+#'
+#' @examples
+covariate_odm <- setClass("covariate_odm",
+                          slots = list(ondisc_matrix = "ondisc_matrix",
+                                       cell_covariates = "data.frame",
+                                       feature_covariates = "data.frame"))
+
+# multimodal_odm <- setClass("multimodal_odm",
+#                           representation())
 
 # Basic information extraction methods
 ######################################
@@ -77,6 +93,16 @@ setMethod("dim", signature("ondisc_matrix"), function(x) get_dim(x))
 setMethod("show", signature = signature("ondisc_matrix"), function(object) {
   x_dim <- dim(object)
   cat(paste0("An ondisc_matrix with ", crayon::blue(x_dim[1]), " feature", if (x_dim[1] == 1) "" else "s" ," and ", crayon::blue(x_dim[2]), " cell", if (x_dim[2] == 1) "" else "s", ".\n"))
+})
+
+
+setMethod("show", signature = signature("covariate_odm"), function(object) {
+  cell_covariates <- colnames(object@cell_covariates)
+  feature_covariates <- colnames(object@feature_covariates)
+  cat("A covariate_odm with the following components:\n")
+  cat("\t"); show(object@ondisc_matrix)
+  paste0("\tA cell covariate matrix with columns ", paste(crayon::blue(cell_covariates), collapse = ", "), ".\n") %>% cat()
+  paste0("\tA feature covariate matrix with columns ", paste(crayon::blue(feature_covariates), collapse = ", "), ".\n") %>% cat()
 })
 
 #' Print the first few rows and columns
@@ -157,6 +183,35 @@ setMethod(f = "[",
             subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% subset_by_feature_or_cell(x = ., idx = j, subset_on_cell = TRUE)
           })
 
+
+setMethod(f = "[",
+          signature = signature(x = "covariate_odm", i = "ANY", j = "ANY", drop = "missing"),
+          definition = function(x, i, j, drop) {
+            x@ondisc_matrix <- x@ondisc_matrix[i,j]
+            x@cell_covariates <- x@cell_covariates[j,]
+            x@feature_covariates <- x@feature_covariates[i,]
+            return(x)
+          })
+
+setMethod(f = "[",
+          signature = signature(x = "covariate_odm", i = "ANY", j = "missing", drop = "missing"),
+          definition = function(x, i, j, drop) {
+            x@ondisc_matrix <- x@ondisc_matrix[i,]
+            x@cell_covariates <- x@feature_covariates[i,]
+            return(x)
+          })
+
+setMethod(f = "[",
+          signature = signature(x = "covariate_odm", i = "missing", j = "ANY", drop = "missing"),
+          definition = function(x, i, j, drop) {
+            x@ondisc_matrix <- x@ondisc_matrix[,j]
+            x@feature_covariates <- x@cell_covariates[j,]
+            return(x)
+          })
+
+setMethod(f = "[",
+          signature = signature(x = "covariate_odm", i = "missing", j = "missing", drop = "missing"),
+          definition = function(x, i, j, drop) return(x))
 
 # Extract expression data methods
 #################################

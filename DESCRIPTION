@@ -25,19 +25,14 @@ Suggests:
     rmarkdown,
     Seurat
 Imports: 
-    utils,
-    dplyr,
     readr,
     methods,
     magrittr,
     rhdf5,
-    crayon,
     data.table,
-    purrr,
     Matrix,
-    R.utils,
-    stats,
-    Rcpp
+    Rcpp,
+    crayon
 Depends: R (>= 3.5.0)
 VignetteBuilder: knitr
 LinkingTo: 

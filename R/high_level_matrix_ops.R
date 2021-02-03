@@ -135,7 +135,7 @@ subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
 #'
 #' @param x an ondisc_matrix.
 #'
-#' @return an in-memory version of x
+#' @return an in-memory version of x in the form of a Matrix object.
 extract_matrix <- function(x) {
   # First, determine which axis to index on; always index on the shorter axis.
   x_dim <- dim(x)
@@ -155,7 +155,7 @@ extract_matrix <- function(x) {
     subset_vector <- subset_vector[order_vector]
   }
   # return submatrix, ordered (and subset) along main axis, and unsubset along secondary axis.
-  out <- return_spMatrix_from_index(h5_file = x@h5_file, idx = subset_vector, col_idx = index_on_cell)
+  out <- return_spMatrix_from_index(x@h5_file, subset_vector, index_on_cell, x@logical_mat)
   # Two additional post-processing tasks:
   # First, reorder the rows/columns of the matrix (if necessary).
   if (!subset_vector_ordered) {
@@ -202,3 +202,4 @@ convert_to_seurat_object <- function(x, project = "CreateSeuratObject", assay = 
                                     meta.data = cell_covariate_matrix)
   return(out)
 }
+

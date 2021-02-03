@@ -7,7 +7,7 @@
 get_names(x, name_to_get)
 }
 \arguments{
-\item{x}{an on_disc_matrix}
+\item{x}{an ondisc_matrix}
 
 \item{name_to_get}{the names to extract from x (one of cell_barcodes, feature_ids, feature_names)}
 }

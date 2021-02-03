@@ -89,6 +89,17 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// find_contig_subseqs
+List find_contig_subseqs(IntegerVector v);
+RcppExport SEXP _ondisc_find_contig_subseqs(SEXP vSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type v(vSEXP);
+    rcpp_result_gen = Rcpp::wrap(find_contig_subseqs(v));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_inc_mean_count", (DL_FUNC) &_ondisc_inc_mean_count, 4},
@@ -98,6 +109,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_inc_cell_count_if_feature_condition", (DL_FUNC) &_ondisc_inc_cell_count_if_feature_condition, 5},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},
+    {"_ondisc_find_contig_subseqs", (DL_FUNC) &_ondisc_find_contig_subseqs, 1},
     {NULL, NULL, 0}
 };
 

@@ -21,3 +21,21 @@ void sum_in_place(IntegerVector v1, IntegerVector v2) {
     v1[i] += v2[i];
   }
 }
+
+
+//' @title find contiguous subsequences
+//' @param v an ORDERED integer vector
+// [[Rcpp::export]]
+List find_contig_subseqs(IntegerVector v) {
+  IntegerVector starting_idxs;
+  IntegerVector ending_idxs;
+  starting_idxs.push_back(v[0]);
+  for (int i = 1; i < v.size(); i ++) {
+    if (v[i] != v[i - 1] + 1) {
+      ending_idxs.push_back(v[i - 1]);
+      starting_idxs.push_back(v[i]);
+    }
+  }
+  ending_idxs.push_back(v[v.size() - 1]);
+  return List::create(starting_idxs, ending_idxs);
+}

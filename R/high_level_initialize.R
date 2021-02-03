@@ -44,7 +44,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
 
   # Run core algorithm
   out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_elem_per_chunk, n_rows_to_skip)
-  odm <- ondisc_matrx(h5_fp)
+  odm <- ondisc_matrix(h5_file = h5_fp)
   out$ondisc_matrix <- odm
   return(out)
 }

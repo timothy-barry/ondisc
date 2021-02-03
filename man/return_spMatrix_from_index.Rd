@@ -2,28 +2,22 @@
 % Please edit documentation in R/low_level_indexing.R
 \name{return_spMatrix_from_index}
 \alias{return_spMatrix_from_index}
-\title{Return sparse matrix from index}
+\title{return_spMatrix_from_index}
 \usage{
-return_spMatrix_from_index(h5_file, idx, col_idx)
+return_spMatrix_from_index(h5_file, subset_vector, index_on_cell, logical_mat)
 }
 \arguments{
-\item{h5_file}{path to h5 file on disk}
+\item{h5_file}{an h5 file}
 
-\item{idx}{indexes to extract}
+\item{index_on_cell}{(boolean) index on cell (TRUE) or feature (FALSE)}
 
-\item{col_idx}{boolean; extract column indexes (true) or row indexes (false)}
+\item{logical_mat}{(boolean) is matrix logical (FALSE) or integer (TRUE)}
+
+\item{idx}{an ordered, possibility discontiguous set of indexes}
 }
 \value{
-a sparse matrix of class Matrix.
+a sparse matrix subset according to idx
 }
 \description{
-Given an h5 file containing an on_disc_matrix, returns the sparse matrix corresponding to an index subset.
-}
-\examples{
-h5_file <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-if (h5_file != "") {
-idx <- 2:3
-col_idx <- TRUE
-# return_spMatrix_from_index(h5_file, idx, col_idx)
-}
+return_spMatrix_from_index
 }

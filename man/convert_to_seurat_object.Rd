@@ -2,7 +2,7 @@
 % Please edit documentation in R/high_level_matrix_ops.R
 \name{convert_to_seurat_object}
 \alias{convert_to_seurat_object}
-\title{Convert an \code{on_disc_matrix} to a Seurat object}
+\title{Convert an \code{ondisc_matrix} to a Seurat object}
 \usage{
 convert_to_seurat_object(
   x,
@@ -12,7 +12,7 @@ convert_to_seurat_object(
 )
 }
 \arguments{
-\item{x}{an on_disc_matrix}
+\item{x}{an ondisc_matrix}
 
 \item{project}{(default "CreateSeuratObject") project name of the Seurat object}
 
@@ -24,15 +24,15 @@ convert_to_seurat_object(
 a Seurat object
 }
 \description{
-Converts an on_disc_matrix to a Suerat object.
+Converts an ondisc_matrix to a Suerat object.
 }
 \examples{
 # NOTE: You must create the HDF5 file "example.h5" to run this example.
-# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+# Navigate to the help file of "create_ondisc_matrix_from_10x_mtx"
+# (via ?create_ondisc_matrix_from_10x_mtx), and execute the code in the example.
 odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
 if (odm_fp != "") { # if required file exists, ...
-odm <- on_disc_matrix(h5_file = odm_fp)
+odm <- ondisc_matrix(h5_file = odm_fp)
 seurat_obj <- convert_to_seurat_object(odm)
 }
 }

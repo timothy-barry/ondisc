@@ -11,11 +11,11 @@ subset_by_feature_or_cell(x, idx, subset_on_cell)
 
 \item{idx}{a numeric, character, or logical index}
 
-\item{subset_on_cell}{(boolean) subset on cell (TRUE) or gene (FALSE)}
+\item{subset_on_cell}{(boolean) subset on cell (TRUE) or feature (FALSE)}
 }
 \value{
 a subset ondisc_matrix
 }
 \description{
-Subset by feature or cell
+Subsets an ondisc_matrix by either feature or cell.
 }

@@ -7,10 +7,10 @@
 extract_matrix(x)
 }
 \arguments{
-\item{x}{an on_disc matrix}
+\item{x}{an ondisc_matrix.}
 }
 \value{
-a sparse Matrix object corresponding to the in-memory version of x.
+an in-memory version of x in the form of a Matrix object.
 }
 \description{
 Extract matrix

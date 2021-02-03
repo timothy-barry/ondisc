@@ -7,7 +7,7 @@
 get_dim(x)
 }
 \arguments{
-\item{x}{an on_disc_matrix object}
+\item{x}{an ondisc_matrix object}
 }
 \value{
 the dimension

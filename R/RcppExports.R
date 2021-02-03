@@ -57,3 +57,9 @@ sum_in_place <- function(v1, v2) {
     invisible(.Call(`_ondisc_sum_in_place`, v1, v2))
 }
 
+#' @title find contiguous subsequences
+#' @param v an ORDERED integer vector
+find_contig_subseqs <- function(v) {
+    .Call(`_ondisc_find_contig_subseqs`, v)
+}
+

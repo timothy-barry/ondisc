@@ -3,18 +3,18 @@
 \name{extract-odm}
 \alias{extract-odm}
 \alias{[[,ondisc_matrix,missing,missing-method}
-\alias{[[,ondisc_matrix,index_vec,missing-method}
-\alias{[[,ondisc_matrix,missing,index_vec-method}
-\alias{[[,ondisc_matrix,index_vec,index_vec-method}
+\alias{[[,ondisc_matrix,ANY,missing-method}
+\alias{[[,ondisc_matrix,missing,ANY-method}
+\alias{[[,ondisc_matrix,ANY,ANY-method}
 \title{Pull a submatrix into memory with \code{[[}}
 \usage{
 \S4method{[[}{ondisc_matrix,missing,missing}(x, i, j)
 
-\S4method{[[}{ondisc_matrix,index_vec,missing}(x, i, j)
+\S4method{[[}{ondisc_matrix,ANY,missing}(x, i, j)
 
-\S4method{[[}{ondisc_matrix,missing,index_vec}(x, i, j)
+\S4method{[[}{ondisc_matrix,missing,ANY}(x, i, j)
 
-\S4method{[[}{ondisc_matrix,index_vec,index_vec}(x, i, j)
+\S4method{[[}{ondisc_matrix,ANY,ANY}(x, i, j)
 }
 \arguments{
 \item{x}{An ondisc_matrix object}

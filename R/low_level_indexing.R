@@ -1,78 +1,89 @@
 #' Return sparse matrix from contiguous index
 #'
-#' Takes an index range (length two integer vector), h5_file, and h5_group (column or row) and returns the associated data, indexes, and pointer.
+#' @param h5_file the file path to the h5 file
+#' @param contiguous_idx_range a length-two INTEGER vector containing the starting end ending index (inclusive)
+#' @param index_on_cell (boolean) index on cell (TRUE) or feature (FALSE)
+#' @param logical_mat (boolean)
 #'
-#' @param h5_file path to h5 file on disk.
-#' @param h5_group h5 group from which to extract data (compressed_sparse_row/ or compressed_sparse_column/)
-#' @param contiguous_idx_range an integer vector of length 2 specifying the (inclusive) range of rows/columns to extract
-#'
-#' @return a list containing the 0-based pointer vector (excluding 0 itself) and the associated data
-return_spMatrix_from_contiguous_index <- function(h5_file, h5_group, contiguous_idx_range) {
-  p_range <- rhdf5::h5read(file = h5_file, name = paste0(h5_group, "p"), index = list(contiguous_idx_range[1]:(contiguous_idx_range[length(contiguous_idx_range)] + 1)))
-  n_vectors_p1 <- length(p_range)
-  if (p_range[n_vectors_p1] - 1 >= p_range[1]) {
-    data <- rhdf5::h5read(file = h5_file, name = paste0(h5_group, "data"), index = list(p_range[1]:(p_range[n_vectors_p1] - 1), NULL))
-    p_out <- p_range[-1] - p_range[1]
-  } else {
-    data <- matrix(data = integer(), ncol = 2, nrow = 0)
-    p_out <- rep(0, n_vectors_p1 - 1)
-  }
-  list(p = p_out, data = data)
-}
-
-
-#' Return sparse matrix from index
-#'
-#' Given an h5 file containing an on_disc_matrix, returns the sparse matrix corresponding to an index subset.
-#'
-#' @param h5_file path to h5 file on disk
-#' @param idx indexes to extract
-#' @param col_idx boolean; extract column indexes (true) or row indexes (false)
-#'
-#' @return a sparse matrix of class Matrix.
-#' @examples
-#' h5_file <- system.file("extdata", "on_disc_matrix_1.h5", package = "ondisc")
-#' if (h5_file != "") {
-#' idx <- 2:3
-#' col_idx <- TRUE
-#' # return_spMatrix_from_index(h5_file, idx, col_idx)
-#' }
-return_spMatrix_from_index <- function(h5_file, idx, col_idx) {
-  # assume idx is a list of non-negative, unique integers. First, determine if idx is sorted.
-  idx_unsorted <- is.unsorted(idx)
-  if (idx_unsorted) permutation <- order(x = idx, method = "radix")
-
-  # Next, determine the distinct subsequences of contiguous integers
-  contiguous_intervals <- R.utils::seqToIntervals(idx)
-  h5_group <- paste0("compressed_sparse_", if (col_idx) "column" else "row",  "/")
-  n_contiguous_intervals <- nrow(contiguous_intervals)
-
-  # If there are multiple contiguous intervals, then load each separately and combine.
-  if (n_contiguous_intervals >= 2) {
-    sub_matrices <- purrr::map(.x = 1:n_contiguous_intervals, .f = function(i) return_spMatrix_from_contiguous_index(h5_file, h5_group, contiguous_intervals[i,]))
-    full_matrix_data <- purrr::map(sub_matrices, function(i) i[["data"]]) %>% do.call(what = rbind, args = .)
-    sub_pointers <- purrr::map(sub_matrices, function(i) i[["p"]])
-    for (i in 2:(n_contiguous_intervals)) {
-      sub_pointers[[i]] <- sub_pointers[[i]] + sub_pointers[[i - 1]][length(sub_pointers[[i - 1]])]
+#' @return
+return_spMatrix_contig_index <- function(h5_file, contiguous_idx_range, index_on_cell, logical_mat) {
+  p_name <- paste0(if(index_on_cell) "cell" else "feature" , "_ptr")
+  idx_name <- paste0(if(index_on_cell) "feature" else "cell", "_idxs")
+  if (!logical_mat) dat_name <- paste0("data_", if(index_on_cell) "csc" else "csr")
+  start <- contiguous_idx_range[1]
+  count <- contiguous_idx_range[2] - start + 2L # add 2 regardless of 0/1-based indexing
+  # extract pointer and center at zero.
+  p <- as.integer(rhdf5::h5read(file = h5_file, name = p_name, start = start, count = count) + 1L)
+  p_start <- p[1]
+  centered_p <- p[-1] - p[1]
+  p_count <- centered_p[count - 1L]
+  if (p_count > 0) { # if nonempty
+    idxs <- as.integer(rhdf5::h5read(file = h5_file, name = idx_name, start = p_start, count = p_count))
+    if (!logical_mat) {
+      dat <- as.numeric(rhdf5::h5read(file = h5_file, name = dat_name, start = p_start, count = p_count))
     }
-    full_p <- c(0, unlist(sub_pointers)) %>% as.integer()
-  } else { # If there is only a single contiguous interval, then load that only.
-    mat <- return_spMatrix_from_contiguous_index(h5_file, h5_group, contiguous_intervals)
-    full_matrix_data <- mat$data
-    full_p <- c(0, mat$p) %>% as.integer()
+  } else { # if empty
+    idxs <- integer(0)
+    if (!logical_mat) dat <- numeric(0)
   }
-  Dim <- rhdf5::h5read(file = h5_file, name = "metadata/dimension") %>% as.integer()
-  dim_to_pass <- if (col_idx) c(Dim[1], length(idx)) else c(length(idx), Dim[2])
-  if (col_idx) {
-    ret <- new(getClass(Class = "dgCMatrix", where = "Matrix"), x = as.numeric(full_matrix_data[,2]), i = full_matrix_data[,1], p = full_p, Dim = dim_to_pass)
-  } else {
-    ret <- new(getClass(Class = "dgRMatrix", where = "Matrix"), x = as.numeric(full_matrix_data[,2]), j = full_matrix_data[,1], p = full_p, Dim = dim_to_pass)
+  # determine dimension of submatrix; initialize full pointer
+  full_p <- c(0L, centered_p)
+  dimen <- rhdf5::h5read(file = h5_file, name = "dimension") %>% as.integer()
+  dim_to_pass <- if (index_on_cell) c(dimen[1], count - 1L) else c(count - 1L, dimen[2])
+  # finally, create matrix
+  ret <- if (index_on_cell && !logical_mat) { # index on cell, integer matrix
+    new(getClass(Class = "dgCMatrix", where = "Matrix"),
+        x = dat,
+        i = idxs,
+        p = full_p,
+        Dim = dim_to_pass)
+  } else if (!index_on_cell && !logical_mat) { # index on feature, integer matrix
+    new(getClass(Class = "dgRMatrix", where = "Matrix"),
+        x = dat,
+        j = idxs,
+        p = full_p,
+        Dim = dim_to_pass)
+  } else if (!index_on_cell && !logical_mat) { # index on cell, logical matrix
+    new(getClass(Class = "lgCMatrix", where = "Matrix"),
+        x = rep(TRUE, length(idxs)),
+        i = idxs,
+        p = full_p,
+        Dim = dim_to_pass)
+  } else { # index on feature, logical matrix
+    new(getClass(Class = "lgCMatrix", where = "Matrix"),
+        x = rep(TRUE, length(idxs)),
+        j = idxs,
+        p = full_p,
+        Dim = dim_to_pass)
   }
-  # Finally, if the indexes were unsorted, reorder the matrix.
-  if (idx_unsorted) ret <- if (col_idx) ret[,Matrix::invPerm(permutation)] else ret[Matrix::invPerm(permutation),]
   return(ret)
 }
 
-# lgRMatrix
-# lgCMatrix
-# These are the logical matrix classes for row and column, respectively.
+
+#' return_spMatrix_from_index
+#'
+#' @param h5_file an h5 file
+#' @param idx an ordered, possibility discontiguous set of indexes
+#' @param index_on_cell (boolean) index on cell (TRUE) or feature (FALSE)
+#' @param logical_mat (boolean) is matrix logical (FALSE) or integer (TRUE)
+#'
+#' @return a sparse matrix subset according to idx
+return_spMatrix_from_index <- function(h5_file, subset_vector, index_on_cell, logical_mat) {
+  if (length(subset_vector) == 1) {
+    ret <- return_spMatrix_contig_index(h5_file, c(subset_vector, subset_vector), index_on_cell, logical_mat)
+  }
+  intervals <- find_contig_subseqs(subset_vector)
+  start_ints <- intervals[[1]]
+  end_ints <- intervals[[2]]
+  n_intervals <- length(start_ints)
+  if (n_intervals == 1) {
+    ret <- return_spMatrix_contig_index(h5_file, c(start_ints, end_ints), index_on_cell, logical_mat)
+  } else {
+    mats <- lapply(X = seq(1, n_intervals), FUN = function(i) {
+      curr_int <- c(start_ints[i], end_ints[i])
+      return_spMatrix_contig_index(h5_file, curr_int, index_on_cell, logical_mat)
+    })
+    ret <- do.call(if(index_on_cell) cbind else rbind, mats)
+  }
+  return(ret)
+}

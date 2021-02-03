@@ -13,7 +13,7 @@ get_feature_ids(x)
 get_feature_names(x)
 }
 \arguments{
-\item{x}{An on_disc_matrix.}
+\item{x}{An ondisc_matrix.}
 }
 \value{
 The cell barcodes of this on-disc matrix.
@@ -23,15 +23,15 @@ The cell feature ids of this on-disc matrix.
 The feature names of this on-disc matrix.
 }
 \description{
-Functions to extract cell barcodes, feature ids, and feature names from an on_disc_matrix.
+Functions to extract cell barcodes, feature ids, and feature names from an ondisc_matrix.
 }
 \examples{
 # NOTE: You must create the HDF5 file "example.h5" to run this example.
-# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
+# Navigate to the help file of "create_ondisc_matrix_from_10x_mtx"
+# (via ?create_ondisc_matrix_from_10x_mtx), and execute the code in the example.
 odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
 if (odm_fp != "") { # if required file exists, ...
-odm <- on_disc_matrix(h5_file = odm_fp)
+odm <- ondisc_matrix(h5_file = odm_fp)
 barcodes <- get_cell_barcodes(odm)
 feature_ids <- get_feature_ids(odm)
 feature_names <- get_feature_names(odm)
