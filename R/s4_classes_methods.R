@@ -55,8 +55,18 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
                                                           global_cell_covariates = "data.frame"))
 
 
+#' Constructor for multimodal_ondisc_matrix
+#'
+#' Constructs a multimodal_ondisc_matrix from a list of covariate_ondisc_matrix objects
+#'
+#' @param covariate_ondisc_matrix_list a named list containing covariate_ondisc_matrices; the names are taken to be the names of the modalities
+#'
+#' @return a multimodal_ondisc_matrix
+#' @export
 multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
   out <- new(Class = "multimodal_ondisc_matrix")
+  out@modalities <- covariate_ondisc_matrix_list
+  return(out)
 }
 
 # Basic information extraction methods
@@ -114,6 +124,20 @@ setMethod("show", signature = signature("covariate_ondisc_matrix"), function(obj
   paste0("\tA feature covariate matrix with columns ", paste(crayon::blue(feature_covariates), collapse = ", "), ".\n") %>% cat()
 })
 
+
+#' Print basic information to console
+#'
+#' @param objet a multimodal_ondisc_matrix to show
+#' @return NULL
+#' @export
+setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(object) {
+  modalities <- names(object@modalities)
+  cat("A multimodal_ondisc_matrix with the following modalities:\n\n")
+  for (i in seq(1, length(modalities))) {
+    paste0(i, ". ", crayon::blue(modalities[i]), ": ") %>% cat()
+    show(object@modalities[[i]])
+  }
+})
 
 #' Print the first few rows and columns
 #' @export
@@ -211,8 +235,8 @@ setMethod(f = "[",
           signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[i,j]
-            x@cell_covariates <- x@cell_covariates[j,]
-            x@feature_covariates <- x@feature_covariates[i,]
+            x@cell_covariates <- x@cell_covariates[j,,drop=FALSE]
+            x@feature_covariates <- x@feature_covariates[i,,drop=FALSE]
             return(x)
           })
 
@@ -222,7 +246,7 @@ setMethod(f = "[",
           signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[i,]
-            x@cell_covariates <- x@feature_covariates[i,]
+            x@cell_covariates <- x@feature_covariates[i,,drop=FALSE]
             return(x)
           })
 
@@ -232,7 +256,7 @@ setMethod(f = "[",
           signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[,j]
-            x@feature_covariates <- x@cell_covariates[j,]
+            x@feature_covariates <- x@cell_covariates[j,,drop=FALSE]
             return(x)
           })
 
@@ -241,6 +265,49 @@ setMethod(f = "[",
 setMethod(f = "[",
           signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) return(x))
+
+
+#' Subset a `multimodal_ondisc_matrix` with `[`
+#'
+#' The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to cell barcodes.
+#' Multimodal_ondisc_matrix objects can be subset only by cell, not feature, as different modalities (in general) have different numbers of features.
+#'
+#' @param x A multimodal_ondisc_matrix object
+#' @param i not used
+#' @param j Vector (numeric, logical, or character) indicating cells to keep
+#' @param drop not used
+#' @return A subset covariate_ondisc_matrix object.
+#' @name subset-multimodal-odm
+NULL
+
+#' @rdname subset-multimodal-odm
+#' @export
+setMethod(f = "[",
+          signature = signature(x = "multimodal_ondisc_matrix", i = "missing", j = "missing", drop = "missing"),
+          definition = function(x, i, j, drop) return(x))
+
+#' @rdname subset-multimodal-odm
+#' @export
+setMethod(f = "[",
+          signature = signature(x = "multimodal_ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
+          definition = function(x, i, j, drop) {
+            n_modalities <- length(x@modalities)
+            for (ctr in seq(1, n_modalities)) x@modalities[[ctr]] <- x@modalities[[ctr]][,j]
+            return(x)
+          })
+
+#' @rdname subset-multimodal-odm
+#' @export
+setMethod(f = "[",
+          signature = signature(x = "multimodal_ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
+          definition = function(x, i, j, drop) stop("A multimodal_ondisc_matrix can only be subset by cell, not feature."))
+
+#' @rdname subset-multimodal-odm
+#' @export
+setMethod(f = "[",
+          signature = signature(x = "multimodal_ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
+          definition = function(x, i, j, drop) stop("A multimodal_ondisc_matrix can only be subset by cell, not feature."))
+
 
 # Extract expression data methods
 #################################

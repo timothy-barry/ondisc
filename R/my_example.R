@@ -16,4 +16,5 @@ pert_mat <- create_ondisc_matrix_from_mtx(mtx_fp = perturbation_mtx,
                                           features_fp = guides_tsv,
                                           return_covariate_ondisc_matrix = TRUE,
                                           on_disc_dir = temp_dir)
+multmodal_mat <- multimodal_ondisc_matrix(list(expressions = exp_mat, perturbations = pert_mat))
 }
