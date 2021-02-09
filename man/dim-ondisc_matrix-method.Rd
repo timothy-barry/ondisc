@@ -2,9 +2,7 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{dim,ondisc_matrix-method}
 \alias{dim,ondisc_matrix-method}
-\title{index_vec class
-A union of the numeric, logical, and character classes. Used for indexing of on_disc_matrices. Idea borrowed from Matrix package.
-Return dimension}
+\title{Return dimension}
 \usage{
 \S4method{dim}{ondisc_matrix}(x)
 }

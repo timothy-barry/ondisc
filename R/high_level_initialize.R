@@ -9,9 +9,9 @@
 #' @param on_disc_dir (optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.
 #' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
 #'
-#' @return
+#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_covariate_ondisc_matrix set to TRUE, the function converts the list to a covariate_ondisc_matrix before returning.
 #' @export
-create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb_per_chunk = 4, on_disc_dir = NULL, file_name = NULL) {
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disc_dir = NULL, file_name = NULL, return_covariate_ondisc_matrix = FALSE) {
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()
 
@@ -23,7 +23,6 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
 
   # extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
   features_metadata <- get_features_metadata(features_fp, bag_of_variables)
-
   # set the on_disc_dir, if necessary
   if (is.null(on_disc_dir)) on_disc_dir <- gsub(pattern = '/[^/]*$', replacement = "", x = mtx_fp)
 
@@ -39,12 +38,16 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_gb
 
   # Get number of elements to load per chunk
   is_logical <- mtx_metadata$is_logical
-  n_elem_per_chunk <- n_gb_to_n_entries(n_gb_per_chunk, is_logical)
   n_rows_to_skip <- n_rows_with_comments + 1
 
   # Run core algorithm
-  out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_elem_per_chunk, n_rows_to_skip)
-  odm <- ondisc_matrix(h5_file = h5_fp)
+  out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip)
+  odm <- ondisc_matrix(h5_file = h5_fp, logical_mat = is_logical)
   out$ondisc_matrix <- odm
+  if (return_covariate_ondisc_matrix) {
+    out <- covariate_ondisc_matrix(ondisc_matrix = out$ondisc_matrix,
+                                   cell_covariates = out$cell_covariates,
+                                   feature_covariates = out$feature_covariates)
+  }
   return(out)
 }

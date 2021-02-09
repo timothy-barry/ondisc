@@ -43,14 +43,14 @@ return_spMatrix_contig_index <- function(h5_file, contiguous_idx_range, index_on
         j = idxs,
         p = full_p,
         Dim = dim_to_pass)
-  } else if (!index_on_cell && !logical_mat) { # index on cell, logical matrix
+  } else if (index_on_cell && logical_mat) { # index on cell, logical matrix
     new(getClass(Class = "lgCMatrix", where = "Matrix"),
         x = rep(TRUE, length(idxs)),
         i = idxs,
         p = full_p,
         Dim = dim_to_pass)
   } else { # index on feature, logical matrix
-    new(getClass(Class = "lgCMatrix", where = "Matrix"),
+    new(getClass(Class = "lgRMatrix", where = "Matrix"),
         x = rep(TRUE, length(idxs)),
         j = idxs,
         p = full_p,

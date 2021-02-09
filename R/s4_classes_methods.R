@@ -1,8 +1,8 @@
 # Class definition and methods for ondisc_matrix
 
 
-# Classes and constructor
-#########################
+# Classes and constructors
+##########################
 #' `ondisc_matrix` class constructor
 #'
 #' An ondisc_matrix represents a feature-by-cell expression matrix stored on disk. Use this function to obtain an `ondisc_matrix` from an already-initialized on-disk ondisc_matrix.h5 file.
@@ -35,25 +35,29 @@ ondisc_matrix <- setClass("ondisc_matrix",
                                             feature_subset_order = NA_integer_))
 
 
-#' ovariate_odm class constructor
+#' covariate_ondisc_matrix class constructor
 #'
-#' A covariate_odm (short for "covariate ondisc_matrix") is an object that stores and ondisc_matrix, along with its cell-specific and feature-specific covariate matrices.
+#' A covariate_ondisc_matrix (short for "covariate ondisc_matrix") is an object that stores and ondisc_matrix, along with its cell-specific and feature-specific covariate matrices.
 #'
 #' @slot ondisc_matrix an ondisc_matrix.
 #' @slot cell_covariates a data frame on cell covariates.
 #' @slot feature_covariates a data frame of feature covariates.
 #'
-#' @return a covariate_odm object
+#' @return a covariate_ondisc_matrix object
 #' @export
-#'
-#' @examples
-covariate_odm <- setClass("covariate_odm",
+covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
                           slots = list(ondisc_matrix = "ondisc_matrix",
                                        cell_covariates = "data.frame",
                                        feature_covariates = "data.frame"))
 
-# multimodal_odm <- setClass("multimodal_odm",
-#                           representation())
+#' @export
+multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(modalities = "list",
+                                                          global_cell_covariates = "data.frame"))
+
+
+multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
+  out <- new(Class = "multimodal_ondisc_matrix")
+}
 
 # Basic information extraction methods
 ######################################
@@ -96,14 +100,20 @@ setMethod("show", signature = signature("ondisc_matrix"), function(object) {
 })
 
 
-setMethod("show", signature = signature("covariate_odm"), function(object) {
+#' Print basic information to console
+#'
+#' @param objet a covariate_ondisc_matrix to show
+#' @return NULL
+#' @export
+setMethod("show", signature = signature("covariate_ondisc_matrix"), function(object) {
   cell_covariates <- colnames(object@cell_covariates)
   feature_covariates <- colnames(object@feature_covariates)
-  cat("A covariate_odm with the following components:\n")
+  cat("A covariate_ondisc_matrix with the following components:\n")
   cat("\t"); show(object@ondisc_matrix)
   paste0("\tA cell covariate matrix with columns ", paste(crayon::blue(cell_covariates), collapse = ", "), ".\n") %>% cat()
   paste0("\tA feature covariate matrix with columns ", paste(crayon::blue(feature_covariates), collapse = ", "), ".\n") %>% cat()
 })
+
 
 #' Print the first few rows and columns
 #' @export
@@ -184,8 +194,21 @@ setMethod(f = "[",
           })
 
 
+#' Subset a `covariate_ondisc_matrix` with `[`
+#'
+#' The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to feature IDs (for rows) and cell barcodes (for columns).
+#' @param x A covariate_ondisc_matrix object
+#' @param i Vector (numeric, logical, or character) indicating features to keep
+#' @param j Vector (numeric, logical, or character) indicating cells to keep
+#' @param drop not used
+#' @return A subset covariate_ondisc_matrix object.
+#' @name subset-covariate-odm
+NULL
+
+#' @rdname subset-covariate-odm
+#' @export
 setMethod(f = "[",
-          signature = signature(x = "covariate_odm", i = "ANY", j = "ANY", drop = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[i,j]
             x@cell_covariates <- x@cell_covariates[j,]
@@ -193,24 +216,30 @@ setMethod(f = "[",
             return(x)
           })
 
+#' @rdname subset-covariate-odm
+#' @export
 setMethod(f = "[",
-          signature = signature(x = "covariate_odm", i = "ANY", j = "missing", drop = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[i,]
             x@cell_covariates <- x@feature_covariates[i,]
             return(x)
           })
 
+#' @rdname subset-covariate-odm
+#' @export
 setMethod(f = "[",
-          signature = signature(x = "covariate_odm", i = "missing", j = "ANY", drop = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[,j]
             x@feature_covariates <- x@cell_covariates[j,]
             return(x)
           })
 
+#' @rdname subset-covariate-odm
+#' @export
 setMethod(f = "[",
-          signature = signature(x = "covariate_odm", i = "missing", j = "missing", drop = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) return(x))
 
 # Extract expression data methods

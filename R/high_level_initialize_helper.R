@@ -84,6 +84,20 @@ generate_on_disc_matrix_name <- function(on_disc_dir) {
 }
 
 
+#' Read given column of tsv
+#'
+#' @param col_idx index of column to read
+#' @param n_cols number of columns in file
+#' @param tsv_file file path to .tsv file
+#'
+#' @return contents of the specified column in vector form
+read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file) {
+  type_pattern <- c(rep("_", col_idx - 1), "c", rep("_", n_cols - col_idx)) %>% paste0(collapse = "")
+  dplyr::pull(readr::read_tsv(file = tsv_file, col_names = FALSE, col_types = type_pattern))
+}
+
+
+if (FALSE) {
 #' n GB to entries
 #'
 #' @param n_gb number of gigabytes to process per chunk
@@ -97,4 +111,5 @@ n_gb_to_n_entries <- function(n_gb, logical_mtx) {
     stop("n_gb exceeds maximum chunk size; please decrease n_gb.")
   }
   as.integer(conversion * n_gb)
+}
 }
