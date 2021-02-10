@@ -3,9 +3,8 @@
 ########
 test_that("extract single, contiguous submatrix", {
   for (i in 1:n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     for (j in 1:n_reps) {
       # Generate consecutive indices
       col_idxs_range <- sample(x = 1:ncol(Mat), size = 2, replace = FALSE) %>% sort()
@@ -27,9 +26,8 @@ test_that("extract single, contiguous submatrix", {
 ########
 test_that("extract multiple, contiguous submatrices", {
   for (i in 1:n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     if (nrow(Mat) >= 6 && ncol(Mat) >= 6) {
       for (j in 1:n_reps) {
         # Generate consecutive indices
@@ -53,9 +51,8 @@ test_that("extract multiple, contiguous submatrices", {
 ########
 test_that("Extract arbitrary submatrices", {
   for (i in 1:n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     for (j in 1:n_reps) {
       subset_size_col <- sample(1:(ceiling(ncol(Mat)/30)), 1)
       subset_size_row <- sample(1:(ceiling(nrow(Mat)/30)), 1)
@@ -71,16 +68,15 @@ test_that("Extract arbitrary submatrices", {
 ########
 test_that("Illegal subsets and extracts", {
   for (i in 1:n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    m <- test_obj$on_disc_matrix
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     # index OOB
-    expect_error(m[,ncol(m) + 10])
-    expect_error(m[nrow(m) + 10,])
+    expect_error(on_disc_mat[,ncol(on_disc_mat) + 10])
+    expect_error(on_disc_mat[nrow(on_disc_mat) + 10,])
     # duplicate indexes
-    expect_error(m[c(1,1),])
-    expect_error(m[,c(1,1)])
+    expect_error(on_disc_mat[c(1,1),])
+    expect_error(on_disc_mat[,c(1,1)])
     # extracting nothing
-    expect_error(m[[,]])
+    expect_error(on_disc_mat[[,]])
   }
 })
 
@@ -89,9 +85,8 @@ test_that("Illegal subsets and extracts", {
 ########
 test_that("Test correct dimensions after subset", {
   for (i in 1:n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     subset_size_col <- sample(1:(ceiling(ncol(Mat)/30)), 1)
     subset_size_row <- sample(1:(ceiling(nrow(Mat)/30)), 1)
     col_idxs <- sample(x = 1:ncol(Mat), size = subset_size_col)
@@ -128,9 +123,8 @@ test_that("Test correct dimensions after subset", {
 ########
 test_that("Extract arbitrary submatrices after subset", {
   for (i in 1:n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     for (j in 1:n_reps) {
       subset_size_col <- sample(1:(ceiling(ncol(Mat)/10)), 1)
       subset_size_row <- sample(1:(ceiling(nrow(Mat)/10)), 1)
@@ -161,9 +155,8 @@ test_that("Extract arbitrary submatrices after subset", {
 ########
 test_that("Subset/extract corner cases", {
   for (i in 1:n_datasets) {
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    m <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     # subset nothing
     on_dist_mat_sub <- on_disc_mat[]
     expect_identical(on_disc_mat, on_dist_mat_sub)

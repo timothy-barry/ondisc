@@ -126,7 +126,9 @@ subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
   ordering <- order(slot(x, subset_slot), method = "radix")
   tmp <- rle(slot(x, subset_slot)[ordering])
   if (any(tmp$lengths >= 2L)) stop("Duplicate indices not allowed.")
-  if (any(ordering != seq(1L,l))) slot(x, order_slot) <- ordering
+  # Finally, update the order slot
+  is_ordered <- all(ordering == seq(1L, l))
+  slot(x, order_slot) <- if (is_ordered) NA_integer_ else ordering
   return(x)
 }
 

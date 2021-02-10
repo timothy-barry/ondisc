@@ -4,11 +4,10 @@
 test_that("extract by gene id", {
   for (i in 1:n_datasets) {
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     # Set row and column names for Matrix object
-    row.names(Mat) <- get_gene_ids(on_disc_mat)
+    row.names(Mat) <- get_feature_ids(on_disc_mat)
     colnames(Mat) <- get_cell_barcodes(on_disc_mat)
     for (j in 1:n_reps) {
       # Test arbitrary subsets of rows and columns
@@ -27,9 +26,8 @@ test_that("extract by gene id", {
 test_that("extract by logical vector", {
   for (i in 1:n_datasets) {
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     for (j in 1:n_reps) {
       col_subset <- sample(x = c(FALSE, TRUE), size = ncol(Mat), replace = TRUE, prob = c(0.98, 0.02))
       row_subset <- sample(x = c(FALSE, TRUE), size = nrow(Mat), replace = TRUE, prob = c(0.98, 0.02))
@@ -46,13 +44,12 @@ test_that("extract by logical vector", {
 test_that("extract by gene id on subset matrix", {
   for (i in 1:n_datasets) {
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     row.names(Mat) <- paste0("ENSG000", 1:nrow(Mat))
     colnames(Mat) <- paste0("cell_", 1:ncol(Mat))
-    on_disc_mat <- test_obj$on_disc_matrix
     for (j in 1:n_reps) {
-      row_names <- sample(get_gene_ids(on_disc_mat), sample(1:nrow(on_disc_mat), 1))
+      row_names <- sample(get_feature_ids(on_disc_mat), sample(1:nrow(on_disc_mat), 1))
       col_names <- sample(get_cell_barcodes(on_disc_mat), sample(1:ncol(on_disc_mat), 1))
       # Do the subsets
       Mat_col_sub <- Mat[,col_names,drop=FALSE]
@@ -78,9 +75,8 @@ test_that("extract by gene id on subset matrix", {
 test_that("Extract by logical vector on subset matrix", {
   for (i in 1:n_datasets) {
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    Mat <- test_obj$r_Matrix
-    on_disc_mat <- test_obj$on_disc_matrix
+    Mat <- r_mats[[i]]
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     for (j in 1:n_reps) {
       col_idxs <- sample(1:ncol(on_disc_mat), sample(1:ceiling(ncol(on_disc_mat)/30), 1))
       row_idxs <- sample(1:nrow(on_disc_mat), sample(1:ceiling(nrow(on_disc_mat)/30), 1))
@@ -102,8 +98,7 @@ test_that("Extract by logical vector on subset matrix", {
 test_that("subset by gene id", {
   for (i in 1:n_datasets) {
     # Load data
-    test_obj <- load_on_disc_and_mat(data_dir = temp_test_dir, idx = i)
-    on_disc_mat <- test_obj$on_disc_matrix
+    on_disc_mat <- cov_odms[[i]]@ondisc_matrix
     # Elements not present
     expect_error(on_disc_mat[,c("cell_1", "bogus name")])
     expect_error(on_disc_mat[c("ENSG0001", "bogus name"),])

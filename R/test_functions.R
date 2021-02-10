@@ -11,12 +11,16 @@
 #' @param matrix_values set of values from which to draw the matrix entries
 #'
 #' @return a randomly-generated matrix of class TsparseMatrix
-create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matrix_values = 1:300) {
+create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matrix_values = 1:10, logical_mat = FALSE) {
   if (is.null(n_row)) n_row <- sample(x = 200:1000, size = 1)
   if (is.null(n_col)) n_col <- sample(x = 200:1000, size = 1)
-  m <- matrix(data = sample(x = matrix_values, size = n_row * n_col, replace = TRUE), nrow = n_row, ncol = n_col)
   r <- matrix(data = stats::rbinom(n =  n_row * n_col, size = 1, prob = 1 - p_zero), nrow = n_row, ncol = n_col)
+  if (!logical_mat) {
+  m <- matrix(data = sample(x = matrix_values, size = n_row * n_col, replace = TRUE), nrow = n_row, ncol = n_col)
   out <- m * r
+  } else {
+    out <- r == 1
+  }
   return(Matrix::Matrix(data = out, sparse = TRUE))
 }
 
@@ -50,7 +54,7 @@ save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = N
   if (is.null(gene_ids)) gene_ids <- paste0("ENSG000", 1:nrow(m))
   # save the files
   readr::write_tsv(x = dplyr::tibble(cell_barcodes), file = to_save_locs[["barcodes"]], col_names = FALSE)
-  readr::write_tsv(x = dplyr::tibble(gene_ids, gene_names, "Gene Expression"), file = to_save_locs[["features"]], col_names = FALSE)
+  readr::write_tsv(x = dplyr::tibble(gene_ids, gene_names), file = to_save_locs[["features"]], col_names = FALSE)
   # Finally, save the original R Matrix object
   if (save_r_matrix) saveRDS(object = m, file = to_save_locs[["r_matrix"]])
   return(to_save_locs)
@@ -124,21 +128,27 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' @return NULL
 create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, n_col = NULL, seed = NULL) {
   if (!is.null(seed)) set.seed(seed)
-  for (i in 1:n_datasets) {
+  out <- vector(mode = "list", length = n_datasets)
+  for (i in seq(1, n_datasets)) {
     if (n_datasets > 1) cat(paste0("Generating dataset ", i, ".\n"))
-    m <- create_random_matrix(n_row = n_row, n_col = n_col)
-    if (i %% 3 == 0) {
-      n_row <- nrow(m)
-      zero_row_idxs <- sample(x = 1:n_row, size = ceiling(.25 * n_row), replace = FALSE)
-      m[zero_row_idxs,] <- 0
+    if (rnbinom(1, 1, 0.5)) {
+      m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
+    } else {
+      m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
     }
-    if (i %% 5 == 0) {
+    if (rnbinom(1, 1, 0.5)) {
+      n_row <- nrow(m)
+      zero_row_idxs <- sample(x = seq(1, n_row), size = ceiling(.25 * n_row), replace = FALSE)
+      m[zero_row_idxs,] <- if (is.logical(m@x[1])) FALSE else 0
+    }
+    if (rnbinom(1, 1, 0.5)) {
       n_col <- ncol(m)
       zero_col_idxs <- sample(x = 1:n_col, size = ceiling(0.05 * n_col), replace = FALSE)
-      m[,zero_col_idxs] <- 0
+      m[,zero_col_idxs] <- if (is.logical(m@x[1])) FALSE else 0
     }
-    locs <- save_random_matrix_as_10x(m, simulated_data_dir, i)
+    save_random_matrix_as_10x(m = m, data_dir = simulated_data_dir, idx = i, save_r_matrix = FALSE)
+    out[[i]] <- m
   }
-  invisible()
+  return(out)
 }
 # nocov end
