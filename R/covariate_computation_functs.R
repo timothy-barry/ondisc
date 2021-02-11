@@ -67,7 +67,7 @@ initialize_grammar <- function() {
                                     symbols = c(sym_enum$n_mito_cell,
                                                 sym_enum$n_umis_cell))
   e[[sym_enum$sd_expression_feature]] <- list(terminal = FALSE,
-                                              f = function(p1, p2) p1 - p2^2,
+                                              f = function(p1, p2) sqrt(p1 - p2^2),
                                               symbols = c(sym_enum$mean_sq_expression_feature,
                                                           sym_enum$mean_expression_feature))
   e[[sym_enum$coef_of_variation_feature]] <- list(terminal = FALSE,
