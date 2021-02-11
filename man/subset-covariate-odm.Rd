@@ -31,3 +31,17 @@ A subset covariate_ondisc_matrix object.
 \description{
 The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to feature IDs (for rows) and cell barcodes (for columns).
 }
+\examples{
+# NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
+# "expressions.rds" to run this example. Navigate to the help file of
+# "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+# and execute the code in the first code block.
+expressions_fp <- paste0(tempdir(), "/expressions.rds")
+if (file.exists(expressions_fp)) {
+expressions <- readRDS(expressions_fp)
+# keep cells 100-110
+x <- expressions[,100:110]
+# keep the following genes
+x <- expressions[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]
+}
+}

@@ -32,19 +32,20 @@ A subset ondisc_matrix object.
 The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to feature IDs (for rows) and cell barcodes (for columns).
 }
 \examples{
-# NOTE: You must create the HDF5 file "example.h5" to run this example.
-# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-if (odm_fp != "") { # if required file exists, ...
-odm <- ondisc_matrix(h5_file = odm_fp)
+# NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+# Navigate to the help file of "create_ondisc_matrix_from_mtx"
+# (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+
+h5_fp <- paste0(tempdir(), "/expressions.h5")
+if (file.exists(h5_fp)) {
+odm <- ondisc_matrix(h5_file = h5_fp)
 # keep cells 100-110
 x <- odm[,100:110]
-# keep features ENSG00000260528, ENSG00000258908, and ENSG00000081913
-x <- odm[c("ENSG00000260528", "ENSG00000258908", "ENSG00000081913"),]
-# keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT
-x <- odm[,c("ACAGCCGCAGAAACCG", "CTACTATAGTGTACCT")]
-# keep all features except ENSG00000167525 and ENSG00000235815
-x <- odm[!(get_feature_ids(odm) \%in\% c("ENSG00000167525", "ENSG00000235815")),]
+# keep the following genes:
+x <- odm[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]
+# keep the following cells:
+x <- odm[,c("CTTAGGACACTGGCGT-1", "AAAGGATTCACATCAG-1")]
+# keep all genes except ENSG00000188305 and ENSG00000257284
+x <- odm[!(get_feature_ids(odm) \%in\% c("ENSG00000188305", "ENSG00000257284")),]
 }
 }

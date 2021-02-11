@@ -20,13 +20,23 @@ run_mtx_algo_step_2(
 \arguments{
 \item{h5_fp}{full path to the h5 file on-disk}
 
+\item{mtx_fp}{file path to mtx}
+
+\item{is_logical}{is the mtx file logical}
+
 \item{bag_of_variables}{the bag of variables containing the variables to pass to the accumulator functions}
 
 \item{n_elem_per_chunk}{number of elements to load per chunk}
 
+\item{n_rows_to_skip}{n rows to skip in mtx file}
+
 \item{initial_accumulators}{list of starting accumulators}
 
 \item{terminal_functs_args}{list of accumulator function names and arguments}
+
+\item{row_ptr}{the starting row pointer}
+
+\item{n_nonzero_features_per_chunk}{initial vector for n_nonzero_features_per_chunk}
 }
 \value{
 a list containing the values of the terminals

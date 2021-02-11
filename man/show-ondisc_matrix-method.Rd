@@ -13,12 +13,13 @@
 Also display object class, number of rows, and number of columns.
 }
 \examples{
-# NOTE: You must create the HDF5 file "example.h5" to run this example.
-# Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-# (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-if (odm_fp != "") { # if required file exists, ...
-odm <- ondisc_matrix(h5_file = odm_fp)
+# NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+# Navigate to the help file of "create_ondisc_matrix_from_mtx"
+# (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+
+h5_fp <- paste0(tempdir(), "/expressions.h5")
+if (file.exists(h5_fp)) {
+odm <- ondisc_matrix(h5_file = h5_fp)
 show(odm)
 }
 }

@@ -28,7 +28,7 @@ for (i in seq(1, n_datasets)) {
   if (file.exists(fps[["on_disc_matrix_h5"]])) file.remove(fps[["on_disc_matrix_h5"]]) %>% invisible() # h5 file
   m <- r_mats[[i]]
   n_data_points <- length(m@x)
-  if (rbinom(1, 1, 0.5)) {
+  if (stats::rbinom(1, 1, 0.5)) {
     chunk_size <- sample(x = seq(2, n_data_points - 1), size = 1) # choose chunk size less than n_data_points
   } else {
     chunk_size <- sample(x = seq(n_data_points + 1, 2 * n_data_points), size = 1)

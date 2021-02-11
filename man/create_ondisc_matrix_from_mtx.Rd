@@ -8,9 +8,10 @@ create_ondisc_matrix_from_mtx(
   mtx_fp,
   barcodes_fp,
   features_fp,
-  n_gb_per_chunk = 4,
+  n_lines_per_chunk = 3e+08,
   on_disc_dir = NULL,
-  file_name = NULL
+  file_name = NULL,
+  return_covariate_ondisc_matrix = FALSE
 )
 }
 \arguments{
@@ -20,15 +21,44 @@ create_ondisc_matrix_from_mtx(
 
 \item{features_fp}{file path to the features.tsv file. The first column (required) should contain the feature IDs (e.g., ENSG00000186092), and the second column (optional) should contain the human-readable feature names (e.g., OR4F5). Any subsequent columns are discarded.}
 
-\item{n_gb_per_chunk}{(optional) amount of data (in GB) to process per chunk. Defaults to 4 GB.}
+\item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
 
 \item{on_disc_dir}{(optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.}
 
 \item{file_name}{(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.}
+
+\item{return_covariate_ondisc_matrix}{(optional) return the output as a covariate_ondisc_matrix? Defaults to FALSE.}
 }
 \value{
-
+A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_covariate_ondisc_matrix set to TRUE, the function converts the list to a covariate_ondisc_matrix before returning.
 }
 \description{
 Initializes an ondisc_matrix object from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix R object along with cell-specific and feature-specific covariate matrices.
+}
+\examples{
+# First example: initialize a covariate_ondisc_matrix
+# using simulated expression data; store output in tempdir()
+file_locs <- system.file("extdata",package = "ondisc",
+c("gene_expression.mtx", "genes.tsv", "cell_barcodes.tsv"))
+names(file_locs) <- c("expressions", "features", "barcodes")
+expression_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
+barcodes_fp = file_locs[["barcodes"]],
+features_fp = file_locs[["features"]],
+on_disc_dir = tempdir(),
+file_name = "expressions",
+return_covariate_ondisc_matrix = TRUE)
+saveRDS(object = expression_data, file = paste0(tempdir(), "/expressions.rds"))
+
+# Second example: initialize a covariate_ondisc_matrix using simulated
+# gRNA perturbation data; store in tempdir()
+file_locs <- system.file("extdata", package = "ondisc",
+c("perturbation.mtx", "guides.tsv", "cell_barcodes.tsv"))
+names(file_locs) <- c("perturbations", "features", "barcodes")
+perturbation_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["perturbations"]],
+barcodes_fp = file_locs[["barcodes"]],
+features_fp = file_locs[["features"]],
+on_disc_dir = tempdir(),
+file_name = "perturbations",
+return_covariate_ondisc_matrix = TRUE)
+saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds"))
 }

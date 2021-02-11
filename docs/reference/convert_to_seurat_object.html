@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert an on_disc_matrix to a Seurat object — convert_to_seurat_object • ondisc</title>
+<title>Convert an ondisc_matrix to a Seurat object — convert_to_seurat_object • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Convert an on_disc_matrix to a Seurat object — convert_to_seurat_object" />
-<meta property="og:description" content="Converts an on_disc_matrix to a Suerat object." />
+<meta property="og:title" content="Convert an ondisc_matrix to a Seurat object — convert_to_seurat_object" />
+<meta property="og:description" content="Converts an ondisc_matrix to a Suerat object." />
 
 
 
@@ -105,13 +105,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert an <code>on_disc_matrix</code> to a Seurat object</h1>
+    <h1>Convert an <code>ondisc_matrix</code> to a Seurat object</h1>
     <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/high_level_matrix_ops.R'><code>R/high_level_matrix_ops.R</code></a></small>
     <div class="hidden name"><code>convert_to_seurat_object.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Converts an on_disc_matrix to a Suerat object.</p>
+    <p>Converts an ondisc_matrix to a Suerat object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>convert_to_seurat_object</span><span class='op'>(</span>
@@ -126,7 +126,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>an on_disc_matrix</p></td>
+      <td><p>an ondisc_matrix</p></td>
     </tr>
     <tr>
       <th>project</th>
@@ -148,11 +148,11 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># NOTE: You must create the HDF5 file "example.h5" to run this example.</span>
-<span class='co'># Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"</span>
-<span class='co'># (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.</span>
+<span class='co'># Navigate to the help file of "create_ondisc_matrix_from_10x_mtx"</span>
+<span class='co'># (via ?create_ondisc_matrix_from_10x_mtx), and execute the code in the example.</span>
 <span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"example.h5"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span><span class='op'>)</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='va'>odm_fp</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>{</span> <span class='co'># if required file exists, ...</span>
-<span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='on_disc_matrix-class.html'>on_disc_matrix</a></span><span class='op'>(</span>h5_file <span class='op'>=</span> <span class='va'>odm_fp</span><span class='op'>)</span>
+<span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ondisc_matrix-class.html'>ondisc_matrix</a></span><span class='op'>(</span>h5_file <span class='op'>=</span> <span class='va'>odm_fp</span><span class='op'>)</span>
 <span class='va'>seurat_obj</span> <span class='op'>&lt;-</span> <span class='fu'>convert_to_seurat_object</span><span class='op'>(</span><span class='va'>odm</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>

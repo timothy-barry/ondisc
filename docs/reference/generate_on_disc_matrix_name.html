@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Generate on disc_matrix_name — generate_on_disc_matrix_name" />
-<meta property="og:description" content="Generates the name of an on_disc_matrix object given a directory. This function searches for files named on_disc_matrix_.h5 in the specified directory. If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_.h5 with a unique integer in place of *." />
+<meta property="og:description" content="Generates the name of an on_disc_matrix object given a directory. This function searches for files named on_disc_matrix_x.h5 in the specified directory. If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_x.h5 with a unique integer in place of x." />
 
 
 
@@ -106,12 +106,12 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate on disc_matrix_name</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/low_level_initialize_transpose.R'><code>R/low_level_initialize_transpose.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/high_level_initialize_helper.R'><code>R/high_level_initialize_helper.R</code></a></small>
     <div class="hidden name"><code>generate_on_disc_matrix_name.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates the name of an on_disc_matrix object given a directory. This function searches for files named on_disc_matrix_<em>.h5 in the specified directory. If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_</em>.h5 with a unique integer in place of *.</p>
+    <p>Generates the name of an on_disc_matrix object given a directory. This function searches for files named on_disc_matrix_x.h5 in the specified directory. If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_x.h5 with a unique integer in place of x.</p>
     </div>
 
     <pre class="usage"><span class='fu'>generate_on_disc_matrix_name</span><span class='op'>(</span><span class='va'>on_disc_dir</span><span class='op'>)</span></pre>

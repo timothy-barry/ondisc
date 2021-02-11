@@ -12,6 +12,8 @@ run_subtask_2a(x, bag_of_variables, acc, terminal_functs_args)
 \item{bag_of_variables}{the bag_of_variables (also passed by ref)}
 
 \item{acc}{the accumulator list}
+
+\item{terminal_functs_args}{arguments to pass to the accumulator for a given terminal}
 }
 \description{
 Runs subtask a of part 2 of mtx algorithm: updates the accumulator of each terminal symbol.

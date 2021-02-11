@@ -161,11 +161,11 @@ test_that("Subset/extract corner cases", {
     on_dist_mat_sub <- on_disc_mat[]
     expect_identical(on_disc_mat, on_dist_mat_sub)
     # find a row of all zeros
-    zero_rows <- which(Matrix::rowSums(m) == 0)
+    zero_rows <- which(Matrix::rowSums(Mat) == 0)
     if (length(zero_rows) >= 1) {
       idx <- zero_rows[1]
       zero_extract <- as.numeric(on_disc_mat[[idx,]])
-      expect_equal(zero_extract, rep(0, ncol(m)))
+      expect_equal(zero_extract, rep(0, ncol(Mat)))
     }
   }
 })

@@ -17,7 +17,7 @@ symbols_enum <- function() {
 
 #' Accumulator function Enum
 #' Function to return a simple enum of the accumulator functions
-#' @return
+#' @return an environment
 accumulator_functs_enum <- function() {
   accumulator_functs <- c("inc_mean_count",
                           "inc_n_entries",
@@ -30,7 +30,7 @@ accumulator_functs_enum <- function() {
 
 #' Arguments Enum
 #' Function to return a simple enum of the possible arguments to the accumulator functions
-#' @return
+#' @return an environment
 arguments_enum <- function() {
   arguments <- c("feature_idxs",
                  "cell_idxs",

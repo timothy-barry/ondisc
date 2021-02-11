@@ -8,6 +8,8 @@ get_features_metadata(features_fp, bag_of_variables)
 }
 \arguments{
 \item{features_fp}{file path to features.tsv file}
+
+\item{bag_of_variables}{the bag of variables to which to add the mt_genes logical vector (if applicable)}
 }
 \value{
 a list containing elements feature_names (logical), n_cols (integer), and wheter MT genes are present (logical)

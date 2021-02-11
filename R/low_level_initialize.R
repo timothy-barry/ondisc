@@ -112,6 +112,7 @@ run_mtx_algo_step_1 <- function(mtx_fp, initialize_accumulator, bag_of_variables
 #' @param x a data.table (passed by ref)
 #' @param bag_of_variables the bag_of_variables (also passed by ref)
 #' @param acc the accumulator list
+#' @param terminal_functs_args arguments to pass to the accumulator for a given terminal
 #'
 #' @return NULL
 run_subtask_2a <- function(x, bag_of_variables, acc, terminal_functs_args) {
@@ -141,6 +142,7 @@ run_subtask_2a <- function(x, bag_of_variables, acc, terminal_functs_args) {
 #' @param x a data.table
 #' @param pos the starting row in the data.table; uses 1-based indexing
 #' @param h5_fp file path to the on-disk h5 file.
+#' @param is_logical is the mtx logical
 #'
 #' @return NULL
 run_subtask_2b <- function(x, pos, h5_fp, is_logical) {
@@ -164,8 +166,6 @@ run_subtask_2b <- function(x, pos, h5_fp, is_logical) {
 #' @param n_nonzero_features_per_chunk a list of the number of nonzero features in each chunk
 #' @param chunk_no the current chunk number
 #' @param n_features total number of features in matrix
-#'
-#' @return
 run_subtask_2c <- function(x, h5_fp, is_logical, row_ptr, n_nonzero_features_per_chunk, chunk_no, n_features) {
   arguments <- arguments_enum()
   data.table::setorderv(x, arguments$feature_idxs)
@@ -197,10 +197,15 @@ run_subtask_2c <- function(x, h5_fp, is_logical, row_ptr, n_nonzero_features_per
 #' This function runs step 2 of the core mtx algorithm. It (a) computes the terminal symbols, (b) writes to the CSC matrix, and (b) sorts the data by feature_idx, then writes to the CSR matrix.
 #'
 #' @param h5_fp full path to the h5 file on-disk
-#' @param n_elem_per_chunk number of elements to load per chunk
+#' @param mtx_fp file path to mtx
+#' @param is_logical is the mtx file logical
 #' @param bag_of_variables the bag of variables containing the variables to pass to the accumulator functions
+#' @param n_elem_per_chunk number of elements to load per chunk
+#' @param n_rows_to_skip n rows to skip in mtx file
 #' @param initial_accumulators list of starting accumulators
 #' @param terminal_functs_args list of accumulator function names and arguments
+#' @param row_ptr the starting row pointer
+#' @param n_nonzero_features_per_chunk initial vector for n_nonzero_features_per_chunk
 #'
 #' @return a list containing the values of the terminals
 run_mtx_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_elem_per_chunk, n_rows_to_skip, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk) {

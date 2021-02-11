@@ -9,11 +9,11 @@ return_spMatrix_from_index(h5_file, subset_vector, index_on_cell, logical_mat)
 \arguments{
 \item{h5_file}{an h5 file}
 
+\item{subset_vector}{an ordered, possibility discontiguous set of indexes}
+
 \item{index_on_cell}{(boolean) index on cell (TRUE) or feature (FALSE)}
 
 \item{logical_mat}{(boolean) is matrix logical (FALSE) or integer (TRUE)}
-
-\item{idx}{an ordered, possibility discontiguous set of indexes}
 }
 \value{
 a sparse matrix subset according to idx

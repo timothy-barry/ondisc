@@ -8,7 +8,8 @@ create_random_matrix(
   n_row = NULL,
   n_col = NULL,
   p_zero = 0.95,
-  matrix_values = 1:300
+  matrix_values = 1:10,
+  logical_mat = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ create_random_matrix(
 \item{p_zero}{probability an entry will be zero}
 
 \item{matrix_values}{set of values from which to draw the matrix entries}
+
+\item{logical_mat}{should the matrix be logical (as opposed to numeric)?}
 }
 \value{
 a randomly-generated matrix of class TsparseMatrix

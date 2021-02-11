@@ -9,6 +9,7 @@
 #' @param n_col number of columns
 #' @param p_zero probability an entry will be zero
 #' @param matrix_values set of values from which to draw the matrix entries
+#' @param logical_mat should the matrix be logical (as opposed to numeric)?
 #'
 #' @return a randomly-generated matrix of class TsparseMatrix
 create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matrix_values = 1:10, logical_mat = FALSE) {
@@ -71,7 +72,7 @@ save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = N
 #' @return a character vector containing file paths to the simulation data
 get_simulation_data_fps <- function(data_dir, idx) {
   f_names <- paste0(paste0(c("matrix", "barcodes", "features", "r_matrix", "on_disc_matrix", "on_disc_matrix")), if (is.null(idx)) "" else paste0("_", idx), c(".mtx", ".tsv", ".tsv", ".rds", ".rds", ".h5"))
-  to_save_locs <- purrr::set_names(paste0(data_dir, "/", f_names),  c("mtx", "barcodes", "features", "r_matrix", "on_disc_matrix",  "on_disc_matrix_h5"))
+  to_save_locs <- setNames(paste0(data_dir, "/", f_names),  c("mtx", "barcodes", "features", "r_matrix", "on_disc_matrix",  "on_disc_matrix_h5"))
   return(to_save_locs)
 }
 
@@ -131,17 +132,17 @@ create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, 
   out <- vector(mode = "list", length = n_datasets)
   for (i in seq(1, n_datasets)) {
     if (n_datasets > 1) cat(paste0("Generating dataset ", i, ".\n"))
-    if (rnbinom(1, 1, 0.5)) {
+    if (stats::rbinom(1, 1, 0.5)) {
       m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
     } else {
       m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
     }
-    if (rnbinom(1, 1, 0.5)) {
+    if (stats::rbinom(1, 1, 0.5)) {
       n_row <- nrow(m)
       zero_row_idxs <- sample(x = seq(1, n_row), size = ceiling(.25 * n_row), replace = FALSE)
       m[zero_row_idxs,] <- if (is.logical(m@x[1])) FALSE else 0
     }
-    if (rnbinom(1, 1, 0.5)) {
+    if (stats::rbinom(1, 1, 0.5)) {
       n_col <- ncol(m)
       zero_col_idxs <- sample(x = 1:n_col, size = ceiling(0.05 * n_col), replace = FALSE)
       m[,zero_col_idxs] <- if (is.logical(m@x[1])) FALSE else 0

@@ -8,7 +8,7 @@ Function to return a simple enum of the accumulator functions}
 accumulator_functs_enum()
 }
 \value{
-
+an environment
 }
 \description{
 Accumulator function Enum

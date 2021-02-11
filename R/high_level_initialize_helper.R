@@ -1,25 +1,3 @@
-#' Get n rows with comments
-#'
-#' Returns the number of rows with comments in an mtx file.
-#'
-#' @param mtx_fp a file path to an mtx file
-#'
-#' @return the number of rows with comments at the top of the file
-get_n_rows_with_comments_mtx <- function(mtx_fp) {
-  n_rows_with_comments <- 0
-  repeat {
-    curr_row <- utils::read.table(mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = "\n") %>% dplyr::pull()
-    is_comment <- substr(curr_row, start = 1, stop = 1) == "%"
-    if (!is_comment) {
-      break()
-    } else {
-      n_rows_with_comments <- n_rows_with_comments + 1
-    }
-  }
-  return(n_rows_with_comments)
-}
-
-
 #' Get mtx metadata
 #'
 #' @param mtx_fp filepath to the mtx file
@@ -43,6 +21,7 @@ get_mtx_metadata <- function(mtx_fp, n_rows_with_comments) {
 #' Gets metadata from a features.tsv file. As a side-effect, if MT genes are present, puts into the bag_of_variables a logical vector indicating the positions of those genes.
 #'
 #' @param features_fp file path to features.tsv file
+#' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
 #'
 #' @return a list containing elements feature_names (logical), n_cols (integer), and wheter MT genes are present (logical)
 get_features_metadata <- function(features_fp, bag_of_variables) {
@@ -97,19 +76,21 @@ read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file) {
 }
 
 
-if (FALSE) {
-#' n GB to entries
+#' get n rows with comments mtx
 #'
-#' @param n_gb number of gigabytes to process per chunk
-#' @param logical_mtx number of
+#' @param mtx_fp file path to mtx
 #'
-#' @return
-n_gb_to_n_entries <- function(n_gb, logical_mtx) {
-  # conversion is the approximate number of rows per GB
-  conversion <- 78600000 * (if (logical_mtx) (3/2) else 1)
-  if (n_gb > .Machine$integer.max / conversion - .1) {
-    stop("n_gb exceeds maximum chunk size; please decrease n_gb.")
+#' @return the number of rows in the mtx with comments
+get_n_rows_with_comments_mtx <- function(mtx_fp) {
+  n_rows_with_comments <- 0
+  repeat {
+    curr_row <- utils::read.table(mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = "\n") %>% dplyr::pull()
+    is_comment <- substr(curr_row, start = 1, stop = 1) == "%"
+    if (!is_comment) {
+      break()
+    } else {
+      n_rows_with_comments <- n_rows_with_comments + 1
+    }
   }
-  as.integer(conversion * n_gb)
-}
+  return(n_rows_with_comments)
 }

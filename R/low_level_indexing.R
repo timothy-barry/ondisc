@@ -5,7 +5,7 @@
 #' @param index_on_cell (boolean) index on cell (TRUE) or feature (FALSE)
 #' @param logical_mat (boolean)
 #'
-#' @return
+#' @return a Matrix object with the given contiguous_idx_range.
 return_spMatrix_contig_index <- function(h5_file, contiguous_idx_range, index_on_cell, logical_mat) {
   p_name <- paste0(if(index_on_cell) "cell" else "feature" , "_ptr")
   idx_name <- paste0(if(index_on_cell) "feature" else "cell", "_idxs")
@@ -63,7 +63,7 @@ return_spMatrix_contig_index <- function(h5_file, contiguous_idx_range, index_on
 #' return_spMatrix_from_index
 #'
 #' @param h5_file an h5 file
-#' @param idx an ordered, possibility discontiguous set of indexes
+#' @param subset_vector an ordered, possibility discontiguous set of indexes
 #' @param index_on_cell (boolean) index on cell (TRUE) or feature (FALSE)
 #' @param logical_mat (boolean) is matrix logical (FALSE) or integer (TRUE)
 #'

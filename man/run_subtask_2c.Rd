@@ -29,9 +29,6 @@ run_subtask_2c(
 
 \item{n_features}{total number of features in matrix}
 }
-\value{
-
-}
 \description{
 Run subtask 2c
 }

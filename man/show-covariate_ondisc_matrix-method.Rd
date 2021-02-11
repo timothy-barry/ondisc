@@ -7,8 +7,19 @@
 \S4method{show}{covariate_ondisc_matrix}(object)
 }
 \arguments{
-\item{objet}{a covariate_ondisc_matrix to show}
+\item{object}{a covariate_ondisc_matrix to show}
 }
 \description{
 Print basic information to console
+}
+\examples{
+# NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
+# "expressions.rds" to run this example. Navigate to the help file of
+# "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+# and execute the code in the first code block.
+expressions_fp <- paste0(tempdir(), "/expressions.rds")
+if (file.exists(expressions_fp)) {
+expressions <- readRDS(expressions_fp)
+show(expressions)
+}
 }

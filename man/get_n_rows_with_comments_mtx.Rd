@@ -2,16 +2,16 @@
 % Please edit documentation in R/high_level_initialize_helper.R
 \name{get_n_rows_with_comments_mtx}
 \alias{get_n_rows_with_comments_mtx}
-\title{Get n rows with comments}
+\title{get n rows with comments mtx}
 \usage{
 get_n_rows_with_comments_mtx(mtx_fp)
 }
 \arguments{
-\item{mtx_fp}{a file path to an mtx file}
+\item{mtx_fp}{file path to mtx}
 }
 \value{
-the number of rows with comments at the top of the file
+the number of rows in the mtx with comments
 }
 \description{
-Returns the number of rows with comments in an mtx file.
+get n rows with comments mtx
 }

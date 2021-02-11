@@ -32,7 +32,8 @@ Imports:
     data.table,
     Matrix,
     Rcpp,
-    crayon
+    crayon,
+    dplyr
 Depends: R (>= 3.5.0)
 VignetteBuilder: knitr
 LinkingTo: 

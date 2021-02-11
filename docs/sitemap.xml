@@ -4,25 +4,22 @@
     <loc>https://readr.tidyverse.org/index.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/apply-on_disc_matrix-method.html</loc>
+    <loc>https://readr.tidyverse.org/reference/accumulator_functs_enum.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/combine_results.html</loc>
+    <loc>https://readr.tidyverse.org/reference/arguments_enum.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/compare_Mat_on_disc_extract.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/convert_mtx_to_csc.html</loc>
-  </url>
-  <url>
     <loc>https://readr.tidyverse.org/reference/convert_to_seurat_object.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/create_h5_file_on_disk.html</loc>
+    <loc>https://readr.tidyverse.org/reference/covariate_ondisc_matrix-class.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/create_on_disc_matrix_from_10x_mtx.html</loc>
+    <loc>https://readr.tidyverse.org/reference/create_ondisc_matrix_from_mtx.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/create_random_matrix.html</loc>
@@ -31,7 +28,13 @@
     <loc>https://readr.tidyverse.org/reference/create_synthetic_data.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/dim-on_disc_matrix-method.html</loc>
+    <loc>https://readr.tidyverse.org/reference/decrement_idxs.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/dim-ondisc_matrix-method.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/evaluate_grammar.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/extract-odm.html</loc>
@@ -40,16 +43,28 @@
     <loc>https://readr.tidyverse.org/reference/extract_matrix.html</loc>
   </url>
   <url>
+    <loc>https://readr.tidyverse.org/reference/find_contig_subseqs.html</loc>
+  </url>
+  <url>
     <loc>https://readr.tidyverse.org/reference/generate_on_disc_matrix_name.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/get_accumulator_funct_arg_list.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/get_cell_barcodes.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/get_chunks_sequence.html</loc>
+    <loc>https://readr.tidyverse.org/reference/get_dim.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/get_dim.html</loc>
+    <loc>https://readr.tidyverse.org/reference/get_features_metadata.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/get_mtx_metadata.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/get_n_rows_with_comments_mtx.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/get_names.html</loc>
@@ -61,52 +76,112 @@
     <loc>https://readr.tidyverse.org/reference/get_subset_vector.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/head-on_disc_matrix-method.html</loc>
+    <loc>https://readr.tidyverse.org/reference/get_terminal_acc_and_args.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/increment_indices.html</loc>
+    <loc>https://readr.tidyverse.org/reference/get_terminals_for_covariate.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/index_vec-class.html</loc>
+    <loc>https://readr.tidyverse.org/reference/head-ondisc_matrix-method.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/inc_cell_count_if_feature_condition.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/inc_count.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/inc_mean_count.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/inc_mean_sq_count.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/inc_n_entries.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/initialize_accumulator.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/initialize_grammar.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/initialize_h5_file_on_disk.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/load_on_disc_and_mat.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/on_disc_apply_across_chunks.html</loc>
+    <loc>https://readr.tidyverse.org/reference/map_inputs_to_covariates.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/on_disc_matrix-class.html</loc>
+    <loc>https://readr.tidyverse.org/reference/multimodal_ondisc_matrix.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/ondisc.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/print_checkmark.html</loc>
+    <loc>https://readr.tidyverse.org/reference/ondisc_matrix-class.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/return_spMatrix_from_contiguous_index.html</loc>
+    <loc>https://readr.tidyverse.org/reference/read_given_column_of_tsv.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/return_spMatrix_contig_index.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/return_spMatrix_from_index.html</loc>
   </url>
   <url>
+    <loc>https://readr.tidyverse.org/reference/run_core_mtx_algo.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/run_mtx_algo_step_1.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/run_mtx_algo_step_2.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/run_subtask_2a.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/run_subtask_2b.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/run_subtask_2c.html</loc>
+  </url>
+  <url>
     <loc>https://readr.tidyverse.org/reference/save_random_matrix_as_10x.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/show-on_disc_matrix-method.html</loc>
+    <loc>https://readr.tidyverse.org/reference/setNames.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/show-covariate_ondisc_matrix-method.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/show-multimodal_ondisc_matrix-method.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/show-ondisc_matrix-method.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/subset-covariate-odm.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/subset-multimodal-odm.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/subset-odm.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/subset_by_gene_or_cell.html</loc>
+    <loc>https://readr.tidyverse.org/reference/subset_by_feature_or_cell.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/summarize_expression_matrix.html</loc>
+    <loc>https://readr.tidyverse.org/reference/sum_in_place.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/transpose_on_disc_csc_matrix.html</loc>
+    <loc>https://readr.tidyverse.org/reference/symbols_enum.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/articles/using_ondisc.html</loc>

@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Get on_disc subset vector — get_subset_vector" />
-<meta property="og:description" content="Returns the subset vector (either gene or cell) for an on_disc_matrix object." />
+<meta property="og:description" content="Returns the subset vector and order vector (either feature or cell) for an ondisc_matrix object." />
 
 
 
@@ -111,21 +111,23 @@
     </div>
 
     <div class="ref-description">
-    <p>Returns the subset vector (either gene or cell) for an on_disc_matrix object.</p>
+    <p>Returns the subset vector and order vector (either feature or cell) for an ondisc_matrix object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_subset_vector</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>cell_idx</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_subset_vector</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>cell_idx</span><span class='op'>)</span>
+
+<span class='fu'>get_order_vector</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>cell_idx</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the on_disc_matrix.</p></td>
+      <td><p>the ondisc_matrix.</p></td>
     </tr>
     <tr>
       <th>cell_idx</th>
-      <td><p>(boolean) TRUE = cell, FALSE = gene.</p></td>
+      <td><p>(boolean) TRUE = cell, FALSE = feature.</p></td>
     </tr>
     </table>
 

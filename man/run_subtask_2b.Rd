@@ -12,6 +12,8 @@ run_subtask_2b(x, pos, h5_fp, is_logical)
 \item{pos}{the starting row in the data.table; uses 1-based indexing}
 
 \item{h5_fp}{file path to the on-disk h5 file.}
+
+\item{is_logical}{is the mtx logical}
 }
 \description{
 Runs subtask 2b of algorithm: Writes chunk of gene_idxs and (if integer matrix) data to CSC matrix on-disk.

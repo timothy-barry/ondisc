@@ -8,7 +8,7 @@ Function to return a simple enum of the possible arguments to the accumulator fu
 arguments_enum()
 }
 \value{
-
+an environment
 }
 \description{
 Arguments Enum

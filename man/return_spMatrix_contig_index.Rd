@@ -21,7 +21,7 @@ return_spMatrix_contig_index(
 \item{logical_mat}{(boolean)}
 }
 \value{
-
+a Matrix object with the given contiguous_idx_range.
 }
 \description{
 Return sparse matrix from contiguous index

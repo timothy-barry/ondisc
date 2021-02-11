@@ -13,12 +13,13 @@
 #'
 #' @export ondisc_matrix
 #' @examples
-#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-#' if (odm_fp != "") { # if required file exists, ...
-#' odm <- ondisc_matrix(h5_file = odm_fp)
+#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
+#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+#'
+#' h5_fp <- paste0(tempdir(), "/expressions.h5")
+#' if (file.exists(h5_fp)) {
+#' odm <- ondisc_matrix(h5_file = h5_fp)
 #' }
 ondisc_matrix <- setClass("ondisc_matrix",
                            slots = list(h5_file = "character",
@@ -45,6 +46,22 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #'
 #' @return a covariate_ondisc_matrix object
 #' @export
+#' @examples
+#' # NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
+#' # "expressions.rds" to run this example. Navigate to the help file of
+#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+#' # and execute the code in the first code block.
+#' covariates_fp <- paste0(tempdir(), "/expressions.rds")
+#' h5_fp <-  paste0(tempdir(), "/expressions.h5")
+#' if (file.exists(covariates_fp) && file.exists(h5_fp)) {
+#' covariate_odm <- readRDS(covariates_fp)
+#' cell_covariate_matrix <- covariate_odm@cell_covariates
+#' feature_covariate_matrix <- covariate_odm@feature_covariates
+#' covariate_odm_copy <- covariate_ondisc_matrix(
+#' ondisc_matrix = ondisc_matrix(h5_file = h5_fp),
+#' cell_covariates = cell_covariate_matrix,
+#' feature_covariates = feature_covariate_matrix)
+#' }
 covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
                           slots = list(ondisc_matrix = "ondisc_matrix",
                                        cell_covariates = "data.frame",
@@ -63,6 +80,19 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #'
 #' @return a multimodal_ondisc_matrix
 #' @export
+#' @examples
+#' # NOTE: You must create the RDS files "expressions.rds" and
+#' # "perturbations.rds" to run this example. Navigate to the help file of
+#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+#' # and execute both code blocks.
+#' expression_fp <- paste0(tempdir(), "/expressions.rds")
+#' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
+#' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
+#'     expressions <- readRDS(expression_fp)
+#'     perturbations <- readRDS(expression_fp)
+#'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
+#'     perturbations = perturbations))
+#' }
 multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
   out <- new(Class = "multimodal_ondisc_matrix")
   out@modalities <- covariate_ondisc_matrix_list
@@ -79,15 +109,16 @@ multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
 #' @export
 #' @return an integer vector containing the dimension of the matrix
 #' @examples
-#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-#' if (odm_fp != "") { # if required file exists, ...
-#' odm <- ondisc_matrix(h5_file = odm_fp)
+#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
+#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+#' h5_fp <- paste0(tempdir(), "/expressions.h5")
+#' if (file.exists(h5_fp)) {
+#' odm <- ondisc_matrix(h5_file = h5_fp)
 #' dim(odm)
 #' }
 setMethod("dim", signature("ondisc_matrix"), function(x) get_dim(x))
+
 
 #' Print basic information to console
 #'
@@ -96,12 +127,13 @@ setMethod("dim", signature("ondisc_matrix"), function(x) get_dim(x))
 #' @return NULL
 #' @export
 #' @examples
-#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-#' if (odm_fp != "") { # if required file exists, ...
-#' odm <- ondisc_matrix(h5_file = odm_fp)
+#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
+#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+#'
+#' h5_fp <- paste0(tempdir(), "/expressions.h5")
+#' if (file.exists(h5_fp)) {
+#' odm <- ondisc_matrix(h5_file = h5_fp)
 #' show(odm)
 #' }
 setMethod("show", signature = signature("ondisc_matrix"), function(object) {
@@ -112,9 +144,19 @@ setMethod("show", signature = signature("ondisc_matrix"), function(object) {
 
 #' Print basic information to console
 #'
-#' @param objet a covariate_ondisc_matrix to show
+#' @param object a covariate_ondisc_matrix to show
 #' @return NULL
 #' @export
+#' @examples
+#' # NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
+#' # "expressions.rds" to run this example. Navigate to the help file of
+#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+#' # and execute the code in the first code block.
+#' expressions_fp <- paste0(tempdir(), "/expressions.rds")
+#' if (file.exists(expressions_fp)) {
+#' expressions <- readRDS(expressions_fp)
+#' show(expressions)
+#' }
 setMethod("show", signature = signature("covariate_ondisc_matrix"), function(object) {
   cell_covariates <- colnames(object@cell_covariates)
   feature_covariates <- colnames(object@feature_covariates)
@@ -127,9 +169,23 @@ setMethod("show", signature = signature("covariate_ondisc_matrix"), function(obj
 
 #' Print basic information to console
 #'
-#' @param objet a multimodal_ondisc_matrix to show
+#' @param object a multimodal_ondisc_matrix to show
 #' @return NULL
 #' @export
+#' @examples
+#' #' # NOTE: You must create the RDS files "expressions.rds" and
+#' # "perturbations.rds" to run this example. Navigate to the help file of
+#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+#' # and execute both code blocks.
+#' expression_fp <- paste0(tempdir(), "/expressions.rds")
+#' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
+#' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
+#'     expressions <- readRDS(expression_fp)
+#'     perturbations <- readRDS(expression_fp)
+#'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
+#'     perturbations = perturbations))
+#'     show(crispr_experiment)
+#' }
 setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(object) {
   modalities <- names(object@modalities)
   cat("A multimodal_ondisc_matrix with the following modalities:\n\n")
@@ -144,12 +200,13 @@ setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(ob
 #' @param x an on_disc_mnatrix
 #' @return NULL
 #' @examples
-#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-#' if (odm_fp != "") { # if required file exists, ...
-#' odm <- ondisc_matrix(h5_file = odm_fp)
+#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
+#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+#'
+#' h5_fp <- paste0(tempdir(), "/expressions.h5")
+#' if (file.exists(h5_fp)) {
+#' odm <- ondisc_matrix(h5_file = h5_fp)
 #' head(odm)
 #' }
 setMethod("head", signature = signature("ondisc_matrix"), function(x) {
@@ -174,20 +231,21 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
 #' @return A subset ondisc_matrix object.
 #' @name subset-odm
 #' @examples
-#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-#' if (odm_fp != "") { # if required file exists, ...
-#' odm <- ondisc_matrix(h5_file = odm_fp)
+#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
+#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+#'
+#' h5_fp <- paste0(tempdir(), "/expressions.h5")
+#' if (file.exists(h5_fp)) {
+#' odm <- ondisc_matrix(h5_file = h5_fp)
 #' # keep cells 100-110
 #' x <- odm[,100:110]
-#' # keep features ENSG00000260528, ENSG00000258908, and ENSG00000081913
-#' x <- odm[c("ENSG00000260528", "ENSG00000258908", "ENSG00000081913"),]
-#' # keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT
-#' x <- odm[,c("ACAGCCGCAGAAACCG", "CTACTATAGTGTACCT")]
-#' # keep all features except ENSG00000167525 and ENSG00000235815
-#' x <- odm[!(get_feature_ids(odm) %in% c("ENSG00000167525", "ENSG00000235815")),]
+#' # keep the following genes:
+#' x <- odm[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]
+#' # keep the following cells:
+#' x <- odm[,c("CTTAGGACACTGGCGT-1", "AAAGGATTCACATCAG-1")]
+#' # keep all genes except ENSG00000188305 and ENSG00000257284
+#' x <- odm[!(get_feature_ids(odm) %in% c("ENSG00000188305", "ENSG00000257284")),]
 #' }
 NULL
 
@@ -227,6 +285,19 @@ setMethod(f = "[",
 #' @param drop not used
 #' @return A subset covariate_ondisc_matrix object.
 #' @name subset-covariate-odm
+#' @examples
+#' # NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
+#' # "expressions.rds" to run this example. Navigate to the help file of
+#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+#' # and execute the code in the first code block.
+#' expressions_fp <- paste0(tempdir(), "/expressions.rds")
+#' if (file.exists(expressions_fp)) {
+#' expressions <- readRDS(expressions_fp)
+#' # keep cells 100-110
+#' x <- expressions[,100:110]
+#' # keep the following genes
+#' x <- expressions[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]
+#' }
 NULL
 
 #' @rdname subset-covariate-odm
@@ -278,6 +349,21 @@ setMethod(f = "[",
 #' @param drop not used
 #' @return A subset covariate_ondisc_matrix object.
 #' @name subset-multimodal-odm
+#' @examples
+#' # NOTE: You must create the RDS files "expressions.rds" and
+#' # "perturbations.rds" to run this example. Navigate to the help file of
+#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+#' # and execute both code blocks.
+#' expression_fp <- paste0(tempdir(), "/expressions.rds")
+#' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
+#' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
+#'     expressions <- readRDS(expression_fp)
+#'     perturbations <- readRDS(expression_fp)
+#'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
+#'     perturbations = perturbations))
+#'     # Keep all cells except 10,100, and 105.
+#'     x <- crispr_experiment[,-c(10,100,105)]
+#' }
 NULL
 
 #' @rdname subset-multimodal-odm
@@ -320,18 +406,19 @@ setMethod(f = "[",
 #' @param j Vector (numeric, logical, or character) indicating cells to keep
 #' @return A matrix (of class Matrix)
 #' @examples
-#' # NOTE: You must create the HDF5 file "example.h5" to run this example.
-#' # Navigate to the help file of "create_on_disc_matrix_from_10x_mtx"
-#' # (via ?create_on_disc_matrix_from_10x_mtx), and execute the code in the example.
-#' odm_fp <- system.file("extdata", "example.h5", package = "ondisc")
-#' if (odm_fp != "") { # if required file exists, ...
-#' odm <- ondisc_matrix(h5_file = odm_fp)
-#' # keep cells 100-110
+#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
+#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+#'
+#' h5_fp <- paste0(tempdir(), "/expressions.h5")
+#' if (file.exists(h5_fp)) {
+#' odm <- ondisc_matrix(h5_file = h5_fp)
+#' # extract cells 100-110
 #' x <- odm[[,100:110]]
-#' # keep features ENSG00000260528, ENSG00000258908, and ENSG00000081913
-#' x <- odm[[c("ENSG00000260528", "ENSG00000258908", "ENSG00000081913"),]]
-#' # keep cells ACAGCCGCAGAAACCG and CTACTATAGTGTACCT
-#' x <- odm[[,c("ACAGCCGCAGAAACCG", "CTACTATAGTGTACCT")]]
+#' # extract the following genes:
+#' x <- odm[[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]]
+#' # extract the following cells:
+#' x <- odm[[,c("CTTAGGACACTGGCGT-1", "AAAGGATTCACATCAG-1")]]
 #' }
 #' @name extract-odm
 NULL
