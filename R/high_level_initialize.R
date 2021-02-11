@@ -13,6 +13,7 @@
 #' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_covariate_ondisc_matrix set to TRUE, the function converts the list to a covariate_ondisc_matrix before returning.
 #' @export
 #' @examples
+#' \dontrun{
 #' # First example: initialize a covariate_ondisc_matrix
 #' # using simulated expression data; store output in tempdir()
 #' file_locs <- system.file("extdata",package = "ondisc",
@@ -38,6 +39,7 @@
 #' file_name = "perturbations",
 #' return_covariate_ondisc_matrix = TRUE)
 #' saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds"))
+#' }
 create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disc_dir = NULL, file_name = NULL, return_covariate_ondisc_matrix = FALSE) {
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()

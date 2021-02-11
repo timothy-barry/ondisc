@@ -36,6 +36,7 @@ A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, a
 Initializes an ondisc_matrix object from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix R object along with cell-specific and feature-specific covariate matrices.
 }
 \examples{
+\dontrun{
 # First example: initialize a covariate_ondisc_matrix
 # using simulated expression data; store output in tempdir()
 file_locs <- system.file("extdata",package = "ondisc",
@@ -61,4 +62,5 @@ on_disc_dir = tempdir(),
 file_name = "perturbations",
 return_covariate_ondisc_matrix = TRUE)
 saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds"))
+}
 }
