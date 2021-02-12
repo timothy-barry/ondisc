@@ -146,12 +146,14 @@ run_subtask_2a <- function(x, bag_of_variables, acc, terminal_functs_args) {
 #'
 #' @return NULL
 run_subtask_2b <- function(x, pos, h5_fp, is_logical) {
-  count <- nrow(x)
+  # count <- nrow(x)
   # Write feature idxs
-  rhdf5::h5write(x$feature_idxs, file = h5_fp, name = "feature_idxs", start = pos, count = count)
+  # rhdf5::h5write(x$feature_idxs, file = h5_fp, name = "feature_idxs", start = pos, count = count)
+  write_data_h5(h5_fp, "feature_idxs", x$feature_idxs, pos - 1L)
   if (!is_logical) {
     # If integer matrix, write data too
-    rhdf5::h5write(x$umi_counts, file = h5_fp, name = "data_csc", start = pos, count = count)
+    # rhdf5::h5write(x$umi_counts, file = h5_fp, name = "data_csc", start = pos, count = count)
+    write_data_h5(h5_fp, "data_csc", x$umi_counts, pos - 1L)
   }
   return(invisible())
 }

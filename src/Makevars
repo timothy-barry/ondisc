@@ -1,0 +1,3 @@
+RHDF5_LIBS=$(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e \
+    'Rhdf5lib::pkgconfig("PKG_CXX_LIBS")')
+PKG_LIBS=$(RHDF5_LIBS)
