@@ -68,18 +68,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// read_data_h5
-IntegerVector read_data_h5(const std::string& file_name_in, const std::string& dataset_name_in);
-RcppExport SEXP _ondisc_read_data_h5(SEXP file_name_inSEXP, SEXP dataset_name_inSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type dataset_name_in(dataset_name_inSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_data_h5(file_name_in, dataset_name_in));
-    return rcpp_result_gen;
-END_RCPP
-}
 // write_data_h5
 void write_data_h5(const std::string& file_name_in, const std::string& dataset_name_in, IntegerVector buffer, int start_pos);
 RcppExport SEXP _ondisc_write_data_h5(SEXP file_name_inSEXP, SEXP dataset_name_inSEXP, SEXP bufferSEXP, SEXP start_posSEXP) {
@@ -132,7 +120,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_inc_mean_sq_count", (DL_FUNC) &_ondisc_inc_mean_sq_count, 4},
     {"_ondisc_inc_count", (DL_FUNC) &_ondisc_inc_count, 3},
     {"_ondisc_inc_cell_count_if_feature_condition", (DL_FUNC) &_ondisc_inc_cell_count_if_feature_condition, 5},
-    {"_ondisc_read_data_h5", (DL_FUNC) &_ondisc_read_data_h5, 2},
     {"_ondisc_write_data_h5", (DL_FUNC) &_ondisc_write_data_h5, 4},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},

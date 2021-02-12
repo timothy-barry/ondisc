@@ -44,10 +44,11 @@ inc_cell_count_if_feature_condition <- function(acc_vect, feature_idxs, cell_idx
     invisible(.Call(`_ondisc_inc_cell_count_if_feature_condition`, acc_vect, feature_idxs, cell_idxs, umi_counts, bool_vect))
 }
 
-read_data_h5 <- function(file_name_in, dataset_name_in) {
-    .Call(`_ondisc_read_data_h5`, file_name_in, dataset_name_in)
-}
-
+#' @title write data h5
+#' @param file_name_in name of h5 file
+#' @param dataset_name_in name of the dataset within the h5 file
+#' @param buffer the vector of integers
+#' @param start_pos the position in the dataset in which to place the buffer
 write_data_h5 <- function(file_name_in, dataset_name_in, buffer, start_pos) {
     invisible(.Call(`_ondisc_write_data_h5`, file_name_in, dataset_name_in, buffer, start_pos))
 }
