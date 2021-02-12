@@ -39,3 +39,4 @@ VignetteBuilder: knitr
 LinkingTo: 
     Rcpp,
     Rhdf5lib
+SystemRequirements: GNU make
