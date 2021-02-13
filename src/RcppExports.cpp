@@ -81,6 +81,38 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// map_memory_to_disk
+void map_memory_to_disk(const std::string& file_name_in, IntegerVector m_cell_idxs, const std::string& cell_idxs_name, IntegerVector m_umi_counts, const std::string& umi_counts_name, int n_features, IntegerVector m_row_ptr, IntegerVector f_row_ptr);
+RcppExport SEXP _ondisc_map_memory_to_disk(SEXP file_name_inSEXP, SEXP m_cell_idxsSEXP, SEXP cell_idxs_nameSEXP, SEXP m_umi_countsSEXP, SEXP umi_counts_nameSEXP, SEXP n_featuresSEXP, SEXP m_row_ptrSEXP, SEXP f_row_ptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type m_cell_idxs(m_cell_idxsSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type cell_idxs_name(cell_idxs_nameSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type m_umi_counts(m_umi_countsSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type umi_counts_name(umi_counts_nameSEXP);
+    Rcpp::traits::input_parameter< int >::type n_features(n_featuresSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type m_row_ptr(m_row_ptrSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type f_row_ptr(f_row_ptrSEXP);
+    map_memory_to_disk(file_name_in, m_cell_idxs, cell_idxs_name, m_umi_counts, umi_counts_name, n_features, m_row_ptr, f_row_ptr);
+    return R_NilValue;
+END_RCPP
+}
+// map_memory_to_disk_logical_matrix
+void map_memory_to_disk_logical_matrix(const std::string& file_name_in, IntegerVector m_cell_idxs, const std::string& cell_idxs_name, int n_features, IntegerVector m_row_ptr, IntegerVector f_row_ptr);
+RcppExport SEXP _ondisc_map_memory_to_disk_logical_matrix(SEXP file_name_inSEXP, SEXP m_cell_idxsSEXP, SEXP cell_idxs_nameSEXP, SEXP n_featuresSEXP, SEXP m_row_ptrSEXP, SEXP f_row_ptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type m_cell_idxs(m_cell_idxsSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type cell_idxs_name(cell_idxs_nameSEXP);
+    Rcpp::traits::input_parameter< int >::type n_features(n_featuresSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type m_row_ptr(m_row_ptrSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type f_row_ptr(f_row_ptrSEXP);
+    map_memory_to_disk_logical_matrix(file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr);
+    return R_NilValue;
+END_RCPP
+}
 // decrement_idxs
 void decrement_idxs(IntegerVector idxs);
 RcppExport SEXP _ondisc_decrement_idxs(SEXP idxsSEXP) {
@@ -121,6 +153,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_inc_count", (DL_FUNC) &_ondisc_inc_count, 3},
     {"_ondisc_inc_cell_count_if_feature_condition", (DL_FUNC) &_ondisc_inc_cell_count_if_feature_condition, 5},
     {"_ondisc_write_data_h5", (DL_FUNC) &_ondisc_write_data_h5, 4},
+    {"_ondisc_map_memory_to_disk", (DL_FUNC) &_ondisc_map_memory_to_disk, 8},
+    {"_ondisc_map_memory_to_disk_logical_matrix", (DL_FUNC) &_ondisc_map_memory_to_disk_logical_matrix, 6},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},
     {"_ondisc_find_contig_subseqs", (DL_FUNC) &_ondisc_find_contig_subseqs, 1},

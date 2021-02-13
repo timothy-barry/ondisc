@@ -53,6 +53,30 @@ write_data_h5 <- function(file_name_in, dataset_name_in, buffer, start_pos) {
     invisible(.Call(`_ondisc_write_data_h5`, file_name_in, dataset_name_in, buffer, start_pos))
 }
 
+#' @title map memory to disk
+#' @param file_name_in name of h5 file
+#' @param m_cell_idxs the cell indexes integer vector
+#' @param cell_idxs_name name of the cell_idxs dataset
+#' @param m_umi_counts the m_umi_counts vector
+#' @param umi_counts_name the name of the integer vector
+#' @param n_features number of features
+#' @param m_row_ptr the memory row pointer
+#' @param f_row_ptr the disk row pointer
+map_memory_to_disk <- function(file_name_in, m_cell_idxs, cell_idxs_name, m_umi_counts, umi_counts_name, n_features, m_row_ptr, f_row_ptr) {
+    invisible(.Call(`_ondisc_map_memory_to_disk`, file_name_in, m_cell_idxs, cell_idxs_name, m_umi_counts, umi_counts_name, n_features, m_row_ptr, f_row_ptr))
+}
+
+#' @title map memory to disk
+#' @param file_name_in name of h5 file
+#' @param m_cell_idxs the cell indexes integer vector
+#' @param cell_idxs_name name of the cell_idxs dataset
+#' @param n_features number of features
+#' @param m_row_ptr the memory row pointer
+#' @param f_row_ptr the disk row pointer
+map_memory_to_disk_logical_matrix <- function(file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr) {
+    invisible(.Call(`_ondisc_map_memory_to_disk_logical_matrix`, file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr))
+}
+
 #' @title decrement a vector of indexes
 #' @param idxs an integer vector of indexes
 decrement_idxs <- function(idxs) {
