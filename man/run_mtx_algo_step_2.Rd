@@ -9,7 +9,7 @@ run_mtx_algo_step_2(
   mtx_fp,
   is_logical,
   bag_of_variables,
-  n_elem_per_chunk,
+  n_lines_per_chunk,
   n_rows_to_skip,
   initial_accumulators,
   terminal_functs_args,
@@ -26,7 +26,7 @@ run_mtx_algo_step_2(
 
 \item{bag_of_variables}{the bag of variables containing the variables to pass to the accumulator functions}
 
-\item{n_elem_per_chunk}{number of elements to load per chunk}
+\item{n_lines_per_chunk}{number of elements to load per chunk}
 
 \item{n_rows_to_skip}{n rows to skip in mtx file}
 

@@ -10,7 +10,7 @@ run_core_mtx_algo(
   is_logical,
   covariates,
   bag_of_variables,
-  n_elem_per_chunk,
+  n_lines_per_chunk,
   n_rows_to_skip
 )
 }
@@ -25,7 +25,7 @@ run_core_mtx_algo(
 
 \item{bag_of_variables}{environment containing named variables}
 
-\item{n_elem_per_chunk}{number of elements to load per chunk}
+\item{n_lines_per_chunk}{number of elements to load per chunk}
 
 \item{n_rows_to_skip}{number of rows to skip in .mtx file}
 }

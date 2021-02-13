@@ -9,7 +9,7 @@ run_mtx_algo_step_1(
   initialize_accumulator,
   bag_of_variables,
   is_logical,
-  n_elem_per_chunk,
+  n_lines_per_chunk,
   n_rows_to_skip
 )
 }
@@ -22,7 +22,7 @@ run_mtx_algo_step_1(
 
 \item{is_logical}{(boolean) is matrix logical}
 
-\item{n_elem_per_chunk}{number of elements to process per chunk}
+\item{n_lines_per_chunk}{number of lines to process per chunk}
 
 \item{n_rows_to_skip}{number of rows to skip in .mtx file}
 }
