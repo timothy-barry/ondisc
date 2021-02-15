@@ -146,13 +146,10 @@ run_subtask_2a <- function(x, bag_of_variables, acc, terminal_functs_args) {
 #'
 #' @return NULL
 run_subtask_2b <- function(x, pos, h5_fp, is_logical) {
-  # count <- nrow(x)
   # Write feature idxs
-  # rhdf5::h5write(x$feature_idxs, file = h5_fp, name = "feature_idxs", start = pos, count = count)
   write_data_h5(h5_fp, "feature_idxs", x$feature_idxs, pos - 1L)
   if (!is_logical) {
     # If integer matrix, write data too
-    # rhdf5::h5write(x$umi_counts, file = h5_fp, name = "data_csc", start = pos, count = count)
     write_data_h5(h5_fp, "data_csc", x$umi_counts, pos - 1L)
   }
   return(invisible())
@@ -190,23 +187,6 @@ run_subtask_2c <- function(x, h5_fp, is_logical, row_ptr, n_nonzero_features_per
                                         m_row_ptr = in_memory_row_ptr,
                                         f_row_ptr = row_ptr)
   }
-  # loop over all features, mapping the in-memory data to disk
-  # for (i in seq(1, n_features)) {
-  #  mem_start <- in_memory_row_ptr[i] + 1L
-  #  mem_end <- in_memory_row_ptr[i+1] - 1L + 1L # no + 1 for 0-based indexing
-  #  count <- mem_end - mem_start + 1L
-  #  if (count >= 1) { # data present for this feature
-  #    mem_range <- if (mem_start == mem_end) mem_start else seq(mem_start, mem_end)
-  #    cells_idxs_to_write <- x$cell_idxs[mem_range]
-  #    disk_start_idx <- row_ptr[i] + 1 # no +1 for 0-based indexing
-  #    rhdf5::h5write(cells_idxs_to_write, h5_fp, name = "cell_idxs", start = disk_start_idx, count = count)
-  #    if (!is_logical) {
-  #      umi_counts_to_write <- x$umi_counts[mem_range]
-  #      rhdf5::h5write(umi_counts_to_write, h5_fp, name = "data_csr", start = disk_start_idx, count = count)
-  #    }
-  #  }
-  # }
-  # increment the row pointer in-place
   sum_in_place(row_ptr, n_nonzero_features_chunk)
 }
 

@@ -7,29 +7,34 @@
 #'
 #' @return a Matrix object with the given contiguous_idx_range.
 return_spMatrix_contig_index <- function(h5_file, contiguous_idx_range, index_on_cell, logical_mat) {
-  p_name <- paste0(if(index_on_cell) "cell" else "feature" , "_ptr")
-  idx_name <- paste0(if(index_on_cell) "feature" else "cell", "_idxs")
-  if (!logical_mat) dat_name <- paste0("data_", if(index_on_cell) "csc" else "csr")
-  start <- contiguous_idx_range[1]
-  count <- contiguous_idx_range[2] - start + 2L # add 2 regardless of 0/1-based indexing
+  p_name <- paste0(if (index_on_cell) "cell" else "feature" , "_ptr")
+  idx_name <- paste0(if (index_on_cell) "feature" else "cell", "_idxs")
+  if (!logical_mat) dat_name <- paste0("data_", if (index_on_cell) "csc" else "csr")
+  # start <- contiguous_idx_range[1]
+  # count <- contiguous_idx_range[2] - start + 2L # add 2 regardless of 0/1-based indexing
   # extract pointer and center at zero.
-  p <- as.integer(rhdf5::h5read(file = h5_file, name = p_name, start = start, count = count) + 1L)
-  p_start <- p[1]
-  centered_p <- p[-1] - p[1]
-  p_count <- centered_p[count - 1L]
-  if (p_count > 0) { # if nonempty
-    idxs <- as.integer(rhdf5::h5read(file = h5_file, name = idx_name, start = p_start, count = p_count))
-    if (!logical_mat) {
-      dat <- as.numeric(rhdf5::h5read(file = h5_file, name = dat_name, start = p_start, count = p_count))
-    }
-  } else { # if empty
-    idxs <- integer(0)
-    if (!logical_mat) dat <- numeric(0)
-  }
+  # p <- as.integer(rhdf5::h5read(file = h5_file, name = p_name, start = start, count = count) + 1L)
+  # p_start <- p[1]
+  # centered_p <- p[-1] - p[1]
+  # p_count <- centered_p[count - 1L]
+  # if (p_count > 0) { # if nonempty
+  #  idxs <- as.integer(rhdf5::h5read(file = h5_file, name = idx_name, start = p_start, count = p_count))
+  #  if (!logical_mat) {
+  #    dat <- as.numeric(rhdf5::h5read(file = h5_file, name = dat_name, start = p_start, count = p_count))
+  #  }
+  # } else { # if empty
+  #  idxs <- integer(0)
+  #  if (!logical_mat) dat <- numeric(0)
+  # }
   # determine dimension of submatrix; initialize full pointer
-  full_p <- c(0L, centered_p)
+  # full_p <- c(0L, centered_p)
+  flat_mat <- index_h5_file(h5_file, p_name, idx_name, dat_name, contiguous_idx_range)
+  full_p <- flat_mat[[1]]
+  idxs <- flat_mat[[2]]
+  dat <- as.numeric(flat_mat[[3]])
   dimen <- rhdf5::h5read(file = h5_file, name = "dimension") %>% as.integer()
-  dim_to_pass <- if (index_on_cell) c(dimen[1], count - 1L) else c(count - 1L, dimen[2])
+  dim_to_pass <- if (index_on_cell) c(dimen[1], length(full_p) - 1L) else c(length(full_p) - 1L, dimen[2])
+
   # finally, create matrix
   ret <- if (index_on_cell && !logical_mat) { # index on cell, integer matrix
     new(getClass(Class = "dgCMatrix", where = "Matrix"),
@@ -72,6 +77,7 @@ return_spMatrix_from_index <- function(h5_file, subset_vector, index_on_cell, lo
   if (length(subset_vector) == 1) {
     ret <- return_spMatrix_contig_index(h5_file, c(subset_vector, subset_vector), index_on_cell, logical_mat)
   }
+  subset_vector <- subset_vector - 1L
   intervals <- find_contig_subseqs(subset_vector)
   start_ints <- intervals[[1]]
   end_ints <- intervals[[2]]

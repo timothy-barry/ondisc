@@ -77,6 +77,10 @@ map_memory_to_disk_logical_matrix <- function(file_name_in, m_cell_idxs, cell_id
     invisible(.Call(`_ondisc_map_memory_to_disk_logical_matrix`, file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr))
 }
 
+index_h5_file <- function(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, contiguous_idx_range) {
+    .Call(`_ondisc_index_h5_file`, file_name_in, p_name_in, idx_name_in, umi_counts_name_in, contiguous_idx_range)
+}
+
 #' @title decrement a vector of indexes
 #' @param idxs an integer vector of indexes
 decrement_idxs <- function(idxs) {

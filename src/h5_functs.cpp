@@ -32,16 +32,10 @@ void write_data_h5(const std::string& file_name_in, const std::string& dataset_n
 
   // set the hyperslab of both dataspaces
   // 1. on disk
-  const hsize_t fcount = buffer_length;
-  const hsize_t fstart = start_pos;
-  const hsize_t fstride = 1;
-  const hsize_t fblock = 1;
+  const hsize_t fcount = buffer_length, fstart = start_pos, fstride = 1, fblock = 1;
   fspace.selectHyperslab(H5S_SELECT_SET, &fcount, &fstart, &fstride, &fblock);
   // 2. in memory
-  const hsize_t mcount = buffer_length;
-  const hsize_t mstart = 0;
-  const hsize_t mstride = 1;
-  const hsize_t mblock = 1;
+  const hsize_t mcount = buffer_length, mstart = 0, mstride = 1, mblock = 1;
   mspace.selectHyperslab(H5S_SELECT_SET, &mcount, &mstart, &mstride, &mblock);
 
   // write the buffer data onto disk

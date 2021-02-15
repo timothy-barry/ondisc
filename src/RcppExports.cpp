@@ -113,6 +113,21 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// index_h5_file
+List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector contiguous_idx_range);
+RcppExport SEXP _ondisc_index_h5_file(SEXP file_name_inSEXP, SEXP p_name_inSEXP, SEXP idx_name_inSEXP, SEXP umi_counts_name_inSEXP, SEXP contiguous_idx_rangeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type p_name_in(p_name_inSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type idx_name_in(idx_name_inSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type umi_counts_name_in(umi_counts_name_inSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type contiguous_idx_range(contiguous_idx_rangeSEXP);
+    rcpp_result_gen = Rcpp::wrap(index_h5_file(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, contiguous_idx_range));
+    return rcpp_result_gen;
+END_RCPP
+}
 // decrement_idxs
 void decrement_idxs(IntegerVector idxs);
 RcppExport SEXP _ondisc_decrement_idxs(SEXP idxsSEXP) {
@@ -155,6 +170,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_write_data_h5", (DL_FUNC) &_ondisc_write_data_h5, 4},
     {"_ondisc_map_memory_to_disk", (DL_FUNC) &_ondisc_map_memory_to_disk, 8},
     {"_ondisc_map_memory_to_disk_logical_matrix", (DL_FUNC) &_ondisc_map_memory_to_disk_logical_matrix, 6},
+    {"_ondisc_index_h5_file", (DL_FUNC) &_ondisc_index_h5_file, 5},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},
     {"_ondisc_find_contig_subseqs", (DL_FUNC) &_ondisc_find_contig_subseqs, 1},
