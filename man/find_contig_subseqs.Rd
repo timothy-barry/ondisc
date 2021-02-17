@@ -7,7 +7,7 @@
 find_contig_subseqs(v)
 }
 \arguments{
-\item{v}{an ORDERED integer vector}
+\item{v}{an integer vector}
 }
 \description{
 find contiguous subsequences

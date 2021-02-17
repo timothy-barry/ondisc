@@ -2,7 +2,7 @@
 % Please edit documentation in R/low_level_indexing.R
 \name{return_spMatrix_from_index}
 \alias{return_spMatrix_from_index}
-\title{return_spMatrix_from_index}
+\title{Return sparse matrix from index}
 \usage{
 return_spMatrix_from_index(
   h5_file,
@@ -13,19 +13,19 @@ return_spMatrix_from_index(
 )
 }
 \arguments{
-\item{h5_file}{an h5 file}
+\item{h5_file}{the file path to the h5 file}
 
-\item{subset_vector}{an ordered, possibility discontiguous set of indexes}
+\item{subset_vector}{an integer vector giving the subset}
 
 \item{index_on_cell}{(boolean) index on cell (TRUE) or feature (FALSE)}
 
-\item{logical_mat}{(boolean) is matrix logical (FALSE) or integer (TRUE)}
+\item{logical_mat}{(boolean)}
 
-\item{underlying_dimension}{a length 2 integer vector giving the underlying dimension of the expression matrix}
+\item{underlying_dimension}{a length 2 integer vector giving the underlying dimension of the expression matrix.}
 }
 \value{
-a sparse matrix subset according to idx
+a Matrix object.
 }
 \description{
-return_spMatrix_from_index
+Return sparse matrix from index
 }
