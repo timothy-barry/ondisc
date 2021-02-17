@@ -19,10 +19,10 @@ return_spMatrix_from_index <- function(h5_file, subset_vector, index_on_cell, lo
   }
   subset_vector <- subset_vector - 1
   # get the matrix
-  flat_mat <- index_h5_file(file_name_in = h5_file, p_name_in = p_name, idx_name_in = idx_name, umi_counts_name_in = umi_counts_name, subset_vector = subset_vector)
+  flat_mat <- index_h5_file(h5_file, p_name, idx_name, umi_counts_name, subset_vector, logical_mat)
   p <- flat_mat[[1]]
   idxs <- flat_mat[[2]]
-  dat <- as.numeric(flat_mat[[3]])
+  if (!logical_mat) dat <- as.numeric(flat_mat[[3]])
 
   # finally, create the matrix
   ret <- if (index_on_cell && !logical_mat) { # index on cell, integer matrix

@@ -8,24 +8,28 @@ using namespace H5;
 using namespace Rcpp;
 
 
+//' @param file_name_in name of h5 file
+//' @param p_name_in name of pointer
+//' @param idx_name_in name of (minor) index
+//' @param umi_counts_name_in name of umi counts
+//' @param subset_vector the integer vector of indexes to extract
+//' @param logical_mat boolean indicating whether the matrix is logical
 // [[Rcpp::export]]
-List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector subset_vector) {
+List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector subset_vector, bool logical_mat) {
   // open file
   const H5std_string file_name(&file_name_in[0]);
   H5File* file = new H5File(file_name, H5F_ACC_RDONLY);
   // set dataset names of (i) p, (ii) idxs, and (iii) umi_counts.
   const H5std_string p_name(&p_name_in[0]);
   const H5std_string idx_name(&idx_name_in[0]);
-  const H5std_string umi_counts_name(&umi_counts_name_in[0]);
 
   // open the corresponding datasets
   DataSet* f_p = new DataSet(file->openDataSet(p_name));
   DataSet* f_idx = new DataSet(file->openDataSet(idx_name));
-  DataSet* f_umi_counts = new DataSet(file->openDataSet(umi_counts_name));
+
   // set the dataspace for these datasets
   DataSpace f_p_space = f_p->getSpace();
   DataSpace f_idx_space = f_idx->getSpace();
-  DataSpace f_umi_counts_space = f_umi_counts->getSpace();
 
   // define vectors used in first round of computation, plus the data spaces
   int subset_vector_length = subset_vector.size();
@@ -66,36 +70,63 @@ List index_h5_file(const std::string& file_name_in, const std::string& p_name_in
     out_ptr[i] += out_ptr[i - 1] + count_vect[i - 1];
   }
 
-  // initialize umi_counts and idx
+  // initialize idx
   hsize_t total_length = out_ptr[subset_vector_length];
-  IntegerVector m_umi_counts(total_length);
   IntegerVector m_idx(total_length);
-  DataSpace m_umi_counts_space(1, &total_length);
   DataSpace m_idx_space(1, &total_length);
 
-  // populate these vectors
-  for (int i = 0; i < subset_vector_length; i ++) {
-    m_start = (hsize_t) out_ptr[i];
-    f_start = (hsize_t) ptr_storage[2 * i];
-    count = count_vect[i];
+  // initialize output
+  List out;
 
-    // first, the umis
-    m_umi_counts_space.selectHyperslab(H5S_SELECT_SET, &count, &m_start, &stride, &block);
-    f_umi_counts_space.selectHyperslab(H5S_SELECT_SET, &count, &f_start, &stride, &block);
-    f_umi_counts->read(&m_umi_counts[0], PredType::NATIVE_INT, m_umi_counts_space, f_umi_counts_space);
+  // take options on logical_mat
+  if (!logical_mat) {
+    // standard case -- integer matrix; define umi_count variables
+    const H5std_string umi_counts_name(&umi_counts_name_in[0]);
+    DataSet* f_umi_counts = new DataSet(file->openDataSet(umi_counts_name));
+    DataSpace f_umi_counts_space = f_umi_counts->getSpace();
+    IntegerVector m_umi_counts(total_length);
+    DataSpace m_umi_counts_space(1, &total_length);
 
-    // next, the idxs
-    m_idx_space.selectHyperslab(H5S_SELECT_SET, &count, &m_start, &stride, &block);
-    f_idx_space.selectHyperslab(H5S_SELECT_SET, &count, &f_start, &stride, &block);
-    f_idx->read(&m_idx[0], PredType::NATIVE_INT, m_idx_space, f_idx_space);
+    // populate the vectors
+    for (int i = 0; i < subset_vector_length; i ++) {
+      m_start = (hsize_t) out_ptr[i];
+      f_start = (hsize_t) ptr_storage[2 * i];
+      count = count_vect[i];
+
+      // first, the umis
+      m_umi_counts_space.selectHyperslab(H5S_SELECT_SET, &count, &m_start, &stride, &block);
+      f_umi_counts_space.selectHyperslab(H5S_SELECT_SET, &count, &f_start, &stride, &block);
+      f_umi_counts->read(&m_umi_counts[0], PredType::NATIVE_INT, m_umi_counts_space, f_umi_counts_space);
+
+      // next, the idxs
+      m_idx_space.selectHyperslab(H5S_SELECT_SET, &count, &m_start, &stride, &block);
+      f_idx_space.selectHyperslab(H5S_SELECT_SET, &count, &f_start, &stride, &block);
+      f_idx->read(&m_idx[0], PredType::NATIVE_INT, m_idx_space, f_idx_space);
+    }
+    // set output
+    out = List::create(out_ptr, m_idx, m_umi_counts);
+    // close f_umi_counts file
+    delete f_umi_counts;
+  } else {
+    // logical matrix case; no need to define umi vectors
+    for (int i = 0; i < subset_vector_length; i ++) {
+      m_start = (hsize_t) out_ptr[i];
+      f_start = (hsize_t) ptr_storage[2 * i];
+      count = count_vect[i];
+
+      // the idxs only
+      m_idx_space.selectHyperslab(H5S_SELECT_SET, &count, &m_start, &stride, &block);
+      f_idx_space.selectHyperslab(H5S_SELECT_SET, &count, &f_start, &stride, &block);
+      f_idx->read(&m_idx[0], PredType::NATIVE_INT, m_idx_space, f_idx_space);
+    }
+    // set output
+    out = List::create(out_ptr, m_idx);
   }
-
   // close files and datasets
   delete f_p;
   delete f_idx;
-  delete f_umi_counts;
   delete file;
 
   // return sparse matrix
-  return List::create(out_ptr, m_idx, m_umi_counts);
+  return out;
 }

@@ -114,8 +114,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // index_h5_file
-List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector subset_vector);
-RcppExport SEXP _ondisc_index_h5_file(SEXP file_name_inSEXP, SEXP p_name_inSEXP, SEXP idx_name_inSEXP, SEXP umi_counts_name_inSEXP, SEXP subset_vectorSEXP) {
+List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector subset_vector, bool logical_mat);
+RcppExport SEXP _ondisc_index_h5_file(SEXP file_name_inSEXP, SEXP p_name_inSEXP, SEXP idx_name_inSEXP, SEXP umi_counts_name_inSEXP, SEXP subset_vectorSEXP, SEXP logical_matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -124,7 +124,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string& >::type idx_name_in(idx_name_inSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type umi_counts_name_in(umi_counts_name_inSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type subset_vector(subset_vectorSEXP);
-    rcpp_result_gen = Rcpp::wrap(index_h5_file(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector));
+    Rcpp::traits::input_parameter< bool >::type logical_mat(logical_matSEXP);
+    rcpp_result_gen = Rcpp::wrap(index_h5_file(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -170,7 +171,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_write_data_h5", (DL_FUNC) &_ondisc_write_data_h5, 4},
     {"_ondisc_map_memory_to_disk", (DL_FUNC) &_ondisc_map_memory_to_disk, 8},
     {"_ondisc_map_memory_to_disk_logical_matrix", (DL_FUNC) &_ondisc_map_memory_to_disk_logical_matrix, 6},
-    {"_ondisc_index_h5_file", (DL_FUNC) &_ondisc_index_h5_file, 5},
+    {"_ondisc_index_h5_file", (DL_FUNC) &_ondisc_index_h5_file, 6},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},
     {"_ondisc_find_contig_subseqs", (DL_FUNC) &_ondisc_find_contig_subseqs, 1},

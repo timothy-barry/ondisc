@@ -133,8 +133,7 @@ create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, 
   for (i in seq(1, n_datasets)) {
     if (n_datasets > 1) cat(paste0("Generating dataset ", i, ".\n"))
     if (stats::rbinom(1, 1, 0.5)) {
-      # m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
-      m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
+      m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
     } else {
       m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
     }

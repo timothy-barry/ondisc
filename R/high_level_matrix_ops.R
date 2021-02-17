@@ -11,6 +11,7 @@ get_subset_vector <- function(x, cell_idx) {
   return(slot(x, idx_slot))
 }
 
+
 #' @rdname get_subset_vector
 get_order_vector <- function(x, cell_idx) {
   idx_slot <- paste0(if (cell_idx) "cell" else "feature", "_subset_order")

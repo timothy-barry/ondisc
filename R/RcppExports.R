@@ -77,8 +77,14 @@ map_memory_to_disk_logical_matrix <- function(file_name_in, m_cell_idxs, cell_id
     invisible(.Call(`_ondisc_map_memory_to_disk_logical_matrix`, file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr))
 }
 
-index_h5_file <- function(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector) {
-    .Call(`_ondisc_index_h5_file`, file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector)
+#' @param file_name_in name of h5 file
+#' @param p_name_in name of pointer
+#' @param idx_name_in name of (minor) index
+#' @param umi_counts_name_in name of umi counts
+#' @param subset_vector the integer vector of indexes to extract
+#' @param logical_mat boolean indicating whether the matrix is logical
+index_h5_file <- function(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat) {
+    .Call(`_ondisc_index_h5_file`, file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat)
 }
 
 #' @title decrement a vector of indexes
