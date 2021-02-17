@@ -114,8 +114,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // index_h5_file
-List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector contiguous_idx_range);
-RcppExport SEXP _ondisc_index_h5_file(SEXP file_name_inSEXP, SEXP p_name_inSEXP, SEXP idx_name_inSEXP, SEXP umi_counts_name_inSEXP, SEXP contiguous_idx_rangeSEXP) {
+List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector subset_vector);
+RcppExport SEXP _ondisc_index_h5_file(SEXP file_name_inSEXP, SEXP p_name_inSEXP, SEXP idx_name_inSEXP, SEXP umi_counts_name_inSEXP, SEXP subset_vectorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -123,8 +123,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string& >::type p_name_in(p_name_inSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type idx_name_in(idx_name_inSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type umi_counts_name_in(umi_counts_name_inSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type contiguous_idx_range(contiguous_idx_rangeSEXP);
-    rcpp_result_gen = Rcpp::wrap(index_h5_file(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, contiguous_idx_range));
+    Rcpp::traits::input_parameter< IntegerVector >::type subset_vector(subset_vectorSEXP);
+    rcpp_result_gen = Rcpp::wrap(index_h5_file(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector));
     return rcpp_result_gen;
 END_RCPP
 }

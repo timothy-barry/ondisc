@@ -4,7 +4,13 @@
 \alias{return_spMatrix_from_index}
 \title{return_spMatrix_from_index}
 \usage{
-return_spMatrix_from_index(h5_file, subset_vector, index_on_cell, logical_mat)
+return_spMatrix_from_index(
+  h5_file,
+  subset_vector,
+  index_on_cell,
+  logical_mat,
+  underlying_dimension
+)
 }
 \arguments{
 \item{h5_file}{an h5 file}
@@ -14,6 +20,8 @@ return_spMatrix_from_index(h5_file, subset_vector, index_on_cell, logical_mat)
 \item{index_on_cell}{(boolean) index on cell (TRUE) or feature (FALSE)}
 
 \item{logical_mat}{(boolean) is matrix logical (FALSE) or integer (TRUE)}
+
+\item{underlying_dimension}{a length 2 integer vector giving the underlying dimension of the expression matrix}
 }
 \value{
 a sparse matrix subset according to idx

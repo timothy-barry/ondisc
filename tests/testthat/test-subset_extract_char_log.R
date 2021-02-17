@@ -102,9 +102,6 @@ test_that("subset by gene id", {
     # Elements not present
     expect_error(on_disc_mat[,c("cell_1", "bogus name")])
     expect_error(on_disc_mat[c("ENSG0001", "bogus name"),])
-    # Duplicate elements
-    expect_error(on_disc_mat[,c("cell_1", "cell_1")])
-    expect_error(on_disc_mat[c("ENSG000_1", "ENSG000_1"),])
     # Vector too long
     expect_error(on_disc_mat[, c(rep(TRUE, ncol(on_disc_mat)), TRUE)])
     expect_error(on_disc_mat[c(rep(TRUE, nrow(on_disc_mat)), TRUE),])

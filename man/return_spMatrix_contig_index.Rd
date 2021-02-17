@@ -8,7 +8,8 @@ return_spMatrix_contig_index(
   h5_file,
   contiguous_idx_range,
   index_on_cell,
-  logical_mat
+  logical_mat,
+  underlying_dimension
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ return_spMatrix_contig_index(
 \item{index_on_cell}{(boolean) index on cell (TRUE) or feature (FALSE)}
 
 \item{logical_mat}{(boolean)}
+
+\item{underlying_dimension}{a length 2 integer vector giving the underlying dimension of the expression matrix.}
 }
 \value{
 a Matrix object with the given contiguous_idx_range.

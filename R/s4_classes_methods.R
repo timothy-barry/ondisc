@@ -25,15 +25,13 @@ ondisc_matrix <- setClass("ondisc_matrix",
                            slots = list(h5_file = "character",
                                         logical_mat = "logical",
                                         cell_subset = "integer",
-                                        cell_subset_order = "integer",
                                         feature_subset = "integer",
-                                        feature_subset_order = "integer"),
+                                        underlying_dimension = "integer"),
                            prototype = list(h5_file = NA_character_,
                                             logical_mat = FALSE,
                                             cell_subset = NA_integer_,
-                                            cell_subset_order = NA_integer_,
                                             feature_subset = NA_integer_,
-                                            feature_subset_order = NA_integer_))
+                                            underlying_dimension = NA_integer_))
 
 
 #' covariate_ondisc_matrix class constructor

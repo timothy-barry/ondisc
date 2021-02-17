@@ -122,13 +122,6 @@ subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
     stop("idx must be of type numeric, character, or logical.")
   }
   # check for duplicates and store ordering
-  l <- length(slot(x, subset_slot))
-  ordering <- order(slot(x, subset_slot), method = "radix")
-  tmp <- rle(slot(x, subset_slot)[ordering])
-  if (any(tmp$lengths >= 2L)) stop("Duplicate indices not allowed.")
-  # Finally, update the order slot
-  is_ordered <- all(ordering == seq(1L, l))
-  slot(x, order_slot) <- if (is_ordered) NA_integer_ else ordering
   return(x)
 }
 
@@ -146,25 +139,13 @@ extract_matrix <- function(x) {
   }
   index_on_cell <- x_dim[2] < x_dim[1]
   subset_vector <- get_subset_vector(x, index_on_cell)
-  order_vector <- get_order_vector(x, index_on_cell)
   # if subset_vector is NA, initialize it as an integer vector (this will happen only rarely)
   if (identical(subset_vector, NA_integer_)) {
     subset_vector <- seq(1, if (index_on_cell) x_dim[2] else x_dim[1])
   }
-  # if necessary, order the subset vector before passing to return_spMatrix_from_index.
-  subset_vector_ordered <- identical(order_vector, NA_integer_)
-  if (!subset_vector_ordered) {
-    subset_vector <- subset_vector[order_vector]
-  }
   # return submatrix, ordered (and subset) along main axis, and unsubset along secondary axis.
-  out <- return_spMatrix_from_index(x@h5_file, subset_vector, index_on_cell, x@logical_mat)
-  # Two additional post-processing tasks:
-  # First, reorder the rows/columns of the matrix (if necessary).
-  if (!subset_vector_ordered) {
-    inv_perm <- Matrix::invPerm(order_vector)
-    out <- if (index_on_cell) out[,inv_perm,drop=FALSE] else out[inv_perm,,drop=FALSE]
-  }
-  # Second, if necessary, subset along the other axis
+  out <- return_spMatrix_from_index(x@h5_file, subset_vector, index_on_cell, x@logical_mat, x@underlying_dimension)
+  # If necessary, subset along the other axis
   second_subset <- get_subset_vector(x, !index_on_cell)
   if (!identical(second_subset, NA_integer_)) {
     out <- if (index_on_cell) out[second_subset,,drop=FALSE] else out[,second_subset,drop=FALSE]

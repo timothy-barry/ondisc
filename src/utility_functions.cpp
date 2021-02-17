@@ -24,7 +24,7 @@ void sum_in_place(IntegerVector v1, IntegerVector v2) {
 
 
 //' @title find contiguous subsequences
-//' @param v an ORDERED integer vector
+//' @param v an integer vector
 // [[Rcpp::export]]
 List find_contig_subseqs(IntegerVector v) {
   IntegerVector starting_idxs;

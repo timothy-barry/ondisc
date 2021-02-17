@@ -72,9 +72,6 @@ test_that("Illegal subsets and extracts", {
     # index OOB
     expect_error(on_disc_mat[,ncol(on_disc_mat) + 10])
     expect_error(on_disc_mat[nrow(on_disc_mat) + 10,])
-    # duplicate indexes
-    expect_error(on_disc_mat[c(1,1),])
-    expect_error(on_disc_mat[,c(1,1)])
     # extracting nothing
     expect_error(on_disc_mat[[,]])
   }
