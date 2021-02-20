@@ -6,6 +6,10 @@
 \alias{[[,ondisc_matrix,ANY,missing-method}
 \alias{[[,ondisc_matrix,missing,ANY-method}
 \alias{[[,ondisc_matrix,ANY,ANY-method}
+\alias{[[,metadata_ondisc_matrix,missing,missing-method}
+\alias{[[,metadata_ondisc_matrix,ANY,missing-method}
+\alias{[[,metadata_ondisc_matrix,missing,ANY-method}
+\alias{[[,metadata_ondisc_matrix,ANY,ANY-method}
 \title{Pull a submatrix into memory with \code{[[}}
 \usage{
 \S4method{[[}{ondisc_matrix,missing,missing}(x, i, j)
@@ -15,6 +19,14 @@
 \S4method{[[}{ondisc_matrix,missing,ANY}(x, i, j)
 
 \S4method{[[}{ondisc_matrix,ANY,ANY}(x, i, j)
+
+\S4method{[[}{metadata_ondisc_matrix,missing,missing}(x, i, j)
+
+\S4method{[[}{metadata_ondisc_matrix,ANY,missing}(x, i, j)
+
+\S4method{[[}{metadata_ondisc_matrix,missing,ANY}(x, i, j)
+
+\S4method{[[}{metadata_ondisc_matrix,ANY,ANY}(x, i, j)
 }
 \arguments{
 \item{x}{An ondisc_matrix object}

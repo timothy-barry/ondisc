@@ -44,6 +44,17 @@ inc_cell_count_if_feature_condition <- function(acc_vect, feature_idxs, cell_idx
     invisible(.Call(`_ondisc_inc_cell_count_if_feature_condition`, acc_vect, feature_idxs, cell_idxs, umi_counts, bool_vect))
 }
 
+#' @title index into an h5 file
+#' @param file_name_in name of h5 file
+#' @param p_name_in name of pointer
+#' @param idx_name_in name of (minor) index
+#' @param umi_counts_name_in name of umi counts
+#' @param subset_vector the integer vector of indexes to extract
+#' @param logical_mat boolean indicating whether the matrix is logical
+index_h5_file <- function(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat) {
+    .Call(`_ondisc_index_h5_file`, file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat)
+}
+
 #' @title write data h5
 #' @param file_name_in name of h5 file
 #' @param dataset_name_in name of the dataset within the h5 file
@@ -77,16 +88,6 @@ map_memory_to_disk_logical_matrix <- function(file_name_in, m_cell_idxs, cell_id
     invisible(.Call(`_ondisc_map_memory_to_disk_logical_matrix`, file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr))
 }
 
-#' @param file_name_in name of h5 file
-#' @param p_name_in name of pointer
-#' @param idx_name_in name of (minor) index
-#' @param umi_counts_name_in name of umi counts
-#' @param subset_vector the integer vector of indexes to extract
-#' @param logical_mat boolean indicating whether the matrix is logical
-index_h5_file <- function(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat) {
-    .Call(`_ondisc_index_h5_file`, file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat)
-}
-
 #' @title decrement a vector of indexes
 #' @param idxs an integer vector of indexes
 decrement_idxs <- function(idxs) {
@@ -98,11 +99,5 @@ decrement_idxs <- function(idxs) {
 #' @param v2 the vector to add element-wise to vector v1; note: v1 may be longer than v2
 sum_in_place <- function(v1, v2) {
     invisible(.Call(`_ondisc_sum_in_place`, v1, v2))
-}
-
-#' @title find contiguous subsequences
-#' @param v an integer vector
-find_contig_subseqs <- function(v) {
-    .Call(`_ondisc_find_contig_subseqs`, v)
 }
 

@@ -11,3 +11,4 @@
 ^pkgdown$
 ^codecov\.yml$
 ^\.travis\.yml$
+^vignettes/articles$

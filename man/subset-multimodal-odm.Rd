@@ -26,7 +26,7 @@
 \item{drop}{not used}
 }
 \value{
-A subset covariate_ondisc_matrix object.
+A subset metadata_ondisc_matrix object.
 }
 \description{
 The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to cell barcodes.

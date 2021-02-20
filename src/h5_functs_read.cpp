@@ -7,7 +7,7 @@
 using namespace H5;
 using namespace Rcpp;
 
-
+//' @title index into an h5 file
 //' @param file_name_in name of h5 file
 //' @param p_name_in name of pointer
 //' @param idx_name_in name of (minor) index

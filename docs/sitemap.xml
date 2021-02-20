@@ -115,6 +115,12 @@
     <loc>https://readr.tidyverse.org/reference/map_inputs_to_covariates.html</loc>
   </url>
   <url>
+    <loc>https://readr.tidyverse.org/reference/map_memory_to_disk.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/map_memory_to_disk_logical_matrix.html</loc>
+  </url>
+  <url>
     <loc>https://readr.tidyverse.org/reference/multimodal_ondisc_matrix.html</loc>
   </url>
   <url>
@@ -125,9 +131,6 @@
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/read_given_column_of_tsv.html</loc>
-  </url>
-  <url>
-    <loc>https://readr.tidyverse.org/reference/return_spMatrix_contig_index.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/return_spMatrix_from_index.html</loc>
@@ -184,6 +187,9 @@
     <loc>https://readr.tidyverse.org/reference/symbols_enum.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/articles/using_ondisc.html</loc>
+    <loc>https://readr.tidyverse.org/reference/write_data_h5.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/articles/articles/setting_up_a_crispr_screen.html</loc>
   </url>
 </urlset>

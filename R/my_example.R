@@ -10,11 +10,20 @@ perturbation_mtx <- system.file("extdata", "perturbation.mtx", package = "ondisc
 exp_mat <- create_ondisc_matrix_from_mtx(mtx_fp = expression_mtx,
                                          barcodes_fp = barcodes,
                                          features_fp = genes_tsv,
-                                         return_covariate_ondisc_matrix = TRUE)
+                                         return_covariate_ondisc_matrix = TRUE,
+                                         on_disc_dir = temp_dir)
 pert_mat <- create_ondisc_matrix_from_mtx(mtx_fp = perturbation_mtx,
                                           barcodes_fp = barcodes,
                                           features_fp = guides_tsv,
                                           return_covariate_ondisc_matrix = TRUE,
                                           on_disc_dir = temp_dir)
-multmodal_mat <- multimodal_ondisc_matrix(list(expressions = exp_mat, perturbations = pert_mat))
+covariate_ondisc_matrix_list <- list(expressions = exp_mat, perturbations = pert_mat)
+multimodal_mat <- multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
+
+
+raw_data_dir <- "/Users/timbarry/Box/onDisc_all/onDisc_offsite/raw_data/filtered_feature_bc_matrix"
+mtx_fp <- paste0(raw_data_dir, "/matrix.mtx")
+barcodes_fp <- paste0(raw_data_dir, "/barcodes.tsv")
+features_fp <- paste0(raw_data_dir, "/features.tsv")
+
 }

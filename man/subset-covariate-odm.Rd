@@ -2,22 +2,22 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{subset-covariate-odm}
 \alias{subset-covariate-odm}
-\alias{[,covariate_ondisc_matrix,ANY,ANY,missing-method}
-\alias{[,covariate_ondisc_matrix,ANY,missing,missing-method}
-\alias{[,covariate_ondisc_matrix,missing,ANY,missing-method}
-\alias{[,covariate_ondisc_matrix,missing,missing,missing-method}
-\title{Subset a \code{covariate_ondisc_matrix} with \code{[}}
+\alias{[,metadata_ondisc_matrix,ANY,ANY,missing-method}
+\alias{[,metadata_ondisc_matrix,ANY,missing,missing-method}
+\alias{[,metadata_ondisc_matrix,missing,ANY,missing-method}
+\alias{[,metadata_ondisc_matrix,missing,missing,missing-method}
+\title{Subset a \code{metadata_ondisc_matrix} with \code{[}}
 \usage{
-\S4method{[}{covariate_ondisc_matrix,ANY,ANY,missing}(x, i, j, drop)
+\S4method{[}{metadata_ondisc_matrix,ANY,ANY,missing}(x, i, j, drop)
 
-\S4method{[}{covariate_ondisc_matrix,ANY,missing,missing}(x, i, j, drop)
+\S4method{[}{metadata_ondisc_matrix,ANY,missing,missing}(x, i, j, drop)
 
-\S4method{[}{covariate_ondisc_matrix,missing,ANY,missing}(x, i, j, drop)
+\S4method{[}{metadata_ondisc_matrix,missing,ANY,missing}(x, i, j, drop)
 
-\S4method{[}{covariate_ondisc_matrix,missing,missing,missing}(x, i, j, drop)
+\S4method{[}{metadata_ondisc_matrix,missing,missing,missing}(x, i, j, drop)
 }
 \arguments{
-\item{x}{A covariate_ondisc_matrix object}
+\item{x}{A metadata_ondisc_matrix object}
 
 \item{i}{Vector (numeric, logical, or character) indicating features to keep}
 
@@ -26,7 +26,7 @@
 \item{drop}{not used}
 }
 \value{
-A subset covariate_ondisc_matrix object.
+A subset metadata_ondisc_matrix object.
 }
 \description{
 The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to feature IDs (for rows) and cell barcodes (for columns).

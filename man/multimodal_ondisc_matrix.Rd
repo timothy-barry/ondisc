@@ -13,7 +13,7 @@ multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
 a multimodal_ondisc_matrix
 }
 \description{
-Constructs a multimodal_ondisc_matrix from a list of covariate_ondisc_matrix objects
+Constructs a multimodal_ondisc_matrix from a list of metadata_ondisc_matrix objects
 }
 \examples{
 # NOTE: You must create the RDS files "expressions.rds" and

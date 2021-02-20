@@ -8,13 +8,13 @@
 #' @param n_lines_per_chunk (optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.
 #' @param on_disc_dir (optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.
 #' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
-#' @param return_covariate_ondisc_matrix (optional) return the output as a covariate_ondisc_matrix? Defaults to FALSE.
+#' @param return_metadata_ondisc_matrix (optional) return the output as a metadata_ondisc_matrix? Defaults to FALSE.
 #'
-#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_covariate_ondisc_matrix set to TRUE, the function converts the list to a covariate_ondisc_matrix before returning.
+#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, the function converts the list to a metadata_ondisc_matrix before returning.
 #' @export
 #' @examples
 #' \dontrun{
-#' # First example: initialize a covariate_ondisc_matrix
+#' # First example: initialize a metadata_ondisc_matrix
 #' # using simulated expression data; store output in tempdir()
 #' file_locs <- system.file("extdata",package = "ondisc",
 #' c("gene_expression.mtx", "genes.tsv", "cell_barcodes.tsv"))
@@ -24,10 +24,10 @@
 #' features_fp = file_locs[["features"]],
 #' on_disc_dir = tempdir(),
 #' file_name = "expressions",
-#' return_covariate_ondisc_matrix = TRUE)
+#' return_metadata_ondisc_matrix = TRUE)
 #' saveRDS(object = expression_data, file = paste0(tempdir(), "/expressions.rds"))
 #'
-#' # Second example: initialize a covariate_ondisc_matrix using simulated
+#' # Second example: initialize a metadata_ondisc_matrix using simulated
 #' # gRNA perturbation data; store in tempdir()
 #' file_locs <- system.file("extdata", package = "ondisc",
 #' c("perturbation.mtx", "guides.tsv", "cell_barcodes.tsv"))
@@ -37,10 +37,10 @@
 #' features_fp = file_locs[["features"]],
 #' on_disc_dir = tempdir(),
 #' file_name = "perturbations",
-#' return_covariate_ondisc_matrix = TRUE)
+#' return_metadata_ondisc_matrix = TRUE)
 #' saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds"))
 #' }
-create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disc_dir = NULL, file_name = NULL, return_covariate_ondisc_matrix = FALSE) {
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disc_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE) {
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()
 
@@ -77,8 +77,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip)
   odm <- ondisc_matrix(h5_file = h5_fp, logical_mat = is_logical, underlying_dimension = c(mtx_metadata$n_features, mtx_metadata$n_cells))
   out$ondisc_matrix <- odm
-  if (return_covariate_ondisc_matrix) {
-    out <- covariate_ondisc_matrix(ondisc_matrix = out$ondisc_matrix,
+  if (return_metadata_ondisc_matrix) {
+    out <- metadata_ondisc_matrix(ondisc_matrix = out$ondisc_matrix,
                                    cell_covariates = out$cell_covariates,
                                    feature_covariates = out$feature_covariates)
   }

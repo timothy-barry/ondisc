@@ -2,8 +2,8 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  using_ondisc: using_ondisc.html
-last_built: 2021-02-10T19:11Z
+  articles/setting_up_a_crispr_screen: setting_up_a_crispr_screen.html
+last_built: 2021-02-18T23:57Z
 urls:
   reference: https://readr.tidyverse.org/reference
   article: https://readr.tidyverse.org/articles

@@ -68,6 +68,22 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// index_h5_file
+List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector subset_vector, bool logical_mat);
+RcppExport SEXP _ondisc_index_h5_file(SEXP file_name_inSEXP, SEXP p_name_inSEXP, SEXP idx_name_inSEXP, SEXP umi_counts_name_inSEXP, SEXP subset_vectorSEXP, SEXP logical_matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type p_name_in(p_name_inSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type idx_name_in(idx_name_inSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type umi_counts_name_in(umi_counts_name_inSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type subset_vector(subset_vectorSEXP);
+    Rcpp::traits::input_parameter< bool >::type logical_mat(logical_matSEXP);
+    rcpp_result_gen = Rcpp::wrap(index_h5_file(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // write_data_h5
 void write_data_h5(const std::string& file_name_in, const std::string& dataset_name_in, IntegerVector buffer, int start_pos);
 RcppExport SEXP _ondisc_write_data_h5(SEXP file_name_inSEXP, SEXP dataset_name_inSEXP, SEXP bufferSEXP, SEXP start_posSEXP) {
@@ -113,22 +129,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// index_h5_file
-List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector subset_vector, bool logical_mat);
-RcppExport SEXP _ondisc_index_h5_file(SEXP file_name_inSEXP, SEXP p_name_inSEXP, SEXP idx_name_inSEXP, SEXP umi_counts_name_inSEXP, SEXP subset_vectorSEXP, SEXP logical_matSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type p_name_in(p_name_inSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type idx_name_in(idx_name_inSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type umi_counts_name_in(umi_counts_name_inSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type subset_vector(subset_vectorSEXP);
-    Rcpp::traits::input_parameter< bool >::type logical_mat(logical_matSEXP);
-    rcpp_result_gen = Rcpp::wrap(index_h5_file(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat));
-    return rcpp_result_gen;
-END_RCPP
-}
 // decrement_idxs
 void decrement_idxs(IntegerVector idxs);
 RcppExport SEXP _ondisc_decrement_idxs(SEXP idxsSEXP) {
@@ -150,17 +150,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// find_contig_subseqs
-List find_contig_subseqs(IntegerVector v);
-RcppExport SEXP _ondisc_find_contig_subseqs(SEXP vSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type v(vSEXP);
-    rcpp_result_gen = Rcpp::wrap(find_contig_subseqs(v));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_inc_mean_count", (DL_FUNC) &_ondisc_inc_mean_count, 4},
@@ -168,13 +157,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_inc_mean_sq_count", (DL_FUNC) &_ondisc_inc_mean_sq_count, 4},
     {"_ondisc_inc_count", (DL_FUNC) &_ondisc_inc_count, 3},
     {"_ondisc_inc_cell_count_if_feature_condition", (DL_FUNC) &_ondisc_inc_cell_count_if_feature_condition, 5},
+    {"_ondisc_index_h5_file", (DL_FUNC) &_ondisc_index_h5_file, 6},
     {"_ondisc_write_data_h5", (DL_FUNC) &_ondisc_write_data_h5, 4},
     {"_ondisc_map_memory_to_disk", (DL_FUNC) &_ondisc_map_memory_to_disk, 8},
     {"_ondisc_map_memory_to_disk_logical_matrix", (DL_FUNC) &_ondisc_map_memory_to_disk_logical_matrix, 6},
-    {"_ondisc_index_h5_file", (DL_FUNC) &_ondisc_index_h5_file, 6},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},
-    {"_ondisc_find_contig_subseqs", (DL_FUNC) &_ondisc_find_contig_subseqs, 1},
     {NULL, NULL, 0}
 };
 

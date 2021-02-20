@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Return sparse matrix from index — return_spMatrix_from_index • ondisc</title>
+<title>map memory to disk — map_memory_to_disk_logical_matrix • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Return sparse matrix from index — return_spMatrix_from_index" />
-<meta property="og:description" content="Return sparse matrix from index" />
+<meta property="og:title" content="map memory to disk — map_memory_to_disk_logical_matrix" />
+<meta property="og:description" content="map memory to disk" />
 
 
 
@@ -105,51 +105,53 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Return sparse matrix from index</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/low_level_indexing.R'><code>R/low_level_indexing.R</code></a></small>
-    <div class="hidden name"><code>return_spMatrix_from_index.Rd</code></div>
+    <h1>map memory to disk</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a></small>
+    <div class="hidden name"><code>map_memory_to_disk_logical_matrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Return sparse matrix from index</p>
+    <p>map memory to disk</p>
     </div>
 
-    <pre class="usage"><span class='fu'>return_spMatrix_from_index</span><span class='op'>(</span>
-  <span class='va'>h5_file</span>,
-  <span class='va'>subset_vector</span>,
-  <span class='va'>index_on_cell</span>,
-  <span class='va'>logical_mat</span>,
-  <span class='va'>underlying_dimension</span>
+    <pre class="usage"><span class='fu'>map_memory_to_disk_logical_matrix</span><span class='op'>(</span>
+  <span class='va'>file_name_in</span>,
+  <span class='va'>m_cell_idxs</span>,
+  <span class='va'>cell_idxs_name</span>,
+  <span class='va'>n_features</span>,
+  <span class='va'>m_row_ptr</span>,
+  <span class='va'>f_row_ptr</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>h5_file</th>
-      <td><p>the file path to the h5 file</p></td>
+      <th>file_name_in</th>
+      <td><p>name of h5 file</p></td>
     </tr>
     <tr>
-      <th>subset_vector</th>
-      <td><p>an integer vector giving the subset</p></td>
+      <th>m_cell_idxs</th>
+      <td><p>the cell indexes integer vector</p></td>
     </tr>
     <tr>
-      <th>index_on_cell</th>
-      <td><p>(boolean) index on cell (TRUE) or feature (FALSE)</p></td>
+      <th>cell_idxs_name</th>
+      <td><p>name of the cell_idxs dataset</p></td>
     </tr>
     <tr>
-      <th>logical_mat</th>
-      <td><p>(boolean)</p></td>
+      <th>n_features</th>
+      <td><p>number of features</p></td>
     </tr>
     <tr>
-      <th>underlying_dimension</th>
-      <td><p>a length 2 integer vector giving the underlying dimension of the expression matrix.</p></td>
+      <th>m_row_ptr</th>
+      <td><p>the memory row pointer</p></td>
+    </tr>
+    <tr>
+      <th>f_row_ptr</th>
+      <td><p>the disk row pointer</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a Matrix object.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
