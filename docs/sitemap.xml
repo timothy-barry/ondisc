@@ -10,13 +10,13 @@
     <loc>https://readr.tidyverse.org/reference/arguments_enum.html</loc>
   </url>
   <url>
+    <loc>https://readr.tidyverse.org/reference/combine_multimodal_dataframes.html</loc>
+  </url>
+  <url>
     <loc>https://readr.tidyverse.org/reference/compare_Mat_on_disc_extract.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/convert_to_seurat_object.html</loc>
-  </url>
-  <url>
-    <loc>https://readr.tidyverse.org/reference/covariate_ondisc_matrix-class.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/create_ondisc_matrix_from_mtx.html</loc>
@@ -41,9 +41,6 @@
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/extract_matrix.html</loc>
-  </url>
-  <url>
-    <loc>https://readr.tidyverse.org/reference/find_contig_subseqs.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/generate_on_disc_matrix_name.html</loc>
@@ -100,6 +97,9 @@
     <loc>https://readr.tidyverse.org/reference/inc_n_entries.html</loc>
   </url>
   <url>
+    <loc>https://readr.tidyverse.org/reference/index_h5_file.html</loc>
+  </url>
+  <url>
     <loc>https://readr.tidyverse.org/reference/initialize_accumulator.html</loc>
   </url>
   <url>
@@ -119,6 +119,9 @@
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/map_memory_to_disk_logical_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/reference/metadata_ondisc_matrix-class.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/multimodal_ondisc_matrix.html</loc>
@@ -160,13 +163,7 @@
     <loc>https://readr.tidyverse.org/reference/setNames.html</loc>
   </url>
   <url>
-    <loc>https://readr.tidyverse.org/reference/show-covariate_ondisc_matrix-method.html</loc>
-  </url>
-  <url>
-    <loc>https://readr.tidyverse.org/reference/show-multimodal_ondisc_matrix-method.html</loc>
-  </url>
-  <url>
-    <loc>https://readr.tidyverse.org/reference/show-ondisc_matrix-method.html</loc>
+    <loc>https://readr.tidyverse.org/reference/show.html</loc>
   </url>
   <url>
     <loc>https://readr.tidyverse.org/reference/subset-covariate-odm.html</loc>
@@ -191,5 +188,8 @@
   </url>
   <url>
     <loc>https://readr.tidyverse.org/articles/articles/setting_up_a_crispr_screen.html</loc>
+  </url>
+  <url>
+    <loc>https://readr.tidyverse.org/articles/test.html</loc>
   </url>
 </urlset>

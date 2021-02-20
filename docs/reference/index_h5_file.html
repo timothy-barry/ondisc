@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • ondisc</title>
+<title>index into an h5 file — index_h5_file • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="index into an h5 file — index_h5_file" />
+<meta property="og:description" content="index into an h5 file" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -104,20 +105,59 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>index into an h5 file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a></small>
+    <div class="hidden name"><code>index_h5_file.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <dl>
-        <dt><a href="articles/setting_up_a_crispr_screen.html">Setting up a single-cell pooled CRISPR screen analysis</a></dt>
-        <dd></dt>
-        <dt><a href="test.html">test</a></dt>
-        <dd></dt>
-      </dl>
+    <div class="ref-description">
+    <p>index into an h5 file</p>
     </div>
+
+    <pre class="usage"><span class='fu'>index_h5_file</span><span class='op'>(</span>
+  <span class='va'>file_name_in</span>,
+  <span class='va'>p_name_in</span>,
+  <span class='va'>idx_name_in</span>,
+  <span class='va'>umi_counts_name_in</span>,
+  <span class='va'>subset_vector</span>,
+  <span class='va'>logical_mat</span>
+<span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>file_name_in</th>
+      <td><p>name of h5 file</p></td>
+    </tr>
+    <tr>
+      <th>p_name_in</th>
+      <td><p>name of pointer</p></td>
+    </tr>
+    <tr>
+      <th>idx_name_in</th>
+      <td><p>name of (minor) index</p></td>
+    </tr>
+    <tr>
+      <th>umi_counts_name_in</th>
+      <td><p>name of umi counts</p></td>
+    </tr>
+    <tr>
+      <th>subset_vector</th>
+      <td><p>the integer vector of indexes to extract</p></td>
+    </tr>
+    <tr>
+      <th>logical_mat</th>
+      <td><p>boolean indicating whether the matrix is logical</p></td>
+    </tr>
+    </table>
+
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
