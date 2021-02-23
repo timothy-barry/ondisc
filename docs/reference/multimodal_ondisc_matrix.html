@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Constructor for multimodal_ondisc_matrix — multimodal_ondisc_matrix • ondisc</title>
+<title>multimodal_ondisc_matrix class — multimodal_ondisc_matrix • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Constructor for multimodal_ondisc_matrix — multimodal_ondisc_matrix" />
-<meta property="og:description" content="Constructs a multimodal_ondisc_matrix from a list of metadata_ondisc_matrix objects" />
+<meta property="og:title" content="multimodal_ondisc_matrix class — multimodal_ondisc_matrix" />
+<meta property="og:description" content="A multimodal_ondisc_matrix represents multimodal data.
+Construct a multimodal_ondisc_matrix from a list of metadata_ondisc_matrix objects." />
 
 
 
@@ -81,9 +82,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li>
-  <a href="../articles/using_ondisc_static.html">Basic usage</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -105,29 +103,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Constructor for multimodal_ondisc_matrix</h1>
+    <h1><code>multimodal_ondisc_matrix</code> class</h1>
     <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/s4_classes_methods.R'><code>R/s4_classes_methods.R</code></a></small>
     <div class="hidden name"><code>multimodal_ondisc_matrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Constructs a multimodal_ondisc_matrix from a list of metadata_ondisc_matrix objects</p>
+    <p>A <code>multimodal_ondisc_matrix</code> represents multimodal data.</p>
+<p>Construct a <code>multimodal_ondisc_matrix</code> from a list of <code>metadata_ondisc_matrix</code> objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>multimodal_ondisc_matrix</span><span class='op'>(</span><span class='va'>covariate_ondisc_matrix_list</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>multimodal_ondisc_matrix</span><span class='op'>(</span><span class='va'>covariate_ondisc_matrix_list</span><span class='op'>)</span>
+
+<span class='fu'>multimodal_ondisc_matrix</span><span class='op'>(</span><span class='va'>covariate_ondisc_matrix_list</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>covariate_ondisc_matrix_list</th>
-      <td><p>a named list containing covariate_ondisc_matrices; the names are taken to be the names of the modalities</p></td>
+      <td><p>a named list containing <code>metadata_ondisc_matrices</code>; the names are taken to be the names of the modalities.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a multimodal_ondisc_matrix</p>
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+
+    
+
+<dl>
+<dt><code>modalities</code></dt><dd><p>a list containing <code>metadata_ondisc_matrix</code> objects representing different modalities.</p></dd>
+
+<dt><code>global_cell_covariates</code></dt><dd><p>a data frame containing the cell-specific covariates pooled across all modalities.</p></dd>
+
+</dl>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># NOTE: You must create the RDS files "expressions.rds" and</span>
@@ -138,7 +149,7 @@
 <span class='va'>perturbations_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/perturbations.rds"</span><span class='op'>)</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span><span class='op'>(</span><span class='va'>expression_fp</span><span class='op'>)</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span><span class='op'>(</span><span class='va'>perturbations_fp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='va'>expressions</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>expression_fp</span><span class='op'>)</span>
-    <span class='va'>perturbations</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>expression_fp</span><span class='op'>)</span>
+    <span class='va'>perturbations</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>perturbations_fp</span><span class='op'>)</span>
     <span class='va'>crispr_experiment</span> <span class='op'>&lt;-</span> <span class='fu'>multimodal_ondisc_matrix</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>expressions <span class='op'>=</span> <span class='va'>expressions</span>,
     perturbations <span class='op'>=</span> <span class='va'>perturbations</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>

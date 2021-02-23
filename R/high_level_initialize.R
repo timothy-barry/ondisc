@@ -1,16 +1,22 @@
-#' Create an ondisc_matrix from a .mtx file.
+#' Create an `ondisc_matrix` from a .mtx file.
 #'
-#' Initializes an ondisc_matrix object from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix R object along with cell-specific and feature-specific covariate matrices.
+#' Initializes an `ondisc_matrix` from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an `ondisc_matrix` along with cell-specific and feature-specific covariate matrices.
+#'
+#' The function can compute the following cell-specific and feature-specific covariates:
+#' - cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).
+#' - feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).
+#'
+#' The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 #'
 #' @param mtx_fp file path to a .mtx file storing the expression data. The .mtx file can represent either an integer matrix or a logical (i.e., binary) matrix. If the .mtx file contains only two columns (after the initial three-column row of metadata), then the .mtx file is assumed to represent a logical matrix.
 #' @param barcodes_fp file path to the .tsv file containing the cell barcodes.
-#' @param features_fp file path to the features.tsv file. The first column (required) should contain the feature IDs (e.g., ENSG00000186092), and the second column (optional) should contain the human-readable feature names (e.g., OR4F5). Any subsequent columns are discarded.
+#' @param features_fp file path to the features.tsv file. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded.
 #' @param n_lines_per_chunk (optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.
 #' @param on_disc_dir (optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.
 #' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
-#' @param return_metadata_ondisc_matrix (optional) return the output as a metadata_ondisc_matrix? Defaults to FALSE.
+#' @param return_metadata_ondisc_matrix (optional) return the output as a metadata_ondisc_matrix (instead of a list)? Defaults to FALSE.
 #'
-#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, the function converts the list to a metadata_ondisc_matrix before returning.
+#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
 #' @export
 #' @examples
 #' \dontrun{
@@ -75,12 +81,30 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
 
   # Run core algorithm
   out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip)
-  odm <- ondisc_matrix(h5_file = h5_fp, logical_mat = is_logical, underlying_dimension = c(mtx_metadata$n_features, mtx_metadata$n_cells))
+  odm <- internal_initialize_ondisc_matrix(h5_file = h5_fp, logical_mat = is_logical, underlying_dimension = c(mtx_metadata$n_features, mtx_metadata$n_cells))
   out$ondisc_matrix <- odm
   if (return_metadata_ondisc_matrix) {
     out <- metadata_ondisc_matrix(ondisc_matrix = out$ondisc_matrix,
                                    cell_covariates = out$cell_covariates,
                                    feature_covariates = out$feature_covariates)
   }
+  return(out)
+}
+
+
+#' internal initialize ondisc_matrix
+#'
+#' An internal function for initializing an ondisc_matrix
+#'
+#' @param h5_file an h5 file
+#' @param logical_mat logical value indicating whether the matrix is logical
+#' @param underlying_dimension length-two integer vector giving the dimension of the underlying matrix
+#'
+#' @return a correctly-initialized ondisc_matrix
+internal_initialize_ondisc_matrix <- function(h5_file, logical_mat, underlying_dimension) {
+  out <- new(Class = "ondisc_matrix")
+  out@h5_file <- h5_file
+  out@logical_mat <- logical_mat
+  out@underlying_dimension <- underlying_dimension
   return(out)
 }

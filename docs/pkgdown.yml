@@ -3,9 +3,9 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   articles/setting_up_a_crispr_screen: setting_up_a_crispr_screen.html
-  test: test.html
-last_built: 2021-02-20T21:19Z
+  bioc_silence: bioc_silence.html
+last_built: 2021-02-22T23:51Z
 urls:
-  reference: https://readr.tidyverse.org/reference
-  article: https://readr.tidyverse.org/articles
+  reference: https://timothy-barry.github.io/ondisc//reference
+  article: https://timothy-barry.github.io/ondisc//articles
 

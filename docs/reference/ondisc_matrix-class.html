@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="ondisc_matrix class constructor — ondisc_matrix-class" />
-<meta property="og:description" content="An ondisc_matrix represents a feature-by-cell expression matrix stored on disk. Use this function to obtain an ondisc_matrix from an already-initialized on-disk ondisc_matrix.h5 file." />
+<meta property="og:description" content="An ondisc_matrix represents a feature-by-cell expression matrix stored on-disk rather than in-memory. Use the class constructor to obtain an ondisc_matrix from an already-initialized .h5 file." />
 
 
 
@@ -81,9 +81,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li>
-  <a href="../articles/using_ondisc_static.html">Basic usage</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -111,7 +108,7 @@
     </div>
 
     <div class="ref-description">
-    <p>An ondisc_matrix represents a feature-by-cell expression matrix stored on disk. Use this function to obtain an <code>ondisc_matrix</code> from an already-initialized on-disk ondisc_matrix.h5 file.</p>
+    <p>An <code>ondisc_matrix</code> represents a feature-by-cell expression matrix stored on-disk rather than in-memory. Use the class constructor to obtain an <code>ondisc_matrix</code> from an already-initialized .h5 file.</p>
     </div>
 
 
@@ -121,11 +118,11 @@
     
 
 <dl>
-<dt><code>h5_file</code></dt><dd><p>path to an expression matrix (created by one of the initialization functions in this package) stored on disk</p></dd>
+<dt><code>h5_file</code></dt><dd><p>path to an initialized .h5 file stored on-disk.</p></dd>
 
-<dt><code>cell_subset</code></dt><dd><p>an integer vector storing the cells currently in use</p></dd>
+<dt><code>cell_subset</code></dt><dd><p>integer vector recording the cells currently in use.</p></dd>
 
-<dt><code>feature_subset</code></dt><dd><p>an integer vector storing the features currently in use</p></dd>
+<dt><code>feature_subset</code></dt><dd><p>integer vector recording the features currently in use.</p></dd>
 
 </dl>
 

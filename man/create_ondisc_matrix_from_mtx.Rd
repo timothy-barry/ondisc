@@ -2,7 +2,7 @@
 % Please edit documentation in R/high_level_initialize.R
 \name{create_ondisc_matrix_from_mtx}
 \alias{create_ondisc_matrix_from_mtx}
-\title{Create an ondisc_matrix from a .mtx file.}
+\title{Create an \code{ondisc_matrix} from a .mtx file.}
 \usage{
 create_ondisc_matrix_from_mtx(
   mtx_fp,
@@ -19,7 +19,7 @@ create_ondisc_matrix_from_mtx(
 
 \item{barcodes_fp}{file path to the .tsv file containing the cell barcodes.}
 
-\item{features_fp}{file path to the features.tsv file. The first column (required) should contain the feature IDs (e.g., ENSG00000186092), and the second column (optional) should contain the human-readable feature names (e.g., OR4F5). Any subsequent columns are discarded.}
+\item{features_fp}{file path to the features.tsv file. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded.}
 
 \item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
 
@@ -27,13 +27,22 @@ create_ondisc_matrix_from_mtx(
 
 \item{file_name}{(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.}
 
-\item{return_metadata_ondisc_matrix}{(optional) return the output as a metadata_ondisc_matrix? Defaults to FALSE.}
+\item{return_metadata_ondisc_matrix}{(optional) return the output as a metadata_ondisc_matrix (instead of a list)? Defaults to FALSE.}
 }
 \value{
-A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, the function converts the list to a metadata_ondisc_matrix before returning.
+A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
 }
 \description{
-Initializes an ondisc_matrix object from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix R object along with cell-specific and feature-specific covariate matrices.
+Initializes an \code{ondisc_matrix} from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an \code{ondisc_matrix} along with cell-specific and feature-specific covariate matrices.
+}
+\details{
+The function can compute the following cell-specific and feature-specific covariates:
+\itemize{
+\item cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).
+\item feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).
+}
+
+The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 }
 \examples{
 \dontrun{

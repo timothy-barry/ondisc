@@ -1,4 +1,4 @@
-url: https://readr.tidyverse.org
+url: https://timothy-barry.github.io/ondisc/
 
 authors:
   "Tim Barry":
@@ -16,40 +16,22 @@ navbar:
   left:
   - text: Function reference
     href: reference/index.html
-  - text: Basic usage
-    href: articles/using_ondisc_static.html
 
 reference:
 - title: Initialize
-  desc: Initialize an `on_disc_matrix` from raw count data or from an existing `on_disc_matrix.h5` file.
+  desc: Initialize an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
   contents:
-  - create_on_disc_matrix_from_10x_mtx
-  - on_disc_matrix
+  - create_ondisc_matrix_from_mtx
+  - ondisc_matrix
+  - metadata_ondisc_matrix
+  - multimodal_ondisc_matrix
 
-- title: Obtain basic information
-  desc: Obtain basic information from an `on_disc_matrix`, like gene names and cell barcodes.
-  contents:
-  - dim,on_disc_matrix-method
-  - get_cell_barcodes
-  - get_gene_ids
-  - get_gene_names
-  - head,on_disc_matrix-method
-  - show,on_disc_matrix-method
-
-
-- title: Subset, extract submatrix
-  desc: Subset an `on_disc_matrix`, or pull a submatrix of an `on_disc_matrix` into memory.
+- title: Subset
+  desc: Subset an `ondisc_matrix` or `metadata_ondisc_matrix` by feature or cell; subset a `multimodal_ondisc_matrix` by cell.
   contents:
   - subset-odm
+
+- title: Pull a submatrix into memory
+  desc: Pull a submatrix of an `ondisc_matrix` into memory.
+  contents:
   - extract-odm
-
-- title: Operate on all rows or columns
-  desc: Obtain gene-wise and cell-wise summary statistics.
-  contents:
-  - summarize_expression_matrix
-  - apply,on_disc_matrix-method
-
-- title: Interface with other packages
-  contents:
-  - convert_to_seurat_object
-

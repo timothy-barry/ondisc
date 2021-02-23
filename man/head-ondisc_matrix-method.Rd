@@ -7,7 +7,7 @@
 \S4method{head}{ondisc_matrix}(x)
 }
 \arguments{
-\item{x}{an on_disc_mnatrix}
+\item{x}{an ondisc_matrix}
 }
 \description{
 Print the first few rows and columns

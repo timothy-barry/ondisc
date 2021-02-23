@@ -2,7 +2,7 @@
 title: "Setting up a single-cell pooled CRISPR screen analysis"
 ---
 
-```{r, include = FALSE}
+```{r, include = FALSE, eval=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -19,7 +19,7 @@ This document shows how to set up a pooled CRISPR screen analysis using `ondisc`
 
 Before proceeding, we load all required packages for this example.
 
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
+```{r, echo=FALSE,warning=FALSE,message=FALSE,eval=FALSE}
 library(R.utils)
 library(Matrix)
 library(monocle)
@@ -33,7 +33,7 @@ The first step is to obtain the raw expression data in the form of UMI count mat
 
 We set a directory in which to store the data. Be sure to change the file path to a location on your machine!
 
-```{r}
+```{r,eval=FALSE}
 example_dir <- "/Volumes/tims_new_drive/research/sceptre_example" # change me!
 if (!dir.exists(example_dir)) dir.create(path = example_dir, recursive = TRUE)
 ```
@@ -72,7 +72,7 @@ for (file_name in file_names) {
 
 Now that we have downloaded the data, we can put the gene expression and gRNA indicator data into `ondisc_matrix` objects. First, we call `create_ondisc_matrix_from_mtx` on the gene expression data (which are roughly 2GB in size). This function takes about 2 minutes to run on a Macbook Pro laptop.
 
-```{r}
+```{r,eval=FALSE}
 features_fp <- paste0(raw_data_dir, "/GSE120861_pilot_highmoi_screen.genes.txt")
 cell_fp <- paste0(raw_data_dir, "/GSE120861_pilot_highmoi_screen.cells.txt")
 mtx_fp <- paste0(raw_data_dir, "/GSE120861_pilot_highmoi_screen.exprs.mtx")
@@ -81,11 +81,11 @@ expressions <- create_ondisc_matrix_from_mtx(mtx_fp = mtx_fp,
                                              features_fp = feature_fps,
                                              n_lines_per_chunk = 90000000,
                                              on_disc_dir = processed_data_dir,
-                                             return_covariate_ondisc_matrix = TRUE)
+                                             return_metadata_ondisc_matrix = TRUE)
 expressions
 ```
 
-The variable `expressions` is a variable of class `covariate_ondisc_matrix`. It contains three fields:
+The variable `expressions` is a variable of class `metadata_ondisc_matrix`. It contains three fields:
 
 1. an `ondisc_matrix` representing the expression data (access through `expressions@ondisc_matrix`)
 2. a data frame representing the cell-specific covariates (access through `expressions@cell_covariates`)
@@ -93,13 +93,13 @@ The variable `expressions` is a variable of class `covariate_ondisc_matrix`. It 
 
 We save `expressions` as an RDS file so that we can access it later.
 
-```{r}
+```{r,eval=FALSE}
 saveRDS(expressions, paste0(processed_data_dir, "/expressions.rds"))
 ```
 
 Next, we put the gRNA data into an `ondisc_matrix`. Unfortunately, the gRNA data are not in a standard format; instead, they come in the form of a [Monocle](https://cole-trapnell-lab.github.io/monocle3/) R object. Thus, we load the Monocole object, extract the gRNA data, and write the data to a logical (i.e., binary) .mtx file called `perturbations.mtx`. Additionally, we write the gRNA IDs to a .tsv file called `gRNAs.tsv`.
 
-```{r}
+```{r,eval=FALSE}
 x <- readRDS(paste0(raw_data_dir, "/", "GSE120861_pilot_highmoi_screen.cds.rds"))
 cell_covs <- pData(x)
 gRNA_cols <- 15:ncol(cell_covs)
@@ -115,7 +115,7 @@ rm(x, cell_covs, gRNA_cols, gRNA_names, gRNA_indics, sparse_gRNA_indics, gRNA_fe
 
 Now we can put the perturbation data into an `ondisc_matrix` by calling `create_ondisc_matrix_from_mtx`. The function takes a few seconds to run.
 
-```{r}
+```{r,eval=FALSE}
 features_fp <- paste0(raw_data_dir, "/gRNAs.tsv")
 cell_fp <- paste0(raw_data_dir, "/GSE120861_pilot_highmoi_screen.cells.txt")
 mtx_fp <- paste0(raw_data_dir, "/perturbations.mtx")
@@ -123,10 +123,13 @@ perturbations <- create_ondisc_matrix_from_mtx(mtx_fp = mtx_fp,
                                                barcodes_fp = cell_fp,
                                                features_fp = features_fp,
                                                on_disc_dir = processed_data_dir,
-                                               return_covariate_ondisc_matrix = TRUE)
+                                               return_metadata_ondisc_matrix = TRUE)
 perturbations
 saveRDS(perturbations, paste0(processed_data_dir, "/perturbations.rds"))
 ```
 
 # 3. Select genes and gRNAs to use in the analysis
 
+```{r,eval=FALSE}
+
+```

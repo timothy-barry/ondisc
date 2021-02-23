@@ -80,9 +80,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li>
-  <a href="../articles/using_ondisc_static.html">Basic usage</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -119,20 +116,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-initialize" class="hasAnchor"><a href="#section-initialize" class="anchor"></a>Initialize</h2>
-          <p class="section-desc"><p>Initialize an <code>on_disc_matrix</code> from raw count data or from an existing <code>on_disc_matrix.h5</code> file.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-obtain-basic-information" class="hasAnchor"><a href="#section-obtain-basic-information" class="anchor"></a>Obtain basic information</h2>
-          <p class="section-desc"><p>Obtain basic information from an <code>on_disc_matrix</code>, like gene names and cell barcodes.</p></p>
+          <p class="section-desc"><p>Initialize an <code>ondisc_matrix</code>, <code>metadata_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p></p>
         </th>
       </tr>
       
@@ -141,380 +125,35 @@
       
       
       <tr>
-        
-        <td>
-          <p><code><a href="accumulator_functs_enum.html">accumulator_functs_enum()</a></code> </p>
-        </td>
-        <td><p>Accumulator function Enum
-Function to return a simple enum of the accumulator functions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="arguments_enum.html">arguments_enum()</a></code> </p>
-        </td>
-        <td><p>Arguments Enum
-Function to return a simple enum of the possible arguments to the accumulator functions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="combine_multimodal_dataframes.html">combine_multimodal_dataframes()</a></code> </p>
-        </td>
-        <td><p>Combine multimodal dataframes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="compare_Mat_on_disc_extract.html">compare_Mat_on_disc_extract()</a></code> </p>
-        </td>
-        <td><p>Compare R sparse Matrix object to on_disc object on extract</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="convert_to_seurat_object.html">convert_to_seurat_object()</a></code> </p>
-        </td>
-        <td><p>Convert an <code>ondisc_matrix</code> to a Seurat object</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="create_ondisc_matrix_from_mtx.html">create_ondisc_matrix_from_mtx()</a></code> </p>
         </td>
-        <td><p>Create an ondisc_matrix from a .mtx file.</p></td>
+        <td><p>Create an <code>ondisc_matrix</code> from a .mtx file.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="create_random_matrix.html">create_random_matrix()</a></code> </p>
+          <p><code><a href="ondisc_matrix.html">ondisc_matrix()</a></code> <code><a href="ondisc_matrix.html">ondisc_matrix()</a></code> </p>
         </td>
-        <td><p>Create a random matrix</p></td>
+        <td><p><code>ondisc_matrix</code> class</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="create_synthetic_data.html">create_synthetic_data()</a></code> </p>
+          <p><code><a href="metadata_ondisc_matrix.html">metadata_ondisc_matrix()</a></code> <code><a href="metadata_ondisc_matrix.html">metadata_ondisc_matrix()</a></code> </p>
         </td>
-        <td><p>Create synthetic data</p></td>
+        <td><p><code>metadata_ondisc_matrix</code> class</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="decrement_idxs.html">decrement_idxs()</a></code> </p>
+          <p><code><a href="multimodal_ondisc_matrix.html">multimodal_ondisc_matrix()</a></code> <code><a href="multimodal_ondisc_matrix.html">multimodal_ondisc_matrix()</a></code> </p>
         </td>
-        <td><p>decrement a vector of indexes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dim-ondisc_matrix-method.html">dim(<i>&lt;ondisc_matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Return dimension</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="evaluate_grammar.html">evaluate_grammar()</a></code> </p>
-        </td>
-        <td><p>Evaluate grammar</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Pull a submatrix into memory with <code>[[</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract_matrix.html">extract_matrix()</a></code> </p>
-        </td>
-        <td><p>Extract matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate_on_disc_matrix_name.html">generate_on_disc_matrix_name()</a></code> </p>
-        </td>
-        <td><p>Generate on disc_matrix_name</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_accumulator_funct_arg_list.html">get_accumulator_funct_arg_list()</a></code> </p>
-        </td>
-        <td><p>Get accumulator funct and arg list</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_cell_barcodes.html">get_cell_barcodes()</a></code> <code><a href="get_cell_barcodes.html">get_feature_ids()</a></code> <code><a href="get_cell_barcodes.html">get_feature_names()</a></code> </p>
-        </td>
-        <td><p>Get feature names, feature IDs, and cell barcodes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_dim.html">get_dim()</a></code> </p>
-        </td>
-        <td><p>Get dim</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_features_metadata.html">get_features_metadata()</a></code> </p>
-        </td>
-        <td><p>Get metadata for features.tsv file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_mtx_metadata.html">get_mtx_metadata()</a></code> </p>
-        </td>
-        <td><p>Get mtx metadata</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_n_rows_with_comments_mtx.html">get_n_rows_with_comments_mtx()</a></code> </p>
-        </td>
-        <td><p>get n rows with comments mtx</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_names.html">get_names()</a></code> </p>
-        </td>
-        <td><p>Get names helper function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_simulation_data_fps.html">get_simulation_data_fps()</a></code> </p>
-        </td>
-        <td><p>Get simulation data filepaths</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_subset_vector.html">get_subset_vector()</a></code> <code><a href="get_subset_vector.html">get_order_vector()</a></code> </p>
-        </td>
-        <td><p>Get on_disc subset vector</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_terminal_acc_and_args.html">get_terminal_acc_and_args()</a></code> </p>
-        </td>
-        <td><p>Get terminal accumulator and args</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_terminals_for_covariate.html">get_terminals_for_covariate()</a></code> </p>
-        </td>
-        <td><p>Get nonterminals for covariate</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="head-ondisc_matrix-method.html">head(<i>&lt;ondisc_matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Print the first few rows and columns</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="inc_cell_count_if_feature_condition.html">inc_cell_count_if_feature_condition()</a></code> </p>
-        </td>
-        <td><p>increment count (if condition on feature holds)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="inc_count.html">inc_count()</a></code> </p>
-        </td>
-        <td><p>increment count</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="inc_mean_count.html">inc_mean_count()</a></code> </p>
-        </td>
-        <td><p>increment mean count</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="inc_mean_sq_count.html">inc_mean_sq_count()</a></code> </p>
-        </td>
-        <td><p>increment mean squared count</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="inc_n_entries.html">inc_n_entries()</a></code> </p>
-        </td>
-        <td><p>increment n entries</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="index_h5_file.html">index_h5_file()</a></code> </p>
-        </td>
-        <td><p>index into an h5 file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="initialize_accumulator.html">initialize_accumulator()</a></code> </p>
-        </td>
-        <td><p>Initialize accumulator</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="initialize_grammar.html">initialize_grammar()</a></code> </p>
-        </td>
-        <td><p>Initialize grammar</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="initialize_h5_file_on_disk.html">initialize_h5_file_on_disk()</a></code> </p>
-        </td>
-        <td><p>Initialize h5 file on-disk</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="load_on_disc_and_mat.html">load_on_disc_and_mat()</a></code> </p>
-        </td>
-        <td><p>Load on disc matrix and R sparse matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="map_inputs_to_covariates.html">map_inputs_to_covariates()</a></code> </p>
-        </td>
-        <td><p>Map inputs to covariates</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="map_memory_to_disk.html">map_memory_to_disk()</a></code> </p>
-        </td>
-        <td><p>map memory to disk</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="map_memory_to_disk_logical_matrix.html">map_memory_to_disk_logical_matrix()</a></code> </p>
-        </td>
-        <td><p>map memory to disk</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="metadata_ondisc_matrix-class.html">metadata_ondisc_matrix-class</a></code> </p>
-        </td>
-        <td><p>metadata_ondisc_matrix class constructor</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="multimodal_ondisc_matrix.html">multimodal_ondisc_matrix()</a></code> </p>
-        </td>
-        <td><p>Constructor for multimodal_ondisc_matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ondisc.html">ondisc</a></code> </p>
-        </td>
-        <td><p>ondisc: A package for out-of-memory computing on single-cell data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ondisc_matrix-class.html">ondisc_matrix-class</a></code> </p>
-        </td>
-        <td><p><code>ondisc_matrix</code> class constructor</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_given_column_of_tsv.html">read_given_column_of_tsv()</a></code> </p>
-        </td>
-        <td><p>Read given column of tsv</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="return_spMatrix_from_index.html">return_spMatrix_from_index()</a></code> </p>
-        </td>
-        <td><p>Return sparse matrix from index</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run_core_mtx_algo.html">run_core_mtx_algo()</a></code> </p>
-        </td>
-        <td><p>Run core mtx algo</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run_mtx_algo_step_1.html">run_mtx_algo_step_1()</a></code> </p>
-        </td>
-        <td><p>Run mtx algo step 1</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run_mtx_algo_step_2.html">run_mtx_algo_step_2()</a></code> </p>
-        </td>
-        <td><p>Run mtx algo step 2</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run_subtask_2a.html">run_subtask_2a()</a></code> </p>
-        </td>
-        <td><p>Run subtask 2a</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run_subtask_2b.html">run_subtask_2b()</a></code> </p>
-        </td>
-        <td><p>Run subtask 2b</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run_subtask_2c.html">run_subtask_2c()</a></code> </p>
-        </td>
-        <td><p>Run subtask 2c</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="save_random_matrix_as_10x.html">save_random_matrix_as_10x()</a></code> </p>
-        </td>
-        <td><p>Save random matrix as a 10X object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="setNames.html">setNames()</a></code> </p>
-        </td>
-        <td><p>setNames</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="show.html">show(<i>&lt;ondisc_matrix&gt;</i>)</a></code> <code><a href="show.html">show(<i>&lt;metadata_ondisc_matrix&gt;</i>)</a></code> <code><a href="show.html">show(<i>&lt;multimodal_ondisc_matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Print basic information to the console</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="subset-covariate-odm.html">`[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-covariate-odm.html">`[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-covariate-odm.html">`[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-covariate-odm.html">`[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Subset a <code>metadata_ondisc_matrix</code> with <code>[</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="subset-multimodal-odm.html">`[`(<i>&lt;multimodal_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-multimodal-odm.html">`[`(<i>&lt;multimodal_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-multimodal-odm.html">`[`(<i>&lt;multimodal_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-multimodal-odm.html">`[`(<i>&lt;multimodal_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Subset a <code>multimodal_ondisc_matrix</code> with <code>[</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Subset an <code>ondisc_matrix</code> with <code>[</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="subset_by_feature_or_cell.html">subset_by_feature_or_cell()</a></code> </p>
-        </td>
-        <td><p>Subset by feature or cell</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sum_in_place.html">sum_in_place()</a></code> </p>
-        </td>
-        <td><p>add vectors in-place</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="symbols_enum.html">symbols_enum()</a></code> </p>
-        </td>
-        <td><p>Covariate Enum
-Function to return a simple "enum" of all symbols (terminal and nonterminal) used in the grammar; helps to reduce number of string literals in the code.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="write_data_h5.html">write_data_h5()</a></code> </p>
-        </td>
-        <td><p>write data h5</p></td>
+        <td><p><code>multimodal_ondisc_matrix</code> class</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-subset-extract-submatrix" class="hasAnchor"><a href="#section-subset-extract-submatrix" class="anchor"></a>Subset, extract submatrix</h2>
-          <p class="section-desc"><p>Subset an <code>on_disc_matrix</code>, or pull a submatrix of an <code>on_disc_matrix</code> into memory.</p></p>
+          <h2 id="section-subset" class="hasAnchor"><a href="#section-subset" class="anchor"></a>Subset</h2>
+          <p class="section-desc"><p>Subset an <code>ondisc_matrix</code> or <code>metadata_ondisc_matrix</code> by feature or cell; subset a <code>multimodal_ondisc_matrix</code> by cell.</p></p>
         </th>
       </tr>
       
@@ -525,34 +164,15 @@ Function to return a simple "enum" of all symbols (terminal and nonterminal) use
       <tr>
         
         <td>
-          <p><code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> </p>
+          <p><code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;multimodal_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;multimodal_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="subset-odm.html">`[`(<i>&lt;multimodal_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Subset an <code>ondisc_matrix</code> with <code>[</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Pull a submatrix into memory with <code>[[</code></p></td>
+        <td><p>Subset using the <code>[</code> operator.</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-operate-on-all-rows-or-columns" class="hasAnchor"><a href="#section-operate-on-all-rows-or-columns" class="anchor"></a>Operate on all rows or columns</h2>
-          <p class="section-desc"><p>Obtain gene-wise and cell-wise summary statistics.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-interface-with-other-packages" class="hasAnchor"><a href="#section-interface-with-other-packages" class="anchor"></a>Interface with other packages</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-pull-submatrix-into-memory" class="hasAnchor"><a href="#section-pull-submatrix-into-memory" class="anchor"></a>Pull submatrix into memory</h2>
+          <p class="section-desc"><p>Pull a submatrix of an <code>ondisc_matrix</code> into memory.</p></p>
         </th>
       </tr>
       
@@ -563,9 +183,9 @@ Function to return a simple "enum" of all symbols (terminal and nonterminal) use
       <tr>
         
         <td>
-          <p><code><a href="convert_to_seurat_object.html">convert_to_seurat_object()</a></code> </p>
+          <p><code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;missing&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;metadata_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="extract-odm.html">`[[`(<i>&lt;multimodal_ondisc_matrix&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Convert an <code>ondisc_matrix</code> to a Seurat object</p></td>
+        <td><p>Pull a submatrix into memory using the <code>[[</code> operator.</p></td>
       </tr>
     </tbody>
     </table>

@@ -1,26 +1,25 @@
 # Class definition and methods for ondisc_matrix
 
-
+##########################
 # Classes and constructors
 ##########################
-#' `ondisc_matrix` class constructor
+
+##################
+# 1. ondisc_matrix
+##################
+
+#' `ondisc_matrix` class
 #'
-#' An ondisc_matrix represents a feature-by-cell expression matrix stored on disk. Use this function to obtain an `ondisc_matrix` from an already-initialized on-disk ondisc_matrix.h5 file.
+#' An `ondisc_matrix` represents a feature-by-cell expression matrix stored on-disk.
 #'
-#' @slot h5_file path to an expression matrix (created by one of the initialization functions in this package) stored on disk
-#' @slot cell_subset an integer vector storing the cells currently in use
-#' @slot feature_subset an integer vector storing the features currently in use
+#' It is best to avoid interacting with the slots of an `ondisc_matrix` directly. Instead, use the functions
+#' and operators provided by the package.
 #'
-#' @export ondisc_matrix
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-#'
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' }
+#' @slot h5_file path to an initialized .h5 file stored on-disk.
+#' @slot logical_mat logical value indicating whether the matrix is logical.
+#' @slot cell_subset integer vector recording the cells currently in use.
+#' @slot feature_subset integer vector recording the features currently in use.
+#' @slot underlying_dimension the dimension of the (unsubset) expression matrix.
 ondisc_matrix <- setClass("ondisc_matrix",
                            slots = list(h5_file = "character",
                                         logical_mat = "logical",
@@ -33,17 +32,59 @@ ondisc_matrix <- setClass("ondisc_matrix",
                                             feature_subset = NA_integer_,
                                             underlying_dimension = NA_integer_))
 
-
-#' metadata_ondisc_matrix class constructor
+#' `ondisc_matrix` constructor
 #'
-#' A metadata_ondisc_matrix is an object that stores and ondisc_matrix, along with its cell-specific and feature-specific covariate matrices.
+#' Construct an `ondisc_matrix` from an initialized .h5 file.
+#'
+#' @param h5_file a .h5 file storing the on-disk portion of an initialized `ondisc_matrix` object.
+#'
+#' @return an initialized `ondisc_matrix` object.
+#' @export
+#'
+#' @examples
+#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
+#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
+#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+#' h5_fp <- paste0(tempdir(), "/expressions.h5")
+#' if (file.exists(h5_fp)) {
+#'   odm <- ondisc_matrix(h5_file = h5_fp)
+#' }
+ondisc_matrix <- function(h5_file) {
+  out <- new(Class = "ondisc_matrix")
+  out@h5_file <- h5_file
+  out@underlying_dimension <- as.integer(rhdf5::h5read(file = h5_file, name = "dimension"))
+  out@logical_mat <- as.logical(rhdf5::h5read(file = h5_file, name = "logical_mat"))
+  return(out)
+}
+
+###########################
+# 2. metadata_ondisc_matrix
+###########################
+
+#' `metadata_ondisc_matrix` class
+#'
+#' A `metadata_ondisc_matrix` stores an `ondisc_matrix`, along with cell-specific and feature-specific covariate matrices.
 #'
 #' @slot ondisc_matrix an ondisc_matrix.
-#' @slot cell_covariates a data frame on cell covariates.
+#' @slot cell_covariates a data frame of cell covariates.
 #' @slot feature_covariates a data frame of feature covariates.
+metadata_ondisc_matrix <- setClass("metadata_ondisc_matrix",
+                          slots = list(ondisc_matrix = "ondisc_matrix",
+                                       cell_covariates = "data.frame",
+                                       feature_covariates = "data.frame"))
+
+
+#' `metadata_ondisc_matrix` constructor
 #'
-#' @return a metadata_ondisc_matrix object
+#' Construct a `metadata_ondisc_matrix` by passing an `ondisc_matrix`, along with its associated `cell_covariates` and `feature_covariates`.
+#'
+#' @param ondisc_matrix an `ondisc_matrix`.
+#' @param cell_covariates a data frame storing the cell-specific covariates.
+#' @param feature_covariates a data frame storing the feature-specific covariates.
+#'
+#' @return a `metadata_ondisc_matrix`.
 #' @export
+#'
 #' @examples
 #' # NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
 #' # "expressions.rds" to run this example. Navigate to the help file of
@@ -60,21 +101,29 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #' cell_covariates = cell_covariate_matrix,
 #' feature_covariates = feature_covariate_matrix)
 #' }
-metadata_ondisc_matrix <- setClass("metadata_ondisc_matrix",
-                          slots = list(ondisc_matrix = "ondisc_matrix",
-                                       cell_covariates = "data.frame",
-                                       feature_covariates = "data.frame"))
+metadata_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_covariates) {
+  out <- new("metadata_ondisc_matrix")
+  out@ondisc_matrix <- ondisc_matrix
+  out@cell_covariates <- cell_covariates
+  out@feature_covariates <- feature_covariates
+  return(out)
+}
 
-#' @export
+
+#' `multimodal_ondisc_matrix` class
+#'
+#' A `multimodal_ondisc_matrix` represents multimodal data.
+#'
+#' @slot modalities a list containing `metadata_ondisc_matrix` objects representing different modalities.
+#' @slot global_cell_covariates a data frame containing the cell-specific covariates pooled across all modalities.
 multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(modalities = "list",
                                                           global_cell_covariates = "data.frame"))
 
-
-#' Constructor for multimodal_ondisc_matrix
+#' `multimodal_ondisc_matrix` constructor
 #'
-#' Constructs a multimodal_ondisc_matrix from a list of metadata_ondisc_matrix objects
+#' Construct a `multimodal_ondisc_matrix` from a list of `metadata_ondisc_matrix` objects.
 #'
-#' @param covariate_ondisc_matrix_list a named list containing covariate_ondisc_matrices; the names are taken to be the names of the modalities
+#' @param covariate_ondisc_matrix_list a named list containing `metadata_ondisc_matrices`; the names are taken to be the names of the modalities.
 #'
 #' @return a multimodal_ondisc_matrix
 #' @export
@@ -87,7 +136,7 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
 #' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
 #'     expressions <- readRDS(expression_fp)
-#'     perturbations <- readRDS(expression_fp)
+#'     perturbations <- readRDS(perturbations_fp)
 #'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
 #'     perturbations = perturbations))
 #' }
@@ -102,34 +151,66 @@ multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
   return(out)
 }
 
-
+######################################
 # Basic information extraction methods
 ######################################
 
 #' Return dimension
 #'
-#' Return dimension of ondisc_matrix.
-#' @param x an ondisc_matrix
-#' @export
-#' @return an integer vector containing the dimension of the matrix
+#' Return the dimension of an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' @param x an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' @name dim
+#' @return If `x` is an `ondisc_matrix` or `metadata_ondisc_matrix`, length-two integer vector containing
+#' the dimension of `x`; if `x` is a `multimodal_ondisc_matrix`, a list of integer vectors containing the dimensions
+#' of the constituent modalities of `x`.
 #' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
+#' # NOTE: You must create the RDS files "expressions.rds" and
+#' # "perturbations.rds" to run this example. Navigate to the help file of
+#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
+#' # and execute both code blocks.
+#'
+#' # dimension of an ondisc_matrix
 #' h5_fp <- paste0(tempdir(), "/expressions.h5")
 #' if (file.exists(h5_fp)) {
 #' odm <- ondisc_matrix(h5_file = h5_fp)
 #' dim(odm)
 #' }
+#'
+#' # dimension of a metadata_ondic_matrix
+#' expressions_fp <- paste0(tempdir(), "/expressions.rds")
+#' if (file.exists(expressions_fp)) {
+#' expressions <- readRDS(expressions_fp)
+#' dim(expressions)
+#' }
+#'
+#' # dimension of a multimodal_ondisc_matrix
+#' expression_fp <- paste0(tempdir(), "/expressions.rds")
+#' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
+#' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
+#'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = readRDS(expression_fp),
+#'     perturbations = readRDS(perturbations_fp)))
+#'     dim(crispr_experiment)
+#' }
+NULL
+
+#' @export
+#' @rdname dim
 setMethod("dim", signature("ondisc_matrix"), function(x) get_dim(x))
+
+#' @export
+#' @rdname dim
+setMethod("dim", signature("metadata_ondisc_matrix"), function(x) get_dim(x@ondisc_matrix))
+
+#' @export
+#' @rdname dim
+setMethod("dim", signature("multimodal_ondisc_matrix"), function(x) lapply(x@modalities, dim))
 
 
 #' Print basic information to the console
 #'
 #' @param object an object of class ondisc_matrix, covaraite_ondisc_matrix, or multimodal_ondisc_matrix
-#' @return NULL
-#' @export
 #' @name show
+#' @return NULL
 #' @examples
 #' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
 #' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
@@ -166,18 +247,18 @@ setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(ob
   modalities <- names(object@modalities)
   cat("A multimodal_ondisc_matrix with the following modalities:\n")
   for (i in seq(1, length(modalities))) {
-    paste0(i, ". ", crayon::blue(modalities[i]), ": ") %>% cat()
+    paste0(i, ". ", crayon::blue(modalities[i]), " ") %>% cat()
     show(object@modalities[[i]])
   }
-  cat(paste("Plus, a global cell-covariate matrix with",
-             crayon::blue(ncol(object@global_cell_covariates)),
-             "features."))
+  cat(paste("Plus, a global cell-covariate matrix containing",
+            crayon::blue(ncol(object@global_cell_covariates)), "covariates and",
+            crayon::blue(nrow(object@global_cell_covariates)), "cells."))
 })
 
 
 #' Print the first few rows and columns
 #' @export
-#' @param x an on_disc_mnatrix
+#' @param x an ondisc_matrix
 #' @return NULL
 #' @examples
 #' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
@@ -196,276 +277,3 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
   cat(paste0("Showing ", crayon::blue(n_row_to_show), " of ", crayon::blue(x_dim[1]), " features", if (x_dim[1] == 1) "" else "s" ," and ", crayon::blue(n_col_to_show), " of ", crayon::blue(x_dim[2])," cell", if (n_col_to_show == 1) "" else "s", ":\n"))
   print(as.matrix(x[[1:n_row_to_show, 1:n_col_to_show]]))
 })
-
-
-# Subset methods and doc
-########################
-
-#' Subset an `ondisc_matrix` with `[`
-#'
-#' The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to feature IDs (for rows) and cell barcodes (for columns).
-#' @param x An ondisc_matrix object
-#' @param i Vector (numeric, logical, or character) indicating features to keep
-#' @param j Vector (numeric, logical, or character) indicating cells to keep
-#' @param drop not used
-#' @return A subset ondisc_matrix object.
-#' @name subset-odm
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-#'
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' # keep cells 100-110
-#' x <- odm[,100:110]
-#' # keep the following genes:
-#' x <- odm[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]
-#' # keep the following cells:
-#' x <- odm[,c("CTTAGGACACTGGCGT-1", "AAAGGATTCACATCAG-1")]
-#' # keep all genes except ENSG00000188305 and ENSG00000257284
-#' x <- odm[!(get_feature_ids(odm) %in% c("ENSG00000188305", "ENSG00000257284")),]
-#' }
-NULL
-
-#' @rdname subset-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "ondisc_matrix", i = "missing", j = "missing", drop = "missing"),
-          definition = function(x, i, j, drop) return(x))
-
-#' @rdname subset-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
-          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE))
-
-#' @rdname subset-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
-          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = j, subset_on_cell = TRUE))
-
-#' @rdname subset-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
-          definition = function(x, i, j) {
-            subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% subset_by_feature_or_cell(x = ., idx = j, subset_on_cell = TRUE)
-          })
-
-
-#' Subset a `metadata_ondisc_matrix` with `[`
-#'
-#' The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to feature IDs (for rows) and cell barcodes (for columns).
-#' @param x A metadata_ondisc_matrix object
-#' @param i Vector (numeric, logical, or character) indicating features to keep
-#' @param j Vector (numeric, logical, or character) indicating cells to keep
-#' @param drop not used
-#' @return A subset metadata_ondisc_matrix object.
-#' @name subset-covariate-odm
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
-#' # "expressions.rds" to run this example. Navigate to the help file of
-#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-#' # and execute the code in the first code block.
-#' expressions_fp <- paste0(tempdir(), "/expressions.rds")
-#' if (file.exists(expressions_fp)) {
-#' expressions <- readRDS(expressions_fp)
-#' # keep cells 100-110
-#' x <- expressions[,100:110]
-#' # keep the following genes
-#' x <- expressions[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]
-#' }
-NULL
-
-#' @rdname subset-covariate-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
-          definition = function(x, i, j, drop) {
-            x@ondisc_matrix <- x@ondisc_matrix[i,j]
-            x@cell_covariates <- x@cell_covariates[j,,drop=FALSE]
-            x@feature_covariates <- x@feature_covariates[i,,drop=FALSE]
-            return(x)
-          })
-
-#' @rdname subset-covariate-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
-          definition = function(x, i, j, drop) {
-            x@ondisc_matrix <- x@ondisc_matrix[i,]
-            x@cell_covariates <- x@feature_covariates[i,,drop=FALSE]
-            return(x)
-          })
-
-#' @rdname subset-covariate-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
-          definition = function(x, i, j, drop) {
-            x@ondisc_matrix <- x@ondisc_matrix[,j]
-            x@feature_covariates <- x@cell_covariates[j,,drop=FALSE]
-            return(x)
-          })
-
-#' @rdname subset-covariate-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "missing", drop = "missing"),
-          definition = function(x, i, j, drop) return(x))
-
-
-#' Subset a `multimodal_ondisc_matrix` with `[`
-#'
-#' The user can pass logical, character, of numeric vectors to \code{`[`}. Character vectors correspond to cell barcodes.
-#' Multimodal_ondisc_matrix objects can be subset only by cell, not feature, as different modalities (in general) have different numbers of features.
-#'
-#' @param x A multimodal_ondisc_matrix object
-#' @param i not used
-#' @param j Vector (numeric, logical, or character) indicating cells to keep
-#' @param drop not used
-#' @return A subset metadata_ondisc_matrix object.
-#' @name subset-multimodal-odm
-#' @examples
-#' # NOTE: You must create the RDS files "expressions.rds" and
-#' # "perturbations.rds" to run this example. Navigate to the help file of
-#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-#' # and execute both code blocks.
-#' expression_fp <- paste0(tempdir(), "/expressions.rds")
-#' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
-#' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
-#'     expressions <- readRDS(expression_fp)
-#'     perturbations <- readRDS(expression_fp)
-#'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
-#'     perturbations = perturbations))
-#'     # Keep all cells except 10,100, and 105.
-#'     x <- crispr_experiment[,-c(10,100,105)]
-#' }
-NULL
-
-multimodal_subset_error <- function() {
-  "The operation [i,] is not valid, because multimodal_ondisc_matrix objects can
-  be subset only by cell, not feature. Use [,i] to subset by cell instead."
-}
-
-#' @rdname subset-multimodal-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "multimodal_ondisc_matrix", i = "missing", j = "missing", drop = "missing"),
-          definition = function(x, i, j, drop) return(x))
-
-#' @rdname subset-multimodal-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "multimodal_ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
-          definition = function(x, i, j, drop) {
-            n_modalities <- length(x@modalities)
-            for (ctr in seq(1, n_modalities)) x@modalities[[ctr]] <- x@modalities[[ctr]][,j]
-            return(x)
-          })
-
-#' @rdname subset-multimodal-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "multimodal_ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
-          definition = function(x, i, j, drop) stop(multimodal_subset_error()))
-
-#' @rdname subset-multimodal-odm
-#' @export
-setMethod(f = "[",
-          signature = signature(x = "multimodal_ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
-          definition = function(x, i, j, drop) stop(multimodal_subset_error()))
-
-
-# Extract expression data methods
-#################################
-
-#' Pull a submatrix into memory with `[[`
-#'
-#' The user can pass logical, character, of numeric vectors to \code{`[[`}. Character vectors correspond to feature IDs (for rows) and cell barcodes (for columns).
-#' @param x An ondisc_matrix object
-#' @param i Vector (numeric, logical, or character) indicating features to keep
-#' @param j Vector (numeric, logical, or character) indicating cells to keep
-#' @return A matrix (of class Matrix)
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-#'
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' # extract cells 100-110
-#' x <- odm[[,100:110]]
-#' # extract the following genes:
-#' x <- odm[[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]]
-#' # extract the following cells:
-#' x <- odm[[,c("CTTAGGACACTGGCGT-1", "AAAGGATTCACATCAG-1")]]
-#' }
-#' @name extract-odm
-NULL
-
-# 1. Extract nothing (return error).
-#' @export
-#' @rdname extract-odm
-setMethod(f = "[[",
-          signature = signature(x = "ondisc_matrix", i = "missing", j = "missing"),
-          definition = function(x, i, j) stop("Specify row or column indices to extract a sub-matrix."))
-
-# 2. Extract by feature
-#' @export
-#' @rdname extract-odm
-setMethod(f = "[[",
-          signature = signature(x = "ondisc_matrix", i = "ANY", j = "missing"),
-          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% extract_matrix())
-
-# 3. Extract by cell
-#' @export
-#' @rdname extract-odm
-setMethod(f = "[[",
-          signature = signature(x = "ondisc_matrix", i = "missing", j = "ANY"),
-          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = j, subset_on_cell = TRUE) %>% extract_matrix())
-
-# 4. Extract by both feature and cell
-#' @export
-#' @rdname extract-odm
-setMethod(f = "[[",
-          signature = signature(x = "ondisc_matrix", i = "ANY", j = "ANY"),
-          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% subset_by_feature_or_cell(x = ., idx = j, subset_on_cell = TRUE) %>% extract_matrix())
-
-# covaraiate odm
-################
-
-extract_covariate_odm_error <- function() {
-  "You cannot use the [[,]] operator on this object, because it is not an ondisc_matrix.
-  To access the ondisc_matrix stored within this object, use the @ symbol and extract the
-  field `ondisc_matrix.`"
-}
-
-# Extract covariate_odm.
-#' @export
-#' @rdname extract-odm
-setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "missing"),
-          definition = function(x, i, j) stop(extract_covariate_odm_error()))
-
-#' @export
-#' @rdname extract-odm
-setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "missing"),
-          definition = function(x, i, j) stop(extract_covariate_odm_error()))
-
-#' @export
-#' @rdname extract-odm
-setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "ANY"),
-          definition = function(x, i, j) stop(extract_covariate_odm_error()))
-
-#' @export
-#' @rdname extract-odm
-setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "ANY"),
-          definition = function(x, i, j) stop(extract_covariate_odm_error()))

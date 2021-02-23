@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get mtx metadata — get_mtx_metadata • ondisc</title>
+<title>internal initialize ondisc_matrix — internal_initialize_ondisc_matrix • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Get mtx metadata — get_mtx_metadata" />
-<meta property="og:description" content="Get mtx metadata" />
+<meta property="og:title" content="internal initialize ondisc_matrix — internal_initialize_ondisc_matrix" />
+<meta property="og:description" content="An internal function for initializing an ondisc_matrix" />
 
 
 
@@ -102,33 +102,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get mtx metadata</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/high_level_initialize_helper.R'><code>R/high_level_initialize_helper.R</code></a></small>
-    <div class="hidden name"><code>get_mtx_metadata.Rd</code></div>
+    <h1>internal initialize ondisc_matrix</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/high_level_initialize.R'><code>R/high_level_initialize.R</code></a></small>
+    <div class="hidden name"><code>internal_initialize_ondisc_matrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get mtx metadata</p>
+    <p>An internal function for initializing an ondisc_matrix</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_mtx_metadata</span><span class='op'>(</span><span class='va'>mtx_fp</span>, <span class='va'>n_rows_with_comments</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>internal_initialize_ondisc_matrix</span><span class='op'>(</span><span class='va'>h5_file</span>, <span class='va'>logical_mat</span>, <span class='va'>underlying_dimension</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>mtx_fp</th>
-      <td><p>filepath to the mtx file</p></td>
+      <th>h5_file</th>
+      <td><p>an h5 file</p></td>
     </tr>
     <tr>
-      <th>n_rows_with_comments</th>
-      <td><p>number of rows with comments (at top of file)</p></td>
+      <th>logical_mat</th>
+      <td><p>logical value indicating whether the matrix is logical</p></td>
+    </tr>
+    <tr>
+      <th>underlying_dimension</th>
+      <td><p>length-two integer vector giving the dimension of the underlying matrix</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list containing (i) n_genes, (ii) n_cells, (iii) the numer of data points (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical</p>
+    <p>a correctly-initialized ondisc_matrix</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

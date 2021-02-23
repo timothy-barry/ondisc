@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Create an ondisc_matrix from a .mtx file. — create_ondisc_matrix_from_mtx" />
-<meta property="og:description" content="Initializes an ondisc_matrix object from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix R object along with cell-specific and feature-specific covariate matrices." />
+<meta property="og:description" content="Initializes an ondisc_matrix from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix along with cell-specific and feature-specific covariate matrices." />
 
 
 
@@ -81,9 +81,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li>
-  <a href="../articles/using_ondisc_static.html">Basic usage</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -105,13 +102,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create an ondisc_matrix from a .mtx file.</h1>
+    <h1>Create an <code>ondisc_matrix</code> from a .mtx file.</h1>
     <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/high_level_initialize.R'><code>R/high_level_initialize.R</code></a></small>
     <div class="hidden name"><code>create_ondisc_matrix_from_mtx.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Initializes an ondisc_matrix object from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix R object along with cell-specific and feature-specific covariate matrices.</p>
+    <p>Initializes an <code>ondisc_matrix</code> from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an <code>ondisc_matrix</code> along with cell-specific and feature-specific covariate matrices.</p>
     </div>
 
     <pre class="usage"><span class='fu'>create_ondisc_matrix_from_mtx</span><span class='op'>(</span>
@@ -137,7 +134,7 @@
     </tr>
     <tr>
       <th>features_fp</th>
-      <td><p>file path to the features.tsv file. The first column (required) should contain the feature IDs (e.g., ENSG00000186092), and the second column (optional) should contain the human-readable feature names (e.g., OR4F5). Any subsequent columns are discarded.</p></td>
+      <td><p>file path to the features.tsv file. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded.</p></td>
     </tr>
     <tr>
       <th>n_lines_per_chunk</th>
@@ -153,13 +150,21 @@
     </tr>
     <tr>
       <th>return_metadata_ondisc_matrix</th>
-      <td><p>(optional) return the output as a metadata_ondisc_matrix? Defaults to FALSE.</p></td>
+      <td><p>(optional) return the output as a metadata_ondisc_matrix (instead of a list)? Defaults to FALSE.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, the function converts the list to a metadata_ondisc_matrix before returning.</p>
+    <p>A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function can compute the following cell-specific and feature-specific covariates:</p><ul>
+<li><p>cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).</p></li>
+<li><p>feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).</p></li>
+</ul>
+
+<p>The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>

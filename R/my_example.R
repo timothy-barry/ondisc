@@ -10,12 +10,12 @@ perturbation_mtx <- system.file("extdata", "perturbation.mtx", package = "ondisc
 exp_mat <- create_ondisc_matrix_from_mtx(mtx_fp = expression_mtx,
                                          barcodes_fp = barcodes,
                                          features_fp = genes_tsv,
-                                         return_covariate_ondisc_matrix = TRUE,
+                                         return_metadata_ondisc_matrix = TRUE,
                                          on_disc_dir = temp_dir)
 pert_mat <- create_ondisc_matrix_from_mtx(mtx_fp = perturbation_mtx,
                                           barcodes_fp = barcodes,
                                           features_fp = guides_tsv,
-                                          return_covariate_ondisc_matrix = TRUE,
+                                          return_metadata_ondisc_matrix = TRUE,
                                           on_disc_dir = temp_dir)
 covariate_ondisc_matrix_list <- list(expressions = exp_mat, perturbations = pert_mat)
 multimodal_mat <- multimodal_ondisc_matrix(covariate_ondisc_matrix_list)

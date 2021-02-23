@@ -2,19 +2,31 @@
 % Please edit documentation in R/s4_classes_methods.R
 \name{multimodal_ondisc_matrix}
 \alias{multimodal_ondisc_matrix}
-\title{Constructor for multimodal_ondisc_matrix}
+\title{\code{multimodal_ondisc_matrix} class}
 \usage{
+multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
+
 multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
 }
 \arguments{
-\item{covariate_ondisc_matrix_list}{a named list containing covariate_ondisc_matrices; the names are taken to be the names of the modalities}
+\item{covariate_ondisc_matrix_list}{a named list containing \code{metadata_ondisc_matrices}; the names are taken to be the names of the modalities.}
 }
 \value{
 a multimodal_ondisc_matrix
 }
 \description{
-Constructs a multimodal_ondisc_matrix from a list of metadata_ondisc_matrix objects
+A \code{multimodal_ondisc_matrix} represents multimodal data.
+
+Construct a \code{multimodal_ondisc_matrix} from a list of \code{metadata_ondisc_matrix} objects.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{modalities}}{a list containing \code{metadata_ondisc_matrix} objects representing different modalities.}
+
+\item{\code{global_cell_covariates}}{a data frame containing the cell-specific covariates pooled across all modalities.}
+}}
+
 \examples{
 # NOTE: You must create the RDS files "expressions.rds" and
 # "perturbations.rds" to run this example. Navigate to the help file of
@@ -24,7 +36,7 @@ expression_fp <- paste0(tempdir(), "/expressions.rds")
 perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
 if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
     expressions <- readRDS(expression_fp)
-    perturbations <- readRDS(expression_fp)
+    perturbations <- readRDS(perturbations_fp)
     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
     perturbations = perturbations))
 }
