@@ -1,6 +1,6 @@
 #' Get on_disc subset vector
 #'
-#' Returns the subset vector and order vector (either feature or cell) for an ondisc_matrix object.
+#' Returns the subset vector (either feature or cell) for an ondisc_matrix object.
 #'
 #' @param x the ondisc_matrix.
 #' @param cell_idx (boolean) TRUE = cell, FALSE = feature.
@@ -11,12 +11,6 @@ get_subset_vector <- function(x, cell_idx) {
   return(slot(x, idx_slot))
 }
 
-
-#' @rdname get_subset_vector
-get_order_vector <- function(x, cell_idx) {
-  idx_slot <- paste0(if (cell_idx) "cell" else "feature", "_subset_order")
-  return(slot(x, idx_slot))
-}
 
 #' Get dim
 #'
@@ -49,47 +43,6 @@ get_names <- function(x, name_to_get) {
 }
 
 
-#' Get feature names, feature IDs, and cell barcodes
-#'
-#' Functions to extract cell barcodes, feature ids, and feature names from an ondisc_matrix.
-#'
-#' @param x An ondisc_matrix.
-#' @return The cell barcodes of this on-disc matrix.
-#' @export
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' barcodes <- get_cell_barcodes(odm)
-#' feature_ids <- get_feature_ids(odm)
-#' feature_names <- get_feature_names(odm)
-#' }
-get_cell_barcodes <- function(x) {
-  get_names(x, "cell_barcodes")
-}
-
-
-#' @rdname get_cell_barcodes
-#' @param x An ondisc_matrix.
-#' @export
-#' @return The cell feature ids of this on-disc matrix.
-get_feature_ids <- function(x) {
-  get_names(x, "feature_ids")
-}
-
-
-#' @rdname get_cell_barcodes
-#' @param x An ondisc_matrix.
-#' @export
-#' @return The feature names of this on-disc matrix.
-get_feature_names <- function(x) {
-  get_names(x, "feature_names")
-}
-
-
 #' Subset by feature or cell
 #'
 #' Subsets an ondisc_matrix by either feature or cell.
@@ -101,7 +54,6 @@ get_feature_names <- function(x) {
 #' @return a subset ondisc_matrix
 subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
   subset_slot <- paste0(if (subset_on_cell) "cell" else "feature", "_subset")
-  order_slot <- paste0(subset_slot, "_order")
   if (identical(slot(x, subset_slot), NA_integer_)) {
     n_elements <- if (subset_on_cell) ncol(x) else nrow(x)
     slot(x, subset_slot) <- seq(1, n_elements)
@@ -122,7 +74,6 @@ subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
   } else {
     stop("idx must be of type numeric, character, or logical.")
   }
-  # check for duplicates and store ordering
   return(x)
 }
 
@@ -144,7 +95,7 @@ extract_matrix <- function(x) {
   if (identical(subset_vector, NA_integer_)) {
     subset_vector <- seq(1, if (index_on_cell) x_dim[2] else x_dim[1])
   }
-  # return submatrix, ordered (and subset) along main axis, and unsubset along secondary axis.
+  # return submatrix
   out <- return_spMatrix_from_index(x@h5_file, subset_vector, index_on_cell, x@logical_mat, x@underlying_dimension)
   # If necessary, subset along the other axis
   second_subset <- get_subset_vector(x, !index_on_cell)

@@ -2,12 +2,9 @@
 % Please edit documentation in R/high_level_matrix_ops.R
 \name{get_subset_vector}
 \alias{get_subset_vector}
-\alias{get_order_vector}
 \title{Get on_disc subset vector}
 \usage{
 get_subset_vector(x, cell_idx)
-
-get_order_vector(x, cell_idx)
 }
 \arguments{
 \item{x}{the ondisc_matrix.}
@@ -18,5 +15,5 @@ get_order_vector(x, cell_idx)
 the requested subset indexes
 }
 \description{
-Returns the subset vector and order vector (either feature or cell) for an ondisc_matrix object.
+Returns the subset vector (either feature or cell) for an ondisc_matrix object.
 }

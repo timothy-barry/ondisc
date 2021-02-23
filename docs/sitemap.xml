@@ -46,10 +46,10 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/generate_on_disc_matrix_name.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_accumulator_funct_arg_list.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get-names.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_cell_barcodes.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_accumulator_funct_arg_list.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get_dim.html</loc>
@@ -79,7 +79,7 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/get_terminals_for_covariate.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/head-ondisc_matrix-method.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/head.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/inc_cell_count_if_feature_condition.html</loc>
@@ -185,8 +185,5 @@
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//articles/articles/setting_up_a_crispr_screen.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//articles/bioc_silence.html</loc>
   </url>
 </urlset>

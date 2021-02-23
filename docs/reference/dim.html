@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Return dimension — dim • ondisc</title>
+<title>Get dimension — dim • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Return dimension — dim" />
-<meta property="og:description" content="Return dimension of ondisc_matrix, metadata_ondisc_matrix, or multimodal_ondisc_matrix." />
+<meta property="og:title" content="Get dimension — dim" />
+<meta property="og:description" content="Return the dimension of an ondisc_matrix, metadata_ondisc_matrix, or multimodal_ondisc_matrix." />
 
 
 
@@ -102,13 +102,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Return dimension</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/s4_classes_methods.R'><code>R/s4_classes_methods.R</code></a></small>
+    <h1>Get dimension</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/s4_basic_methods.R'><code>R/s4_basic_methods.R</code></a></small>
     <div class="hidden name"><code>dim.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Return dimension of ondisc_matrix, metadata_ondisc_matrix, or multimodal_ondisc_matrix.</p>
+    <p>Return the dimension of an <code>ondisc_matrix</code>, <code>metadata_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for ondisc_matrix</span>
@@ -125,23 +125,43 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>an ondisc_matrix, metadata_ondisc_matrix, or multimodal_ondisc_matrix</p></td>
+      <td><p>an <code>ondisc_matrix</code>, <code>metadata_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If x is an ondisc_matrix or metadata_ondisc_matrix, an integer vector containing the dimension of the matrix; if
-x is a multimodal_ondisc_matrix, a list of integer vectors containing the dimension of the constituent matrices.</p>
+    <p>If <code>x</code> is an <code>ondisc_matrix</code> or <code>metadata_ondisc_matrix</code>, length-two integer vector containing
+the dimension of <code>x</code>; if <code>x</code> is a <code>multimodal_ondisc_matrix</code>, a list of integer vectors containing the dimensions
+of the constituent modalities of <code>x</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># NOTE: You must create the HDF5 file "expressions.h5" to run this example.</span>
-<span class='co'># Navigate to the help file of "create_ondisc_matrix_from_mtx"</span>
-<span class='co'># (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.</span>
+    <pre class="examples"><div class='input'><span class='co'># NOTE: You must create the RDS files "expressions.rds" and</span>
+<span class='co'># "perturbations.rds" to run this example. Navigate to the help file of</span>
+<span class='co'># "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),</span>
+<span class='co'># and execute both code blocks.</span>
+
+<span class='co'># dimension of an ondisc_matrix</span>
 <span class='va'>h5_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/expressions.h5"</span><span class='op'>)</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span><span class='op'>(</span><span class='va'>h5_fp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ondisc_matrix.html'>ondisc_matrix</a></span><span class='op'>(</span>h5_file <span class='op'>=</span> <span class='va'>h5_fp</span><span class='op'>)</span>
 <span class='fu'>dim</span><span class='op'>(</span><span class='va'>odm</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='co'># dimension of a metadata_ondic_matrix</span>
+<span class='va'>expressions_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/expressions.rds"</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span><span class='op'>(</span><span class='va'>expressions_fp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>expressions</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>expressions_fp</span><span class='op'>)</span>
+<span class='fu'>dim</span><span class='op'>(</span><span class='va'>expressions</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='co'># dimension of a multimodal_ondisc_matrix</span>
+<span class='va'>expression_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/expressions.rds"</span><span class='op'>)</span>
+<span class='va'>perturbations_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/perturbations.rds"</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span><span class='op'>(</span><span class='va'>expression_fp</span><span class='op'>)</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span><span class='op'>(</span><span class='va'>perturbations_fp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>crispr_experiment</span> <span class='op'>&lt;-</span> <span class='fu'><a href='multimodal_ondisc_matrix.html'>multimodal_ondisc_matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>expressions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>expression_fp</span><span class='op'>)</span>,
+    perturbations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>perturbations_fp</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'>dim</span><span class='op'>(</span><span class='va'>crispr_experiment</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
