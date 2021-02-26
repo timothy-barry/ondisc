@@ -37,7 +37,7 @@ for (i in seq(1, n_datasets)) {
                                                barcodes_fp = fps[["barcodes"]],
                                                features_fp = fps[["features"]],
                                                n_lines_per_chunk = chunk_size,
-                                               on_disc_dir = temp_test_dir,
+                                               on_disk_dir = temp_test_dir,
                                                return_metadata_ondisc_matrix = TRUE)
   cov_odms[[i]] <- cov_odm_obj
 }

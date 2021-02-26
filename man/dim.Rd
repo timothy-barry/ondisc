@@ -5,6 +5,8 @@
 \alias{dim,ondisc_matrix-method}
 \alias{dim,metadata_ondisc_matrix-method}
 \alias{dim,multimodal_ondisc_matrix-method}
+\alias{ncol}
+\alias{nrow}
 \alias{ncol,multimodal_ondisc_matrix-method}
 \alias{nrow,multimodal_ondisc_matrix-method}
 \title{Get dimension}
@@ -14,6 +16,10 @@
 \S4method{dim}{metadata_ondisc_matrix}(x)
 
 \S4method{dim}{multimodal_ondisc_matrix}(x)
+
+ncol(x)
+
+nrow(x)
 
 \S4method{ncol}{multimodal_ondisc_matrix}(x)
 

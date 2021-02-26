@@ -54,6 +54,14 @@ setMethod("dim", signature("multimodal_ondisc_matrix"), function(x) lapply(x@mod
 
 #' @export
 #' @rdname dim
+setGeneric("ncol", function(x) standardGeneric("ncol"))
+
+#' @export
+#' @rdname dim
+setGeneric("nrow", function(x) standardGeneric("nrow"))
+
+#' @export
+#' @rdname dim
 setMethod("ncol", signature("multimodal_ondisc_matrix"), function(x) ncol(x@modalities[[1]]))
 
 #' @export
