@@ -11,11 +11,11 @@ template:
   params:
     bootswatch: lumen
 
-navbar:
-  type: default
-  left:
-  - text: Function reference
-    href: reference/index.html
+# navbar:
+#  type: default
+#  left:
+#  - text: Function reference
+#    href: reference/index.html
 
 reference:
 - title: Initialize

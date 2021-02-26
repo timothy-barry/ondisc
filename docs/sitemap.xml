@@ -79,7 +79,7 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/get_terminals_for_covariate.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/head.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/head-ondisc_matrix-method.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/inc_cell_count_if_feature_condition.html</loc>
@@ -184,6 +184,9 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/write_data_h5.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//articles/articles/setting_up_a_crispr_screen.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//articles/tutorial_odm_class.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//articles/tutorial_other_classes.html</loc>
   </url>
 </urlset>

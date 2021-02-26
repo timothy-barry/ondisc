@@ -2,8 +2,9 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  articles/setting_up_a_crispr_screen: setting_up_a_crispr_screen.html
-last_built: 2021-02-23T04:00Z
+  tutorial_odm_class: tutorial_odm_class.html
+  tutorial_other_classes: tutorial_other_classes.html
+last_built: 2021-02-25T21:42Z
 urls:
   reference: https://timothy-barry.github.io/ondisc//reference
   article: https://timothy-barry.github.io/ondisc//articles

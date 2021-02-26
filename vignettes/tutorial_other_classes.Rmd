@@ -1,0 +1,103 @@
+---
+title: "Tutorial 2: Using metadata_ondisc_matrix and multimodal_ondisc_matrix"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorial 2: Using metadata_ondisc_matrix and multimodal_ondisc_matrix}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Tutorial 1 covered `ondisc_matrix`, the core class implemented by `ondisc`. Thus tutorial covers `metadata_ondisc_matrix` and `multimodal_ondisc_matrix`, two additional classes provided by the package. `metadata_ondisc_matrices` store cell-specific and feature-specific covariate matrices alongside the expression matrix, and `multimodal_ondisc_matrices` store multiple `metadata_ondisc_matrices` representing different cellular modalities. Together, `metadata_ondisc_matrix` and `multimodal_ondisc_matrix` facilitate feature selection, quality control, and other common single-cell data preprocessing tasks. 
+
+We begin by loading the package.
+
+```{r setup}
+library(ondisc)
+```
+
+# The `metadata_ondisc_matrix` class
+
+A `metadata_ondisc_matrix` object consists of three components: (i) an `ondisc_matrix` representing the expression data, (ii) a data frame storing the cell-specific covariates, and (iii) a data frame storing the feature-specific covariates. The easiest way to initialize a `metadata_ondisc_matrix` is by calling `create_ondisc_matrix_from_mtx` on an mtx file and associated metadata files, setting the optional parameter `return_metadata_ondisc_matrix` to `TRUE`. Below, we reproduce the example from Tutorial 1, this time returning a `metadata_ondisc_matrix` instead of a list.
+
+```{r}
+# Set paths to the .mtx and .tsv files
+raw_data_dir <- system.file("extdata", package = "ondisc")
+mtx_fp <- paste0(raw_data_dir, "/gene_expression.mtx")
+barcodes_fp <- paste0(raw_data_dir, "/cell_barcodes.tsv")
+features_fp <- paste0(raw_data_dir, "/genes.tsv")
+
+# Specify directory in which to store the .h5 file
+temp_dir <- tempdir()
+
+# Initialize metadata_ondisc_matrix
+expressions <- create_ondisc_matrix_from_mtx(mtx_fp = mtx_fp,
+                                              barcodes_fp = barcodes_fp,
+                                              features_fp = features_fp,
+                                              on_disk_dir = temp_dir,
+                                              return_metadata_ondisc_matrix = TRUE)
+```
+The variable `expressions` is an object of class `metadata_ondisc_matrix`; `expressions` contains the fields `ondisc_matrix`, `cell_covariates`, and `feature_covariates`.
+
+```{r}
+# Print the variable
+expressions
+```
+
+We alternately can initialize a `metadata_ondisc_matrix` by calling the constructor function of the `metadata_ondisc_matrix` class; see ?metadata_ondisc_matrix for details.
+
+# The `multimodal_ondisc_matrix` class
+
+The `multimodal_ondisc_matrix` class is used to represent multimodal data. `multimodal_ondisc_matrix` objects have two fields: (i) a named list of `metadata_ondisc_matrices` representing different modalities, and (ii) a data frame containing all cell-specific covariates pooled across modalities. We create a `multimodal_ondisc_matrix` by passing a named list of `metadata_ondisc_matrices` to the class constructor of `multimodal_ondisc_matrix`.
+
+The `ondisc` package ships with example CRISPR perturbation data, which we use to initialize a new perturbation modality via a call to `create_ondisc_matrix_from_mtx`.
+
+```{r}
+# Set paths to the perturbation .mtx and .tsv files
+mtx_fp <- paste0(raw_data_dir, "/perturbation.mtx")
+barcodes_fp <- paste0(raw_data_dir, "/cell_barcodes.tsv")
+features_fp <- paste0(raw_data_dir, "/guides.tsv")
+
+# Initialize metadata_ondisc_matrix
+perturbations <- create_ondisc_matrix_from_mtx(mtx_fp = mtx_fp,
+                                               barcodes_fp = barcodes_fp,
+                                               features_fp = features_fp,
+                                               on_disk_dir = temp_dir,
+                                               return_metadata_ondisc_matrix = TRUE)
+```
+
+Like `expressions`, the variable `perturbations` is an object of class `metadata_ondisc_matrix`. However, because `perturbations` represents logical perturabtion data instead of integer gene expression data, the cell-specific and feature-specific covariates of `perturbations` differ from those of `expressions`.
+
+```{r}
+# These matrices have different columns
+head(expressions@cell_covariates)
+head(perturbations@cell_covariates)
+```
+We create a `multimodal_ondisc_matrix` by passing a named list of `metadata_ondisc_matrix` objects -- in this case, `expressions` and `perturbations` --  to the constructor function of the `multimodal_ondisc_matrix` class.
+
+```{r}
+modality_list <- list(expressions = expressions, perturbations = perturbations)
+crispr_experiment <- multimodal_ondisc_matrix(modality_list)
+```
+
+The variable `crispr_experiment` is an object of class `multimodal_ondisc_matrix`. The column names of the global covariate data frame are derived from the names of the modalities.
+
+```{r}
+# print variable
+crispr_experiment
+
+# show the global covariate matrix
+head(crispr_experiment@global_cell_covariates)
+```
+
+The figure below summarizes the relationship between `ondisc_matrix`, `metadata_ondisc_matrix`, and `multimodal_ondisc_matrix`.
+
+```{r classes, echo=FALSE, fig.cap="**Figure: The available classes. a) `ondisc_matrix`, b) `metadata_ondisc_matrix`, c) `multimodal_ondisc_matrix`** ", out.width = '55%'}
+knitr::include_graphics("classes_cropped.jpg")
+```
