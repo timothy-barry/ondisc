@@ -9,7 +9,7 @@ create_ondisc_matrix_from_mtx(
   barcodes_fp,
   features_fp,
   n_lines_per_chunk = 3e+08,
-  on_disc_dir = NULL,
+  on_disk_dir = NULL,
   file_name = NULL,
   return_metadata_ondisc_matrix = FALSE
 )
@@ -23,7 +23,7 @@ create_ondisc_matrix_from_mtx(
 
 \item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
 
-\item{on_disc_dir}{(optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.}
+\item{on_disk_dir}{(optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.}
 
 \item{file_name}{(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.}
 
@@ -54,7 +54,7 @@ names(file_locs) <- c("expressions", "features", "barcodes")
 expression_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
 barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
-on_disc_dir = tempdir(),
+on_disk_dir = tempdir(),
 file_name = "expressions",
 return_metadata_ondisc_matrix = TRUE)
 saveRDS(object = expression_data, file = paste0(tempdir(), "/expressions.rds"))
@@ -67,7 +67,7 @@ names(file_locs) <- c("perturbations", "features", "barcodes")
 perturbation_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["perturbations"]],
 barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
-on_disc_dir = tempdir(),
+on_disk_dir = tempdir(),
 file_name = "perturbations",
 return_metadata_ondisc_matrix = TRUE)
 saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds"))

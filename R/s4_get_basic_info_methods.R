@@ -52,6 +52,14 @@ setMethod("dim", signature("metadata_ondisc_matrix"), function(x) get_dim(x@ondi
 #' @rdname dim
 setMethod("dim", signature("multimodal_ondisc_matrix"), function(x) lapply(x@modalities, dim))
 
+#' @export
+#' @rdname dim
+setMethod("ncol", signature("multimodal_ondisc_matrix"), function(x) ncol(x@modalities[[1]]))
+
+#' @export
+#' @rdname dim
+setMethod("nrow", signature("multimodal_ondisc_matrix"), function(x) lapply(x@modalities, nrow))
+
 
 # Show
 ######

@@ -1,8 +1,8 @@
 ---
-title: "Tutorial 2: Using metadata_ondisc_matrix and multimodal_ondisc_matrix"
+title: "Tutorial 2: Using `metadata_ondisc_matrix` and `multimodal_ondisc_matrix`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Tutorial 2: Using metadata_ondisc_matrix and multimodal_ondisc_matrix}
+  %\VignetteIndexEntry{Tutorial 2: Using `metadata_ondisc_matrix` and `multimodal_ondisc_matrix`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -54,9 +54,7 @@ We alternately can initialize a `metadata_ondisc_matrix` by calling the construc
 
 # The `multimodal_ondisc_matrix` class
 
-The `multimodal_ondisc_matrix` class is used to represent multimodal data. `multimodal_ondisc_matrix` objects have two fields: (i) a named list of `metadata_ondisc_matrices` representing different modalities, and (ii) a data frame containing all cell-specific covariates pooled across modalities. We create a `multimodal_ondisc_matrix` by passing a named list of `metadata_ondisc_matrices` to the class constructor of `multimodal_ondisc_matrix`.
-
-The `ondisc` package ships with example CRISPR perturbation data, which we use to initialize a new perturbation modality via a call to `create_ondisc_matrix_from_mtx`.
+The `multimodal_ondisc_matrix` class is used to represent multimodal data. `multimodal_ondisc_matrix` objects have two fields: (i) a named list of `metadata_ondisc_matrices` representing different modalities, and (ii) a global (i.e., cross-modality) cell-specific covariate matrix. The `ondisc` package ships with example CRISPR perturbation data, which we use to initialize a new perturbation modality via a call to `create_ondisc_matrix_from_mtx`.
 
 ```{r}
 # Set paths to the perturbation .mtx and .tsv files
@@ -79,14 +77,15 @@ Like `expressions`, the variable `perturbations` is an object of class `metadata
 head(expressions@cell_covariates)
 head(perturbations@cell_covariates)
 ```
-We create a `multimodal_ondisc_matrix` by passing a named list of `metadata_ondisc_matrix` objects -- in this case, `expressions` and `perturbations` --  to the constructor function of the `multimodal_ondisc_matrix` class.
+
+The  `expressions` and `perturbations` data are multimodal -- they are collected from the same set of cells. We can create a `multimodal_ondisc_matrix` by passing a named list of `metadata_ondisc_matrix` objects -- in this case, `expressions` and `perturbations` --  to the constructor function of the `multimodal_ondisc_matrix` class.
 
 ```{r}
 modality_list <- list(expressions = expressions, perturbations = perturbations)
 crispr_experiment <- multimodal_ondisc_matrix(modality_list)
 ```
 
-The variable `crispr_experiment` is an object of class `multimodal_ondisc_matrix`. The column names of the global covariate data frame are derived from the names of the modalities.
+The variable `crispr_experiment` is an object of class `multimodal_ondisc_matrix`. The column names of the global covariate matrix are derived from the names of the modalities.
 
 ```{r}
 # print variable
@@ -98,6 +97,67 @@ head(crispr_experiment@global_cell_covariates)
 
 The figure below summarizes the relationship between `ondisc_matrix`, `metadata_ondisc_matrix`, and `multimodal_ondisc_matrix`.
 
-```{r classes, echo=FALSE, fig.cap="**Figure: The available classes. a) `ondisc_matrix`, b) `metadata_ondisc_matrix`, c) `multimodal_ondisc_matrix`** ", out.width = '55%'}
+```{r classes, echo=FALSE, fig.cap="**Figure**: Classes provided by the package. a) `ondisc_matrix`, b) `metadata_ondisc_matrix`, c) `multimodal_ondisc_matrix` ", out.width = '55%'}
 knitr::include_graphics("classes_cropped.jpg")
 ```
+
+# Querying basic information
+
+We can use the functions `get_feature_ids`, `get_feature_names`, and `get_cell_barcodes` to obtain the feature IDs, feature names (if applicable), and cell barcodes, respectively, of a `metadata_ondisc_matrix` or a `multimodal_ondisc_matrix`. `get_feature_ids` and `get_feature_names` return a list when called on a `multimodal_ondisc_matrix`, as the different modalities contain different features.
+
+```{r}
+# metadata_ondisc_matrix
+cell_barcodes <- get_cell_barcodes(expressions)
+feature_ids <- get_feature_ids(expressions)
+feature_names <- get_feature_names(expressions)
+
+# multimodal_ondisc_matrix
+cell_barcodes <- get_cell_barcodes(crispr_experiment)
+feature_ids <- get_feature_ids(crispr_experiment)
+```
+
+We likewise can use `dim`, `nrow`, and `ncol` to query the dimension, number of rows, and number of
+columns of a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`. `dim` and `nrow` return lists when called on a `multimodal_ondisc_matrix`.
+
+```{r}
+# metadata_ondisc_matrix
+dim(expressions)
+nrow(expressions)
+ncol(expressions)
+
+# multimodal_ondisc_matrix
+dim(crispr_experiment)
+nrow(crispr_experiment)
+ncol(crispr_experiment)
+```
+
+# Subsetting
+
+Similar to `ondisc_matrices`, `metadata_ondisc_matrices` and `multimodal_ondisc_matrices` can be subset using the `[` operator. `metadata_ondisc_matrices` can be subset either by feature or cell, while `multimodal_ondisc_matrices` can be subset by cell only.
+
+```{r}
+# metadata_ondisc_matrix
+# keep cells 100 - 150
+expressions_sub <- expressions[,100:150]
+# keep genes ENSG00000188305, ENSG00000257284, ENSG00000251655
+expressions_sub <- expressions[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]
+
+# multimodal_ondisc_matrix
+# keep all cells except 1 - 100
+crispr_experiment_sub <- crispr_experiment[,-c(1:100)]
+```
+
+As with `ondisc_matrices`, the original objects remain unchanged.
+
+```{r}
+expressions
+crispr_experiment
+```
+
+# Notes and tips
+
+- To save and load a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`, simply use the functions `saveRDS` and `readRDS`, respectively.
+
+- It is not possible to apply the double-bracket "pull submatrix into memory" operator to a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`. To apply the double-bracket operator to an `ondisc_matrix` stored *inside* a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`, simply access the `ondisc_matrix` first.
+
+- The `metadata_ondisc_matrix` and `multimodal_ondisc_matrix` classes are inspired by analogous classes in the `SingleCellExperiment` and `Seurat` packages. However, unlike `SingleCellExperiment` and `Seurat`, `ondisc` does not (currently) support storing the dense matrix of normalized UMI counts. We view this as a feature, not a bug. Storing the normalized expression matrix is almost never necessary and is hugely expensive (in space and time) for large-scale data.

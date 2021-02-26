@@ -1,8 +1,8 @@
 ---
-title: "Tutorial 1: Using the ondisc_matrix class"
+title: "Tutorial 1: Using the `ondisc_matrix` class"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Tutorial 1: Using the ondisc_matrix class}
+  %\VignetteIndexEntry{Tutorial 1: `Using the ondisc_matrix` class}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This tutorial shows how to use `ondisc_matrix`, the core class implemented by `ondisc`. An `ondisc_matrix` is an R object that represents an expression matrix stored on-disk rather than in-memory. We cover the topics of initialization, querying basic information, subsetting, and pulling submatrices into memory. We begin by loading the `ondisc` package.
+This tutorial demonstrates how to use `ondisc_matrix`, the core class implemented by `ondisc`. An `ondisc_matrix` is an R object that represents an expression matrix stored on-disk rather than in-memory. We cover the topics of initialization, querying basic information, subsetting, and pulling submatrices into memory. We begin by loading the `ondisc` package.
 
 ```{r setup}
 library(ondisc)
