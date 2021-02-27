@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `ondisc`: single-cell computing made FUN <img src="man/figures/hex.png" align="right" alt="" width="180" />
+# `ondisc`: big single-cell computing made FUN <img src="man/figures/hex.png" align="right" alt="" width="180" />
 
 <!-- badges: start -->
 
@@ -13,10 +13,11 @@ coverage](https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-Single-cell datasets are growing in size rapidly, posing a challenge for
+Single-cell datasets are growing in size rapidly, posing challenges for
 biology researchers. `ondisc` (short for “on-disk single cell”) allows
-users to efficiently and easily analyze large-scale single-cell data.
-`ondisc` makes computing on large-scale single-cell data **FUN**:
+users to easily and efficiently analyze large-scale single-cell
+datasets. `ondisc` makes computing on large-scale single-cell data
+**FUN**:
 
   - **Fast**: `ondisc` is supported by several novel, highly efficient
     algorithms and data structures. All low-level code is written in C++
@@ -25,9 +26,9 @@ users to efficiently and easily analyze large-scale single-cell data.
     supercomputers. `ondisc` works seamlessly when the size of the data
     exceeds the amount of available memory.
   - **Ntuitive**: `ondisc` leverages ideas from functional programming,
-    making it natural for R programmers.
+    making it easy for R programmers to use.
 
-Take a look at the
+Have a look at the
 [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html)
 on the [package
 website](https://timothy-barry.github.io/ondisc/index.html) to get
