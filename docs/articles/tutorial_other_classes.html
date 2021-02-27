@@ -38,26 +38,20 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../reference/index.html">Function reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1: Using the `ondisc_matrix` class</a>
+      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
     </li>
     <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2: Using `metadata_ondisc_matrix` and `multimodal_ondisc_matrix`</a>
+      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
     </li>
   </ul>
 </li>
@@ -126,8 +120,18 @@
 <span id="cb2-23"><a href="#cb2-23"></a><span class="op">|</span><span class="er">===============================================================</span><span class="st">          </span><span class="er">|</span><span class="st"> </span><span class="dv">86</span>%</span>
 <span id="cb2-24"><a href="#cb2-24"></a><span class="op">|</span><span class="er">=========================================================================|</span><span class="st"> </span><span class="dv">98</span>%</span>
 <span id="cb2-25"><a href="#cb2-25"></a><span class="op">|</span><span class="er">=========================================================================|</span><span class="st"> </span><span class="dv">100</span>%</span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; Writing CSC data.</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt; Writing CSR data.</span></span></code></pre></div>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; </span></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="op">|</span><span class="er">========</span><span class="st">                                                                 </span><span class="er">|</span><span class="st"> </span><span class="dv">11</span>%</span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="op">|</span><span class="er">=================</span><span class="st">                                                        </span><span class="er">|</span><span class="st"> </span><span class="dv">23</span>%</span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="op">|</span><span class="er">==========================</span><span class="st">                                               </span><span class="er">|</span><span class="st"> </span><span class="dv">36</span>%</span>
+<span id="cb2-30"><a href="#cb2-30"></a><span class="op">|</span><span class="er">====================================</span><span class="st">                                     </span><span class="er">|</span><span class="st"> </span><span class="dv">48</span>%</span>
+<span id="cb2-31"><a href="#cb2-31"></a><span class="op">|</span><span class="er">=============================================</span><span class="st">                            </span><span class="er">|</span><span class="st"> </span><span class="dv">61</span>%</span>
+<span id="cb2-32"><a href="#cb2-32"></a><span class="op">|</span><span class="er">======================================================</span><span class="st">                   </span><span class="er">|</span><span class="st"> </span><span class="dv">73</span>%</span>
+<span id="cb2-33"><a href="#cb2-33"></a><span class="op">|</span><span class="er">===============================================================</span><span class="st">          </span><span class="er">|</span><span class="st"> </span><span class="dv">86</span>%</span>
+<span id="cb2-34"><a href="#cb2-34"></a><span class="op">|</span><span class="er">=========================================================================|</span><span class="st"> </span><span class="dv">98</span>%</span>
+<span id="cb2-35"><a href="#cb2-35"></a><span class="op">|</span><span class="er">=========================================================================|</span><span class="st"> </span><span class="dv">100</span>%</span>
+<span id="cb2-36"><a href="#cb2-36"></a><span class="co">#&gt; Writing CSC data.</span></span>
+<span id="cb2-37"><a href="#cb2-37"></a><span class="co">#&gt; Writing CSR data.</span></span></code></pre></div>
 <p>The variable <code>expressions</code> is an object of class <code>metadata_ondisc_matrix</code>; <code>expressions</code> contains the fields <code>ondisc_matrix</code>, <code>cell_covariates</code>, and <code>feature_covariates</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Print the variable</span>
@@ -236,9 +240,9 @@
 <code class="sourceCode R"><span class="co"># metadata_ondisc_matrix</span>
 <span class="fu"><a href="../reference/dim.html">dim</a></span><span class="op">(</span><span class="va">expressions</span><span class="op">)</span>
 <span class="co">#&gt; [1] 300 900</span>
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">expressions</span><span class="op">)</span>
+<span class="fu"><a href="../reference/dim.html">nrow</a></span><span class="op">(</span><span class="va">expressions</span><span class="op">)</span>
 <span class="co">#&gt; [1] 300</span>
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">expressions</span><span class="op">)</span>
+<span class="fu"><a href="../reference/dim.html">ncol</a></span><span class="op">(</span><span class="va">expressions</span><span class="op">)</span>
 <span class="co">#&gt; [1] 900</span>
 
 <span class="co"># multimodal_ondisc_matrix</span>
@@ -248,13 +252,13 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $perturbations</span>
 <span class="co">#&gt; [1] 250 900</span>
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">crispr_experiment</span><span class="op">)</span>
+<span class="fu"><a href="../reference/dim.html">nrow</a></span><span class="op">(</span><span class="va">crispr_experiment</span><span class="op">)</span>
 <span class="co">#&gt; $expressions</span>
 <span class="co">#&gt; [1] 300</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $perturbations</span>
 <span class="co">#&gt; [1] 250</span>
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">crispr_experiment</span><span class="op">)</span>
+<span class="fu"><a href="../reference/dim.html">ncol</a></span><span class="op">(</span><span class="va">crispr_experiment</span><span class="op">)</span>
 <span class="co">#&gt; [1] 900</span></code></pre></div>
 </div>
 <div id="subsetting" class="section level1">

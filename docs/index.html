@@ -42,26 +42,20 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
+  <a href="reference/index.html">Function reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/tutorial_odm_class.html">Tutorial 1: Using the `ondisc_matrix` class</a>
+      <a href="articles/tutorial_odm_class.html">Tutorial 1</a>
     </li>
     <li>
-      <a href="articles/tutorial_other_classes.html">Tutorial 2: Using `metadata_ondisc_matrix` and `multimodal_ondisc_matrix`</a>
+      <a href="articles/tutorial_other_classes.html">Tutorial 2</a>
     </li>
   </ul>
 </li>
@@ -91,14 +85,22 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>Single-cell datasets can be large and are growing in size as sequencing costs drop. <code>ondisc</code> (short for <strong>on-di</strong>sk <strong>s</strong>ingle-<strong>c</strong>ell ) is an R package that powers large-scale analyses of single-cell data. <code>ondisc</code> has two main use cases: providing access to expression matrices too large to fit in memory, and powering analyses on computer clusters (or supercomputers) in which different processors operate on different subsets of data. <code>ondisc</code> is functional (i.e., objects are persistent) and efficient (i.e., algorithms are theoretically optimal), making the package user-friendly. The vignette <a href="https://timothy-barry.github.io/ondisc/articles/using_ondisc.html">Using ondisc</a> (10 min. read) gives a quick overview of the package.</p>
+<p>Single-cell datasets are growing in size rapidly, posing a challenge for biology researchers. <code>ondisc</code> (short for “on-disk single-cell”) makes computing on large-scale single-cell data <strong>FUN</strong>:</p>
+<ul>
+<li>
+<strong>Fast</strong>: <code>ondisc</code> is supported by several novel, highly efficient algorithms and data structures. All low-level code is written in C++ or C for maximum performance.</li>
+<li>
+<strong>Universal</strong>: <code>ondisc</code> runs on all platforms, from laptops to supercomputers. <code>ondisc</code> works seamlessly when the size of the data exceeds the amount of available memory.</li>
+<li>
+<strong>Ntuitive</strong>: <code>ondisc</code> is easy to use. <code>ondisc</code> strongly leverages ideas from functional programming, making it similar to the popular <a href="https://www.tidyverse.org">tidyverse</a> suite of packages.</li>
+</ul>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install development version from GitHub with:</p>
+<p>You can install the development version from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"Timothy-Barry/ondisc"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"timothy-barry/ondisc"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -129,9 +131,9 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="https://travis-ci.com/timothy-barry/ondisc"><img src="https://travis-ci.com/timothy-barry/ondisc.svg?branch=main" alt="R build status"></a></li>
 <li><a href="https://codecov.io/gh/Timothy-Barry/ondisc?branch=main"><img src="https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/Timothy-Barry/ondisc/actions"><img src="https://github.com/Timothy-Barry/ondisc/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
 </ul>
 </div>
 </div>

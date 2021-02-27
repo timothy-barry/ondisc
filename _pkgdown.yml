@@ -11,11 +11,17 @@ template:
   params:
     bootswatch: lumen
 
-# navbar:
-#  type: default
-#  left:
-#  - text: Function reference
-#    href: reference/index.html
+navbar:
+  type: default
+  left:
+  - text: Function reference
+    href: reference/index.html
+  - text: Tutorials
+    menu:
+    - text: "Tutorial 1"
+      href: articles/tutorial_odm_class.html
+    - text: "Tutorial 2"
+      href: articles/tutorial_other_classes.html
 
 reference:
 - title: Initialize
@@ -40,5 +46,5 @@ reference:
   desc: Obtain basic information from an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
   contents:
   - dim
-  - head
+  - head,ondisc_matrix-method
   - get-names

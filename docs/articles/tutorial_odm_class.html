@@ -38,26 +38,20 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../reference/index.html">Function reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1: Using the `ondisc_matrix` class</a>
+      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
     </li>
     <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2: Using `metadata_ondisc_matrix` and `multimodal_ondisc_matrix`</a>
+      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
     </li>
   </ul>
 </li>
@@ -171,7 +165,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="st">"ondisc_matrix_1.h5"</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="va">temp_dir</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
-<p>An important attribute of <code>create_ondisc_matrix_from_mtx</code> is that it does <em>not</em> assume that entire expression matrix fits into memory. The optional argument <code>n_lines_per_chunk</code> can be used to specify the number of lines to read from the .mtx file at a time. Additionally, <code>create_ondisc_matrix_from_mtx</code> is fast: the novel algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, <code>create_ondisc_matrix_from_mtx</code> takes aboout 1-2 minutes/GB to run (when the function hyperparameters are well-chosen; more on this point later). Finally, for a given dataset, <code>create_ondisc_matrix_from_mtx</code> only needs to be run once, even after closing and opening new R sessions.</p>
+<p>An important attribute of <code>create_ondisc_matrix_from_mtx</code> is that it does <em>not</em> assume that entire expression matrix fits into memory. The optional argument <code>n_lines_per_chunk</code> can be used to specify the number of lines to read from the .mtx file at a time. Additionally, <code>create_ondisc_matrix_from_mtx</code> is fast: the novel algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, <code>create_ondisc_matrix_from_mtx</code> takes aboout 5-8 minutes/GB to run. Finally, for a given dataset, <code>create_ondisc_matrix_from_mtx</code> only needs to be run once, even after closing and opening new R sessions.</p>
 </div>
 <div id="querying-basic-information" class="section level1">
 <h1 class="hasAnchor">
@@ -195,9 +189,9 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/dim.html">dim</a></span><span class="op">(</span><span class="va">expression_mat</span><span class="op">)</span>
 <span class="co">#&gt; [1] 300 900</span>
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">expression_mat</span><span class="op">)</span>
+<span class="fu"><a href="../reference/dim.html">nrow</a></span><span class="op">(</span><span class="va">expression_mat</span><span class="op">)</span>
 <span class="co">#&gt; [1] 300</span>
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">expression_mat</span><span class="op">)</span>
+<span class="fu"><a href="../reference/dim.html">ncol</a></span><span class="op">(</span><span class="va">expression_mat</span><span class="op">)</span>
 <span class="co">#&gt; [1] 900</span></code></pre></div>
 </div>
 <div id="subsetting" class="section level1">

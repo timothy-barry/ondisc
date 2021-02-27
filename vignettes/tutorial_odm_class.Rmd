@@ -2,7 +2,7 @@
 title: "Tutorial 1: Using the `ondisc_matrix` class"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Tutorial 1: `Using the ondisc_matrix` class}
+  %\VignetteIndexEntry{Tutorial 1: Using the `ondisc_matrix` class}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
