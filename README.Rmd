@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# `ondisc` <img src="man/figures/hex.png" align="right" alt="" width="180" />
+# `ondisc`: single-cell computing made FUN <img src="man/figures/hex.png" align="right" alt="" width="180" />
 
 <!-- badges: start -->
 [![R build status](https://travis-ci.com/timothy-barry/ondisc.svg?branch=main)](https://travis-ci.com/timothy-barry/ondisc)
@@ -25,9 +25,9 @@ Single-cell datasets are growing in size rapidly, posing a challenge for biology
 
 - **Fast**: `ondisc` is supported by several novel, highly efficient algorithms and data structures. All low-level code is written in C++ or C for maximum performance.
 - **Universal**: `ondisc` runs on all platforms, from laptops to supercomputers. `ondisc` works seamlessly when the size of the data exceeds the amount of available memory. 
-- **Ntuitive**: `ondisc` is easy to use. `ondisc` leverages ideas from functional programming, making it similar to the popular [tidyverse](https://www.tidyverse.org) suite of packages.
+- **Ntuitive**: `ondisc` is easy to use. `ondisc` leverages ideas from functional programming, making it simple and intuitive for R users.
 
-Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html) on the [package website](https://timothy-barry.github.io/ondisc/index.html) to get up-and-running quickly.
+Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html) on the [package website](https://timothy-barry.github.io/ondisc/index.html) to get going.
 
 ## Installation
 

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `ondisc` <img src="man/figures/hex.png" align="right" alt="" width="180" />
+# `ondisc`: single-cell computing made FUN <img src="man/figures/hex.png" align="right" alt="" width="180" />
 
 <!-- badges: start -->
 
@@ -24,14 +24,13 @@ computing on large-scale single-cell data **FUN**:
     supercomputers. `ondisc` works seamlessly when the size of the data
     exceeds the amount of available memory.
   - **Ntuitive**: `ondisc` is easy to use. `ondisc` leverages ideas from
-    functional programming, making it similar to the popular
-    [tidyverse](https://www.tidyverse.org) suite of packages.
+    functional programming, making it simple and intuitive for R users.
 
 Take a look at the
 [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html)
 on the [package
 website](https://timothy-barry.github.io/ondisc/index.html) to get
-up-and-running quickly.
+going.
 
 ## Installation
 
