@@ -14,8 +14,9 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 <!-- badges: end -->
 
 Single-cell datasets are growing in size rapidly, posing a challenge for
-biology researchers. `ondisc` (short for “on-disk single-cell”) makes
-computing on large-scale single-cell data **FUN**:
+biology researchers. `ondisc` (short for “on-disk single cell”) allows
+users to efficiently and easily analyze large-scale single-cell data.
+`ondisc` makes computing on large-scale single-cell data **FUN**:
 
   - **Fast**: `ondisc` is supported by several novel, highly efficient
     algorithms and data structures. All low-level code is written in C++
@@ -23,14 +24,14 @@ computing on large-scale single-cell data **FUN**:
   - **Universal**: `ondisc` runs on all platforms, from laptops to
     supercomputers. `ondisc` works seamlessly when the size of the data
     exceeds the amount of available memory.
-  - **Ntuitive**: `ondisc` is easy to use. `ondisc` leverages ideas from
-    functional programming, making it simple and intuitive for R users.
+  - **Ntuitive**: `ondisc` leverages ideas from functional programming,
+    making it natural for R programmers.
 
 Take a look at the
 [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html)
 on the [package
 website](https://timothy-barry.github.io/ondisc/index.html) to get
-going.
+up-and-running.
 
 ## Installation
 

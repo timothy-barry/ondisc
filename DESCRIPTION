@@ -7,11 +7,9 @@ Authors@R:
            role = c("aut", "cre"),
            email = "tbarry2@andrew.cmu.edu",
            comment = c(ORCID = "0000-0002-4356-627X"))
-Description: Single-cell datasets are large and growing in size as sequencing costs drop. 
-    The ondisc package is designed to facilitate large-scale computing on single-cell expression 
-    data by providing access to expression matrices out-of-memory. ondisc is functional (i.e., 
-    all objects are persistent) and efficient (i.e., algorithms are theoretically optimal 
-    in time).
+Description: Single-cell datasets are large and growing in size. `ondisc` facilitates large-scale 
+    computing on single-cell data by providing access to expression matrices out-of-memory.
+    `ondisc` is FUN: fast, universal, and ntuitive.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
