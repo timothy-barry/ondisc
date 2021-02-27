@@ -27,7 +27,11 @@ computing on large-scale single-cell data **FUN**:
     functional programming, making it similar to the popular
     [tidyverse](https://www.tidyverse.org) suite of packages.
 
-Take a look at the tutorials to quickly get up-and-running.
+Take a look at the
+[tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html)
+on the [package
+website](https://timothy-barry.github.io/ondisc/index.html) to get
+up-and-running quickly.
 
 ## Installation
 

@@ -27,7 +27,7 @@ Single-cell datasets are growing in size rapidly, posing a challenge for biology
 - **Universal**: `ondisc` runs on all platforms, from laptops to supercomputers. `ondisc` works seamlessly when the size of the data exceeds the amount of available memory. 
 - **Ntuitive**: `ondisc` is easy to use. `ondisc` leverages ideas from functional programming, making it similar to the popular [tidyverse](https://www.tidyverse.org) suite of packages.
 
-Take a look at the tutorials to quickly get up-and-running.
+Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html) on the [package website](https://timothy-barry.github.io/ondisc/index.html) to get up-and-running quickly.
 
 ## Installation
 
