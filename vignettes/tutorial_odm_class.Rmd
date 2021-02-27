@@ -64,7 +64,7 @@ The initialized HDF5 file is named `ondisc_matrix_1.h5` and is located in the te
 "ondisc_matrix_1.h5" %in% list.files(temp_dir)
 ```
 
-An important attribute of `create_ondisc_matrix_from_mtx` is that it does *not* assume that entire expression matrix fits into memory. The optional argument `n_lines_per_chunk` can be used to specify the number of lines to read from the .mtx file at a time. Additionally, `create_ondisc_matrix_from_mtx` is fast: the novel algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, `create_ondisc_matrix_from_mtx` takes aboout 1-2 minutes/GB to run (when the function hyperparameters are well-chosen; more on this point later). Finally, for a given dataset, `create_ondisc_matrix_from_mtx` only needs to be run once, even after closing and opening new R sessions.
+An important attribute of `create_ondisc_matrix_from_mtx` is that it does *not* assume that entire expression matrix fits into memory. The optional argument `n_lines_per_chunk` can be used to specify the number of lines to read from the .mtx file at a time. Additionally, `create_ondisc_matrix_from_mtx` is fast: the novel algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, `create_ondisc_matrix_from_mtx` takes aboout 5-8 minutes/GB to run. Finally, for a given dataset, `create_ondisc_matrix_from_mtx` only needs to be run once, even after closing and opening new R sessions.
 
 # Querying basic information
 

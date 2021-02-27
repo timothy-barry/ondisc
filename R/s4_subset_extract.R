@@ -112,7 +112,7 @@ setMethod(f = "[",
           signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[i,]
-            x@cell_covariates <- x@feature_covariates[i,,drop=FALSE]
+            x@feature_covariates <- x@feature_covariates[i,,drop=FALSE]
             return(x)
           })
 
@@ -123,7 +123,7 @@ setMethod(f = "[",
           signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[,j]
-            x@feature_covariates <- x@cell_covariates[j,,drop=FALSE]
+            x@cell_covariates <- x@cell_covariates[j,,drop=FALSE]
             return(x)
           })
 
