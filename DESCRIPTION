@@ -1,22 +1,26 @@
 Package: ondisc
-Title: Efficient and functional out-of-memory computing on single-cell data
-Version: 0.9.0
+Title: A package for fast, universal, and intuitive computing on large-scale single-cell data
+Version: 1.0.0
 Authors@R: 
-    person(given = "Tim",
+    c(person(given = "Timothy",
            family = "Barry",
            role = c("aut", "cre"),
            email = "tbarry2@andrew.cmu.edu",
-           comment = c(ORCID = "0000-0002-4356-627X"))
-Description: Single-cell datasets are large and growing in size. `ondisc` facilitates large-scale 
-    computing on single-cell data by providing access to expression matrices out-of-memory.
-    `ondisc` is FUN: fast, universal, and ntuitive.
+           comment = c(ORCID = "0000-0002-4356-627X")), 
+           person(given = "Eugene",
+           family = "Katsevich",
+           role = "ths",
+           comment = c(ORCID = "0000-0003-0598-2050")),
+           person(given = "Kathryn",
+           family = "Roeder",
+           role = "ths"))
+Description: Single-cell datasets are growing in size rapidly, posing challenges as well as opportunities for biology researchers. ondisc (short for “on-disk single cell”) is a package that empowers users to easily and efficiently analyze large-scale single-cell data. ondisc makes computing on large-scale single-cell data FUN: Fast, Universal, and Ntuitive.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-URL: https://github.com/Timothy-Barry/ondisc
-biocViews: Infrastructure, DataImport, Sequencing, SingleCell
+URL: https://timothy-barry.github.io/ondisc/
 Suggests: 
     testthat,
     knitr,
