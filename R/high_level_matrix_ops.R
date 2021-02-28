@@ -104,36 +104,3 @@ extract_matrix <- function(x) {
   }
   return(out)
 }
-
-
-#' Convert an `ondisc_matrix` to a Seurat object
-#'
-#' Converts an ondisc_matrix to a Suerat object.
-#'
-#' @param x an ondisc_matrix
-#' @param project (default "CreateSeuratObject") project name of the Seurat object
-#' @param assay (default "RNA") name of the initial assay
-#' @param cell_covariate_matrix (default none) cell-level covariate matrix
-#'
-#' @return a Seurat object
-#' @export
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' seurat_object <- convert_to_seurat_object(odm[1:100,1:100])
-#' }
-convert_to_seurat_object <- function(x, project = "CreateSeuratObject", assay = "RNA", cell_covariate_matrix = NULL) {
-  feature_ids <- get_feature_ids(x)
-  cell_barcodes <- get_cell_barcodes(x)
-  m <- extract_matrix(x)
-  row.names(m) <- feature_ids
-  colnames(m) <- cell_barcodes
-  out <- Seurat::CreateSeuratObject(counts = m, project = project,
-                                    assay = assay,
-                                    meta.data = cell_covariate_matrix)
-  return(out)
-}

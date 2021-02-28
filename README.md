@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `ondisc`: big single-cell computing made FUN <img src="man/figures/hex.png" align="right" alt="" width="180" />
+# `ondisc`: large-scale computing on single-cell data <img src="man/figures/hex.png" align="right" alt="" width="180" />
 
 <!-- badges: start -->
 
@@ -13,10 +13,10 @@ coverage](https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-Single-cell datasets are growing in size rapidly, posing challenges as
-well as opportunities to biology researchers. `ondisc` (short for
-“on-disk single cell”) is an R package that empowers users to easily
-and efficiently analyze large-scale single-cell data. `ondisc` makes
+Single-cell datasets are growing in size, posing challenges as well as
+opportunities to biology researchers. `ondisc` (short for “on-disk
+single cell”) is an R package that enables users to easily and
+efficiently analyze large-scale single-cell data. `ondisc` makes
 computing on large-scale single-cell data **FUN**:
 
   - **Fast**: `ondisc` is powered by several novel, highly efficient
@@ -27,7 +27,7 @@ computing on large-scale single-cell data **FUN**:
     exceeds the amount of available memory.
   - **Ntuitive**: `ondisc` leverages ideas from functional programming,
     making it simple for R users users to pick up and incorporate into
-    their code.
+    their programs.
 
 Take a look at the
 [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html)
