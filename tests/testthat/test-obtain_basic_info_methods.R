@@ -8,4 +8,3 @@ test_that("show and head", {
   }
   expect_true(TRUE)
 })
-

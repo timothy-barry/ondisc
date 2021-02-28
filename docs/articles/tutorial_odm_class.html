@@ -86,7 +86,7 @@
 
     
     
-<p>This tutorial demonstrates how to use <code>ondisc_matrix</code>, the core class implemented by <code>ondisc</code>. An <code>ondisc_matrix</code> is an R object that represents an expression matrix stored on-disk rather than in-memory. We cover the topics of initialization, querying basic information, subsetting, and pulling submatrices into memory. We begin by loading the <code>ondisc</code> package.</p>
+<p>This tutorial shows how to use <code>ondisc_matrix</code>, the core class implemented by <code>ondisc</code>. An <code>ondisc_matrix</code> is an R object that represents an expression matrix stored on-disk rather than in-memory. We cover the topics of initialization, querying basic information, subsetting, and pulling submatrices into memory. We begin by loading the <code>ondisc</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Timothy-Barry/ondisc">ondisc</a></span><span class="op">)</span></code></pre></div>
 <div id="initialization" class="section level1">
@@ -131,7 +131,7 @@
 <span id="cb4-25"><a href="#cb4-25"></a><span class="op">|</span><span class="er">=========================================================================|</span><span class="st"> </span><span class="dv">100</span>%</span>
 <span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt; Writing CSC data.</span></span>
 <span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; Writing CSR data.</span></span></code></pre></div>
-<p>By default, <code>create_ondisc_matrix_from_mtx</code> returns a list of three elements: (i) an <code>ondisc_matrix</code> representing the expression data, (ii) a cell-wise covariate matrix, and (iii) a feature-wise covariate matrix. The exact cell-wise and feature-wise covariate matrices that are computed depend on the inputs to <code>create_ondisc_matrix_from_mtx</code> (see documentation for full details). The advantage of computing the cell-wise and feature-wise covariates at initialization is that it obviates the need to load the entire dataset into memory a second time.</p>
+<p>By default, <code>create_ondisc_matrix_from_mtx</code> returns a list of three elements: (i) an <code>ondisc_matrix</code> representing the expression data, (ii) a cell-wise covariate matrix, and (iii) a feature-wise covariate matrix. The exact cell-wise and feature-wise covariate matrices that are computed depend on the inputs to <code>create_ondisc_matrix_from_mtx</code> (see documentation via ?create_ondisc_matrix_from_mtx for full details). The advantage to computing the cell-wise and feature-wise covariates at initialization is that it obviates the need to load the entire dataset into memory a second time.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">expression_mat</span> <span class="op">&lt;-</span> <span class="va">exp_mat_list</span><span class="op">$</span><span class="va">ondisc_matrix</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">expression_mat</span><span class="op">)</span>
@@ -165,7 +165,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="st">"ondisc_matrix_1.h5"</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="va">temp_dir</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
-<p>An important attribute of <code>create_ondisc_matrix_from_mtx</code> is that it does <em>not</em> assume that entire expression matrix fits into memory. The optional argument <code>n_lines_per_chunk</code> can be used to specify the number of lines to read from the .mtx file at a time. Additionally, <code>create_ondisc_matrix_from_mtx</code> is fast: the novel algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, <code>create_ondisc_matrix_from_mtx</code> takes aboout 5-8 minutes/GB to run. Finally, for a given dataset, <code>create_ondisc_matrix_from_mtx</code> only needs to be run once, even after closing and opening new R sessions.</p>
+<p>A strength of <code>create_ondisc_matrix_from_mtx</code> is that it does <em>not</em> assume that entire expression matrix fits into memory. The optional argument <code>n_lines_per_chunk</code> can be used to specify the number of lines to read from the .mtx file at a time. Additionally, <code>create_ondisc_matrix_from_mtx</code> is fast: the novel algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, <code>create_ondisc_matrix_from_mtx</code> takes aboout 4-8 minutes/GB to run. Finally, for a given dataset, <code>create_ondisc_matrix_from_mtx</code> only needs to be run once, even after closing and opening new R sessions.</p>
 </div>
 <div id="querying-basic-information" class="section level1">
 <h1 class="hasAnchor">
@@ -197,7 +197,7 @@
 <div id="subsetting" class="section level1">
 <h1 class="hasAnchor">
 <a href="#subsetting" class="anchor"></a>Subsetting</h1>
-<p>We can subset an <code>ondisc_matrix</code> to obtain a new <code>ondisc_matrix</code> that is a submatrix of the original. To subset an <code>ondisc_matrix</code>, we apply the <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> operator and pass a numeric, logical, or character vector indicating the cells or features to keep. Character vectors are assumed to refer to feature IDs (for rows) and cell barcodes (for columns).</p>
+<p>We can subset an <code>ondisc_matrix</code> to obtain a new <code>ondisc_matrix</code> that is a submatrix of the original. To subset an <code>ondisc_matrix</code>, apply the <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> operator and pass a numeric, logical, or character vector indicating the cells or features to keep. Character vectors are assumed to refer to feature IDs (for rows) and cell barcodes (for columns).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># numeric vector examples</span>
 <span class="co"># keep genes 100-110</span>
@@ -221,12 +221,12 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">expression_mat</span>
 <span class="co">#&gt; An ondisc_matrix with 300 features and 900 cells.</span></code></pre></div>
-<p>This important property, called <em>object persistence</em>, makes programming with <code>ondisc_matrices</code> easy and intuitive. The underlying HDF5 file is not copied upon subset; instead, information is shared across <code>ondisc_matrix</code> objects, making subsets fast.</p>
+<p>This important property, called <em>object persistence</em>, makes programming with <code>ondisc_matrices</code> intuitive. The underlying HDF5 file is not copied upon subset; instead, information is shared across <code>ondisc_matrix</code> objects, making subsets fast.</p>
 </div>
 <div id="pulling-a-submatrix-into-memory" class="section level1">
 <h1 class="hasAnchor">
 <a href="#pulling-a-submatrix-into-memory" class="anchor"></a>Pulling a submatrix into memory</h1>
-<p>We can pull a submatrix of an <code>ondisc_matrix</code> into memory, allowing us to perform computations on a subset of the data. To pull a submatrix into memory, we use the <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> operator, passing a numeric, character, or logical vector indicating the cells or features that we would like to access. The data structure that underlies an <code>ondisc_matrix</code> enables fast access to both rows and columns of the matrix.</p>
+<p>We can pull a submatrix of an <code>ondisc_matrix</code> into memory, allowing us to perform computations on a subset of the data. To pull a submatrix into memory, use the <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> operator, passing a numeric, character, or logical vector indicating the cells or features to access. The data structure that underlies an <code>ondisc_matrix</code> enables fast access to both rows and columns of the matrix.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># numeric vector examples</span>
 <span class="co"># pull gene 6</span>
@@ -248,14 +248,14 @@
 <span class="co"># pull all genes except ENSG00000107581</span>
 <span class="va">m</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[[</span><span class="fu"><a href="../reference/get-names.html">get_feature_ids</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"ENSG00000107581"</span>,<span class="op">]</span><span class="op">]</span></code></pre></div>
 <p>The last example demonstrates that we can pull a submatrix of an <code>ondisc_matrix</code> into memory after having subset the matrix.</p>
-<p>We can remember the difference between <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> by recalling R lists: <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> is used to subset a list, while <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> is used to access elements stored within a list. Similarly, <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> is used to subset an <code>ondisc_matrix</code>, while <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> is used to access a submatrix stored within an <code>ondisc_matrix</code>.</p>
+<p>One can remember the difference between <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> by recalling R lists: <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> is used to subset a list, and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> is used to access elements stored within a list. Similarly, <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> is used to subset an <code>ondisc_matrix</code>, and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> is used to access a submatrix stored within an <code>ondisc_matrix</code>.</p>
 </div>
 <div id="saving-and-loading-an-ondisc_matrix" class="section level1">
 <h1 class="hasAnchor">
 <a href="#saving-and-loading-an-ondisc_matrix" class="anchor"></a>Saving and loading an <code>ondisc_matrix</code>
 </h1>
-<p>As discussed previously, there are two components to an <code>ondisc_matrix</code>: the HDF5 file stored on-disk, and the R object stored in memory. The latter contains a file path to the former, allowing us to interact with large expression data from within R.</p>
-<p>To save an <code>ondisc_matrix</code>, we simply call <code>saveRDS</code> on the <code>ondisc_matrix</code> R object to create an .rds file.</p>
+<p>As discussed previously, there are two components to an <code>ondisc_matrix</code>: the HDF5 file stored on-disk, and the R object stored in memory. The latter contains a file path to the former, allowing us to interact with the expression data from within R.</p>
+<p>To save an <code>ondisc_matrix</code>, simply call <code>saveRDS</code> on the <code>ondisc_matrix</code> R object to create an .rds file.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">expression_mat</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">temp_dir</span>, <span class="st">"/expression_matrix.rds"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">expression_mat</span><span class="op">)</span></code></pre></div>

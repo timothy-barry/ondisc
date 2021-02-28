@@ -58,6 +58,9 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/get_features_metadata.html</loc>
   </url>
   <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_metadata_odm_list.html</loc>
+  </url>
+  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get_mtx_metadata.html</loc>
   </url>
   <url>
@@ -65,6 +68,9 @@
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get_names.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_random_subset.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get_simulation_data_fps.html</loc>

@@ -123,7 +123,7 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #'
 #' Construct a `multimodal_ondisc_matrix` from a list of `metadata_ondisc_matrix` objects.
 #'
-#' @param covariate_ondisc_matrix_list a named list containing `metadata_ondisc_matrices`; the names are taken to be the names of the modalities.
+#' @param metadata_ondisc_matrix_list a named list containing `metadata_ondisc_matrices`; the names are taken to be the names of the modalities.
 #'
 #' @return a multimodal_ondisc_matrix
 #' @export
@@ -140,12 +140,12 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
 #'     perturbations = perturbations))
 #' }
-multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
+multimodal_ondisc_matrix <- function(metadata_ondisc_matrix_list) {
   out <- new(Class = "multimodal_ondisc_matrix")
-  out@modalities <- covariate_ondisc_matrix_list
-  df_list <- lapply(X = covariate_ondisc_matrix_list,
+  out@modalities <- metadata_ondisc_matrix_list
+  df_list <- lapply(X = metadata_ondisc_matrix_list,
                     FUN = function(cov_odm) cov_odm@cell_covariates)
-  modality_names <- names(covariate_ondisc_matrix_list)
+  modality_names <- names(metadata_ondisc_matrix_list)
   global_df <- combine_multimodal_dataframes(df_list, modality_names)
   out@global_cell_covariates <- global_df
   return(out)

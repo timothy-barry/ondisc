@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Tutorial 1 covered `ondisc_matrix`, the core class implemented by `ondisc`. Thus tutorial covers `metadata_ondisc_matrix` and `multimodal_ondisc_matrix`, two additional classes provided by the package. `metadata_ondisc_matrices` store cell-specific and feature-specific covariate matrices alongside the expression matrix, and `multimodal_ondisc_matrices` store multiple `metadata_ondisc_matrices` representing different cellular modalities. Together, `metadata_ondisc_matrix` and `multimodal_ondisc_matrix` facilitate feature selection, quality control, and other common single-cell data preprocessing tasks. 
+Tutorial 1 covered `ondisc_matrix`, the core class implemented by `ondisc`. Thus tutorial covers `metadata_ondisc_matrix` and `multimodal_ondisc_matrix`, two additional classes provided by the package. `metadata_ondisc_matrix` stores cell-specific and feature-specific covariate matrices alongside the expression matrix, and `multimodal_ondisc_matrix` stores multiple `metadata_ondisc_matrices` representing different cellular modalities. Together, `metadata_ondisc_matrix` and `multimodal_ondisc_matrix` facilitate feature selection, quality control, and other common single-cell data preprocessing tasks. 
 
 We begin by loading the package.
 
@@ -50,7 +50,7 @@ The variable `expressions` is an object of class `metadata_ondisc_matrix`; `expr
 expressions
 ```
 
-We alternately can initialize a `metadata_ondisc_matrix` by calling the constructor function of the `metadata_ondisc_matrix` class; see ?metadata_ondisc_matrix for details.
+We alternately can initialize a `metadata_ondisc_matrix` by calling the constructor function of the `metadata_ondisc_matrix` class; see documentation (via ?metadata_ondisc_matrix) for details.
 
 # The `multimodal_ondisc_matrix` class
 
@@ -117,7 +117,7 @@ feature_ids <- get_feature_ids(crispr_experiment)
 ```
 
 We likewise can use `dim`, `nrow`, and `ncol` to query the dimension, number of rows, and number of
-columns of a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`. `dim` and `nrow` return lists when called on a `multimodal_ondisc_matrix`.
+columns of a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`. `dim` and `nrow` again return lists when called on a `multimodal_ondisc_matrix`.
 
 ```{r}
 # metadata_ondisc_matrix
@@ -158,6 +158,6 @@ crispr_experiment
 
 - To save and load a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`, simply use the functions `saveRDS` and `readRDS`, respectively.
 
-- It is not possible to apply the double-bracket "pull submatrix into memory" operator to a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`. To apply the double-bracket operator to an `ondisc_matrix` stored *inside* a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`, simply access the `ondisc_matrix` first.
+- It is not possible to apply the double-bracket "pull submatrix into memory" operator to a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`. To apply the double-bracket operator to an `ondisc_matrix` stored *inside* a `metadata_ondisc_matrix` or `multimodal_ondisc_matrix`, simply access the desired `ondisc_matrix` first.
 
-- The `metadata_ondisc_matrix` and `multimodal_ondisc_matrix` classes are inspired by analogous classes in the `SingleCellExperiment` and `Seurat` packages. However, unlike `SingleCellExperiment` and `Seurat`, `ondisc` does not (currently) support storing the dense matrix of normalized UMI counts. We view this as a feature, not a bug. Storing the normalized expression matrix is almost never necessary and is hugely expensive (in space and time) for large-scale data.
+- The `metadata_ondisc_matrix` and `multimodal_ondisc_matrix` classes are inspired by analogous classes in the `SingleCellExperiment` and `Seurat` packages. However, unlike `SingleCellExperiment` and `Seurat`, `ondisc` does not (currently) support storing the dense matrix of normalized UMI counts. We view this as a feature: storing the normalized expression matrix is almost never necessary and is hugely expensive (in space and time) for large-scale data.

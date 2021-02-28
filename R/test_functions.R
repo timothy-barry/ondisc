@@ -126,13 +126,18 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' @param n_row number of rows in datasets (by default random)
 #' @param n_col number of columns in datasets (by default random)
 #' @param seed (optional) seed to set
+#' @param idx_start index at which to start (default 1)
 #' @return NULL
-create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, n_col = NULL, seed = NULL) {
+create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, n_col = NULL, seed = NULL, idx_start = 1L) {
   if (!is.null(seed)) set.seed(seed)
   out <- vector(mode = "list", length = n_datasets)
-  for (i in seq(1, n_datasets)) {
+  for (i in seq(idx_start, idx_start + n_datasets - 1L)) {
     if (n_datasets > 1) cat(paste0("Generating dataset ", i, ".\n"))
-    if (stats::rbinom(1, 1, 0.5)) {
+    if (i == 1) {
+      m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
+    } else if (i == 2) {
+      m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
+    } else if (stats::rbinom(1, 1, 0.5)) {
       m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
     } else {
       m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
@@ -148,8 +153,50 @@ create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, 
       m[,zero_col_idxs] <- if (is.logical(m@x[1])) FALSE else 0
     }
     save_random_matrix_as_10x(m = m, data_dir = simulated_data_dir, idx = i, save_r_matrix = FALSE)
-    out[[i]] <- m
+    out[[i - idx_start + 1L]] <- m
   }
   return(out)
+}
+
+
+#' Get metadata odm list
+#'
+#' @param mat_list a list of matrices
+#' @param idx_start the starting index
+#' @param temp_test_dir directory used by the tests
+#'
+#' @return a list of initialized metadata_odms
+get_metadata_odm_list <- function(mat_list, idx_start, temp_test_dir) {
+  cov_odms <- vector(mode = "list", length = length(mat_list))
+  for (i in seq(1, length(mat_list))) {
+    fps <- get_simulation_data_fps(data_dir = temp_test_dir, idx = i + idx_start - 1L)
+    # check if on_disc_matrix already has been created; if so, delete that as well as the .h5 file
+    if (file.exists(fps[["on_disc_matrix_h5"]])) file.remove(fps[["on_disc_matrix_h5"]]) %>% invisible() # h5 file
+    m <- mat_list[[i]]
+    n_data_points <- length(m@x)
+    if (stats::rbinom(1, 1, 0.5)) {
+      chunk_size <- sample(x = seq(2, n_data_points - 1), size = 1) # choose chunk size less than n_data_points
+    } else {
+      chunk_size <- sample(x = seq(n_data_points + 1, 2 * n_data_points), size = 1)
+    }
+    cov_odm_obj <- create_ondisc_matrix_from_mtx(mtx_fp = fps[["mtx"]],
+                                                 barcodes_fp = fps[["barcodes"]],
+                                                 features_fp = fps[["features"]],
+                                                 n_lines_per_chunk = chunk_size,
+                                                 on_disk_dir = temp_test_dir,
+                                                 return_metadata_ondisc_matrix = TRUE)
+    cov_odms[[i]] <- cov_odm_obj
+  }
+  return(cov_odms)
+}
+
+
+#' get_random_subset
+#'
+#' @param n an integer
+#'
+#' @return a random subset of 1, 2, ..., n.
+get_random_subset <- function(n) {
+  sample(x = seq(1, n), size = sample(x = seq(1, n), size = 1L), replace = FALSE)
 }
 # nocov end

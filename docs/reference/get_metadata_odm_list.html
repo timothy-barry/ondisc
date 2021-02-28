@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create synthetic data — create_synthetic_data • ondisc</title>
+<title>Get metadata odm list — get_metadata_odm_list • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Create synthetic data — create_synthetic_data" />
-<meta property="og:description" content="Generate synthetic datasets (consisting of a matrix.mtx file, a barcodes.tsv file, and a features.tsv file) and store these datasets in simulated_data_dir, with indices appended to the file names." />
+<meta property="og:title" content="Get metadata odm list — get_metadata_odm_list" />
+<meta property="og:description" content="Get metadata odm list" />
 
 
 
@@ -117,53 +117,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create synthetic data</h1>
+    <h1>Get metadata odm list</h1>
     <small class="dont-index">Source: <a href='https://github.com/Timothy-Barry/ondisc/blob/master/R/test_functions.R'><code>R/test_functions.R</code></a></small>
-    <div class="hidden name"><code>create_synthetic_data.Rd</code></div>
+    <div class="hidden name"><code>get_metadata_odm_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generate synthetic datasets (consisting of a matrix.mtx file, a barcodes.tsv file, and a features.tsv file) and store these datasets in simulated_data_dir, with indices appended to the file names.</p>
+    <p>Get metadata odm list</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_synthetic_data</span><span class='op'>(</span>
-  <span class='va'>n_datasets</span>,
-  <span class='va'>simulated_data_dir</span>,
-  n_row <span class='op'>=</span> <span class='cn'>NULL</span>,
-  n_col <span class='op'>=</span> <span class='cn'>NULL</span>,
-  seed <span class='op'>=</span> <span class='cn'>NULL</span>,
-  idx_start <span class='op'>=</span> <span class='fl'>1L</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_metadata_odm_list</span><span class='op'>(</span><span class='va'>mat_list</span>, <span class='va'>idx_start</span>, <span class='va'>temp_test_dir</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n_datasets</th>
-      <td><p>number of datasets to generate</p></td>
-    </tr>
-    <tr>
-      <th>simulated_data_dir</th>
-      <td><p>directory in which to store the generated datasets</p></td>
-    </tr>
-    <tr>
-      <th>n_row</th>
-      <td><p>number of rows in datasets (by default random)</p></td>
-    </tr>
-    <tr>
-      <th>n_col</th>
-      <td><p>number of columns in datasets (by default random)</p></td>
-    </tr>
-    <tr>
-      <th>seed</th>
-      <td><p>(optional) seed to set</p></td>
+      <th>mat_list</th>
+      <td><p>a list of matrices</p></td>
     </tr>
     <tr>
       <th>idx_start</th>
-      <td><p>index at which to start (default 1)</p></td>
+      <td><p>the starting index</p></td>
+    </tr>
+    <tr>
+      <th>temp_test_dir</th>
+      <td><p>directory used by the tests</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a list of initialized metadata_odms</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

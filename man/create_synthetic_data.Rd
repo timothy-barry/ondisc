@@ -9,7 +9,8 @@ create_synthetic_data(
   simulated_data_dir,
   n_row = NULL,
   n_col = NULL,
-  seed = NULL
+  seed = NULL,
+  idx_start = 1L
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ create_synthetic_data(
 \item{n_col}{number of columns in datasets (by default random)}
 
 \item{seed}{(optional) seed to set}
+
+\item{idx_start}{index at which to start (default 1)}
 }
 \description{
 Generate synthetic datasets (consisting of a matrix.mtx file, a barcodes.tsv file, and a features.tsv file) and store these datasets in simulated_data_dir, with indices appended to the file names.

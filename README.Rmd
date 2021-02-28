@@ -21,13 +21,13 @@ knitr::opts_chunk$set(
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-Single-cell datasets are growing in size rapidly, posing challenges for biology researchers. `ondisc` (short for "on-disk single cell") allows users to easily and efficiently analyze large-scale single-cell datasets. `ondisc` makes computing on large-scale single-cell data **FUN**:
+Single-cell datasets are growing in size rapidly, posing challenges as well as opportunities to biology researchers. `ondisc` (short for "on-disk single cell") is an R package that empowers users to easily and efficiently analyze large-scale single-cell data. `ondisc` makes computing on large-scale single-cell data **FUN**:
 
-- **Fast**: `ondisc` is supported by several novel, highly efficient algorithms and data structures. All low-level code is written in C++ or C for maximum performance.
+- **Fast**: `ondisc` is powered by several novel, highly efficient algorithms and data structures. All low-level code is written in C++ or C for maximum performance.
 - **Universal**: `ondisc` runs on all platforms, from laptops to supercomputers. `ondisc` works seamlessly when the size of the data exceeds the amount of available memory. 
-- **Ntuitive**: `ondisc` leverages ideas from functional programming, making it easy for R programmers to use.
+- **Ntuitive**: `ondisc` leverages ideas from functional programming, making it simple for R users users to pick up and incorporate into their code.
 
-Have a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html) on the [package website](https://timothy-barry.github.io/ondisc/index.html) to get up-and-running.
+Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html) on the [package website](https://timothy-barry.github.io/ondisc/index.html).
 
 ## Installation
 

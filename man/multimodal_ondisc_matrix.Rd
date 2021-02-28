@@ -4,12 +4,12 @@
 \alias{multimodal_ondisc_matrix}
 \title{\code{multimodal_ondisc_matrix} class}
 \usage{
-multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
+multimodal_ondisc_matrix(metadata_ondisc_matrix_list)
 
-multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
+multimodal_ondisc_matrix(metadata_ondisc_matrix_list)
 }
 \arguments{
-\item{covariate_ondisc_matrix_list}{a named list containing \code{metadata_ondisc_matrices}; the names are taken to be the names of the modalities.}
+\item{metadata_ondisc_matrix_list}{a named list containing \code{metadata_ondisc_matrices}; the names are taken to be the names of the modalities.}
 }
 \value{
 a multimodal_ondisc_matrix
