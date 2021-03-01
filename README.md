@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `ondisc`: large-scale computing on single-cell data <img src="man/figures/hex.png" align="right" alt="" width="180" />
+# `ondisc`: large-scale computing on single-cell data <img src="man/figures/hex.jpg" align="right" alt="" width="180" />
 
 <!-- badges: start -->
 
