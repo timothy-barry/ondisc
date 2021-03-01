@@ -14,7 +14,7 @@ Authors@R:
            person(given = "Kathryn",
            family = "Roeder",
            role = "ths"))
-Description: Single-cell datasets are growing in size, posing challenges as well as opportunities for biology researchers. ondisc (short for “on-disk single cell”) enables users to easily and efficiently analyze large-scale single-cell data. ondisc makes computing on large-scale single-cell data FUN: Fast, Universal, and Ntuitive.
+Description: Single-cell datasets are growing in size, posing challenges as well as opportunities for biology researchers. ondisc (short for "on-disk single cell") enables users to easily and efficiently analyze large-scale single-cell data. ondisc makes computing on large-scale single-cell data FUN: Fast, Universal, and iNtuitive.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -26,7 +26,7 @@ Suggests:
     knitr,
     rmarkdown,
     covr
-Imports: 
+Imports:
     readr,
     methods,
     magrittr,
