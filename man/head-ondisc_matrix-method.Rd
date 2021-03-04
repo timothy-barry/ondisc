@@ -9,6 +9,9 @@
 \arguments{
 \item{x}{an \code{ondisc_matrix}.}
 }
+\value{
+NULL; called for printing
+}
 \description{
 Print the first few rows and columns of an \code{ondisc_matrix}.
 }

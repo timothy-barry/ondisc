@@ -12,6 +12,7 @@ using namespace Rcpp;
 //' @param dataset_name_in name of the dataset within the h5 file
 //' @param buffer the vector of integers
 //' @param start_pos the position in the dataset in which to place the buffer
+//' @noRd
 // [[Rcpp::export]]
 void write_data_h5(const std::string& file_name_in, const std::string& dataset_name_in, IntegerVector buffer, int start_pos) {
   // set the file name
@@ -57,6 +58,7 @@ void write_data_h5(const std::string& file_name_in, const std::string& dataset_n
 //' @param n_features number of features
 //' @param m_row_ptr the memory row pointer
 //' @param f_row_ptr the disk row pointer
+//' @noRd
 // [[Rcpp::export]]
 void map_memory_to_disk(const std::string& file_name_in, IntegerVector m_cell_idxs, const std::string& cell_idxs_name, IntegerVector m_umi_counts, const std::string& umi_counts_name, int n_features, IntegerVector m_row_ptr, IntegerVector f_row_ptr) {
   // set the file name
@@ -122,6 +124,7 @@ void map_memory_to_disk(const std::string& file_name_in, IntegerVector m_cell_id
 //' @param n_features number of features
 //' @param m_row_ptr the memory row pointer
 //' @param f_row_ptr the disk row pointer
+//' @noRd
 // [[Rcpp::export]]
 void map_memory_to_disk_logical_matrix(const std::string& file_name_in, IntegerVector m_cell_idxs, const std::string& cell_idxs_name, int n_features, IntegerVector m_row_ptr, IntegerVector f_row_ptr) {
   // set the file name

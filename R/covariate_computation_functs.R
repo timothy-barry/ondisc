@@ -1,6 +1,7 @@
 #' Covariate Enum
 #' Function to return a simple "enum" of all symbols (terminal and nonterminal) used in the grammar; helps to reduce number of string literals in the code.
 #' @return an environment
+#' @noRd
 symbols_enum <- function() {
   symbols <- c("n_nonzero_feature",
                "mean_expression_feature",
@@ -18,6 +19,7 @@ symbols_enum <- function() {
 #' Accumulator function Enum
 #' Function to return a simple enum of the accumulator functions
 #' @return an environment
+#' @noRd
 accumulator_functs_enum <- function() {
   accumulator_functs <- c("inc_mean_count",
                           "inc_n_entries",
@@ -31,6 +33,7 @@ accumulator_functs_enum <- function() {
 #' Arguments Enum
 #' Function to return a simple enum of the possible arguments to the accumulator functions
 #' @return an environment
+#' @noRd
 arguments_enum <- function() {
   arguments <- c("feature_idxs",
                  "cell_idxs",
@@ -48,6 +51,7 @@ arguments_enum <- function() {
 #' Initializes the context-free grammar used to compute the covariate matrices.
 #'
 #' @return an environment representing the context-free grammar.
+#' @noRd
 initialize_grammar <- function() {
   sym_enum <- symbols_enum()
   e <- new.env()
@@ -86,6 +90,7 @@ initialize_grammar <- function() {
 #' @param features_metadata the features.tsv metadata
 #'
 #' @return a list of two entries: feature_covariates and cell_covariates; each entry lists the covariates to compute
+#' @noRd
 map_inputs_to_covariates <- function(mtx_metadata, features_metadata) {
   # Obtain enum
   sym_enum <- symbols_enum()
@@ -127,6 +132,7 @@ map_inputs_to_covariates <- function(mtx_metadata, features_metadata) {
 #' @param grammar a grammar, as initialized by initialize_grammar.
 #'
 #' @return character vector of nonterminals
+#' @noRd
 get_terminals_for_covariate <- function(covariate, grammar) {
   if (grammar[[covariate]]$terminal) {
     ret <- covariate
@@ -146,6 +152,7 @@ get_terminals_for_covariate <- function(covariate, grammar) {
 #' @param terminal_symbol a terminal symbol
 #'
 #' @return a list containing (i) the name of the function, and (ii) the ordered argument names.
+#' @noRd
 get_terminal_acc_and_args <- function(terminal_symbol) {
   sym_enum <- symbols_enum()
   acc_enum <- accumulator_functs_enum()
@@ -204,6 +211,7 @@ get_terminal_acc_and_args <- function(terminal_symbol) {
 #' @param grammar an environment representing a grammar
 #'
 #' @return the value of the symbol
+#' @noRd
 evaluate_grammar <- function(symbol_name, grammar) {
   if (grammar[[symbol_name]]$terminal) {
     ret <- grammar[[symbol_name]]$value

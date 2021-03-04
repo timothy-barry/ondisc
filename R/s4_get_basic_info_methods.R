@@ -76,7 +76,7 @@ setMethod("nrow", signature("multimodal_ondisc_matrix"), function(x) lapply(x@mo
 #'
 #' @param object an object of class ondisc_matrix, covaraite_ondisc_matrix, or multimodal_ondisc_matrix
 #' @name show
-#' @return NULL
+#' @return NULL; called for printing
 #' @examples
 #' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
 #' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
@@ -131,7 +131,7 @@ setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(ob
 #'
 #' @export
 #' @param x an `ondisc_matrix`.
-#' @return NULL
+#' @return NULL; called for printing
 #' @examples
 #' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
 #' # Navigate to the help file of "create_ondisc_matrix_from_mtx"

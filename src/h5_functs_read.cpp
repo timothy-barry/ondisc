@@ -14,6 +14,7 @@ using namespace Rcpp;
 //' @param umi_counts_name_in name of umi counts
 //' @param subset_vector the integer vector of indexes to extract
 //' @param logical_mat boolean indicating whether the matrix is logical
+//' @noRd
 // [[Rcpp::export]]
 List index_h5_file(const std::string& file_name_in, const std::string& p_name_in, const std::string& idx_name_in, const std::string& umi_counts_name_in, IntegerVector subset_vector, bool logical_mat) {
   // open file

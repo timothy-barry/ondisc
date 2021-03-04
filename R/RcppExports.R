@@ -6,6 +6,7 @@
 #' @param idxs 0-based integer vector of indexes (e.g., feature indexes)
 #' @param umi_counts integer vector of UMI counts
 #' @param n a double indicating the total number of elements to divide by (e.g., number of cells)
+#' @noRd
 inc_mean_count <- function(acc_vect, idxs, umi_counts, n) {
     invisible(.Call(`_ondisc_inc_mean_count`, acc_vect, idxs, umi_counts, n))
 }
@@ -13,6 +14,7 @@ inc_mean_count <- function(acc_vect, idxs, umi_counts, n) {
 #' @title increment n entries
 #' @param acc_vect an integer accumulator vector
 #' @param idxs 0-based integer vector of indexes
+#' @noRd
 inc_n_entries <- function(acc_vect, idxs) {
     invisible(.Call(`_ondisc_inc_n_entries`, acc_vect, idxs))
 }
@@ -22,6 +24,7 @@ inc_n_entries <- function(acc_vect, idxs) {
 #' @param idxs 0-based integer vector of indexes (e.g., feature indexes)
 #' @param umi_counts integer vector of UMI counts
 #' @param n a double indicating the total number of elements to divide by (e.g., number of cells)
+#' @noRd
 inc_mean_sq_count <- function(acc_vect, idxs, umi_counts, n) {
     invisible(.Call(`_ondisc_inc_mean_sq_count`, acc_vect, idxs, umi_counts, n))
 }
@@ -30,6 +33,7 @@ inc_mean_sq_count <- function(acc_vect, idxs, umi_counts, n) {
 #' @param acc_vect an integer accumulator vector
 #' @param idxs 0-based integer vector of indexes
 #' @param umi_counts integer vector of UMI counts
+#' @noRd
 inc_count <- function(acc_vect, idxs, umi_counts) {
     invisible(.Call(`_ondisc_inc_count`, acc_vect, idxs, umi_counts))
 }
@@ -40,6 +44,7 @@ inc_count <- function(acc_vect, idxs, umi_counts) {
 #' @param cell_idxs 0-based integer vector of cell_idxs
 #' @param umi_counts integer vector of UMI counts
 #' @param bool_vect a logical vector indicating whether to increment acc_vect; should be same length as n_features
+#' @noRd
 inc_cell_count_if_feature_condition <- function(acc_vect, feature_idxs, cell_idxs, umi_counts, bool_vect) {
     invisible(.Call(`_ondisc_inc_cell_count_if_feature_condition`, acc_vect, feature_idxs, cell_idxs, umi_counts, bool_vect))
 }
@@ -51,6 +56,7 @@ inc_cell_count_if_feature_condition <- function(acc_vect, feature_idxs, cell_idx
 #' @param umi_counts_name_in name of umi counts
 #' @param subset_vector the integer vector of indexes to extract
 #' @param logical_mat boolean indicating whether the matrix is logical
+#' @noRd
 index_h5_file <- function(file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat) {
     .Call(`_ondisc_index_h5_file`, file_name_in, p_name_in, idx_name_in, umi_counts_name_in, subset_vector, logical_mat)
 }
@@ -60,6 +66,7 @@ index_h5_file <- function(file_name_in, p_name_in, idx_name_in, umi_counts_name_
 #' @param dataset_name_in name of the dataset within the h5 file
 #' @param buffer the vector of integers
 #' @param start_pos the position in the dataset in which to place the buffer
+#' @noRd
 write_data_h5 <- function(file_name_in, dataset_name_in, buffer, start_pos) {
     invisible(.Call(`_ondisc_write_data_h5`, file_name_in, dataset_name_in, buffer, start_pos))
 }
@@ -73,6 +80,7 @@ write_data_h5 <- function(file_name_in, dataset_name_in, buffer, start_pos) {
 #' @param n_features number of features
 #' @param m_row_ptr the memory row pointer
 #' @param f_row_ptr the disk row pointer
+#' @noRd
 map_memory_to_disk <- function(file_name_in, m_cell_idxs, cell_idxs_name, m_umi_counts, umi_counts_name, n_features, m_row_ptr, f_row_ptr) {
     invisible(.Call(`_ondisc_map_memory_to_disk`, file_name_in, m_cell_idxs, cell_idxs_name, m_umi_counts, umi_counts_name, n_features, m_row_ptr, f_row_ptr))
 }
@@ -84,12 +92,14 @@ map_memory_to_disk <- function(file_name_in, m_cell_idxs, cell_idxs_name, m_umi_
 #' @param n_features number of features
 #' @param m_row_ptr the memory row pointer
 #' @param f_row_ptr the disk row pointer
+#' @noRd
 map_memory_to_disk_logical_matrix <- function(file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr) {
     invisible(.Call(`_ondisc_map_memory_to_disk_logical_matrix`, file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr))
 }
 
 #' @title decrement a vector of indexes
 #' @param idxs an integer vector of indexes
+#' @noRd
 decrement_idxs <- function(idxs) {
     invisible(.Call(`_ondisc_decrement_idxs`, idxs))
 }
@@ -97,6 +107,7 @@ decrement_idxs <- function(idxs) {
 #' @title add vectors in-place
 #' @param v1 the vector to be modified in-place
 #' @param v2 the vector to add element-wise to vector v1; note: v1 may be longer than v2
+#' @noRd
 sum_in_place <- function(v1, v2) {
     invisible(.Call(`_ondisc_sum_in_place`, v1, v2))
 }

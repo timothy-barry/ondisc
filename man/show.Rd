@@ -16,6 +16,9 @@
 \arguments{
 \item{object}{an object of class ondisc_matrix, covaraite_ondisc_matrix, or multimodal_ondisc_matrix}
 }
+\value{
+NULL; called for printing
+}
 \description{
 Print basic information to the console
 }

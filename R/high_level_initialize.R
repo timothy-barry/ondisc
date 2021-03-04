@@ -15,7 +15,7 @@
 #' @param on_disk_dir (optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.
 #' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
 #' @param return_metadata_ondisc_matrix (optional) return the output as a metadata_ondisc_matrix (instead of a list)? Defaults to FALSE.
-#'
+#' @param progress (optional; default FALSE) print progress messages?
 #' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
 #' @export
 #' @examples
@@ -46,7 +46,7 @@
 #' return_metadata_ondisc_matrix = TRUE)
 #' saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds"))
 #' }
-create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE) {
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()
 
@@ -70,7 +70,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   h5_fp <- paste0(on_disk_dir, "/", file_name)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp)
+  initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp, progress)
 
   # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(mtx_metadata, features_metadata)
@@ -80,7 +80,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   n_rows_to_skip <- n_rows_with_comments + 1
 
   # Run core algorithm
-  out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip)
+  out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, progress)
   odm <- internal_initialize_ondisc_matrix(h5_file = h5_fp, logical_mat = is_logical, underlying_dimension = c(mtx_metadata$n_features, mtx_metadata$n_cells))
   out$ondisc_matrix <- odm
   if (return_metadata_ondisc_matrix) {
@@ -101,6 +101,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
 #' @param underlying_dimension length-two integer vector giving the dimension of the underlying matrix
 #'
 #' @return a correctly-initialized ondisc_matrix
+#' @noRd
 internal_initialize_ondisc_matrix <- function(h5_file, logical_mat, underlying_dimension) {
   out <- new(Class = "ondisc_matrix")
   out@h5_file <- h5_file

@@ -6,6 +6,7 @@
 #' @param cell_idx (boolean) TRUE = cell, FALSE = feature.
 #'
 #' @return the requested subset indexes
+#' @noRd
 get_subset_vector <- function(x, cell_idx) {
   idx_slot <- paste0(if (cell_idx) "cell" else "feature", "_subset")
   return(slot(x, idx_slot))
@@ -19,6 +20,7 @@ get_subset_vector <- function(x, cell_idx) {
 #' @param x an ondisc_matrix object
 #'
 #' @return the dimension
+#' @noRd
 get_dim <- function(x) {
   cell_unsubset <- identical(x@cell_subset, NA_integer_)
   feature_unsubset <- identical(x@feature_subset, NA_integer_)
@@ -36,6 +38,7 @@ get_dim <- function(x) {
 #' @param name_to_get the names to extract from x (one of cell_barcodes, feature_ids, feature_names)
 #'
 #' @return a character vector containing the requested names
+#' @noRd
 get_names <- function(x, name_to_get) {
   names_out <- rhdf5::h5read(file = x@h5_file, name = name_to_get) %>% as.character()
   idx <- get_subset_vector(x, name_to_get == "cell_barcodes")
@@ -52,6 +55,7 @@ get_names <- function(x, name_to_get) {
 #' @param subset_on_cell (boolean) subset on cell (TRUE) or feature (FALSE)
 #'
 #' @return a subset ondisc_matrix
+#' @noRd
 subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
   subset_slot <- paste0(if (subset_on_cell) "cell" else "feature", "_subset")
   if (identical(slot(x, subset_slot), NA_integer_)) {
@@ -83,6 +87,7 @@ subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
 #' @param x an ondisc_matrix.
 #'
 #' @return an in-memory version of x in the form of a Matrix object.
+#' @noRd
 extract_matrix <- function(x) {
   # First, determine which axis to index on; always index on the shorter axis.
   x_dim <- dim(x)

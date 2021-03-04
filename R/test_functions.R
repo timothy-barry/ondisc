@@ -12,6 +12,7 @@
 #' @param logical_mat should the matrix be logical (as opposed to numeric)?
 #'
 #' @return a randomly-generated matrix of class TsparseMatrix
+#' @noRd
 create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matrix_values = 1:10, logical_mat = FALSE) {
   if (is.null(n_row)) n_row <- sample(x = 200:1000, size = 1)
   if (is.null(n_col)) n_col <- sample(x = 200:1000, size = 1)
@@ -39,6 +40,7 @@ create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matr
 #' @param save_r_matrix (optional) save the corresponding R matrix?
 #'
 #' @return the file paths to the matrix.mtx, barcodes.tsv, and features.tsv files.
+#' @noRd
 save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = NULL, gene_names = NULL, gene_ids = NULL, save_r_matrix = TRUE) {
   if (!dir.exists(data_dir)) dir.create(path = data_dir, recursive = TRUE)
   to_save_locs <- get_simulation_data_fps(data_dir, idx)
@@ -70,6 +72,7 @@ save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = N
 #' @param idx an index
 #'
 #' @return a character vector containing file paths to the simulation data
+#' @noRd
 get_simulation_data_fps <- function(data_dir, idx) {
   f_names <- paste0(paste0(c("matrix", "barcodes", "features", "r_matrix", "on_disc_matrix", "on_disc_matrix")), if (is.null(idx)) "" else paste0("_", idx), c(".mtx", ".tsv", ".tsv", ".rds", ".rds", ".h5"))
   to_save_locs <- setNames(paste0(data_dir, "/", f_names),  c("mtx", "barcodes", "features", "r_matrix", "on_disc_matrix",  "on_disc_matrix_h5"))
@@ -83,6 +86,7 @@ get_simulation_data_fps <- function(data_dir, idx) {
 #' @param idx index
 #'
 #' @return a list containing the on_disc_matrix and the original sparse R matrix.
+#' @noRd
 load_on_disc_and_mat <- function(data_dir, idx) {
   fps <- get_simulation_data_fps(data_dir, idx)
   on_disc_matrix <- fps[["on_disc_matrix"]] %>% readRDS
@@ -101,6 +105,7 @@ load_on_disc_and_mat <- function(data_dir, idx) {
 #' @param row_idxs row indices
 #'
 #' @return NULL
+#' @noRd
 compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
   # extract sub-matrix by column
   t1 <- Mat[,col_idxs,drop=FALSE]
@@ -128,6 +133,7 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' @param seed (optional) seed to set
 #' @param idx_start index at which to start (default 1)
 #' @return NULL
+#' @noRd
 create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, n_col = NULL, seed = NULL, idx_start = 1L) {
   if (!is.null(seed)) set.seed(seed)
   out <- vector(mode = "list", length = n_datasets)
@@ -166,6 +172,7 @@ create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, 
 #' @param temp_test_dir directory used by the tests
 #'
 #' @return a list of initialized metadata_odms
+#' @noRd
 get_metadata_odm_list <- function(mat_list, idx_start, temp_test_dir) {
   cov_odms <- vector(mode = "list", length = length(mat_list))
   for (i in seq(1, length(mat_list))) {
@@ -196,6 +203,7 @@ get_metadata_odm_list <- function(mat_list, idx_start, temp_test_dir) {
 #' @param n an integer
 #'
 #' @return a random subset of 1, 2, ..., n.
+#' @noRd
 get_random_subset <- function(n) {
   sample(x = seq(1, n), size = sample(x = seq(1, n), size = 1L), replace = FALSE)
 }

@@ -7,6 +7,7 @@
 #' @param underlying_dimension a length 2 integer vector giving the underlying dimension of the expression matrix.
 #'
 #' @return a Matrix object.
+#' @noRd
 return_spMatrix_from_index <- function(h5_file, subset_vector, index_on_cell, logical_mat, underlying_dimension) {
   # define variables specific to index_on_cell and logical_mat
   p_name <- paste0(if (index_on_cell) "cell" else "feature" , "_ptr")

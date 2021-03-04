@@ -4,6 +4,7 @@
 #' @param n_rows_with_comments number of rows with comments (at top of file)
 #'
 #' @return a list containing (i) n_genes, (ii) n_cells, (iii) the numer of data points (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical
+#' @noRd
 get_mtx_metadata <- function(mtx_fp, n_rows_with_comments) {
   metadata <- utils::read.table(file = mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = " ", colClasses = c("integer", "integer", "integer"))
   n_features <- metadata %>% dplyr::pull(1)
@@ -24,6 +25,7 @@ get_mtx_metadata <- function(mtx_fp, n_rows_with_comments) {
 #' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
 #'
 #' @return a list containing elements feature_names (logical), n_cols (integer), and wheter MT genes are present (logical)
+#' @noRd
 get_features_metadata <- function(features_fp, bag_of_variables) {
   first_row <- readr::read_tsv(file = features_fp, n_max = 1, col_names = FALSE, col_types = readr::cols())
   n_cols <- ncol(first_row)
@@ -47,6 +49,7 @@ get_features_metadata <- function(features_fp, bag_of_variables) {
 #'
 #' @param on_disc_dir directory in which to store the on_disc_matrix.
 #' @return a new name for an on_disc_matrix.
+#' @noRd
 generate_on_disc_matrix_name <- function(on_disc_dir) {
   fs <- list.files(on_disc_dir)
   base_name <- "ondisc_matrix_"
@@ -70,9 +73,10 @@ generate_on_disc_matrix_name <- function(on_disc_dir) {
 #' @param tsv_file file path to .tsv file
 #'
 #' @return contents of the specified column in vector form
-read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file) {
+#' @noRd
+read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file, progress = FALSE) {
   type_pattern <- c(rep("_", col_idx - 1), "c", rep("_", n_cols - col_idx)) %>% paste0(collapse = "")
-  dplyr::pull(readr::read_tsv(file = tsv_file, col_names = FALSE, col_types = type_pattern))
+  dplyr::pull(readr::read_tsv(file = tsv_file, col_names = FALSE, col_types = type_pattern, progress = progress))
 }
 
 
@@ -81,6 +85,7 @@ read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file) {
 #' @param mtx_fp file path to mtx
 #'
 #' @return the number of rows in the mtx with comments
+#' @noRd
 get_n_rows_with_comments_mtx <- function(mtx_fp) {
   n_rows_with_comments <- 0
   repeat {
