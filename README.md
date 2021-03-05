@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ondisc)](https://cran.r-project.org/package=ondisc)
 [![R build
 status](https://travis-ci.com/timothy-barry/ondisc.svg?branch=main)](https://travis-ci.com/timothy-barry/ondisc)
 [![Codecov test
@@ -34,9 +35,8 @@ website](https://timothy-barry.github.io/ondisc/index.html).
 
 ## Installation
 
-You can install the development version from GitHub with:
+You can install the package from CRAN with:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("timothy-barry/ondisc")
+install.packages("ondisc")
 ```

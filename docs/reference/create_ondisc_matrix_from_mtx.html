@@ -128,7 +128,8 @@
   n_lines_per_chunk <span class='op'>=</span> <span class='fl'>3e+08</span>,
   on_disk_dir <span class='op'>=</span> <span class='cn'>NULL</span>,
   file_name <span class='op'>=</span> <span class='cn'>NULL</span>,
-  return_metadata_ondisc_matrix <span class='op'>=</span> <span class='cn'>FALSE</span>
+  return_metadata_ondisc_matrix <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  progress <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -161,6 +162,10 @@
     <tr>
       <th>return_metadata_ondisc_matrix</th>
       <td><p>(optional) return the output as a metadata_ondisc_matrix (instead of a list)? Defaults to FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>(optional; default FALSE) print progress messages?</p></td>
     </tr>
     </table>
 

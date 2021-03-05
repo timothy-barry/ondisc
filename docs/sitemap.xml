@@ -4,127 +4,19 @@
     <loc>https://timothy-barry.github.io/ondisc//index.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/accumulator_functs_enum.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/arguments_enum.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/combine_multimodal_dataframes.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/compare_Mat_on_disc_extract.html</loc>
-  </url>
-  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/create_ondisc_matrix_from_mtx.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/create_random_matrix.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/create_synthetic_data.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/decrement_idxs.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/dim.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/evaluate_grammar.html</loc>
-  </url>
-  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/extract-odm.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/extract_matrix.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/generate_on_disc_matrix_name.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get-names.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_accumulator_funct_arg_list.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_dim.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_features_metadata.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_metadata_odm_list.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_mtx_metadata.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_n_rows_with_comments_mtx.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_names.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_random_subset.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_simulation_data_fps.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_subset_vector.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_terminal_acc_and_args.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_terminals_for_covariate.html</loc>
-  </url>
-  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/head-ondisc_matrix-method.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/inc_cell_count_if_feature_condition.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/inc_count.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/inc_mean_count.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/inc_mean_sq_count.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/inc_n_entries.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/index_h5_file.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/initialize_accumulator.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/initialize_grammar.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/initialize_h5_file_on_disk.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/internal_initialize_ondisc_matrix.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/load_on_disc_and_mat.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/map_inputs_to_covariates.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/map_memory_to_disk.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/map_memory_to_disk_logical_matrix.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/metadata_ondisc_matrix.html</loc>
@@ -139,52 +31,10 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/ondisc_matrix.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/read_given_column_of_tsv.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/return_spMatrix_from_index.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/run_core_mtx_algo.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/run_mtx_algo_step_1.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/run_mtx_algo_step_2.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/run_subtask_2a.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/run_subtask_2b.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/run_subtask_2c.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/save_random_matrix_as_10x.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/setNames.html</loc>
-  </url>
-  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/show.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/subset-odm.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/subset_by_feature_or_cell.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/sum_in_place.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/symbols_enum.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/write_data_h5.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//articles/tutorial_odm_class.html</loc>

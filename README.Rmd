@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # `ondisc`: large-scale computing on single-cell data <img src="man/figures/hex.jpg" align="right" alt="" width="180" />
 
 <!-- badges: start -->
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ondisc)](https://cran.r-project.org/package=ondisc)
 [![R build status](https://travis-ci.com/timothy-barry/ondisc.svg?branch=main)](https://travis-ci.com/timothy-barry/ondisc)
 [![Codecov test coverage](https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg)](https://codecov.io/gh/Timothy-Barry/ondisc?branch=main)
 <!-- badges: end -->
@@ -30,9 +31,8 @@ Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/t
 
 ## Installation
 
-You can install the development version from GitHub with:
+You can install the package from CRAN with:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("timothy-barry/ondisc")
+install.packages("ondisc")
 ```
