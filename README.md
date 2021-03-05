@@ -40,3 +40,6 @@ You can install the package from CRAN with:
 ``` r
 install.packages("ondisc")
 ```
+
+You can browse the source code on Github
+[here](https://github.com/timothy-barry/ondisc).
