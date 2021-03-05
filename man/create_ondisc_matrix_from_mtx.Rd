@@ -11,7 +11,8 @@ create_ondisc_matrix_from_mtx(
   n_lines_per_chunk = 3e+08,
   on_disk_dir = NULL,
   file_name = NULL,
-  return_metadata_ondisc_matrix = FALSE
+  return_metadata_ondisc_matrix = FALSE,
+  progress = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ create_ondisc_matrix_from_mtx(
 \item{file_name}{(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.}
 
 \item{return_metadata_ondisc_matrix}{(optional) return the output as a metadata_ondisc_matrix (instead of a list)? Defaults to FALSE.}
+
+\item{progress}{(optional; default FALSE) print progress messages?}
 }
 \value{
 A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
