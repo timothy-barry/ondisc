@@ -26,17 +26,17 @@ initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata, features_metadata, b
   rhdf5::h5write(mtx_metadata$is_logical, h5_fp, "logical_mat")
 
   # Initialize CSC
-  rhdf5::h5createDataset(file = h5_fp, dataset = "cell_ptr", dims = mtx_metadata$n_cells + 1, storage.mode = "integer", level = 0L, chunk = 10) %>% invisible()
-  rhdf5::h5createDataset(file = h5_fp, dataset = "feature_idxs", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = 50) %>% invisible()
+  rhdf5::h5createDataset(file = h5_fp, dataset = "cell_ptr", dims = mtx_metadata$n_cells + 1, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_cells, 10)) %>% invisible()
+  rhdf5::h5createDataset(file = h5_fp, dataset = "feature_idxs", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50)) %>% invisible()
   if (!mtx_metadata$is_logical) {
-  rhdf5::h5createDataset(file = h5_fp, dataset = "data_csc", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = 50) %>% invisible()
+  rhdf5::h5createDataset(file = h5_fp, dataset = "data_csc", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50)) %>% invisible()
   }
 
   # Initialize CSR
-  rhdf5::h5createDataset(file = h5_fp, dataset = "feature_ptr", dims = mtx_metadata$n_features + 1, storage.mode = "integer", level = 0L, chunk = 10) %>% invisible()
-  rhdf5::h5createDataset(file = h5_fp, dataset = "cell_idxs", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = 50) %>% invisible()
+  rhdf5::h5createDataset(file = h5_fp, dataset = "feature_ptr", dims = mtx_metadata$n_features + 1, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_features, 10)) %>% invisible()
+  rhdf5::h5createDataset(file = h5_fp, dataset = "cell_idxs", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50)) %>% invisible()
   if (!mtx_metadata$is_logical) {
-    rhdf5::h5createDataset(file = h5_fp, dataset = "data_csr", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = 50) %>% invisible()
+    rhdf5::h5createDataset(file = h5_fp, dataset = "data_csr", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50)) %>% invisible()
   }
   return(invisible())
 }
