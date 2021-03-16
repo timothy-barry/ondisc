@@ -13,6 +13,9 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/extract-odm.html</loc>
   </url>
   <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/extract_matrix.html</loc>
+  </url>
+  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get-names.html</loc>
   </url>
   <url>
@@ -35,6 +38,12 @@
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/subset-odm.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/subset_by_feature_or_cell.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//articles/setting_up_a_crispr_screen.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//articles/tutorial_odm_class.html</loc>

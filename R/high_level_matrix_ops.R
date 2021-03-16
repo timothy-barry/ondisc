@@ -55,7 +55,7 @@ get_names <- function(x, name_to_get) {
 #' @param subset_on_cell (boolean) subset on cell (TRUE) or feature (FALSE)
 #'
 #' @return a subset ondisc_matrix
-#' @noRd
+#' @export
 subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
   subset_slot <- paste0(if (subset_on_cell) "cell" else "feature", "_subset")
   if (identical(slot(x, subset_slot), NA_integer_)) {
@@ -87,7 +87,7 @@ subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
 #' @param x an ondisc_matrix.
 #'
 #' @return an in-memory version of x in the form of a Matrix object.
-#' @noRd
+#' @export
 extract_matrix <- function(x) {
   # First, determine which axis to index on; always index on the shorter axis.
   x_dim <- dim(x)
