@@ -22,7 +22,7 @@ navbar:
       href: articles/tutorial_odm_class.html
     - text: "Tutorial 2"
       href: articles/tutorial_other_classes.html
-  - text: Ondisc in action
+  - text: ondisc in action
     menu:
     - text: "Setting up a single-cell CRISPR screen"
       href: articles/setting_up_a_crispr_screen.html

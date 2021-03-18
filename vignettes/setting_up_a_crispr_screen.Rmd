@@ -27,7 +27,6 @@ Before proceeding, we load all required packages for this example.
 ```{r, message=FALSE, warning=FALSE}
 library(R.utils)
 library(Matrix)
-library(monocle)
 library(readr)
 library(dplyr)
 library(ondisc)
@@ -107,6 +106,7 @@ The variable `expressions` is a variable of class `metadata_ondisc_matrix`, cont
 Next, we put the gRNA data into an `ondisc_matrix`. Unfortunately, the gRNA data are not in a standard format: they are stored a [Monocle](https://cole-trapnell-lab.github.io/monocle3/) R object. Thus, we load the Monocole object into R, extract the gRNA data, and write the data to a logical (i.e., binary) .mtx file called `perturbations.mtx`. Additionally, we write the gRNA IDs to a .tsv file called `gRNAs.tsv`.
 
 ```{r,eval=FALSE,echo=TRUE}
+library(monocle)
 x <- readRDS(paste0(raw_data_dir, "/", "GSE120861_pilot_highmoi_screen.cds.rds"))
 cell_covs <- pData(x)
 gRNA_cols <- 15:ncol(cell_covs)
@@ -170,15 +170,14 @@ original_pairs <- read_tsv(file = paste0(raw_data_dir,
          "gRNA_type" = "general_group")
 
 # get the IDs of the highly expressed genes and gRNAs
-genes_in_analysis <- get_feature_ids(expressions)
-gRNAs_in_analysis <- get_feature_ids(perturbations)
+genes_in_analysis <- get_feature_ids(expressions_sub)
+gRNAs_in_analysis <- get_feature_ids(perturbations_sub)
 
 # filter and sample
 set.seed(100)
-gene_gRNA_pairs <- filter(.data = original_pairs,
-                          gRNA_id %in% gRNAs_in_analysis && 
-                            gene_id %in% genes_in_analysis) %>%
-  filter(gRNA_type %in% "NTC") %>% slice_sample(n = 500)
+gene_gRNA_pairs <- original_pairs %>% filter(gRNA_id %in% gRNAs_in_analysis,
+                                             gene_id %in% genes_in_analysis,
+                                             gRNA_type %in% "NTC") %>% slice_sample(n = 500)
 ```
 
 Finally, we save the gene-gRNA pairs that we have selected for analysis in the "processed data" directory.
@@ -227,9 +226,9 @@ We save the global cell-covariate matrix and the appropriately-subsetted gene an
 ```{r}
 saveRDS(object = cell_covariate_matrix,
         file = paste0(processed_data_dir, "/cell_covariate_matrix.rds"))
-saveRDS(object = crispr_experiment_sub@modalities$expressions,
+saveRDS(object = crispr_experiment_sub@modalities$expressions@ondisc_matrix,
         file = paste0(processed_data_dir, "/expressions.rds"))
-saveRDS(object = crispr_experiment_sub@modalities$perturbations,
+saveRDS(object = crispr_experiment_sub@modalities$perturbations@ondisc_matrix,
         file = paste0(processed_data_dir, "/perturbations.rds"))
 ```
 
