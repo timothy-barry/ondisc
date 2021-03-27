@@ -51,8 +51,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   bag_of_variables <- new.env()
 
   # extract .mtx metadata
-  n_rows_with_comments <- get_n_rows_with_comments_mtx(mtx_fp)
-  mtx_metadata <- get_mtx_metadata(mtx_fp, n_rows_with_comments)
+  mtx_metadata <- get_mtx_metadata(mtx_fp)
   bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
   bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
 
@@ -77,7 +76,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
 
   # Get number of elements to load per chunk
   is_logical <- mtx_metadata$is_logical
-  n_rows_to_skip <- n_rows_with_comments + 1
+  n_rows_to_skip <- mtx_metadata$n_rows_to_skip
 
   # Run core algorithm
   out <- run_core_mtx_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, progress)

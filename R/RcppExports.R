@@ -97,6 +97,18 @@ map_memory_to_disk_logical_matrix <- function(file_name_in, m_cell_idxs, cell_id
     invisible(.Call(`_ondisc_map_memory_to_disk_logical_matrix`, file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr))
 }
 
+#' Get mtx metadata
+#'
+#' @param mtx_fp path to the mtx file
+#'
+#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
+#'     data points (i.e., fraction of entries that are zero),
+#'     (iv) (TRUE/FALSE) matrix is logical
+#' @noRd
+get_mtx_metadata <- function(mtx_fp) {
+    .Call(`_ondisc_get_mtx_metadata`, mtx_fp)
+}
+
 #' @title decrement a vector of indexes
 #' @param idxs an integer vector of indexes
 #' @noRd
