@@ -11,7 +11,8 @@ using Rcpp::List;
 //'
 //' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
 //'     data points (i.e., fraction of entries that are zero),
-//'     (iv) (TRUE/FALSE) matrix is logical
+//'     (iv) (TRUE/FALSE) matrix is logical,
+//'     (v) number of rows to skip before reading the data
 //' @noRd
 // [[Rcpp::export]]
 List get_mtx_metadata(CharacterVector mtx_fp)
