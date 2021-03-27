@@ -129,6 +129,17 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// get_mtx_metadata
+List get_mtx_metadata(CharacterVector mtx_fp);
+RcppExport SEXP _ondisc_get_mtx_metadata(SEXP mtx_fpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type mtx_fp(mtx_fpSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_mtx_metadata(mtx_fp));
+    return rcpp_result_gen;
+END_RCPP
+}
 // decrement_idxs
 void decrement_idxs(IntegerVector idxs);
 RcppExport SEXP _ondisc_decrement_idxs(SEXP idxsSEXP) {
@@ -161,6 +172,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_write_data_h5", (DL_FUNC) &_ondisc_write_data_h5, 4},
     {"_ondisc_map_memory_to_disk", (DL_FUNC) &_ondisc_map_memory_to_disk, 8},
     {"_ondisc_map_memory_to_disk_logical_matrix", (DL_FUNC) &_ondisc_map_memory_to_disk_logical_matrix, 6},
+    {"_ondisc_get_mtx_metadata", (DL_FUNC) &_ondisc_get_mtx_metadata, 1},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},
     {NULL, NULL, 0}
