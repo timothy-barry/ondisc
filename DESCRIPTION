@@ -1,12 +1,15 @@
 Package: ondisc
 Title: Fast, Universal, and Intuitive Computing on Large-Scale Single-Cell Data
 Version: 1.0.0
-Authors@R: 
+Authors@R:
     c(person(given = "Timothy",
            family = "Barry",
            role = c("aut", "cre"),
            email = "tbarry2@andrew.cmu.edu",
-           comment = c(ORCID = "0000-0002-4356-627X")), 
+           comment = c(ORCID = "0000-0002-4356-627X")),
+           person(given = "Yixuan",
+           family = "Qiu",
+           role = "ctb"),
            person(given = "Eugene",
            family = "Katsevich",
            role = "ths",
