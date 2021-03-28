@@ -50,12 +50,12 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()
 
-  # extract .mtx metadata
+  # Extract .mtx metadata
   mtx_metadata <- get_mtx_metadata(mtx_fp)
   bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
   bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
 
-  # extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
+  # Extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
   features_metadata <- get_features_metadata(features_fp, bag_of_variables)
   # Set the on_disk_dir, if necessary
   if (is.null(on_disk_dir)) on_disk_dir <- dirname(mtx_fp)
@@ -84,8 +84,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   out$ondisc_matrix <- odm
   if (return_metadata_ondisc_matrix) {
     out <- metadata_ondisc_matrix(ondisc_matrix = out$ondisc_matrix,
-                                   cell_covariates = out$cell_covariates,
-                                   feature_covariates = out$feature_covariates)
+                                  cell_covariates = out$cell_covariates,
+                                  feature_covariates = out$feature_covariates)
   }
   return(out)
 }
