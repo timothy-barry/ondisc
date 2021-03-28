@@ -49,7 +49,7 @@ List get_mtx_metadata(CharacterVector mtx_fp)
   // Largest number of data points - 2147483647
   const int integer_max = ~(1 << 31);
   if(n_data_points > integer_max)
-    Rcpp::stop("Numer of rows exceeds maximum value.");
+    Rcpp::stop("Numer of data points exceeds maximum value.");
 
   bool is_logical = false;
   // Read the first data line

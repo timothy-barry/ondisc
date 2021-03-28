@@ -26,20 +26,22 @@ get_features_metadata <- function(features_fp, bag_of_variables) {
 
 #' Generate on disc_matrix_name
 #'
-#' Generates the name of an on_disc_matrix object given a directory. This function searches for files named on_disc_matrix_x.h5 in the specified directory. If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_x.h5 with a unique integer in place of x.
+#' Generates the name of an on_disc_matrix object given a directory.
+#' This function searches for files named on_disc_matrix_<id>.h5 in the specified directory.
+#' If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_<id>.h5
+#' with a unique integer in place of <id>.
 #'
 #' @param on_disc_dir directory in which to store the on_disc_matrix.
 #' @return a new name for an on_disc_matrix.
 #' @noRd
 generate_on_disc_matrix_name <- function(on_disc_dir) {
-  fs <- list.files(on_disc_dir)
+  # Only list ondisc_matrix_<id>.h5 files
   base_name <- "ondisc_matrix_"
-  idxs <- grep(pattern = paste0(base_name, "[0-9]+.h5"), x = fs)
-  if (length(idxs) == 0) {
+  fs <- list.files(on_disc_dir, pattern = paste0(base_name, "[0-9]+\\.h5"))
+  if (length(fs) == 0) {
     name <- paste0(base_name, "1.h5")
   } else {
-    existing_names <- fs[idxs]
-    ints_in_use <- gsub(pattern = paste0(base_name, "(\\d+).h5"), replacement = "\\1", x = existing_names) %>% as.integer()
+    ints_in_use <- gsub(pattern = paste0(base_name, "(\\d+)\\.h5"), replacement = "\\1", x = fs) %>% as.integer()
     new_int <- max(ints_in_use) + 1
     name <- paste0(base_name, new_int, ".h5")
   }
