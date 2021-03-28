@@ -64,7 +64,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   if (is.null(file_name)) {
     file_name <- generate_on_disc_matrix_name(on_disk_dir)
   } else {
-    if (!grepl(pattern = "*.h5$", x = file_name)) file_name <- paste0(file_name, ".h5")
+    if (!grepl(pattern = "*\\.h5$", x = file_name)) file_name <- paste0(file_name, ".h5")
   }
   h5_fp <- file.path(on_disk_dir, file_name)
 
