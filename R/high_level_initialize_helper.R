@@ -1,22 +1,3 @@
-#' Get mtx metadata
-#'
-#' @param mtx_fp filepath to the mtx file
-#' @param n_rows_with_comments number of rows with comments (at top of file)
-#'
-#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the numer of data points (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical
-#' @noRd
-get_mtx_metadata <- function(mtx_fp, n_rows_with_comments) {
-  metadata <- utils::read.table(file = mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = " ", colClasses = c("integer", "integer", "integer"))
-  n_features <- metadata %>% dplyr::pull(1)
-  n_cells <- metadata %>% dplyr::pull(2)
-  n_data_points <- metadata %>% dplyr::pull(3)
-  if (n_data_points > .Machine$integer.max) stop("Numer of rows exceeds maximum value.")
-  first_row <- utils::read.table(file = mtx_fp, nrows = 1, skip = n_rows_with_comments + 1, header = FALSE, sep = " ", colClasses = "integer")
-  is_logical <- ncol(first_row) == 2
-  return(list(n_features = n_features, n_cells = n_cells, n_data_points = n_data_points, is_logical = is_logical))
-}
-
-
 #' Get metadata for features.tsv file
 #'
 #' Gets metadata from a features.tsv file. As a side-effect, if MT genes are present, puts into the bag_of_variables a logical vector indicating the positions of those genes.
@@ -77,25 +58,4 @@ generate_on_disc_matrix_name <- function(on_disc_dir) {
 read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file, progress = FALSE) {
   type_pattern <- c(rep("_", col_idx - 1), "c", rep("_", n_cols - col_idx)) %>% paste0(collapse = "")
   dplyr::pull(readr::read_tsv(file = tsv_file, col_names = FALSE, col_types = type_pattern, progress = progress))
-}
-
-
-#' get n rows with comments mtx
-#'
-#' @param mtx_fp file path to mtx
-#'
-#' @return the number of rows in the mtx with comments
-#' @noRd
-get_n_rows_with_comments_mtx <- function(mtx_fp) {
-  n_rows_with_comments <- 0
-  repeat {
-    curr_row <- utils::read.table(mtx_fp, nrows = 1, skip = n_rows_with_comments, header = FALSE, sep = "\n") %>% dplyr::pull()
-    is_comment <- substr(curr_row, start = 1, stop = 1) == "%"
-    if (!is_comment) {
-      break()
-    } else {
-      n_rows_with_comments <- n_rows_with_comments + 1
-    }
-  }
-  return(n_rows_with_comments)
 }
