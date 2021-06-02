@@ -103,7 +103,8 @@ map_memory_to_disk_logical_matrix <- function(file_name_in, m_cell_idxs, cell_id
 #'
 #' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
 #'     data points (i.e., fraction of entries that are zero),
-#'     (iv) (TRUE/FALSE) matrix is logical
+#'     (iv) (TRUE/FALSE) matrix is logical,
+#'     (v) number of rows to skip before reading the data
 #' @noRd
 get_mtx_metadata <- function(mtx_fp) {
     .Call(`_ondisc_get_mtx_metadata`, mtx_fp)
