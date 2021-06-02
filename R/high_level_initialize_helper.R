@@ -5,7 +5,7 @@
 #' @param features_fp file path to features.tsv file
 #' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
 #'
-#' @return a list containing elements feature_names (logical), n_cols (integer), and wheter MT genes are present (logical)
+#' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
 #' @noRd
 get_features_metadata <- function(features_fp, bag_of_variables) {
   first_row <- readr::read_tsv(file = features_fp, n_max = 1, col_names = FALSE, col_types = readr::cols())
@@ -27,9 +27,9 @@ get_features_metadata <- function(features_fp, bag_of_variables) {
 #' Generate on disc_matrix_name
 #'
 #' Generates the name of an on_disc_matrix object given a directory.
-#' This function searches for files named on_disc_matrix_<id>.h5 in the specified directory.
-#' If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_<id>.h5
-#' with a unique integer in place of <id>.
+#' This function searches for files named on_disc_matrix_id.h5 in the specified directory.
+#' If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_id.h5
+#' with a unique integer in place of id.
 #'
 #' @param on_disc_dir directory in which to store the on_disc_matrix.
 #' @return a new name for an on_disc_matrix.

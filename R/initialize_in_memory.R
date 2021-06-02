@@ -1,19 +1,48 @@
 #' Create ondisc matrix from R matrix
 #'
-#' Initializes an ondisc matrix from an R matrix. Returns an `ondisc_matrix` along with cell-specific and feature-specific covariate matrices (or optionally, a `metadata_ondisc_matrix`).
+#' Initializes an `ondisc_matrix` from an R matrix. Returns an `ondisc_matrix` along with cell-specific and feature-specific covariate matrices (or optionally, a `metadata_ondisc_matrix`).
+#'
+#' The function can compute the following cell-specific and feature-specific covariates:
+#' - cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).
+#' - feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).
+
 #'
 #' @param r_matrix an R matrix. The matrix can be either integer or logical.
 #' @param barcodes a character vector giving the cell barcodes.
-#' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded.
-#' @param on_disk_dir directory in which to store the on-disk portion of the ondisc_matrix.
+#' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
+#' @param on_disk_dir directory in which to store the .h5 file.
 #' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
 #' @param return_metadata_ondisc_matrix (optional, default FALSE) return the output as a metadata_ondisc_matrix? FALSE returns a list containing an `ondisc_matrix`, a cell-specific covariate matrix, and a feature-specific covariate matrix. TRUE returns a `metadata_ondisc_matrix.`
 #'
-#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
+#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a `metadata_ondisc_matrix` before returning.
 #' @export
 #'
 #' @examples
-#' # Examples go here.
+#' ##################
+#' # Define variables
+#' ##################
+#' file_locs <- system.file("extdata",package = "ondisc", c("genes.tsv", "cell_barcodes.tsv"))
+#' features_df <- readr::read_tsv(file = file_locs[1], col_types = c("cc"), col_names = c("id", "name"))
+#' barcodes <- dplyr::pull(readr::read_tsv(file = file_locs[2], col_types = "c", col_names = FALSE))
+#' set.seed(4)
+#' n_col <- length(barcodes)
+#' n_row <- nrow(features_df)
+#' r_matrix <- matrix(data = rpois(n = n_col * n_row, lambda = 0.3),
+#' nrow = n_row, ncol = n_col)
+#' r_matrix_2 <- matrix(data = as.logical(rnbinom(n = n_col * n_row, size = 1, prob = 0.05)),
+#' nrow = n_row, ncol = n_col)
+#' on_disk_dir <- tempdir()
+#' features_df_2 <- dplyr::select(features_df, id)
+#'
+#' ###########
+#' # EXAMPLE 1
+#' ###########
+#' odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes, features_df, on_disk_dir)
+#'
+#' ###########
+#' # EXAMPLE 2
+#' ###########
+#' odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes, features_df_2, on_disk_dir)
 create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, on_disk_dir, file_name = NULL, return_metadata_ondisc_matrix = FALSE) {
   # to do:
   # 1. Write this function.
