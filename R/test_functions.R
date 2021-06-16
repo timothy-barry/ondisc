@@ -41,20 +41,11 @@ create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matr
 #'
 #' @return the file paths to the matrix.mtx, barcodes.tsv, and features.tsv files.
 #' @noRd
-save_random_matrix_as_10x <- function(m, data_dir, idx = NULL, cell_barcodes = NULL, gene_names = NULL, gene_ids = NULL, save_r_matrix = TRUE) {
+save_random_matrix_as_10x <- function(m, data_dir, cell_barcodes, gene_names, gene_ids, idx = NULL, save_r_matrix = TRUE) {
   if (!dir.exists(data_dir)) dir.create(path = data_dir, recursive = TRUE)
   to_save_locs <- get_simulation_data_fps(data_dir, idx)
   # save the matrix in .mtx format.
   Matrix::writeMM(obj = m, file = to_save_locs[["mtx"]])
-  # create the barcode and feature files
-  if (is.null(cell_barcodes)) cell_barcodes <- paste0("cell_", 1:ncol(m))
-  if (is.null(gene_names)) {
-    gene_names <- paste0("gene_", 1:nrow(m))
-    # set 1/10 of entries to MT-*
-    idxs <- sort(sample(x = 1:nrow(m), size = floor(nrow(m)/10), replace = FALSE))
-    gene_names[idxs] <- paste0("MT-", idxs)
-  }
-  if (is.null(gene_ids)) gene_ids <- paste0("ENSG000", 1:nrow(m))
   # save the files
   readr::write_tsv(x = dplyr::tibble(cell_barcodes), file = to_save_locs[["barcodes"]], col_names = FALSE)
   readr::write_tsv(x = dplyr::tibble(gene_ids, gene_names), file = to_save_locs[["features"]], col_names = FALSE)
@@ -158,8 +149,20 @@ create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, 
       zero_col_idxs <- sample(x = 1:n_col, size = ceiling(0.05 * n_col), replace = FALSE)
       m[,zero_col_idxs] <- if (is.logical(m@x[1])) FALSE else 0
     }
-    save_random_matrix_as_10x(m = m, data_dir = simulated_data_dir, idx = i, save_r_matrix = FALSE)
-    out[[i - idx_start + 1L]] <- m
+    # create the barcode and feature files
+    cell_barcodes <- paste0("cell_", 1:ncol(m))
+    gene_names <- paste0("gene_", 1:nrow(m))
+    # set 1/10 of entries to MT-*
+    idxs <- sort(sample(x = 1:nrow(m), size = floor(nrow(m)/10), replace = FALSE))
+    gene_names[idxs] <- paste0("MT-", idxs)
+    gene_ids <- paste0("ENSG000", 1:nrow(m))
+    features_df <- data.frame(gene_ids, gene_names)
+    # write to disk
+    save_random_matrix_as_10x(m = m, data_dir = simulated_data_dir,
+                              cell_barcodes = cell_barcodes, gene_names = gene_names, gene_ids = gene_ids,
+                              idx = i, save_r_matrix = FALSE)
+    # prepare output
+    out[[i - idx_start + 1L]] <- list(r_matrix = m, cell_barcodes = cell_barcodes, features_df = features_df)
   }
   return(out)
 }
