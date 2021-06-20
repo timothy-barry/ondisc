@@ -211,3 +211,27 @@ get_random_subset <- function(n) {
   sample(x = seq(1, n), size = sample(x = seq(1, n), size = 1L), replace = FALSE)
 }
 # nocov end
+
+
+#' write r_mats to .h5 files using create_ondisc_matrix_from_R_matrix
+#'
+#' @param n_datasets number of test datasets
+#' @param r_mats_plus_data R matrices of test datasets with their cell_barcodes and feature_df
+#' @param temp_test_dir the temporary test directory
+#'
+#' @return a list of `ondisc_matrix` along with cell-specific and feature-specific covariate matrices
+#' @noRd
+write_in_memory_data_to_h5 <- function (n_datasets, r_mats_plus_data, temp_test_dir) {
+  cov_odms_from_memory <- list()
+  for (i in seq(1, n_datasets)) {
+    r_matrix <- as.matrix(r_mats_plus_data[[i]]$r_matrix)
+    barcodes <- r_mats_plus_data[[i]]$cell_barcodes
+    features_df <- r_mats_plus_data[[i]]$features_df
+    odm <- create_ondisc_matrix_from_R_matrix(r_matrix = r_matrix,
+                                              barcodes = barcodes,
+                                              features_df = features_df,
+                                              on_disk_dir = temp_test_dir)
+    cov_odms_from_memory[[i]] <- odm
+  }
+  return(cov_odms_from_memory)
+}
