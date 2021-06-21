@@ -2,7 +2,8 @@ cat("Running test setup script.\n")
 
 # First, define the test type "small" or "large." Also set the temp_test_dir.
 test_type <- "small"
-temp_test_dir <- tempdir()
+temp_test_dir <- tempfile()
+dir.create(temp_test_dir)
 
 # Initialize the parameters.
 if (test_type == "small") {
