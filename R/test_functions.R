@@ -210,7 +210,6 @@ get_metadata_odm_list <- function(mat_list, idx_start, temp_test_dir) {
 get_random_subset <- function(n) {
   sample(x = seq(1, n), size = sample(x = seq(1, n), size = 1L), replace = FALSE)
 }
-# nocov end
 
 
 #' write r_mats to .h5 files using create_ondisc_matrix_from_R_matrix
