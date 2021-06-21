@@ -33,14 +33,4 @@ multimodal_mat <- multimodal_ondisc_matrix(list(modality_1 = cov_odms[[1]],
                                                 modality_2 = new_modality_metadata_odm[[1]]))
 
 # write r_mats to .h5 files using create_ondisc_matrix_from_R_matrix
-cov_odms_from_memory <- list()
-for (i in seq(1, n_datasets)) {
-  r_matrix <- r_mats_plus_data[[i]]$r_matrix
-  barcodes <- r_mats_plus_data[[i]]$cell_barcodes
-  features_df <- r_mats_plus_data[[i]]$features_df
-  odm <- create_ondisc_matrix_from_R_matrix(r_matrix = r_matrix,
-                                     barcodes = barcodes,
-                                     features_df = features_df,
-                                     on_disk_dir = temp_test_dir)
-  cov_odms_from_memory[[i]] <- odm
-}
+cov_odms_from_memory <- write_in_memory_data_to_h5(n_datasets, r_mats_plus_data, temp_test_dir)
