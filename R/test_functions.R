@@ -234,3 +234,4 @@ write_in_memory_data_to_h5 <- function (n_datasets, r_mats_plus_data, temp_test_
   }
   return(cov_odms_from_memory)
 }
+# nocov end
