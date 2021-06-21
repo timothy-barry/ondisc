@@ -43,11 +43,6 @@
 #' ###########
 #' odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes, features_df_2, on_disk_dir)
 create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, on_disk_dir, file_name = NULL, return_metadata_ondisc_matrix = FALSE) {
-  # to do:
-  # 1. Write this function.
-  # 2. Add one or two examples to the "examples" section of the documentation above.
-  # 3. (For later) Write one or two tests to test this function.
-
   ### STEP1: compute the cell- and feature- specific covariate matrices
   # Extract features and expression metadata
   features_metadata <- get_features_metadata_from_table(features_df)
@@ -60,9 +55,10 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   feature_specific_func_list <- list(n_nonzero_feature = function(x) as.integer(rowSums(x != 0)),
                                      mean_expression_feature = function(x) rowMeans(x),
                                      coef_of_variation_feature = function(x) {
-                                       row_sd = apply(x, 1, sd)
-                                       row_means = rowMeans(x)
-                                       return (row_sd/row_means)
+                                       n_cells <- ncol(x)
+                                       my_vars <- rowSums(x^2)/n_cells - (rowSums(x)/n_cells)^2
+                                       my_means <- rowMeans(x)
+                                       return (sqrt(my_vars)/my_means)
                                      })
   feature_covariates <- sapply(X = feature_specific_func_list[covariates$feature_covariates], FUN = function(f) f(r_matrix))
   feature_covariates <- as.data.frame(feature_covariates)
