@@ -88,7 +88,7 @@ get_accumulator_funct_arg_list <- function(terminal_symbol) {
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_mtx_algo_step_1 <- function(mtx_fp, initialize_accumulator, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress) {
+run_core_algo_step_1 <- function(mtx_fp, initialize_accumulator, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress) {
   symbols <- symbols_enum()
   initializer <- function() initialize_accumulator(terminal_symbol = symbols$n_nonzero_feature, bag_of_variables = bag_of_variables)
   # function to be called by read_delim_chunked
@@ -222,7 +222,7 @@ run_subtask_2c <- function(x, h5_fp, is_logical, row_ptr, n_nonzero_features_per
 #'
 #' @return a list containing the values of the terminals
 #' @noRd
-run_mtx_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk, progress) {
+run_core_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk, progress) {
   chunk_no <- 1L
   # Define closure to be called by readr::read_delim_chunked
   closure <- function(x, pos, acc) {
@@ -272,13 +272,14 @@ run_mtx_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_l
 #' @param n_lines_per_chunk number of elements to load per chunk
 #' @param n_rows_to_skip number of rows to skip in .mtx file
 #' @noRd
-run_core_mtx_algo <- function(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, progress) {
+run_core_algo <- function(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, progress) {
   grammar <- initialize_grammar()
   symbols <- symbols_enum()
 
   # Run step 1 of core algorithm
-  row_ptrs <- run_mtx_algo_step_1(mtx_fp, initialize_accumulator, bag_of_variables,
-                                            is_logical, n_lines_per_chunk, n_rows_to_skip, progress)
+  row_ptrs <- run_core_algo_step_1(mtx_fp, initialize_accumulator, bag_of_variables,
+                                  is_logical, n_lines_per_chunk, n_rows_to_skip, progress)
+
   # Compute row pointer and write to disk.
   row_ptr <- c(0L, cumsum(row_ptrs[[1]]))
   write_data_h5(file_name_in = h5_fp, dataset_name_in = "feature_ptr", buffer = row_ptr, start_pos = 0)
@@ -295,7 +296,7 @@ run_core_mtx_algo <- function(h5_fp, mtx_fp, is_logical, covariates, bag_of_vari
   terminal_functs_args <- lapply(terminal_symbols, get_accumulator_funct_arg_list)
 
   # Run step 2 of core algorithm
-  terminal_values_and_row_ptr <- run_mtx_algo_step_2(h5_fp, mtx_fp, is_logical, bag_of_variables,
+  terminal_values_and_row_ptr <- run_core_algo_step_2(h5_fp, mtx_fp, is_logical, bag_of_variables,
                                                      n_lines_per_chunk, n_rows_to_skip, initial_accumulators,
                                                      terminal_functs_args, row_ptr, row_ptrs[[2]], progress)
   # Compute and write column pointer to CSC matrix

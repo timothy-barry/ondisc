@@ -164,7 +164,7 @@ get_expression_metadata_from_r_matrix <- function (r_matrix) {
 #' @param expression_metadata metadata of the r_matrix
 #' @param features_metadata metadata of the features_df
 #' @param barcodes a character vector giving the cell barcodes.
-#' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.\
+#' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
 #' @param csc_r_matrix a Matrix csc representation of the r matrix
 #' @param csr_r_matrix a Matrix csr representation of the r matrix
 #'
