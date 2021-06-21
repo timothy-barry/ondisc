@@ -42,3 +42,4 @@ m <- create_random_matrix(n_row = n_guides, n_col = 900, p_zero = 0.95, matrix_v
 guide_ids <- paste0("guide_", 1:n_guides)
 writeMM(obj = m, file = paste0(ext_data_dir, "/perturbation.mtx"))
 write_tsv(x = tibble(guide_ids), file = paste0(ext_data_dir, "/guides.tsv"), col_names = FALSE)
+

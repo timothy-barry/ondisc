@@ -61,3 +61,23 @@ read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file, progress = FALSE
   type_pattern <- c(rep("_", col_idx - 1), "c", rep("_", n_cols - col_idx)) %>% paste0(collapse = "")
   dplyr::pull(readr::read_tsv(file = tsv_file, col_names = FALSE, col_types = type_pattern, progress = progress))
 }
+
+
+#' Get mtx metadata
+#'
+#' @param mtx_fp path to the mtx file
+#'
+#' If total number of data points exceeds maximum integer value in R (.Machine$integer.max), throw error.
+#'
+#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
+#'     data points (i.e., fraction of entries that are zero),
+#'     (iv) (TRUE/FALSE) matrix is logical,
+#'     (v) number of rows to skip before reading the data
+get_mtx_metadata <- function(mtx_fp) {
+  if (length(mtx_fp) == 1) {
+    out <- .Call(`_ondisc_get_mtx_metadata`, mtx_fp)
+  } else {
+    out <- "update me"
+  }
+  return(out)
+}

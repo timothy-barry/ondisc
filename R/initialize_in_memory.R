@@ -20,8 +20,10 @@
 #' ##################
 #' # Define variables
 #' ##################
+#' library(ondisc)
 #' file_locs <- system.file("extdata",package = "ondisc", c("genes.tsv", "cell_barcodes.tsv"))
-#' features_df <- readr::read_tsv(file = file_locs[1], col_types = c("cc"), col_names = c("id", "name"))
+#' features_df <- readr::read_tsv(file = file_locs[1], col_types = c("cc"),
+#' col_names = c("id", "name"))
 #' barcodes <- dplyr::pull(readr::read_tsv(file = file_locs[2], col_types = "c", col_names = FALSE))
 #' set.seed(4)
 #' n_col <- length(barcodes)
@@ -36,12 +38,14 @@
 #' ###########
 #' # EXAMPLE 1
 #' ###########
-#' odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes, features_df, on_disk_dir)
+#' odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix,barcodes,
+#' features_df, on_disk_dir)
 #'
 #' ###########
 #' # EXAMPLE 2
 #' ###########
-#' odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes, features_df_2, on_disk_dir)
+#' odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
+#' features_df_2, on_disk_dir)
 create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, on_disk_dir, file_name = NULL, return_metadata_ondisc_matrix = FALSE) {
   ### STEP1: compute the cell- and feature- specific covariate matrices
   # Extract features and expression metadata
@@ -134,6 +138,7 @@ get_features_metadata_from_table <- function(features_df) {
   return(list(feature_names = feature_names, n_cols = n_cols, mt_genes_present = mt_genes_present))
 }
 
+
 #' Get metadata for r_matrix,an R matrix. The matrix can be either integer or logical..
 #'
 #' @param r_matrix an R matrix. The matrix can be either integer or logical
@@ -155,6 +160,7 @@ get_expression_metadata_from_r_matrix <- function (r_matrix) {
   return(list(n_features = n_features, n_cells = n_cells, n_data_points = n_data_points,
               is_logical = is_logical))
 }
+
 
 #' Initialize h5 file on-disk for in memoery r matrix
 #'

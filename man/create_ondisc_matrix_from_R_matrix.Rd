@@ -43,8 +43,10 @@ The function can compute the following cell-specific and feature-specific covari
 ##################
 # Define variables
 ##################
+library(ondisc)
 file_locs <- system.file("extdata",package = "ondisc", c("genes.tsv", "cell_barcodes.tsv"))
-features_df <- readr::read_tsv(file = file_locs[1], col_types = c("cc"), col_names = c("id", "name"))
+features_df <- readr::read_tsv(file = file_locs[1], col_types = c("cc"),
+col_names = c("id", "name"))
 barcodes <- dplyr::pull(readr::read_tsv(file = file_locs[2], col_types = "c", col_names = FALSE))
 set.seed(4)
 n_col <- length(barcodes)
@@ -59,10 +61,12 @@ features_df_2 <- dplyr::select(features_df, id)
 ###########
 # EXAMPLE 1
 ###########
-odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes, features_df, on_disk_dir)
+odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix,barcodes,
+features_df, on_disk_dir)
 
 ###########
 # EXAMPLE 2
 ###########
-odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes, features_df_2, on_disk_dir)
+odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
+features_df_2, on_disk_dir)
 }

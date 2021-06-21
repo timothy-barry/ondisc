@@ -7,6 +7,7 @@ utils::globalVariables(c("gene_idx", "expression", "."))
 #' @importFrom Rcpp sourceCpp
 #' @importFrom magrittr %>%
 #' @import methods
+#' @import Matrix
 #' @docType package
 #'
 #' @name ondisc

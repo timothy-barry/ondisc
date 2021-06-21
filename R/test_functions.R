@@ -125,7 +125,7 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' @param idx_start index at which to start (default 1)
 #' @return NULL
 #' @noRd
-create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, n_col = NULL, seed = NULL, idx_start = 1L) {
+create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, n_col = NULL, seed = NULL, idx_start = 1L, logical_mat_p = 0.5) {
   if (!is.null(seed)) set.seed(seed)
   out <- vector(mode = "list", length = n_datasets)
   for (i in seq(idx_start, idx_start + n_datasets - 1L)) {
@@ -134,7 +134,7 @@ create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, 
       m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
     } else if (i == 2) {
       m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
-    } else if (stats::rbinom(1, 1, 0.5)) {
+    } else if (stats::rbinom(1, 1, logical_mat_p)) {
       m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
     } else {
       m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
