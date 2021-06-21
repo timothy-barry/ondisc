@@ -6,8 +6,6 @@
 <!-- badges: start -->
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ondisc)](https://cran.r-project.org/package=ondisc)
-[![R build
-status](https://travis-ci.com/timothy-barry/ondisc.svg?branch=main)](https://travis-ci.com/timothy-barry/ondisc)
 [![Codecov test
 coverage](https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg)](https://codecov.io/gh/Timothy-Barry/ondisc?branch=main)
 <!-- badges: end -->
