@@ -93,8 +93,23 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   h5_fp <- file.path(on_disk_dir, file_name)
 
   # Create in-memory CSC and CSR representations of r_matrix
-  csc_r_matrix <- as(r_matrix, "dgCMatrix")
-  csr_r_matrix <- as(r_matrix, "dgRMatrix")
+  if (is(r_matrix, "dgTMatrix")) { # sparse triplet form case
+    csc_r_matrix <- Matrix::sparseMatrix(i = gRNA_count_matrix@i,
+                                         j = gRNA_count_matrix@j,
+                                         dims = gRNA_count_matrix@Dim,
+                                         repr = "C",
+                                         index1 = FALSE,
+                                         x = gRNA_count_matrix@x)
+    csr_r_matrix <- Matrix::sparseMatrix(i = gRNA_count_matrix@i,
+                                         j = gRNA_count_matrix@j,
+                                         dims = gRNA_count_matrix@Dim,
+                                         repr = "R",
+                                         index1 = FALSE,
+                                         x = gRNA_count_matrix@x)
+  } else { # dense case
+    csc_r_matrix <- as(r_matrix, "dgCMatrix")
+    csr_r_matrix <- as(r_matrix, "dgRMatrix")
+  }
 
   # Initialize the .h5 file on-disk for in memory matrix (side-effect)
   initialize_h5_file_on_disk_for_in_memory_matrix(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix)

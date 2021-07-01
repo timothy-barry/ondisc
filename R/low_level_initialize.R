@@ -75,6 +75,18 @@ get_accumulator_funct_arg_list <- function(terminal_symbol) {
 # Core algorithm functions start
 ################################################################
 
+run_core_algo_step_1 <- function(mtx_fp, initialize_accumulator, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress) {
+  if (length(mtx_fp) == 1) {
+    run_core_algo_step_1_mtxchunked(mtx_fp, initialize_accumulator, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress)
+  } else {
+    run_core_algo_step_1_mtxfilelist(mtx_fp, initialize_accumulator, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress)
+  }
+}
+
+
+
+
+
 #' Run mtx algo step 1
 #'
 #' Runs the first step of the .mtx algo.
@@ -88,7 +100,7 @@ get_accumulator_funct_arg_list <- function(terminal_symbol) {
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_core_algo_step_1 <- function(mtx_fp, initialize_accumulator, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress) {
+run_core_algo_step_1_mtxchunked <- function(mtx_fp, initialize_accumulator, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress) {
   symbols <- symbols_enum()
   initializer <- function() initialize_accumulator(terminal_symbol = symbols$n_nonzero_feature, bag_of_variables = bag_of_variables)
   # function to be called by read_delim_chunked
