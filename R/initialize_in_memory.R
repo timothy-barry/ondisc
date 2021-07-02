@@ -94,18 +94,18 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
 
   # Create in-memory CSC and CSR representations of r_matrix
   if (is(r_matrix, "dgTMatrix")) { # sparse triplet form case
-    csc_r_matrix <- Matrix::sparseMatrix(i = gRNA_count_matrix@i,
-                                         j = gRNA_count_matrix@j,
-                                         dims = gRNA_count_matrix@Dim,
+    csc_r_matrix <- Matrix::sparseMatrix(i = r_matrix@i,
+                                         j = r_matrix@j,
+                                         dims = r_matrix@Dim,
                                          repr = "C",
                                          index1 = FALSE,
-                                         x = gRNA_count_matrix@x)
-    csr_r_matrix <- Matrix::sparseMatrix(i = gRNA_count_matrix@i,
-                                         j = gRNA_count_matrix@j,
-                                         dims = gRNA_count_matrix@Dim,
+                                         x = r_matrix@x)
+    csr_r_matrix <- Matrix::sparseMatrix(i = r_matrix@i,
+                                         j = r_matrix@j,
+                                         dims = r_matrix@Dim,
                                          repr = "R",
                                          index1 = FALSE,
-                                         x = gRNA_count_matrix@x)
+                                         x = r_matrix@x)
   } else { # dense case
     csc_r_matrix <- as(r_matrix, "dgCMatrix")
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
