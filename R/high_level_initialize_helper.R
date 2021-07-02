@@ -77,7 +77,21 @@ get_mtx_metadata <- function(mtx_fp) {
   if (length(mtx_fp) == 1) {
     out <- .Call(`_ondisc_get_mtx_metadata`, mtx_fp)
   } else {
-    out <- "update me"
+    # Handle overflow: R will type cast integer to double if there's an integer overflow
+    cumulative_n_cells <- 0L
+    cumulative_n_data_points <- 0L
+    mtx_metadata_list <- vector(mode = "list", length = length(mtx_fp))
+    n_rows_to_skip_list <- vector(mode = "integer", length = length(mtx_fp))
+    for (i in 1:length(mtx_fp)) {
+      mtx_metadata_list[[i]] <- .Call(`_ondisc_get_mtx_metadata`, mtx_fp[i])
+      cumulative_n_cells <- cumulative_n_cells + mtx_metadata_list[[i]]$n_cells
+      cumulative_n_data_points <- cumulative_n_data_points + mtx_metadata_list[[i]]$n_data_points
+      n_rows_to_skip_list[[i]] <- mtx_metadata_list[[i]]$n_rows_to_skip
+    }
+    out <- mtx_metadata_list[[1]]
+    out$n_cells <- cumulative_n_cells
+    out$n_data_points <- cumulative_n_data_points
+    out$n_rows_to_skip <- n_rows_to_skip_list
   }
   return(out)
 }

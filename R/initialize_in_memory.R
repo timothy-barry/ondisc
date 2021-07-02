@@ -111,8 +111,8 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
   }
 
-  # Initialize the .h5 file on-disk for in memory matrix (side-effect)
-  initialize_h5_file_on_disk_for_in_memory_matrix(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix)
+  # Write in memory matrix to the .h5 file on-disk(side-effect)
+  write_matrix_to_h5(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix)
 
   # Create ondisc_matrix.
   ondisc_matrix <- internal_initialize_ondisc_matrix(h5_file = h5_fp, logical_mat = expression_metadata$is_logical, underlying_dimension = c(expression_metadata$n_features, expression_metadata$n_cells))
@@ -177,9 +177,9 @@ get_expression_metadata_from_r_matrix <- function (r_matrix) {
 }
 
 
-#' Initialize h5 file on-disk for in memoery r matrix
+#' Initialize h5 file on-disk and write in memory r matrix to the file
 #'
-#' Initialize the on-disk portion on an ondisc_matrix.
+#' Initialize the on-disk portion on an ondisc_matrix, and write matrix to the h5 file.
 #'
 #' @param h5_fp file path to the .h5 file to be initialized
 #' @param expression_metadata metadata of the r_matrix
@@ -191,35 +191,22 @@ get_expression_metadata_from_r_matrix <- function (r_matrix) {
 #'
 #' @return NULL
 #' @noRd
-initialize_h5_file_on_disk_for_in_memory_matrix <- function(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix) {
-  # Create the .h5 file
-  status <- rhdf5::h5createFile(h5_fp)
-  if(!status)
-    stop(sprintf("Creating %s failed", h5_fp))
+write_matrix_to_h5 <- function(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix) {
+  # Initialize the .h5 file
+  initialize_h5_file_on_disk(h5_fp = h5_fp, mtx_metadata = expression_metadata, features_metadata = features_metadata, barcodes_fp = barcodes, features_fp = features_df, progress = TRUE, file_path = FALSE)
 
-  # Write metadata
-  rhdf5::h5write(barcodes, h5_fp, "cell_barcodes")
-  feature_ids <- dplyr::pull(features_df, 1)
-  rhdf5::h5write(feature_ids, h5_fp, "feature_ids")
-  if (features_metadata$feature_names) {
-    feature_names <- dplyr::pull(features_df, 2)
-    rhdf5::h5write(feature_names, h5_fp, "feature_names")
-  }
-  rhdf5::h5write(c(expression_metadata$n_features, expression_metadata$n_cells), h5_fp, "dimension")
-  rhdf5::h5write(expression_metadata$is_logical, h5_fp, "logical_mat")
-
-  # Initialize CSC, we don't need to createDataset here, we can directly write
-  rhdf5::h5write(csc_r_matrix@p, h5_fp, "cell_ptr")
-  rhdf5::h5write(csc_r_matrix@i, h5_fp, "feature_idxs")
+  # Write CSC
+  rhdf5::h5write(csc_r_matrix@p, file=h5_fp, name="cell_ptr")
+  rhdf5::h5write(csc_r_matrix@i, file=h5_fp, name="feature_idxs")
   if (!expression_metadata$is_logical) {
-    rhdf5::h5write(csc_r_matrix@x, h5_fp, "data_csc")
+    rhdf5::h5write(csc_r_matrix@x, file=h5_fp, name="data_csc")
   }
 
-  # Initialize CSR
-  rhdf5::h5write(csr_r_matrix@p, h5_fp, "feature_ptr")
-  rhdf5::h5write(csr_r_matrix@j, h5_fp, "cell_idxs")
+  # Write CSR
+  rhdf5::h5write(csr_r_matrix@p, file=h5_fp, name="feature_ptr")
+  rhdf5::h5write(csr_r_matrix@j, file=h5_fp, name="cell_idxs")
   if (!expression_metadata$is_logical) {
-    rhdf5::h5write(csr_r_matrix@x, h5_fp, "data_csr")
+    rhdf5::h5write(csr_r_matrix@x, file=h5_fp, name="data_csr")
   }
 
   invisible(NULL)
