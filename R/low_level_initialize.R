@@ -7,22 +7,47 @@
 #' @param features_metadata metadata of the features.tsv file
 #' @param barcodes_fp file path to the barcodes.tsv file
 #' @param features_fp file path to the features.tsv file
+#' @param file_path bool argument to determine whether the input are file path or R object. TRUE for file path (defualt), FALSE for R object.
 #'
 #' @return NULL
 #' @noRd
-initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp, progress) {
+initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp, progress, file_path = TRUE) {
   # Create the .h5 file
   status <- rhdf5::h5createFile(h5_fp)
   if(!status)
     stop(sprintf("Creating %s failed", h5_fp))
 
   # Write metadata
-  cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes_fp, col_names = FALSE, col_types = "c", progress = progress))
+  cell_barcodes <- vector(mode = "character")
+  if (file_path == TRUE){
+    if (length(barcodes_fp) == 1) {
+      cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes_fp, col_names = FALSE, col_types = "c", progress = progress))
+    } else {
+      # handle list of barcodes_fp input
+      for (i in 1:length(barcodes_fp)) {
+        single_cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes_fp[i], col_names = FALSE, col_types = "c", progress = progress))
+        # concatenate cell_barcodes in each file to a single barcodes vector
+        cell_barcodes <- c(cell_barcodes, single_cell_barcodes)
+      }
+    }
+  } else {
+    cell_barcodes <- barcodes_fp
+  }
   rhdf5::h5write(cell_barcodes, h5_fp, "cell_barcodes")
-  feature_ids <- read_given_column_of_tsv(col_idx = 1, n_cols = features_metadata$n_cols, tsv_file = features_fp, progress = progress)
+
+  if (file_path == TRUE) {
+    feature_ids <- read_given_column_of_tsv(col_idx = 1, n_cols = features_metadata$n_cols, tsv_file = features_fp, progress = progress)
+  } else {
+    feature_ids <- dplyr::pull(features_fp, 1)
+  }
   rhdf5::h5write(feature_ids, h5_fp, "feature_ids")
+
   if (features_metadata$feature_names) {
-    feature_names <- read_given_column_of_tsv(col_idx = 2, n_cols = features_metadata$n_cols, tsv_file = features_fp, progress = progress)
+    if (file_path == TRUE) {
+      feature_names <- read_given_column_of_tsv(col_idx = 2, n_cols = features_metadata$n_cols, tsv_file = features_fp, progress = progress)
+    } else {
+      feature_names <- dplyr::pull(features_fp, 2)
+    }
     rhdf5::h5write(feature_names, h5_fp, "feature_names")
   }
   rhdf5::h5write(c(mtx_metadata$n_features, mtx_metadata$n_cells), h5_fp, "dimension")
@@ -44,7 +69,6 @@ initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata, features_metadata, b
 
   invisible(NULL)
 }
-
 
 #' Initialize accumulator
 #'
