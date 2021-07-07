@@ -95,7 +95,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   h5_fp <- file.path(on_disk_dir, file_name)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp, progress)
+  initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp, progress, TRUE)
 
   # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(mtx_metadata, features_metadata)
