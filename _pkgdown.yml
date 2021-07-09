@@ -32,6 +32,7 @@ reference:
   desc: Initialize an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
   contents:
   - create_ondisc_matrix_from_mtx
+  - create_ondisc_matrix_from_R_matrix
   - ondisc_matrix
   - metadata_ondisc_matrix
   - multimodal_ondisc_matrix

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create ondisc matrix from R matrix — create_ondisc_matrix_from_R_matrix • ondisc</title>
+<title>Create an ondisc matrix from an R matrix — create_ondisc_matrix_from_R_matrix • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Create ondisc matrix from R matrix — create_ondisc_matrix_from_R_matrix" />
-<meta property="og:description" content="Initializes an ondisc_matrix from an R matrix. Returns an ondisc_matrix along with cell-specific and feature-specific covariate matrices (or optionally, a metadata_ondisc_matrix)." />
+<meta property="og:title" content="Create an ondisc matrix from an R matrix — create_ondisc_matrix_from_R_matrix" />
+<meta property="og:description" content="Initializes an ondisc_matrix from an R matrix. Returns an ondisc_matrix alongside cell-specific and feature-specific covariate matrices (or optionally, a metadata_ondisc_matrix)." />
 
 
 
@@ -124,13 +124,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create ondisc matrix from R matrix</h1>
+    <h1>Create an <code>ondisc</code> matrix from an R matrix</h1>
     
     <div class="hidden name"><code>create_ondisc_matrix_from_R_matrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Initializes an <code>ondisc_matrix</code> from an R matrix. Returns an <code>ondisc_matrix</code> along with cell-specific and feature-specific covariate matrices (or optionally, a <code>metadata_ondisc_matrix</code>).</p>
+    <p>Initializes an <code>ondisc_matrix</code> from an R matrix. Returns an <code>ondisc_matrix</code> alongside cell-specific and feature-specific covariate matrices (or optionally, a <code>metadata_ondisc_matrix</code>).</p>
     </div>
 
     <pre class="usage"><span class='fu'>create_ondisc_matrix_from_R_matrix</span><span class='op'>(</span>
@@ -147,7 +147,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>r_matrix</th>
-      <td><p>an R matrix. The matrix can be either integer or logical.</p></td>
+      <td><p>an R matrix. The matrix can be represented as a standard (dense) R matrix or a sparse matrix of class "dgTMatrix". Integer and logical (i.e., boolean) matrices are allowed.</p></td>
     </tr>
     <tr>
       <th>barcodes</th>
@@ -176,7 +176,7 @@
     <p>A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a <code>metadata_ondisc_matrix</code> before returning.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function can compute the following cell-specific and feature-specific covariates:</p><ul>
+    <p>This function computes the following cell-specific and feature-specific covariates:</p><ul>
 <li><p>cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).</p></li>
 <li><p>feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).</p></li>
 </ul>
@@ -201,15 +201,15 @@ nrow <span class='op'>=</span> <span class='va'>n_row</span>, ncol <span class='
 <span class='va'>on_disk_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>features_df_2</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>features_df</span>, <span class='va'>id</span><span class='op'>)</span>
 
-<span class='co'>###########</span>
-<span class='co'># EXAMPLE 1</span>
-<span class='co'>###########</span>
-<span class='va'>odm_plus_covariate_matrices</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_R_matrix</span><span class='op'>(</span><span class='va'>r_matrix</span>,<span class='va'>barcodes</span>,
+<span class='co'>###########################</span>
+<span class='co'># EXAMPLE 1: integer counts</span>
+<span class='co'>###########################</span>
+<span class='va'>odm_plus_covariate_matrices</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_R_matrix</span><span class='op'>(</span><span class='va'>r_matrix</span>, <span class='va'>barcodes</span>,
 <span class='va'>features_df</span>, <span class='va'>on_disk_dir</span><span class='op'>)</span>
 
-<span class='co'>###########</span>
-<span class='co'># EXAMPLE 2</span>
-<span class='co'>###########</span>
+<span class='co'>####################</span>
+<span class='co'># EXAMPLE 2: logical</span>
+<span class='co'>####################</span>
 <span class='va'>odm_plus_covariate_matrices_2</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_R_matrix</span><span class='op'>(</span><span class='va'>r_matrix_2</span>, <span class='va'>barcodes</span>,
 <span class='va'>features_df_2</span>, <span class='va'>on_disk_dir</span><span class='op'>)</span>
 </div></pre>
