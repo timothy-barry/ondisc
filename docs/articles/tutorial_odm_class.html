@@ -102,13 +102,13 @@
 <code class="sourceCode R"><span class="va">raw_data_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"ondisc"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="va">raw_data_dir</span><span class="op">)</span>
 <span class="co">#&gt; [1] "cell_barcodes.tsv"   "gene_expression.mtx" "genes.tsv"          </span>
-<span class="co">#&gt; [4] "guides.tsv"          "perturbation.mtx"</span></code></pre></div>
+<span class="co">#&gt; [4] "guides.tsv"          "ondisc_matrix_1.h5"  "perturbation.mtx"</span></code></pre></div>
 <p>The files “gene_expression.mtx”, “cell_barcodes.tsv,” and “genes.tsv” together define a gene-by-cell expression matrix. We save the full paths to these files in the variables <code>mtx_fp</code>, <code>barcodes_fp</code>, and <code>features_fp</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtx_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">raw_data_dir</span>, <span class="st">"/gene_expression.mtx"</span><span class="op">)</span>
 <span class="va">barcodes_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">raw_data_dir</span>, <span class="st">"/cell_barcodes.tsv"</span><span class="op">)</span>
 <span class="va">features_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">raw_data_dir</span>, <span class="st">"/genes.tsv"</span><span class="op">)</span></code></pre></div>
-<p>An <code>ondisc_matrix</code> consists of two parts: an HDF5 (i.e., .h5) file that stores the expression data on-disk in a novel format, and an in-memory object that allows us to interact with the expression data from within R. The easiest way to initialize an <code>ondisc_matrix</code> is by calling the function <code>create_ondisc_matrix_from_mtx</code>. We pass to this function (i) a file path to the .mtx file storing the expression data, (ii) a file path to the .tsv file storing the cell barcodes, and (iii) a file path to the .tsv file storing the feature IDs and human-readable feature names. We optionally can specify the directory in which to store the initialized .h5 file, which in this tutorial we will take to be the temporary directory.</p>
+<p>An <code>ondisc_matrix</code> consists of two parts: an HDF5 (i.e., .h5) file that stores the expression data on-disk, and an in-memory object that allows us to interact with the expression data from within R. The easiest way to initialize an <code>ondisc_matrix</code> is by calling the function <code>create_ondisc_matrix_from_mtx</code>. We pass to this function (i) a file path to the .mtx file storing the expression data, (ii) a file path to the .tsv file storing the cell barcodes, and (iii) a file path to the .tsv file storing the feature IDs and human-readable feature names. We optionally can specify the directory in which to store the initialized .h5 file, which in this tutorial we will take to be the temporary directory.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>temp_dir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</span>
 <span id="cb4-2"><a href="#cb4-2"></a>exp_mat_list &lt;-<span class="st"> </span><span class="kw">create_ondisc_matrix_from_mtx</span>(<span class="dt">mtx_fp =</span> mtx_fp,</span>
 <span id="cb4-3"><a href="#cb4-3"></a>                                              <span class="dt">barcodes_fp =</span> barcodes_fp,</span>
@@ -141,7 +141,6 @@
 <code class="sourceCode R"><span class="va">expression_mat</span> <span class="op">&lt;-</span> <span class="va">exp_mat_list</span><span class="op">$</span><span class="va">ondisc_matrix</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">expression_mat</span><span class="op">)</span>
 <span class="co">#&gt; Showing 5 of 300 featuress and 6 of 900 cells:</span>
-<span class="co">#&gt; Loading required package: Matrix</span>
 <span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span>
 <span class="co">#&gt; [1,]    3    0    0    0    0    5</span>
 <span class="co">#&gt; [2,]    0    2    0    0    0    0</span>
@@ -170,7 +169,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="st">"ondisc_matrix_1.h5"</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="va">temp_dir</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
-<p>A strength of <code>create_ondisc_matrix_from_mtx</code> is that it does <em>not</em> assume that entire expression matrix fits into memory. The optional argument <code>n_lines_per_chunk</code> can be used to specify the number of lines to read from the .mtx file at a time. Additionally, <code>create_ondisc_matrix_from_mtx</code> is fast: the novel algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, <code>create_ondisc_matrix_from_mtx</code> takes aboout 4-8 minutes/GB to run. Finally, for a given dataset, <code>create_ondisc_matrix_from_mtx</code> only needs to be run once, even after closing and opening new R sessions.</p>
+<p>A strength of <code>create_ondisc_matrix_from_mtx</code> is that it does <em>not</em> assume that entire expression matrix fits into memory. The optional argument <code>n_lines_per_chunk</code> can be used to specify the number of lines to read from the .mtx file at a time. Additionally, <code>create_ondisc_matrix_from_mtx</code> is fast: the algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, <code>create_ondisc_matrix_from_mtx</code> takes aboout 5-8 minutes/GB to run. Finally, for a given dataset, <code>create_ondisc_matrix_from_mtx</code> only needs to be run once, even after closing and opening new R sessions.</p>
 </div>
 <div id="querying-basic-information" class="section level1">
 <h1 class="hasAnchor">
@@ -285,7 +284,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Timothy Barry.</p>
+  <p>Developed by <a href="https://timothy-barry.github.io/">Tim Barry</a>.</p>
 </div>
 
 <div class="pkgdown">

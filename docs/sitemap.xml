@@ -4,6 +4,9 @@
     <loc>https://timothy-barry.github.io/ondisc//index.html</loc>
   </url>
   <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/create_ondisc_matrix_from_R_matrix.html</loc>
+  </url>
+  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/create_ondisc_matrix_from_mtx.html</loc>
   </url>
   <url>
@@ -17,6 +20,9 @@
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get-names.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_mtx_metadata.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/head-ondisc_matrix-method.html</loc>
