@@ -1,5 +1,27 @@
+test_that("metadata_odm show", {
+  for (i in seq(1, n_datasets)) {
+    metadata_odm <- cov_odms[[i]]
+    show(metadata_odm)
+  }
+  expect_true(TRUE)
+})
+
+
+test_that("metadata_odm get feature ids, names, and cell barcodes", {
+  for (i in seq(1, n_datasets)) {
+    metadata_odm <- cov_odms[[i]]
+    expect_equal(get_feature_ids(metadata_odm),
+                 get_feature_ids(metadata_odm@ondisc_matrix))
+    expect_equal(get_feature_names(metadata_odm),
+                 get_feature_names(metadata_odm@ondisc_matrix))
+    expect_equal(get_cell_barcodes(metadata_odm),
+                 get_cell_barcodes(metadata_odm@ondisc_matrix))
+  }
+})
+
+
 test_that("subset metadata_odm", {
-  for (i in 1:n_datasets) {
+  for (i in seq(1, n_datasets)) {
     metadata_odm <- cov_odms[[i]]
     orig_dim <- dim(metadata_odm)
     row_idxs <- get_random_subset(orig_dim[1])
@@ -24,39 +46,15 @@ test_that("subset metadata_odm", {
 
     # subset by neither
     expect_equal(metadata_odm[], metadata_odm)
- }
-})
-
-
-test_that("subset multimodal_odm", {
-  # subsetting by feature throws error
-  expect_error(multimodal_mat[1,])
-  expect_error(multimodal_mat[1,1])
-  # subset by neither
-  expect_equal(multimodal_mat[], multimodal_mat)
-  # subset by cell
-  col_idxs <- get_random_subset(ncol(multimodal_mat))
-  x <- multimodal_mat[,col_idxs]
-  expect_equal(x@global_cell_covariates, multimodal_mat@global_cell_covariates[col_idxs,])
-  for (i in seq(1, length(multimodal_mat@modalities))) {
-    modality_sub <- x@modalities[[i]]
-    modality <-multimodal_mat@modalities[[i]]
-    expect_equal(ncol(modality_sub), length(col_idxs))
-    expect_equal(modality_sub@feature_covariates, modality@feature_covariates)
-    expect_equal(ncol(modality_sub@ondisc_matrix), length(col_idxs))
-    expect_equal(modality_sub@cell_covariates, modality@cell_covariates[col_idxs,,drop=FALSE])
   }
 })
 
 
-test_that("extract metadata_odm, multimodal_odm", {
+test_that("extract metadata_odm", {
   for (i in 1:n_datasets) {
     metadata_odm <- cov_odms[[i]]
     expect_error(metadata_odm[[1,]])
     expect_error(metadata_odm[[,1]])
     expect_error(metadata_odm[[1, 1]])
   }
-  expect_error(multimodal_mat[[1,]])
-  expect_error(multimodal_mat[[,1]])
-  expect_error(multimodal_mat[[1,1]])
 })

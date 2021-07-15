@@ -1,16 +1,17 @@
 test_that("gets, no subsets", {
-  for (i in 1:n_datasets) {
+  for (i in seq(1, n_datasets)) {
     on_disc_mat <- cov_odms[[i]]@ondisc_matrix
-    df <- readr::read_tsv(file = paste0(temp_test_dir, "/features_", i,".tsv"), col_names = c("id", "name"), col_types = c("cc"))
-    all(df$name == get_feature_names(on_disc_mat)) %>% expect_true()
-    all(paste0("ENSG000", 1:nrow(on_disc_mat)) == get_feature_ids(on_disc_mat)) %>% expect_true()
-    all(paste0("cell_", 1:ncol(on_disc_mat)) == get_cell_barcodes(on_disc_mat)) %>% expect_true()
+    features_df <- r_mats_plus_metadata[[i]]$features_df
+    all(features_df$gene_names == get_feature_names(on_disc_mat)) %>% expect_true()
+    all(features_df$gene_ids == get_feature_ids(on_disc_mat)) %>% expect_true()
+    barcodes <- r_mats_plus_metadata[[i]]$barcodes
+    all(barcodes == get_cell_barcodes(on_disc_mat)) %>% expect_true()
     }
 })
 
 
 test_that("gets after subset", {
-  for (i in 1:n_datasets) {
+  for (i in  seq(1, n_datasets)) {
     on_disc_mat <- cov_odms[[i]]@ondisc_matrix
       for (j in 1:n_reps) {
         subset_size_col <- sample(1:(ceiling(ncol(on_disc_mat)/10)), 1)
