@@ -7,19 +7,13 @@
 create_synthetic_data(n_row, n_col, logical_mat, write_as_mtx_to_disk = TRUE)
 }
 \arguments{
-\item{n_row}{integer vector of length n_datasets giving the number number of rows in each dataset}
+\item{n_row}{number of rows}
 
-\item{n_col}{integer vector of length n_datasets giving the number of columns in each dataset}
+\item{n_col}{number of columns}
 
-\item{logical_mat}{logical vector of length n_datasets indicating whether a given dataset is logical (TRUE) or integer (FALSE).}
+\item{logical_mat}{boolean indicating whether a given dataset is logical (TRUE) or integer (FALSE).}
 
-\item{write_as_mtx_to_disk}{boolean indicating whether the function should have the side effect of writing the mtx file, barcodes file, and features file to disk.}
-
-\item{n_datasets}{number of datasets to create}
-
-\item{file_dir}{directory in which to store the initialized mtx files; by default, initializes the data in a brand new directory obtain through tempfile().}
-
-\item{seed}{optional seed to random number generator}
+\item{write_as_mtx_to_disk}{boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.}
 }
 \value{
 a list of length n_datasets; each element of the list contains
@@ -31,10 +25,7 @@ a list of length n_datasets; each element of the list contains
 (vi) file path to the features.tsv file
 }
 \description{
-Creates synthetic data for testing purposes. Creates and returns n_datasets synthetic single cell datasets; as a side-effect, creates .mtx versions of these datasets ondisc.
-}
-\details{
-A single "synthetic single-cell dataset" consists of (i) an expression matrix, (ii) the cell barcodes, and (iii) the features data frame.
+Creates synthetic data for testing purposes. Optionally writes the data to disk.
 }
 \examples{
 n_row <- 1000

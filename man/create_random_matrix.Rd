@@ -23,11 +23,15 @@ create_random_matrix(
 
 \item{p_zero}{probability an entry will be zero}
 
-\item{matrix_values}{set of values from which to draw the matrix entries (applicable for integer matrices only)}
+\item{p_set_col_zero}{fraction of columns to set to zero}
+
+\item{p_set_row_zero}{fraction of rows to set to zero}
+
+\item{matrix_values}{set of values from which to draw the matrix entries (applicable to integer matrices only)}
 }
 \value{
-a randomly-generated matrix of class TsparseMatrix
+a randomly-generated matrix in sparse format
 }
 \description{
-Creates a random matrix given. Set the random seed OUTSIDE of this function (if desired).
+Creates and returns a random matrix.
 }

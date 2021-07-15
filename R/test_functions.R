@@ -16,15 +16,17 @@ create_new_directory <- function() {
 
 #' Create a random matrix
 #'
-#' Creates a random matrix given. Set the random seed OUTSIDE of this function (if desired).
+#' Creates and returns a random matrix.
 #'
 #' @param n_row number of rows
 #' @param n_col number of columns
 #' @param logical_mat boolean indicating whether the matrix is logical (TRUE) or integer (FALSE)
 #' @param p_zero probability an entry will be zero
-#' @param matrix_values set of values from which to draw the matrix entries (applicable for integer matrices only)
+#' @param p_set_col_zero fraction of columns to set to zero
+#' @param p_set_row_zero fraction of rows to set to zero
+#' @param matrix_values set of values from which to draw the matrix entries (applicable to integer matrices only)
 #'
-#' @return a randomly-generated matrix of class TsparseMatrix
+#' @return a randomly-generated matrix in sparse format
 create_random_matrix <- function(n_row, n_col, logical_mat, p_zero = 0.95, p_set_col_zero = 0.05, p_set_row_zero = 0.05, matrix_values = seq(1L, 10L)) {
   # sample binary matrix
   r <- matrix(data = stats::rbinom(n =  n_row * n_col, size = 1, prob = 1 - p_zero), nrow = n_row, ncol = n_col)
@@ -47,7 +49,7 @@ create_random_matrix <- function(n_row, n_col, logical_mat, p_zero = 0.95, p_set
 
 #' Save random matrix as a 10X object
 #'
-#' This function stores a matrix in .mtx format, along with features and barcodes .tsv files for the cells and genes.
+#' Writes an R matrix to disk in .mtx format. Writes barcodes.tsv and features.tsv files as well. genes.
 #'
 #' @param m a sparse Matrix object
 #' @param data_dir the directory in which to store the matrix
@@ -95,17 +97,12 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 
 #' Create synthetic data
 #'
-#' Creates synthetic data for testing purposes. Creates and returns n_datasets synthetic single cell datasets; as a side-effect, creates .mtx versions of these datasets ondisc.
+#' Creates synthetic data for testing purposes. Optionally writes the data to disk.
 #'
-#' A single "synthetic single-cell dataset" consists of (i) an expression matrix, (ii) the cell barcodes, and (iii) the features data frame.
-#'
-#' @param n_datasets number of datasets to create
-#' @param n_row integer vector of length n_datasets giving the number number of rows in each dataset
-#' @param n_col integer vector of length n_datasets giving the number of columns in each dataset
-#' @param logical_mat logical vector of length n_datasets indicating whether a given dataset is logical (TRUE) or integer (FALSE).
-#' @param write_as_mtx_to_disk boolean indicating whether the function should have the side effect of writing the mtx file, barcodes file, and features file to disk.
-#' @param file_dir directory in which to store the initialized mtx files; by default, initializes the data in a brand new directory obtain through tempfile().
-#' @param seed optional seed to random number generator
+#' @param n_row number of rows
+#' @param n_col number of columns
+#' @param logical_mat boolean indicating whether a given dataset is logical (TRUE) or integer (FALSE).
+#' @param write_as_mtx_to_disk boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.
 #' @return a list of length n_datasets; each element of the list contains
 #' (i) R matrix
 #' (ii) in-memory cell barcodes
