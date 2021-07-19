@@ -25,13 +25,14 @@ test_that("Compare ground truth matrix to on_disc_matrix initialized in memory",
 })
 
 
-test_that("Check dimension",{
+test_that("Check dimension", {
   for (i in seq(1, n_datasets)) {
     original_dim <- dim(r_mats[[i]])
     test_dim <- dim(cov_odms_from_memory[[i]]@ondisc_matrix)
     expect_true(all(original_dim == test_dim))
   }
 })
+
 
 # add test to check covariates here
 
