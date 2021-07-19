@@ -39,5 +39,12 @@ You can install the package from CRAN with:
 install.packages("ondisc")
 ```
 
+You can install the development version from Github with:
+
+```r
+install.packages("devtools")
+devtools::install_github("timothy-barry/ondisc")
+```
+
 You can browse the source code on Github
 [here](https://github.com/timothy-barry/ondisc).

@@ -37,7 +37,7 @@ barcodes_fp <- paste0(raw_data_dir, "/cell_barcodes.tsv")
 features_fp <- paste0(raw_data_dir, "/genes.tsv")
 ```
 
-An `ondisc_matrix` consists of two parts: an HDF5 (i.e., .h5) file that stores the expression data on-disk in a novel format, and an in-memory object that allows us to interact with the expression data from within R. The easiest way to initialize an `ondisc_matrix` is by calling the function `create_ondisc_matrix_from_mtx`. We pass to this function (i) a file path to the .mtx file storing the expression data, (ii) a file path to the .tsv file storing the cell barcodes, and (iii) a file path to the .tsv file storing the feature IDs and human-readable feature names. We optionally can specify the directory in which to store the initialized .h5 file, which in this tutorial we will take to be the temporary directory.
+An `ondisc_matrix` consists of two parts: an HDF5 (i.e., .h5) file that stores the expression data on-disk, and an in-memory object that allows us to interact with the expression data from within R. The easiest way to initialize an `ondisc_matrix` is by calling the function `create_ondisc_matrix_from_mtx`. We pass to this function (i) a file path to the .mtx file storing the expression data, (ii) a file path to the .tsv file storing the cell barcodes, and (iii) a file path to the .tsv file storing the feature IDs and human-readable feature names. We optionally can specify the directory in which to store the initialized .h5 file, which in this tutorial we will take to be the temporary directory.
 
 ```{r}
 temp_dir <- tempdir()
@@ -64,7 +64,7 @@ The initialized HDF5 file is named `ondisc_matrix_1.h5` and is located in the te
 "ondisc_matrix_1.h5" %in% list.files(temp_dir)
 ```
 
-A strength of `create_ondisc_matrix_from_mtx` is that it does *not* assume that entire expression matrix fits into memory. The optional argument `n_lines_per_chunk` can be used to specify the number of lines to read from the .mtx file at a time. Additionally, `create_ondisc_matrix_from_mtx` is fast: the novel algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, `create_ondisc_matrix_from_mtx` takes aboout 4-8 minutes/GB to run. Finally, for a given dataset, `create_ondisc_matrix_from_mtx` only needs to be run once, even after closing and opening new R sessions.
+A strength of `create_ondisc_matrix_from_mtx` is that it does *not* assume that entire expression matrix fits into memory. The optional argument `n_lines_per_chunk` can be used to specify the number of lines to read from the .mtx file at a time. Additionally, `create_ondisc_matrix_from_mtx` is fast: the algorithm that underlies this function is highly efficient and implemented in C++ for maximum speed. Typically, `create_ondisc_matrix_from_mtx` takes aboout 5-8 minutes/GB to run. Finally, for a given dataset, `create_ondisc_matrix_from_mtx` only needs to be run once, even after closing and opening new R sessions.
 
 # Querying basic information
 

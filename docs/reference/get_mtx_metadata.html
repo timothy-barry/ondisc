@@ -96,6 +96,18 @@
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    ondisc in action
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -121,24 +133,24 @@
     <p>Get mtx metadata</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_mtx_metadata</span><span class='op'>(</span><span class='va'>mtx_fp</span>, <span class='va'>n_rows_with_comments</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_mtx_metadata</span><span class='op'>(</span><span class='va'>mtx_fp</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>mtx_fp</th>
-      <td><p>filepath to the mtx file</p></td>
-    </tr>
-    <tr>
-      <th>n_rows_with_comments</th>
-      <td><p>number of rows with comments (at top of file)</p></td>
+      <td><p>path to the mtx file</p>
+<p>If total number of data points exceeds maximum integer value in R (.Machine$integer.max), throw error.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list containing (i) n_genes, (ii) n_cells, (iii) the numer of data points (i.e., fraction of entries that are zero), (iv) (TRUE/FALSE) matrix is logical</p>
+    <p>a list containing (i) n_genes, (ii) n_cells, (iii) the number of
+data points (i.e., fraction of entries that are zero),
+(iv) (TRUE/FALSE) matrix is logical,
+(v) number of rows to skip before reading the data</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -151,7 +163,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Timothy Barry.</p>
+  <p>Developed by <a href='https://timothy-barry.github.io/'>Tim Barry</a>.</p>
 </div>
 
 <div class="pkgdown">

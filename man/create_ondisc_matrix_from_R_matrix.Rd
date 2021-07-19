@@ -2,7 +2,7 @@
 % Please edit documentation in R/initialize_in_memory.R
 \name{create_ondisc_matrix_from_R_matrix}
 \alias{create_ondisc_matrix_from_R_matrix}
-\title{Create ondisc matrix from R matrix}
+\title{Create an \code{ondisc} matrix from an R matrix}
 \usage{
 create_ondisc_matrix_from_R_matrix(
   r_matrix,
@@ -14,7 +14,7 @@ create_ondisc_matrix_from_R_matrix(
 )
 }
 \arguments{
-\item{r_matrix}{an R matrix. The matrix can be either integer or logical.}
+\item{r_matrix}{an R matrix. The matrix can be represented as a standard (dense) R matrix or a sparse matrix of class "dgTMatrix". Integer and logical (i.e., boolean) matrices are allowed.}
 
 \item{barcodes}{a character vector giving the cell barcodes.}
 
@@ -30,10 +30,10 @@ create_ondisc_matrix_from_R_matrix(
 A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a \code{metadata_ondisc_matrix} before returning.
 }
 \description{
-Initializes an \code{ondisc_matrix} from an R matrix. Returns an \code{ondisc_matrix} along with cell-specific and feature-specific covariate matrices (or optionally, a \code{metadata_ondisc_matrix}).
+Initializes an \code{ondisc_matrix} from an R matrix. Returns an \code{ondisc_matrix} alongside cell-specific and feature-specific covariate matrices (or optionally, a \code{metadata_ondisc_matrix}).
 }
 \details{
-The function can compute the following cell-specific and feature-specific covariates:
+This function computes the following cell-specific and feature-specific covariates:
 \itemize{
 \item cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).
 \item feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).
@@ -58,15 +58,15 @@ nrow = n_row, ncol = n_col)
 on_disk_dir <- tempdir()
 features_df_2 <- dplyr::select(features_df, id)
 
-###########
-# EXAMPLE 1
-###########
-odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix,barcodes,
+###########################
+# EXAMPLE 1: integer counts
+###########################
+odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
 features_df, on_disk_dir)
 
-###########
-# EXAMPLE 2
-###########
+####################
+# EXAMPLE 2: logical
+####################
 odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
 features_df_2, on_disk_dir)
 }

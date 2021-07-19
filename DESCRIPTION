@@ -2,7 +2,7 @@ Package: ondisc
 Title: Fast, Universal, and Intuitive Computing on Large-Scale Single-Cell Data
 Version: 1.0.0
 Authors@R:
-    c(person(given = "Timothy",
+    c(person(given = "Tim",
            family = "Barry",
            role = c("aut", "cre"),
            email = "tbarry2@andrew.cmu.edu",

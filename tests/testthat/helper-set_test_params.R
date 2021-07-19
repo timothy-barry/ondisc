@@ -1,36 +1,32 @@
 cat("Running test setup script.\n")
 
-# First, define the test type "small" or "large." Also set the temp_test_dir.
-test_type <- "small"
-temp_test_dir <- tempfile()
-dir.create(temp_test_dir)
+# 1. Set the hyperparameters that define the test.
+n_datasets <- 3
+n_reps <- 2
+n_row <- sample(x = seq(500, 1500), size = n_datasets, replace = TRUE)
+n_col <- sample(x = seq(500, 1500), size = n_datasets, replace = TRUE)
+logical_mat <- sample(c(TRUE, FALSE), size = n_datasets, replace = TRUE)
 
-# Initialize the parameters.
-if (test_type == "small") {
-  n_datasets <- 3
-  n_reps <- 2
-  n_row <- NULL
-  n_col <- NULL
-} else {
-  n_datasets <- 15
-  n_reps <- 10
-  n_row <- NULL
-  n_col <- NULL
-}
 
-# Create synthetic data; save the corresponding list of r matrices in r_mats.
-r_mats_plus_data <- create_synthetic_data(n_datasets = n_datasets, simulated_data_dir = temp_test_dir, n_row = n_row, n_col = n_col)
-r_mats <- lapply(r_mats_plus_data, function(l) l$r_matrix )
+# 2. Create n_datasets synthetic matrices; write the mtx file, barcodes.tsv file, and features.tsv file to disk.
+r_mats_plus_metadata <- lapply(seq(1, n_datasets), function(i) {
+  create_synthetic_data(n_row = n_row[i], n_col = n_col[i],
+                        logical_mat = logical_mat[i], write_as_mtx_to_disk = TRUE)
+})
+r_mats <- lapply(r_mats_plus_metadata, function(l) l$r_mat)
 
-# Initialize the ondisc_covariate_matrix objects
-cov_odms <- get_metadata_odm_list(r_mats, 1L, temp_test_dir)
 
-# initialize the multimodal_odm corresponding to matrix 1
-n_cells_m1 <- ncol(r_mats[[1]])
-new_modality <- create_synthetic_data(n_datasets = 1, simulated_data_dir = temp_test_dir, n_row = n_row, n_col = n_cells_m1, idx_start = length(r_mats) + 1L)
-new_modality_metadata_odm <- get_metadata_odm_list(list(new_modality[[1]]$r_matrix), length(r_mats) + 1L, temp_test_dir)
-multimodal_mat <- multimodal_ondisc_matrix(list(modality_1 = cov_odms[[1]],
-                                                modality_2 = new_modality_metadata_odm[[1]]))
-
-# write r_mats to .h5 files using create_ondisc_matrix_from_R_matrix
-cov_odms_from_memory <- write_in_memory_data_to_h5(n_datasets, r_mats_plus_data, temp_test_dir)
+# 3. Initialize metadata_ondisc_matrix objects for each dataset (in a separate directory). Use variable chunk size.
+cov_odms <- lapply(seq(1, n_datasets), function(i) {
+  n_nonzero <- r_mats_plus_metadata[[i]]$n_nonzero
+  bern <- as.logical(rbinom(1, 1, 0.5))
+  chunk_size <- if (bern) n_nonzero + 1 else sample(x = seq(2, n_nonzero), 1)
+  file_dir <- create_new_directory()
+  metadata_odm <- create_ondisc_matrix_from_mtx(mtx_fp = r_mats_plus_metadata[[i]]$matrix_fp,
+                                                barcodes_fp =  r_mats_plus_metadata[[i]]$barcodes_fp,
+                                                features_fp = r_mats_plus_metadata[[i]]$features_fp,
+                                                on_disk_dir = file_dir,
+                                                n_lines_per_chunk = chunk_size,
+                                                return_metadata_ondisc_matrix = TRUE,
+                                                progress = FALSE)
+})

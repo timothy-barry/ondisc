@@ -1,88 +1,70 @@
 # nocov start
 # These are helper functions used for testing purposes only. None of these functions are exported.
 
+#' Create new directory
+#'
+#' Creates a unique directory; returns a file path to that directory.
+#'
+#' @return file path to a unique, empty directory
+create_new_directory <- function() {
+  f <- tempfile()
+  while (dir.exists(f)) f <- tempfile()
+  dir.create(f)
+  return(f)
+}
+
+
 #' Create a random matrix
 #'
-#' All arguments optional
+#' Creates and returns a random matrix.
 #'
 #' @param n_row number of rows
 #' @param n_col number of columns
+#' @param logical_mat boolean indicating whether the matrix is logical (TRUE) or integer (FALSE)
 #' @param p_zero probability an entry will be zero
-#' @param matrix_values set of values from which to draw the matrix entries
-#' @param logical_mat should the matrix be logical (as opposed to numeric)?
+#' @param p_set_col_zero fraction of columns to set to zero
+#' @param p_set_row_zero fraction of rows to set to zero
+#' @param matrix_values set of values from which to draw the matrix entries (applicable to integer matrices only)
 #'
-#' @return a randomly-generated matrix of class TsparseMatrix
-#' @noRd
-create_random_matrix <- function(n_row = NULL, n_col = NULL, p_zero = 0.95, matrix_values = 1:10, logical_mat = FALSE) {
-  if (is.null(n_row)) n_row <- sample(x = 200:1000, size = 1)
-  if (is.null(n_col)) n_col <- sample(x = 200:1000, size = 1)
+#' @return a randomly-generated matrix in sparse format
+create_random_matrix <- function(n_row, n_col, logical_mat, p_zero = 0.95, p_set_col_zero = 0.05, p_set_row_zero = 0.05, matrix_values = seq(1L, 10L)) {
+  # sample binary matrix
   r <- matrix(data = stats::rbinom(n =  n_row * n_col, size = 1, prob = 1 - p_zero), nrow = n_row, ncol = n_col)
+  # randomly set some rows or columns to all zero
+  zero_rows <- sample(seq(1, n_row), size = floor(p_set_row_zero * n_row), replace = FALSE)
+  zero_cols <- sample(seq(1, n_col), size = floor(p_set_row_zero * n_col), replace = FALSE)
+  r[zero_rows,] <- 0; r[,zero_cols] <- 0
+  # initialize integer or logical matrix
   if (!logical_mat) {
-  m <- matrix(data = sample(x = matrix_values, size = n_row * n_col, replace = TRUE), nrow = n_row, ncol = n_col)
-  out <- m * r
+    m <- matrix(data = sample(x = matrix_values, size = n_row * n_col, replace = TRUE), nrow = n_row, ncol = n_col)
+    out <- m * r
   } else {
     out <- r == 1
   }
-  return(Matrix::Matrix(data = out, sparse = TRUE))
+  # convert the matrix to sparse format and return
+  out <- Matrix::Matrix(data = out, sparse = TRUE)
+  return(out)
 }
 
 
 #' Save random matrix as a 10X object
 #'
-#' This function stores a matrix in .mtx format, along with features and barcodes .tsv files for the cells and genes.
+#' Writes an R matrix to disk in .mtx format. Writes barcodes.tsv and features.tsv files as well. genes.
 #'
 #' @param m a sparse Matrix object
 #' @param data_dir the directory in which to store the matrix
-#' @param cell_barcodes (optional) the cell barcodes
-#' @param gene_names (optional) the gene names
-#' @param gene_ids (optional) the gene ids
-#' @param idx (optional) an index to append to the file names
-#' @param save_r_matrix (optional) save the corresponding R matrix?
+#' @param cell_barcodes the cell barcodes
+#' @param feature_df data frame of features
 #'
 #' @return the file paths to the matrix.mtx, barcodes.tsv, and features.tsv files.
 #' @noRd
-save_random_matrix_as_10x <- function(m, data_dir, cell_barcodes, gene_names, gene_ids, idx = NULL, save_r_matrix = TRUE) {
-  if (!dir.exists(data_dir)) dir.create(path = data_dir, recursive = TRUE)
-  to_save_locs <- get_simulation_data_fps(data_dir, idx)
-  # save the matrix in .mtx format.
-  Matrix::writeMM(obj = m, file = to_save_locs[["mtx"]])
-  # save the files
-  readr::write_tsv(x = dplyr::tibble(cell_barcodes), file = to_save_locs[["barcodes"]], col_names = FALSE)
-  readr::write_tsv(x = dplyr::tibble(gene_ids, gene_names), file = to_save_locs[["features"]], col_names = FALSE)
-  # Finally, save the original R Matrix object
-  if (save_r_matrix) saveRDS(object = m, file = to_save_locs[["r_matrix"]])
-  return(to_save_locs)
-}
-
-
-#' Get simulation data filepaths
-#'
-#' Get file paths to simulation objects given an index.
-#'
-#' @param data_dir directory in which the simulation objects are stored
-#' @param idx an index
-#'
-#' @return a character vector containing file paths to the simulation data
-#' @noRd
-get_simulation_data_fps <- function(data_dir, idx) {
-  f_names <- paste0(paste0(c("matrix", "barcodes", "features", "r_matrix", "on_disc_matrix", "on_disc_matrix")), if (is.null(idx)) "" else paste0("_", idx), c(".mtx", ".tsv", ".tsv", ".rds", ".rds", ".h5"))
-  to_save_locs <- setNames(paste0(data_dir, "/", f_names),  c("mtx", "barcodes", "features", "r_matrix", "on_disc_matrix",  "on_disc_matrix_h5"))
-  return(to_save_locs)
-}
-
-
-#' Load on disc matrix and R sparse matrix
-#'
-#' @param data_dir simulation data directory
-#' @param idx index
-#'
-#' @return a list containing the on_disc_matrix and the original sparse R matrix.
-#' @noRd
-load_on_disc_and_mat <- function(data_dir, idx) {
-  fps <- get_simulation_data_fps(data_dir, idx)
-  on_disc_matrix <- fps[["on_disc_matrix"]] %>% readRDS
-  r_Matrix <- fps[["r_matrix"]] %>% readRDS
-  return(list(on_disc_matrix = on_disc_matrix, r_Matrix = r_Matrix))
+save_random_matrix_as_10x <- function(m, data_dir, cell_barcodes, feature_df) {
+  fps <- paste0(data_dir, "/", c("matrix.mtx", "barcodes.tsv", "features.tsv"))
+  names(fps) <- c("matrix", "barcodes", "features")
+  Matrix::writeMM(obj = m, file = fps["matrix"])
+  readr::write_tsv(x = data.frame(cell_barcodes), file = fps["barcodes"], col_names = FALSE)
+  readr::write_tsv(x = feature_df, file = fps["features"], col_names = FALSE)
+  return(fps)
 }
 
 
@@ -115,123 +97,65 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 
 #' Create synthetic data
 #'
-#' Generate synthetic datasets (consisting of a matrix.mtx file, a barcodes.tsv file, and a features.tsv file) and store these datasets in simulated_data_dir, with indices appended to the file names.
+#' Creates synthetic data for testing purposes. Optionally writes the data to disk.
 #'
-#' @param n_datasets number of datasets to generate
-#' @param simulated_data_dir directory in which to store the generated datasets
-#' @param n_row number of rows in datasets (by default random)
-#' @param n_col number of columns in datasets (by default random)
-#' @param seed (optional) seed to set
-#' @param idx_start index at which to start (default 1)
-#' @return NULL
-#' @noRd
-create_synthetic_data <- function(n_datasets, simulated_data_dir, n_row = NULL, n_col = NULL, seed = NULL, idx_start = 1L, logical_mat_p = 0.5) {
-  if (!is.null(seed)) set.seed(seed)
-  out <- vector(mode = "list", length = n_datasets)
-  for (i in seq(idx_start, idx_start + n_datasets - 1L)) {
-    if (n_datasets > 1) cat(paste0("Generating dataset ", i, ".\n"))
-    if (i == 1) {
-      m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
-    } else if (i == 2) {
-      m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
-    } else if (stats::rbinom(1, 1, logical_mat_p)) {
-      m <- create_random_matrix(n_row = n_row, n_col = n_col, logical_mat = TRUE)
-    } else {
-      m <- create_random_matrix(n_row = n_row, n_col = n_col, matrix_values = 1:10)
-    }
-    if (stats::rbinom(1, 1, 0.5)) {
-      n_row <- nrow(m)
-      zero_row_idxs <- sample(x = seq(1, n_row), size = ceiling(.25 * n_row), replace = FALSE)
-      m[zero_row_idxs,] <- if (is.logical(m@x[1])) FALSE else 0
-    }
-    if (stats::rbinom(1, 1, 0.5)) {
-      n_col <- ncol(m)
-      zero_col_idxs <- sample(x = 1:n_col, size = ceiling(0.05 * n_col), replace = FALSE)
-      m[,zero_col_idxs] <- if (is.logical(m@x[1])) FALSE else 0
-    }
-    # create the barcode and feature files
-    cell_barcodes <- paste0("cell_", 1:ncol(m))
-    gene_names <- paste0("gene_", 1:nrow(m))
-    # set 1/10 of entries to MT-*
-    idxs <- sort(sample(x = 1:nrow(m), size = floor(nrow(m)/10), replace = FALSE))
-    gene_names[idxs] <- paste0("MT-", idxs)
-    gene_ids <- paste0("ENSG000", 1:nrow(m))
-    features_df <- data.frame(gene_ids, gene_names)
-    # write to disk
-    save_random_matrix_as_10x(m = m, data_dir = simulated_data_dir,
-                              cell_barcodes = cell_barcodes, gene_names = gene_names, gene_ids = gene_ids,
-                              idx = i, save_r_matrix = FALSE)
-    # prepare output
-    out[[i - idx_start + 1L]] <- list(r_matrix = m, cell_barcodes = cell_barcodes, features_df = features_df)
+#' @param n_row number of rows
+#' @param n_col number of columns
+#' @param logical_mat boolean indicating whether a given dataset is logical (TRUE) or integer (FALSE).
+#' @param write_as_mtx_to_disk boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.
+#' @return a list of length n_datasets; each element of the list contains
+#' (i) R matrix
+#' (ii) in-memory cell barcodes
+#' (iii) in-memory features df
+#' (iv) file path to the .mtx file
+#' (v) file path to the barcodes.tsv file
+#' (vi) file path to the features.tsv file
+#' @export
+#'
+#' @examples
+#' n_row <- 1000
+#' n_col <- 500
+#' logical_mat <- FALSE
+#' synth_data <- create_synthetic_data(n_row, n_col, logical_mat)
+#' # side-effect: creates .mtx file, barcodes.tsv file, and features.tsv file on disk.
+create_synthetic_data <- function(n_row, n_col, logical_mat, write_as_mtx_to_disk = TRUE) {
+  # first, create an in-memory r matrix
+  in_mem_r_mat <- create_random_matrix(n_row, n_col, logical_mat)
+  # next, create a character vector of barcodes
+  barcodes <- paste0("cell_", seq(1, n_col))
+  # next, create features dfs
+  gene_names <- paste0("gene_", seq(1, n_row))
+  idxs <- sort(sample(x = seq(1, n_row), size = floor(n_row/10), replace = FALSE))
+  gene_names[idxs] <- paste0("MT-", idxs)
+  gene_ids <- paste0("ENSG000", seq(1, n_row))
+  features_df <- data.frame(gene_ids, gene_names)
+  # create "out," containing the matrix, gene ids, and features df
+  out <- list(r_mat = in_mem_r_mat, barcodes = barcodes,
+              features_df = features_df, n_nonzero = length(in_mem_r_mat@x))
+  if (write_as_mtx_to_disk) {
+    # create the directory
+    file_dir <- create_new_directory()
+    fps <- save_random_matrix_as_10x(m = in_mem_r_mat,
+                                     data_dir = file_dir,
+                                     cell_barcodes = barcodes,
+                                     feature_df = features_df)
+    out$matrix_fp <- fps[["matrix"]]
+    out$barcodes_fp <- fps[["barcodes"]]
+    out$features_fp <- fps[["features"]]
   }
   return(out)
 }
 
 
-#' Get metadata odm list
-#'
-#' @param mat_list a list of matrices
-#' @param idx_start the starting index
-#' @param temp_test_dir directory used by the tests
-#'
-#' @return a list of initialized metadata_odms
-#' @noRd
-get_metadata_odm_list <- function(mat_list, idx_start, temp_test_dir) {
-  cov_odms <- vector(mode = "list", length = length(mat_list))
-  for (i in seq(1, length(mat_list))) {
-    fps <- get_simulation_data_fps(data_dir = temp_test_dir, idx = i + idx_start - 1L)
-    # check if on_disc_matrix already has been created; if so, delete that as well as the .h5 file
-    if (file.exists(fps[["on_disc_matrix_h5"]])) file.remove(fps[["on_disc_matrix_h5"]]) %>% invisible() # h5 file
-    m <- mat_list[[i]]
-    n_data_points <- length(m@x)
-    if (stats::rbinom(1, 1, 0.5)) {
-      chunk_size <- sample(x = seq(2, n_data_points - 1), size = 1) # choose chunk size less than n_data_points
-    } else {
-      chunk_size <- sample(x = seq(n_data_points + 1, 2 * n_data_points), size = 1)
-    }
-    cov_odm_obj <- create_ondisc_matrix_from_mtx(mtx_fp = fps[["mtx"]],
-                                                 barcodes_fp = fps[["barcodes"]],
-                                                 features_fp = fps[["features"]],
-                                                 n_lines_per_chunk = chunk_size,
-                                                 on_disk_dir = temp_test_dir,
-                                                 return_metadata_ondisc_matrix = TRUE)
-    cov_odms[[i]] <- cov_odm_obj
-  }
-  return(cov_odms)
-}
-
-
 #' get_random_subset
+#'
+#' Return a random integer subset (of random length) of the set [n].
 #'
 #' @param n an integer
 #'
 #' @return a random subset of 1, 2, ..., n.
-#' @noRd
 get_random_subset <- function(n) {
   sample(x = seq(1, n), size = sample(x = seq(1, n), size = 1L), replace = FALSE)
 }
 
-
-#' write r_mats to .h5 files using create_ondisc_matrix_from_R_matrix
-#'
-#' @param n_datasets number of test datasets
-#' @param r_mats_plus_data R matrices of test datasets with their cell_barcodes and feature_df
-#' @param temp_test_dir the temporary test directory
-#'
-#' @return a list of `ondisc_matrix` along with cell-specific and feature-specific covariate matrices
-#' @noRd
-write_in_memory_data_to_h5 <- function (n_datasets, r_mats_plus_data, temp_test_dir) {
-  cov_odms_from_memory <- list()
-  for (i in seq(1, n_datasets)) {
-    r_matrix <- as.matrix(r_mats_plus_data[[i]]$r_matrix)
-    barcodes <- r_mats_plus_data[[i]]$cell_barcodes
-    features_df <- r_mats_plus_data[[i]]$features_df
-    odm <- create_ondisc_matrix_from_R_matrix(r_matrix = r_matrix,
-                                              barcodes = barcodes,
-                                              features_df = features_df,
-                                              on_disk_dir = temp_test_dir)
-    cov_odms_from_memory[[i]] <- odm
-  }
-  return(cov_odms_from_memory)
-}
 # nocov end

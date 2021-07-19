@@ -1,12 +1,12 @@
-#' Create ondisc matrix from R matrix
+#' Create an `ondisc` matrix from an R matrix
 #'
-#' Initializes an `ondisc_matrix` from an R matrix. Returns an `ondisc_matrix` along with cell-specific and feature-specific covariate matrices (or optionally, a `metadata_ondisc_matrix`).
+#' Initializes an `ondisc_matrix` from an R matrix. Returns an `ondisc_matrix` alongside cell-specific and feature-specific covariate matrices (or optionally, a `metadata_ondisc_matrix`).
 #'
-#' The function can compute the following cell-specific and feature-specific covariates:
+#' This function computes the following cell-specific and feature-specific covariates:
 #' - cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).
 #' - feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).
 #'
-#' @param r_matrix an R matrix. The matrix can be either integer or logical.
+#' @param r_matrix an R matrix. The matrix can be represented as a standard (dense) R matrix or a sparse matrix of class "dgTMatrix". Integer and logical (i.e., boolean) matrices are allowed.
 #' @param barcodes a character vector giving the cell barcodes.
 #' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
 #' @param on_disk_dir directory in which to store the .h5 file.
@@ -35,15 +35,15 @@
 #' on_disk_dir <- tempdir()
 #' features_df_2 <- dplyr::select(features_df, id)
 #'
-#' ###########
-#' # EXAMPLE 1
-#' ###########
-#' odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix,barcodes,
+#' ###########################
+#' # EXAMPLE 1: integer counts
+#' ###########################
+#' odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
 #' features_df, on_disk_dir)
 #'
-#' ###########
-#' # EXAMPLE 2
-#' ###########
+#' ####################
+#' # EXAMPLE 2: logical
+#' ####################
 #' odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
 #' features_df_2, on_disk_dir)
 create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, on_disk_dir, file_name = NULL, return_metadata_ondisc_matrix = FALSE) {
