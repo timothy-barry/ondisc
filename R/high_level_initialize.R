@@ -84,7 +84,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   # Extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
   features_metadata <- get_features_metadata(features_fp, bag_of_variables)
   # Set the on_disk_dir, if necessary
-  if (is.null(on_disk_dir)) on_disk_dir <- dirname(mtx_fp)
+  if (is.null(on_disk_dir)) on_disk_dir <- dirname(mtx_fp[1])
 
   # Generate a name for the ondisc_matrix .h5 file, if necessary
   if (is.null(file_name)) {
