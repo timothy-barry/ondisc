@@ -103,13 +103,14 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' @param n_col number of columns
 #' @param logical_mat boolean indicating whether a given dataset is logical (TRUE) or integer (FALSE).
 #' @param write_as_mtx_to_disk boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.
-#' @return a list of length n_datasets; each element of the list contains
+#' @return a list:
 #' (i) R matrix
 #' (ii) in-memory cell barcodes
 #' (iii) in-memory features df
-#' (iv) file path to the .mtx file
-#' (v) file path to the barcodes.tsv file
-#' (vi) file path to the features.tsv file
+#' (iv) number of nonzero entries in expression matrix
+#' (v) file path to the .mtx file
+#' (vi) file path to the barcodes.tsv file
+#' (vii) file path to the features.tsv file
 #' @export
 #'
 #' @examples

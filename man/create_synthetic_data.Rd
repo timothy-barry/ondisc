@@ -16,13 +16,14 @@ create_synthetic_data(n_row, n_col, logical_mat, write_as_mtx_to_disk = TRUE)
 \item{write_as_mtx_to_disk}{boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.}
 }
 \value{
-a list of length n_datasets; each element of the list contains
+a list:
 (i) R matrix
 (ii) in-memory cell barcodes
 (iii) in-memory features df
-(iv) file path to the .mtx file
-(v) file path to the barcodes.tsv file
-(vi) file path to the features.tsv file
+(iv) number of nonzero entries in expression matrix
+(v) file path to the .mtx file
+(vi) file path to the barcodes.tsv file
+(vii) file path to the features.tsv file
 }
 \description{
 Creates synthetic data for testing purposes. Optionally writes the data to disk.
