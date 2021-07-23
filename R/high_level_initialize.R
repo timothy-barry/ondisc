@@ -77,7 +77,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   bag_of_variables <- new.env()
 
   # Extract .mtx metadata
-  mtx_metadata <- get_mtx_metadata(mtx_fp)
+  mtx_metadata <- v(mtx_fp)
   bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
   bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
 
@@ -163,6 +163,6 @@ internal_initialize_ondisc_matrix <- function(h5_file, logical_mat, underlying_d
 #' # create the ondisc matrix
 #' odm_plus_covariates_list <- create_ondisc_matrix_from_h5(h5_list, storage_dir)
 #' }
-create_ondisc_matrix_from_h5 <- function(h5_list, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
+create_ondisc_matrix_from_h5_list <- function(h5_list, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
   # add code here!
 }
