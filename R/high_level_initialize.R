@@ -72,10 +72,10 @@
 #'                                         cell_barcodes = cell_barcodes_multi[[i]],
 #'                                          feature_df = features_df_multi)
 #' }
-#' mtx_fp_multi <- sapply(X = locs, function(i) i[["matrix"]])
-#' barcodes_fp_multi <- sapply(X = locs, function(i) i[["barcodes"]])
-#' features_fp_multi <- locs[[1]][["features"]]
-#' create_ondisc_matrix_from_mtx(mtx_fp_multi, barcodes_fp_multi, features_fp_multi)
+#' mtx_fp <- sapply(X = locs, function(i) i[["matrix"]])
+#' barcodes_fp <- sapply(X = locs, function(i) i[["barcodes"]])
+#' features_fp <- locs[[1]][["features"]]
+#' create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp)
 #' }
 create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
   # Define "bag_of_variables" environment for storing args
