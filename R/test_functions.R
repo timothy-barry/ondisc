@@ -6,6 +6,7 @@
 #' Creates a unique directory; returns a file path to that directory.
 #'
 #' @return file path to a unique, empty directory
+#' @export
 create_new_directory <- function() {
   f <- tempfile()
   while (dir.exists(f)) f <- tempfile()
