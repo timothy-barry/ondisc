@@ -49,28 +49,33 @@
 #'
 #' # Third example: initialize from a list of .mtx files
 #' load_all(helpers = FALSE)
-#' dir <- tempfile()
-#' dir.create(dir)
 #' n_mat <- 5
-#' n_row <- 300
-#' # Generate the features df
-#' gene_names <- paste0("gene_", 1:n_row)
-#' idxs <- sort(sample(x = 1:n_row, size = floor(n_row/10), replace = FALSE))
+#' n_row_multi <- 300
+#' n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
+#' col_multi_cumsum <- c(0,cumsum(n_col_multi))
+#' logical_mat_multi <- vector(mode = "logical", length = n_mat)
+#' #' Generate the features df
+#' gene_names <- paste0("gene_", seq(1, n_row_multi))
+#' idxs <- sort(sample(x = seq(1, n_row_multi), size = floor(n_row_multi/10), replace = FALSE))
 #' gene_names[idxs] <- paste0("MT-", idxs)
-#' gene_ids <- paste0("ENSG000", n_row)
-#' # generate the matrices
-#' my_mats <- vector(mode = "list", length = n_mat)
+#' gene_ids <- paste0("ENSG000", seq(1, n_row_multi))
+#' features_df_multi <- data.frame(gene_ids, gene_names)
+#' #' generate the matrices
+#' r_mats_multi <- vector(mode = "list", length = n_mat)
+#' cell_barcodes_multi <- vector(mode = "list", length = n_mat)
 #' locs <- vector(mode = "list", length = 5)
-#' for (i in seq(1,5)) {
-#' m <- create_random_matrix(n_row = n_row, n_col = NULL, matrix_values = 1:10)
-#' cell_barcodes <- paste0("cell_", 1:ncol(m))
-#' locs[[i]] <- save_random_matrix_as_10x(m = m, data_dir = dir, cell_barcodes = cell_barcodes,
-#' gene_names = gene_names, gene_ids = gene_ids, idx = i, save_r_matrix = FALSE)
+#' for (i in seq(1,n_mat)) {
+#'   r_mats_multi[[i]] <- create_random_matrix(n_row = n_row_multi, n_col = n_col_multi[i], logical_mat = logical_mat_multi[i])
+#'   cell_barcodes_multi[[i]] <- paste0("cell_", seq(col_multi_cumsum[i]+1, col_multi_cumsum[i+1]))
+#'   locs[[i]] <- save_random_matrix_as_10x(m = r_mats_multi[[i]],
+#'                                          data_dir = create_new_directory(),
+#'                                         cell_barcodes = cell_barcodes_multi[[i]],
+#'                                          feature_df = features_df_multi)
 #' }
-#' mtx_fp <- sapply(X = locs, function(i) i[["mtx"]])
-#' barcodes_fp <- sapply(X = locs, function(i) i[["barcodes"]])
-#' features_fp <- locs[[1]][["features"]]
-#' create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp)
+#' mtx_fp_multi <- sapply(X = locs, function(i) i[["matrix"]])
+#' barcodes_fp_multi <- sapply(X = locs, function(i) i[["barcodes"]])
+#' features_fp_multi <- locs[[1]][["features"]]
+#' create_ondisc_matrix_from_mtx(mtx_fp_multi, barcodes_fp_multi, features_fp_multi)
 #' }
 create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
   # Define "bag_of_variables" environment for storing args
