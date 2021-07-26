@@ -83,27 +83,19 @@ n_row_multi <- 300
 n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
 col_multi_cumsum <- c(0,cumsum(n_col_multi))
 logical_mat_multi <- vector(mode = "logical", length = n_mat)
-#' Generate the features df
-gene_names <- paste0("gene_", seq(1, n_row_multi))
-idxs <- sort(sample(x = seq(1, n_row_multi), size = floor(n_row_multi/10), replace = FALSE))
-gene_names[idxs] <- paste0("MT-", idxs)
-gene_ids <- paste0("ENSG000", seq(1, n_row_multi))
-features_df_multi <- data.frame(gene_ids, gene_names)
-#' generate the matrices
-r_mats_multi <- vector(mode = "list", length = n_mat)
-cell_barcodes_multi <- vector(mode = "list", length = n_mat)
-locs <- vector(mode = "list", length = 5)
+#' generate the matrices using create_synthetic_data
+r_mats_plus_data_multi <- vector(mode = "list", length = n_mat)
+set.seed(1)
 for (i in seq(1,n_mat)) {
-  r_mats_multi[[i]] <- create_random_matrix(n_row = n_row_multi, n_col = n_col_multi[i], logical_mat = logical_mat_multi[i])
-  cell_barcodes_multi[[i]] <- paste0("cell_", seq(col_multi_cumsum[i]+1, col_multi_cumsum[i+1]))
-  locs[[i]] <- save_random_matrix_as_10x(m = r_mats_multi[[i]],
-                                         data_dir = create_new_directory(),
-                                        cell_barcodes = cell_barcodes_multi[[i]],
-                                         feature_df = features_df_multi)
+  r_mats_plus_data_multi[[i]] <- create_synthetic_data(n_row = n_row_multi,
+                                                       n_col = n_col_multi[i],
+                                                       logical_mat = logical_mat_multi[i])
+  r_mats_plus_data_multi[[i]]$features_df <- r_mats_plus_data_multi[[1]]$features_df
+  r_mats_plus_data_multi[[i]]$features_fp <- r_mats_plus_data_multi[[1]]$features_fp
 }
-mtx_fp <- sapply(X = locs, function(i) i[["matrix"]])
-barcodes_fp <- sapply(X = locs, function(i) i[["barcodes"]])
-features_fp <- locs[[1]][["features"]]
+mtx_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
+barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
+features_fp <- r_mats_plus_data_multi[[1]]$features_fp
 create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp)
 }
 }

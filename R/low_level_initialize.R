@@ -326,7 +326,7 @@ run_core_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_
   if (length(mtx_fp) == 1) {
     return(run_core_algo_step_2_mtxchunked(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments))
   } else {
-    return(run_core_algo_step_2_mtxfilelist(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments))
+    return(run_core_algo_step_2_mtxfilelist(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments, bag_of_variables))
   }
 }
 
@@ -365,11 +365,14 @@ run_core_algo_step_2_mtxchunked <- function(mtx_fp, is_logical, n_lines_per_chun
 #' @param closure closure function to calculate the terminals and write to the h5 file
 #' @param acc_init empty accumulator
 #' @param arguments arguments
+#' @param bag_of_variables the bag of variables containing the variables to pass to the accumulator functions
 #'
 #' @return list containing the values of the terminals
 #' @noRd
-run_core_algo_step_2_mtxfilelist <- function(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments) {
+run_core_algo_step_2_mtxfilelist <- function(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments, bag_of_variables) {
   acc <- acc_init
+  cell_idx <- as.integer(c(0, cumsum(bag_of_variables$n_cells_in_files)))
+  pos <- 1L
   for (i in seq(1, length(mtx_fp))) {
     x <- readr::read_delim(file = mtx_fp[i],
                            delim = " ",
@@ -377,7 +380,10 @@ run_core_algo_step_2_mtxfilelist <- function(mtx_fp, is_logical, n_lines_per_chu
                            col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (is_logical) NULL else arguments$umi_counts),
                            progress = progress,
                            col_types = if (is_logical) "ii" else "iii")
-    acc <- closure(x, 1, acc)
+    #increase col_idx
+    x$cell_idxs = x$cell_idxs + cell_idx[i]
+    acc <- closure(x, pos, acc)
+    pos <- pos + nrow(x)
   }
   return(acc)
 }
