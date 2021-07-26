@@ -41,7 +41,6 @@ arguments_enum <- function() {
                  "mt_gene_bool",
                  "n_cells",
                  "n_features",
-                 "n_cells_in_files",
                  "acc_vect")
   list2env(setNames(as.list(arguments), arguments))
 }
