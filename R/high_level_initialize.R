@@ -77,7 +77,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   bag_of_variables <- new.env()
 
   # Extract .mtx metadata
-  mtx_metadata <- v(mtx_fp)
+  mtx_metadata <- get_mtx_metadata(mtx_fp)
   bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
   bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
 
