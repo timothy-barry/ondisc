@@ -193,7 +193,7 @@ get_expression_metadata_from_r_matrix <- function (r_matrix) {
 #' @noRd
 write_matrix_to_h5 <- function(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix) {
   # Initialize the .h5 file
-  initialize_h5_file_on_disk(h5_fp = h5_fp, mtx_metadata = expression_metadata, features_metadata = features_metadata, barcodes = barcodes, features = features_df, progress = TRUE, file_path = FALSE)
+  initialize_h5_file_on_disk(h5_fp = h5_fp, mtx_metadata = expression_metadata, features_metadata = features_metadata, barcodes_fp = barcodes, features_fp = features_df, progress = TRUE, file_path = FALSE)
 
   # Write CSC
   rhdf5::h5write(csc_r_matrix@p, file=h5_fp, name="cell_ptr")
