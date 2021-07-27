@@ -345,7 +345,7 @@ run_core_algo <- function(h5_fp, mtx_fp, is_logical, covariates, bag_of_variable
   for (i in 1:length(terminal_symbols)) grammar[[terminal_symbols[i]]]$value <- terminal_values[[i]]
   grammar[[symbols$n_nonzero_feature]]$value <- row_ptrs[[1]]
   cov_mats <- lapply(covariates, function(covariate_vect) {
-    out <- lapply(covariate_vect, evaluate_grammar, grammar) %>% list2DF
+    out <- lapply(covariate_vect, evaluate_grammar, grammar) %>% as.data.frame()
     colnames(out) <- gsub('_(feature|cell)', "", covariate_vect)
     return(out)
   })
