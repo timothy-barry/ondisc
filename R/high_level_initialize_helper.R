@@ -92,6 +92,7 @@ get_mtx_metadata <- function(mtx_fp) {
     out$n_cells <- cumulative_n_cells
     out$n_data_points <- cumulative_n_data_points
     out$n_rows_to_skip <- n_rows_to_skip_list
+    out$n_cells_in_files <- sapply(mtx_metadata_list, function(l) l$n_cells)
   }
   return(out)
 }

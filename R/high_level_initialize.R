@@ -49,27 +49,24 @@
 #'
 #' # Third example: initialize from a list of .mtx files
 #' load_all(helpers = FALSE)
-#' dir <- tempfile()
-#' dir.create(dir)
 #' n_mat <- 5
-#' n_row <- 300
-#' # Generate the features df
-#' gene_names <- paste0("gene_", 1:n_row)
-#' idxs <- sort(sample(x = 1:n_row, size = floor(n_row/10), replace = FALSE))
-#' gene_names[idxs] <- paste0("MT-", idxs)
-#' gene_ids <- paste0("ENSG000", n_row)
-#' # generate the matrices
-#' my_mats <- vector(mode = "list", length = n_mat)
-#' locs <- vector(mode = "list", length = 5)
-#' for (i in seq(1,5)) {
-#' m <- create_random_matrix(n_row = n_row, n_col = NULL, matrix_values = 1:10)
-#' cell_barcodes <- paste0("cell_", 1:ncol(m))
-#' locs[[i]] <- save_random_matrix_as_10x(m = m, data_dir = dir, cell_barcodes = cell_barcodes,
-#' gene_names = gene_names, gene_ids = gene_ids, idx = i, save_r_matrix = FALSE)
+#' n_row_multi <- 300
+#' n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
+#' col_multi_cumsum <- c(0,cumsum(n_col_multi))
+#' logical_mat_multi <- vector(mode = "logical", length = n_mat)
+#' #' generate the matrices using create_synthetic_data
+#' r_mats_plus_data_multi <- vector(mode = "list", length = n_mat)
+#' set.seed(1)
+#' for (i in seq(1,n_mat)) {
+#'   r_mats_plus_data_multi[[i]] <- create_synthetic_data(n_row = n_row_multi,
+#'                                                        n_col = n_col_multi[i],
+#'                                                        logical_mat = logical_mat_multi[i])
+#'   r_mats_plus_data_multi[[i]]$features_df <- r_mats_plus_data_multi[[1]]$features_df
+#'   r_mats_plus_data_multi[[i]]$features_fp <- r_mats_plus_data_multi[[1]]$features_fp
 #' }
-#' mtx_fp <- sapply(X = locs, function(i) i[["mtx"]])
-#' barcodes_fp <- sapply(X = locs, function(i) i[["barcodes"]])
-#' features_fp <- locs[[1]][["features"]]
+#' mtx_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
+#' barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
+#' features_fp <- r_mats_plus_data_multi[[1]]$features_fp
 #' create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp)
 #' }
 create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
@@ -80,11 +77,12 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   mtx_metadata <- get_mtx_metadata(mtx_fp)
   bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
   bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
+  bag_of_variables[[arguments_enum()$n_cells_in_files]] <- mtx_metadata$n_cells_in_files
 
   # Extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
   features_metadata <- get_features_metadata(features_fp, bag_of_variables)
   # Set the on_disk_dir, if necessary
-  if (is.null(on_disk_dir)) on_disk_dir <- dirname(mtx_fp)
+  if (is.null(on_disk_dir)) on_disk_dir <- dirname(mtx_fp[1])
 
   # Generate a name for the ondisc_matrix .h5 file, if necessary
   if (is.null(file_name)) {
@@ -95,7 +93,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_li
   h5_fp <- file.path(on_disk_dir, file_name)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp, progress)
+  initialize_h5_file_on_disk(h5_fp, mtx_metadata, features_metadata, barcodes_fp, features_fp, progress, TRUE)
 
   # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(mtx_metadata, features_metadata)

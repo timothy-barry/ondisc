@@ -78,27 +78,24 @@ saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds
 
 # Third example: initialize from a list of .mtx files
 load_all(helpers = FALSE)
-dir <- tempfile()
-dir.create(dir)
 n_mat <- 5
-n_row <- 300
-# Generate the features df
-gene_names <- paste0("gene_", 1:n_row)
-idxs <- sort(sample(x = 1:n_row, size = floor(n_row/10), replace = FALSE))
-gene_names[idxs] <- paste0("MT-", idxs)
-gene_ids <- paste0("ENSG000", n_row)
-# generate the matrices
-my_mats <- vector(mode = "list", length = n_mat)
-locs <- vector(mode = "list", length = 5)
-for (i in seq(1,5)) {
-m <- create_random_matrix(n_row = n_row, n_col = NULL, matrix_values = 1:10)
-cell_barcodes <- paste0("cell_", 1:ncol(m))
-locs[[i]] <- save_random_matrix_as_10x(m = m, data_dir = dir, cell_barcodes = cell_barcodes,
-gene_names = gene_names, gene_ids = gene_ids, idx = i, save_r_matrix = FALSE)
+n_row_multi <- 300
+n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
+col_multi_cumsum <- c(0,cumsum(n_col_multi))
+logical_mat_multi <- vector(mode = "logical", length = n_mat)
+#' generate the matrices using create_synthetic_data
+r_mats_plus_data_multi <- vector(mode = "list", length = n_mat)
+set.seed(1)
+for (i in seq(1,n_mat)) {
+  r_mats_plus_data_multi[[i]] <- create_synthetic_data(n_row = n_row_multi,
+                                                       n_col = n_col_multi[i],
+                                                       logical_mat = logical_mat_multi[i])
+  r_mats_plus_data_multi[[i]]$features_df <- r_mats_plus_data_multi[[1]]$features_df
+  r_mats_plus_data_multi[[i]]$features_fp <- r_mats_plus_data_multi[[1]]$features_fp
 }
-mtx_fp <- sapply(X = locs, function(i) i[["mtx"]])
-barcodes_fp <- sapply(X = locs, function(i) i[["barcodes"]])
-features_fp <- locs[[1]][["features"]]
+mtx_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
+barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
+features_fp <- r_mats_plus_data_multi[[1]]$features_fp
 create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp)
 }
 }
