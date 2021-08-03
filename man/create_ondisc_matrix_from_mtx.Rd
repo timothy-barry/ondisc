@@ -8,9 +8,8 @@ create_ondisc_matrix_from_mtx(
   mtx_fp,
   barcodes_fp,
   features_fp,
+  odm_fp,
   n_lines_per_chunk = 3e+08,
-  on_disk_dir = NULL,
-  file_name = NULL,
   return_metadata_ondisc_matrix = FALSE,
   progress = TRUE
 )
@@ -22,11 +21,9 @@ create_ondisc_matrix_from_mtx(
 
 \item{features_fp}{file path to the features.tsv file. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded.}
 
+\item{odm_fp}{location to write the ondisc matrix to disk}
+
 \item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
-
-\item{on_disk_dir}{(optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.}
-
-\item{file_name}{(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.}
 
 \item{return_metadata_ondisc_matrix}{(optional) return the output as a metadata_ondisc_matrix (instead of a list)? Defaults to FALSE.}
 
@@ -50,26 +47,28 @@ The function decides which covariates to compute given the input; in general, th
 \examples{
 # First example: initialize a metadata_ondisc_matrix
 # using simulated expression data; store output in tempdir()
+tempfile <- create_new_directory()
+odm_fp <- paste0(tempfile, "/expression_odm")
 file_locs <- system.file("extdata",package = "ondisc",
 c("gene_expression.mtx", "genes.tsv", "cell_barcodes.tsv"))
 names(file_locs) <- c("expressions", "features", "barcodes")
 expression_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
 barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
-on_disk_dir = tempdir(),
-file_name = "expressions",
+odm_fp = odm_fp,
 return_metadata_ondisc_matrix = TRUE)
 
 # Second example: initialize a metadata_ondisc_matrix using simulated
 # gRNA perturbation data; store in tempdir()
+tempfile <- create_new_directory()
+odm_fp <- paste0(tempfile, "/expression_odm")
 file_locs <- system.file("extdata", package = "ondisc",
 c("perturbation.mtx", "guides.tsv", "cell_barcodes.tsv"))
 names(file_locs) <- c("perturbations", "features", "barcodes")
 perturbation_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["perturbations"]],
 barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
-on_disk_dir = tempdir(),
-file_name = "perturbations",
+odm_fp = odm_fp,
 return_metadata_ondisc_matrix = TRUE)
 
 

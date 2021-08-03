@@ -21,32 +21,35 @@
 #' @slot feature_subset integer vector recording the features currently in use.
 #' @slot underlying_dimension the dimension of the (unsubset) expression matrix.
 ondisc_matrix <- setClass("ondisc_matrix",
-                           slots = list(h5_file = "character",
+                           slots = list(odm_fp = "character",
+                                        h5_file = "character",
                                         logical_mat = "logical",
                                         cell_subset = "integer",
                                         feature_subset = "integer",
                                         underlying_dimension = "integer"),
-                           prototype = list(h5_file = NA_character_,
+                           prototype = list(odm_fp = NA_character_,
+                                            h5_file = NA_character_,
                                             logical_mat = FALSE,
                                             cell_subset = NA_integer_,
                                             feature_subset = NA_integer_,
                                             underlying_dimension = NA_integer_))
 
-#' `ondisc_matrix` constructor
-#'
-#' Construct an `ondisc_matrix` from an initialized .h5 file.
-#'
-#' @param h5_file a .h5 file storing the on-disk portion of an initialized `ondisc_matrix` object.
-#'
-#' @return an initialized `ondisc_matrix` object.
-#' @export
-ondisc_matrix <- function(h5_file) {
-  out <- new(Class = "ondisc_matrix")
-  out@h5_file <- h5_file
-  out@underlying_dimension <- as.integer(rhdf5::h5read(file = h5_file, name = "dimension"))
-  out@logical_mat <- as.logical(rhdf5::h5read(file = h5_file, name = "logical_mat"))
-  return(out)
-}
+# #' `ondisc_matrix` constructor
+# #'
+# #' Construct an `ondisc_matrix` from an initialized .h5 file.
+# #'
+# #' @param h5_file a .h5 file storing the on-disk portion of an initialized `ondisc_matrix` object.
+# #'
+# #' @return an initialized `ondisc_matrix` object.
+# #' @export
+# ondisc_matrix <- function(h5_file) {
+#  out <- new(Class = "ondisc_matrix")
+#  gsub(pattern = '.*//', replacement = "", h5_file)
+#  out@h5_file <- h5_file
+#  out@underlying_dimension <- as.integer(rhdf5::h5read(file = h5_file, name = "dimension"))
+#  out@logical_mat <- as.logical(rhdf5::h5read(file = h5_file, name = "logical_mat"))
+#  return(out)
+# }
 
 ###########################
 # 2. metadata_ondisc_matrix

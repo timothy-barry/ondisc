@@ -8,8 +8,7 @@ create_ondisc_matrix_from_R_matrix(
   r_matrix,
   barcodes,
   features_df,
-  on_disk_dir,
-  file_name = NULL,
+  odm_fp,
   return_metadata_ondisc_matrix = FALSE
 )
 }
@@ -20,11 +19,11 @@ create_ondisc_matrix_from_R_matrix(
 
 \item{features_df}{a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.}
 
+\item{return_metadata_ondisc_matrix}{(optional, default FALSE) return the output as a metadata_ondisc_matrix? FALSE returns a list containing an \code{ondisc_matrix}, a cell-specific covariate matrix, and a feature-specific covariate matrix. TRUE returns a \code{metadata_ondisc_matrix.}}
+
 \item{on_disk_dir}{directory in which to store the .h5 file.}
 
 \item{file_name}{(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.}
-
-\item{return_metadata_ondisc_matrix}{(optional, default FALSE) return the output as a metadata_ondisc_matrix? FALSE returns a list containing an \code{ondisc_matrix}, a cell-specific covariate matrix, and a feature-specific covariate matrix. TRUE returns a \code{metadata_ondisc_matrix.}}
 }
 \value{
 A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a \code{metadata_ondisc_matrix} before returning.
@@ -43,7 +42,6 @@ This function computes the following cell-specific and feature-specific covariat
 ##################
 # Define variables
 ##################
-library(ondisc)
 file_locs <- system.file("extdata",package = "ondisc", c("genes.tsv", "cell_barcodes.tsv"))
 features_df <- readr::read_tsv(file = file_locs[1], col_types = c("cc"),
 col_names = c("id", "name"))
@@ -60,14 +58,14 @@ features_df_2 <- dplyr::select(features_df, id)
 ###########################
 # EXAMPLE 1: integer counts
 ###########################
-on_disk_dir <- create_new_directory()
+odm_fp <- paste0(create_new_directory(), "/integer_odm")
 odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
-features_df, on_disk_dir)
+features_df, odm_fp, TRUE)
 
 ####################
 # EXAMPLE 2: logical
 ####################
-on_disk_dir <- create_new_directory()
+odm_fp <- paste0(create_new_directory(), "/logical_odm")
 odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
-features_df_2, on_disk_dir)
+features_df_2, odm_fp, TRUE)
 }

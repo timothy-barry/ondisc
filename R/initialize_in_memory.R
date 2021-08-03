@@ -20,7 +20,6 @@
 #' ##################
 #' # Define variables
 #' ##################
-#' library(ondisc)
 #' file_locs <- system.file("extdata",package = "ondisc", c("genes.tsv", "cell_barcodes.tsv"))
 #' features_df <- readr::read_tsv(file = file_locs[1], col_types = c("cc"),
 #' col_names = c("id", "name"))
@@ -37,17 +36,20 @@
 #' ###########################
 #' # EXAMPLE 1: integer counts
 #' ###########################
-#' on_disk_dir <- create_new_directory()
+#' odm_fp <- paste0(create_new_directory(), "/integer_odm")
 #' odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
-#' features_df, on_disk_dir)
+#' features_df, odm_fp, TRUE)
 #'
 #' ####################
 #' # EXAMPLE 2: logical
 #' ####################
-#' on_disk_dir <- create_new_directory()
+#' odm_fp <- paste0(create_new_directory(), "/logical_odm")
 #' odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
-#' features_df_2, on_disk_dir)
-create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, on_disk_dir, file_name = NULL, return_metadata_ondisc_matrix = FALSE) {
+#' features_df_2, odm_fp, TRUE)
+create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, odm_fp, return_metadata_ondisc_matrix = FALSE) {
+  # create the odm directory; if directory exists and nonempty, throw error.
+  if (!verify_fp(odm_fp)) stop("odm_fp must be the name of a file to create; it cannot be the name of an existing, non-empty directory.")
+
   ### STEP1: compute the cell- and feature- specific covariate matrices
   # Extract features and expression metadata
   features_metadata <- get_features_metadata_from_table(features_df)
@@ -86,12 +88,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
 
   ### STEP2: Generate ondisc_matrix and write the R matrix to disk in CSC and CSR format.
   # Generate a name for the ondisc_matrix .h5 file, if necessary
-  if (is.null(file_name)) {
-    file_name <- generate_on_disc_matrix_name(on_disk_dir)
-  } else {
-    if (!grepl(pattern = "*\\.h5$", x = file_name)) file_name <- paste0(file_name, ".h5")
-  }
-  h5_fp <- file.path(on_disk_dir, file_name)
+  h5_fp <- paste0(odm_fp, "/data.h5")
 
   # Create in-memory CSC and CSR representations of r_matrix
   if (is(r_matrix, "dgTMatrix")) { # sparse triplet form case
@@ -116,7 +113,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   write_matrix_to_h5(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix)
 
   # Create ondisc_matrix.
-  ondisc_matrix <- internal_initialize_ondisc_matrix(h5_file = h5_fp, logical_mat = expression_metadata$is_logical, underlying_dimension = c(expression_metadata$n_features, expression_metadata$n_cells))
+  ondisc_matrix <- internal_initialize_ondisc_matrix(odm_fp = odm_fp, logical_mat = expression_metadata$is_logical, underlying_dimension = c(expression_metadata$n_features, expression_metadata$n_cells))
 
   # Determine whether to return a metadata_ondisc_matrix
   out <- list(ondisc_matrix = ondisc_matrix,

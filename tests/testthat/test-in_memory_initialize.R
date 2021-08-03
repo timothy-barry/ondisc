@@ -5,7 +5,7 @@ cov_odms_from_memory <- lapply(r_mats_plus_metadata, function(l) {
                                                      barcodes = l$barcodes,
                                                      features_df = l$features_df,
                                                      return_metadata_ondisc_matrix = TRUE,
-                                                     on_disk_dir = file_dir)
+                                                     odm_fp = file_dir)
 })
 
 
@@ -32,7 +32,7 @@ test_that("Check dimension", {
 })
 
 
-# check covariates
+test_that("check covariates", {
 for (i in seq(1, n_datasets)) {
   r_mat <- r_mats[[i]]
 
@@ -69,4 +69,4 @@ for (i in seq(1, n_datasets)) {
     expect_equal(test, feature_covariates[,curr_col])
   }
 }
-
+})

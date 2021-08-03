@@ -9,7 +9,7 @@ metadata_odms <- lapply(c(1, 2), function(i) {
                               logical_mat = multimodal_logical[i], write_as_mtx_to_disk = TRUE)
   file_dir <- create_new_directory()
   metadata_odm <- create_ondisc_matrix_from_mtx(mtx_fp = fp$matrix_fp, barcodes_fp = fp$barcodes_fp,
-                                                features_fp = fp$features_fp, on_disk_dir = file_dir,
+                                                features_fp = fp$features_fp, odm_fp = file_dir,
                                                 return_metadata_ondisc_matrix = TRUE, progress = FALSE)
   return(metadata_odm)
 })

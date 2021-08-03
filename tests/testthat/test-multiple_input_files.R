@@ -20,8 +20,8 @@ features_fp_multi <- r_mats_plus_data_multi[[1]]$features_fp
 # 2.create ondisc matrix
 cov_odm_multi <- create_ondisc_matrix_from_mtx(mtx_fp = mtx_fp_multi,
                                                barcodes_fp = barcodes_fp_multi,
-                                               features_fp = features_fp_multi
-                                               )
+                                               features_fp = features_fp_multi,
+                                               odm_fp = create_new_directory())
 
 # 3.compare to ground truth
 r_mats_multi <- lapply(r_mats_plus_data_multi, function(l) l$r_mat)

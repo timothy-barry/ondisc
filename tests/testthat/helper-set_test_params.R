@@ -25,7 +25,7 @@ cov_odms <- lapply(seq(1, n_datasets), function(i) {
   metadata_odm <- create_ondisc_matrix_from_mtx(mtx_fp = r_mats_plus_metadata[[i]]$matrix_fp,
                                                 barcodes_fp =  r_mats_plus_metadata[[i]]$barcodes_fp,
                                                 features_fp = r_mats_plus_metadata[[i]]$features_fp,
-                                                on_disk_dir = file_dir,
+                                                odm_fp = file_dir,
                                                 n_lines_per_chunk = chunk_size,
                                                 return_metadata_ondisc_matrix = TRUE,
                                                 progress = FALSE)

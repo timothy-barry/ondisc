@@ -96,3 +96,32 @@ get_mtx_metadata <- function(mtx_fp) {
   }
   return(out)
 }
+
+
+#' Verify fp
+#'
+#' Verifies that a file path to be used as the storage location for an ondisc matrix is acceptable.
+#'
+#' There are three cases:
+#' - case 1. The directory does not exist; return TRUE, and as a side-effect, create the empty directory.
+#' - case 2. The directory does exist and is empty; return TRUE.
+#' - case 3. The directory does exist and is nonempty; return FALSE.
+#'
+#' @param fp a file path
+#'
+#' @return
+verify_fp <- function(fp) {
+  if (!dir.exists(fp)) {
+    # side effect: create directory
+    dir.create(path = fp, recursive = TRUE)
+    OK <- TRUE
+  } else {
+    empty_dir <- length(list.files(fp)) == 0
+    if (empty_dir) {
+      OK <- TRUE
+    } else {
+      OK <- FALSE
+    }
+  }
+  return(OK)
+}
