@@ -66,7 +66,7 @@
 #' features_fp <- r_mats_plus_data_multi[[1]]$features_fp
 #' odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp,
 #' return_metadata_ondisc_matrix = TRUE)
-create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, n_lines_per_chunk = 3e+08, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, n_lines_per_chunk = 3e+08, return_metadata_ondisc_matrix = TRUE, progress = TRUE) {
   # create the odm directory; if directory exists and nonempty, throw error.
   if (!verify_fp(odm_fp)) stop("odm_fp must be the name of a file to create; it cannot be the name of an existing, non-empty directory.")
 
