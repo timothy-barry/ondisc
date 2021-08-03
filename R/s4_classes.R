@@ -40,15 +40,6 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #'
 #' @return an initialized `ondisc_matrix` object.
 #' @export
-#'
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#'   odm <- ondisc_matrix(h5_file = h5_fp)
-#' }
 ondisc_matrix <- function(h5_file) {
   out <- new(Class = "ondisc_matrix")
   out@h5_file <- h5_file
@@ -84,23 +75,6 @@ metadata_ondisc_matrix <- setClass("metadata_ondisc_matrix",
 #'
 #' @return a `metadata_ondisc_matrix`.
 #' @export
-#'
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
-#' # "expressions.rds" to run this example. Navigate to the help file of
-#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-#' # and execute the code in the first code block.
-#' covariates_fp <- paste0(tempdir(), "/expressions.rds")
-#' h5_fp <-  paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(covariates_fp) && file.exists(h5_fp)) {
-#' covariate_odm <- readRDS(covariates_fp)
-#' cell_covariate_matrix <- covariate_odm@cell_covariates
-#' feature_covariate_matrix <- covariate_odm@feature_covariates
-#' covariate_odm_copy <- metadata_ondisc_matrix(
-#' ondisc_matrix = ondisc_matrix(h5_file = h5_fp),
-#' cell_covariates = cell_covariate_matrix,
-#' feature_covariates = feature_covariate_matrix)
-#' }
 metadata_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_covariates) {
   out <- new("metadata_ondisc_matrix")
   out@ondisc_matrix <- ondisc_matrix
@@ -127,19 +101,6 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #'
 #' @return a multimodal_ondisc_matrix
 #' @export
-#' @examples
-#' # NOTE: You must create the RDS files "expressions.rds" and
-#' # "perturbations.rds" to run this example. Navigate to the help file of
-#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-#' # and execute both code blocks.
-#' expression_fp <- paste0(tempdir(), "/expressions.rds")
-#' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
-#' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
-#'     expressions <- readRDS(expression_fp)
-#'     perturbations <- readRDS(perturbations_fp)
-#'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
-#'     perturbations = perturbations))
-#' }
 multimodal_ondisc_matrix <- function(metadata_ondisc_matrix_list) {
   out <- new(Class = "multimodal_ondisc_matrix")
   out@modalities <- metadata_ondisc_matrix_list

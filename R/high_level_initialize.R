@@ -19,36 +19,34 @@
 #' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
 #' @export
 #' @examples
-#' \dontrun{
 #' # First example: initialize a metadata_ondisc_matrix
 #' # using simulated expression data; store output in tempdir()
+#' tempfile <- create_new_directory()
 #' file_locs <- system.file("extdata",package = "ondisc",
 #' c("gene_expression.mtx", "genes.tsv", "cell_barcodes.tsv"))
 #' names(file_locs) <- c("expressions", "features", "barcodes")
 #' expression_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
 #' barcodes_fp = file_locs[["barcodes"]],
 #' features_fp = file_locs[["features"]],
-#' on_disk_dir = tempdir(),
+#' on_disk_dir = tempfile,
 #' file_name = "expressions",
 #' return_metadata_ondisc_matrix = TRUE)
-#' saveRDS(object = expression_data, file = paste0(tempdir(), "/expressions.rds"))
 #'
 #' # Second example: initialize a metadata_ondisc_matrix using simulated
 #' # gRNA perturbation data; store in tempdir()
+#' tempfile <- create_new_directory()
 #' file_locs <- system.file("extdata", package = "ondisc",
 #' c("perturbation.mtx", "guides.tsv", "cell_barcodes.tsv"))
 #' names(file_locs) <- c("perturbations", "features", "barcodes")
 #' perturbation_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["perturbations"]],
 #' barcodes_fp = file_locs[["barcodes"]],
 #' features_fp = file_locs[["features"]],
-#' on_disk_dir = tempdir(),
+#' on_disk_dir = tempfile,
 #' file_name = "perturbations",
 #' return_metadata_ondisc_matrix = TRUE)
-#' saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds"))
 #'
 #'
 #' # Third example: initialize from a list of .mtx files
-#' load_all(helpers = FALSE)
 #' n_mat <- 5
 #' n_row_multi <- 300
 #' n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
@@ -67,8 +65,8 @@
 #' mtx_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
 #' barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
 #' features_fp <- r_mats_plus_data_multi[[1]]$features_fp
-#' create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp)
-#' }
+#' odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp,
+#' return_metadata_ondisc_matrix = TRUE)
 create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, n_lines_per_chunk = 3e+08, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()

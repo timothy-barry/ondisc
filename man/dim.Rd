@@ -36,32 +36,3 @@ of the constituent modalities of \code{x}.
 \description{
 Return the dimension of an \code{ondisc_matrix}, \code{metadata_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.
 }
-\examples{
-# NOTE: You must create the RDS files "expressions.rds" and
-# "perturbations.rds" to run this example. Navigate to the help file of
-# "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-# and execute both code blocks.
-
-# dimension of an ondisc_matrix
-h5_fp <- paste0(tempdir(), "/expressions.h5")
-if (file.exists(h5_fp)) {
-odm <- ondisc_matrix(h5_file = h5_fp)
-dim(odm)
-}
-
-# dimension of a metadata_ondic_matrix
-expressions_fp <- paste0(tempdir(), "/expressions.rds")
-if (file.exists(expressions_fp)) {
-expressions <- readRDS(expressions_fp)
-dim(expressions)
-}
-
-# dimension of a multimodal_ondisc_matrix
-expression_fp <- paste0(tempdir(), "/expressions.rds")
-perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
-if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
-    crispr_experiment <- multimodal_ondisc_matrix(list(expressions = readRDS(expression_fp),
-    perturbations = readRDS(perturbations_fp)))
-    dim(crispr_experiment)
-}
-}

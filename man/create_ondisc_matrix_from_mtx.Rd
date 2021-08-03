@@ -48,7 +48,6 @@ The function can compute the following cell-specific and feature-specific covari
 The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 }
 \examples{
-\dontrun{
 # First example: initialize a metadata_ondisc_matrix
 # using simulated expression data; store output in tempdir()
 file_locs <- system.file("extdata",package = "ondisc",
@@ -60,7 +59,6 @@ features_fp = file_locs[["features"]],
 on_disk_dir = tempdir(),
 file_name = "expressions",
 return_metadata_ondisc_matrix = TRUE)
-saveRDS(object = expression_data, file = paste0(tempdir(), "/expressions.rds"))
 
 # Second example: initialize a metadata_ondisc_matrix using simulated
 # gRNA perturbation data; store in tempdir()
@@ -73,11 +71,9 @@ features_fp = file_locs[["features"]],
 on_disk_dir = tempdir(),
 file_name = "perturbations",
 return_metadata_ondisc_matrix = TRUE)
-saveRDS(object = perturbation_data, file = paste0(tempdir(), "/perturbations.rds"))
 
 
 # Third example: initialize from a list of .mtx files
-load_all(helpers = FALSE)
 n_mat <- 5
 n_row_multi <- 300
 n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
@@ -96,6 +92,6 @@ for (i in seq(1,n_mat)) {
 mtx_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
 barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
 features_fp <- r_mats_plus_data_multi[[1]]$features_fp
-create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp)
-}
+odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp,
+return_metadata_ondisc_matrix = TRUE)
 }

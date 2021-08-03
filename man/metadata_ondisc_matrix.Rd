@@ -33,20 +33,3 @@ Construct a \code{metadata_ondisc_matrix} by passing an \code{ondisc_matrix}, al
 \item{\code{feature_covariates}}{a data frame of feature covariates.}
 }}
 
-\examples{
-# NOTE: You must create the HDF5 file "expressions.h5" and the RDS file
-# "expressions.rds" to run this example. Navigate to the help file of
-# "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-# and execute the code in the first code block.
-covariates_fp <- paste0(tempdir(), "/expressions.rds")
-h5_fp <-  paste0(tempdir(), "/expressions.h5")
-if (file.exists(covariates_fp) && file.exists(h5_fp)) {
-covariate_odm <- readRDS(covariates_fp)
-cell_covariate_matrix <- covariate_odm@cell_covariates
-feature_covariate_matrix <- covariate_odm@feature_covariates
-covariate_odm_copy <- metadata_ondisc_matrix(
-ondisc_matrix = ondisc_matrix(h5_file = h5_fp),
-cell_covariates = cell_covariate_matrix,
-feature_covariates = feature_covariate_matrix)
-}
-}

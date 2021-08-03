@@ -10,34 +10,6 @@
 #' @return If `x` is an `ondisc_matrix` or `metadata_ondisc_matrix`, length-two integer vector containing
 #' the dimension of `x`; if `x` is a `multimodal_ondisc_matrix`, a list of integer vectors containing the dimensions
 #' of the constituent modalities of `x`.
-#' @examples
-#' # NOTE: You must create the RDS files "expressions.rds" and
-#' # "perturbations.rds" to run this example. Navigate to the help file of
-#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-#' # and execute both code blocks.
-#'
-#' # dimension of an ondisc_matrix
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' dim(odm)
-#' }
-#'
-#' # dimension of a metadata_ondic_matrix
-#' expressions_fp <- paste0(tempdir(), "/expressions.rds")
-#' if (file.exists(expressions_fp)) {
-#' expressions <- readRDS(expressions_fp)
-#' dim(expressions)
-#' }
-#'
-#' # dimension of a multimodal_ondisc_matrix
-#' expression_fp <- paste0(tempdir(), "/expressions.rds")
-#' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
-#' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
-#'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = readRDS(expression_fp),
-#'     perturbations = readRDS(perturbations_fp)))
-#'     dim(crispr_experiment)
-#' }
 NULL
 
 #' @export
@@ -77,16 +49,6 @@ setMethod("nrow", signature("multimodal_ondisc_matrix"), function(x) lapply(x@mo
 #' @param object an object of class ondisc_matrix, covaraite_ondisc_matrix, or multimodal_ondisc_matrix
 #' @name show
 #' @return NULL; called for printing
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-#'
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' show(odm)
-#' }
 NULL
 
 #' @rdname show
@@ -132,16 +94,6 @@ setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(ob
 #' @export
 #' @param x an `ondisc_matrix`.
 #' @return NULL; called for printing
-#' @examples
-#' # NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-#' # Navigate to the help file of "create_ondisc_matrix_from_mtx"
-#' # (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-#'
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' head(odm)
-#' }
 setMethod("head", signature = signature("ondisc_matrix"), function(x) {
   x_dim <- dim(x)
   n_row_to_show <- min(5, x_dim[1])
@@ -173,39 +125,6 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
 #' @name get-names
 #' @param x an object of class `ondisc_matrix`, `covaraite_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @return A character vector or list of character vectors containing the requested identifiers.
-#' @examples
-#' # NOTE: You must create the RDS files "expressions.rds" and
-#' # "perturbations.rds" to run this example. Navigate to the help file of
-#' # "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-#' # and execute both code blocks.
-#'
-#' # ondisc_matrix
-#' h5_fp <- paste0(tempdir(), "/expressions.h5")
-#' if (file.exists(h5_fp)) {
-#' odm <- ondisc_matrix(h5_file = h5_fp)
-#' barcodes <- get_cell_barcodes(odm)
-#' feature_names <- get_feature_names(odm)
-#' feature_ids <- get_feature_ids(odm)
-#' }
-#'
-#' # metadata_ondic_matrix
-#' expressions_fp <- paste0(tempdir(), "/expressions.rds")
-#' if (file.exists(expressions_fp)) {
-#' expressions <- readRDS(expressions_fp)
-#' barcodes <- get_cell_barcodes(odm)
-#' feature_names <- get_feature_names(odm)
-#' feature_ids <- get_feature_ids(odm)
-#' }
-#'
-#' # multimodal_ondisc_matrix
-#' expression_fp <- paste0(tempdir(), "/expressions.rds")
-#' perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
-#' if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
-#'     crispr_experiment <- multimodal_ondisc_matrix(list(expressions = readRDS(expression_fp),
-#'     perturbations = readRDS(perturbations_fp)))
-#'     barcodes <- get_cell_barcodes(crispr_experiment)
-#'     feature_ids <- get_feature_ids(crispr_experiment)
-#' }
 NULL
 
 #' @export

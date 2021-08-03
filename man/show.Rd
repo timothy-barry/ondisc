@@ -22,14 +22,3 @@ NULL; called for printing
 \description{
 Print basic information to the console
 }
-\examples{
-# NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-# Navigate to the help file of "create_ondisc_matrix_from_mtx"
-# (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-
-h5_fp <- paste0(tempdir(), "/expressions.h5")
-if (file.exists(h5_fp)) {
-odm <- ondisc_matrix(h5_file = h5_fp)
-show(odm)
-}
-}

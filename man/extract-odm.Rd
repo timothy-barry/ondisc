@@ -45,19 +45,3 @@ You can remember the difference between \code{[} and \code{[[} by thinking about
 \code{[[} is used to access elements stored \emph{inside} a list. Similarly, \code{[} is used to subset an \code{ondisc_matrix}, and
 \code{[[} is used to access a submatrix usable within R.
 }
-\examples{
-# NOTE: You must create the HDF5 file "expressions.h5" to run this example.
-# Navigate to the help file of "create_ondisc_matrix_from_mtx"
-# (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.
-
-h5_fp <- paste0(tempdir(), "/expressions.h5")
-if (file.exists(h5_fp)) {
-odm <- ondisc_matrix(h5_file = h5_fp)
-# extract cells 100-110:
-x <- odm[[,100:110]]
-# extract genes ENSG00000188305, ENSG00000257284, ENSG00000251655:
-x <- odm[[c("ENSG00000188305", "ENSG00000257284", "ENSG00000251655"),]]
-# extract cells CTTAGGACACTGGCGT-1 and AAAGGATTCACATCAG-1:
-x <- odm[[,c("CTTAGGACACTGGCGT-1", "AAAGGATTCACATCAG-1")]]
-}
-}

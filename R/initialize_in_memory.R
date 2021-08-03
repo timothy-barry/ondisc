@@ -32,18 +32,19 @@
 #' nrow = n_row, ncol = n_col)
 #' r_matrix_2 <- matrix(data = as.logical(rnbinom(n = n_col * n_row, size = 1, prob = 0.05)),
 #' nrow = n_row, ncol = n_col)
-#' on_disk_dir <- tempdir()
 #' features_df_2 <- dplyr::select(features_df, id)
 #'
 #' ###########################
 #' # EXAMPLE 1: integer counts
 #' ###########################
+#' on_disk_dir <- create_new_directory()
 #' odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
 #' features_df, on_disk_dir)
 #'
 #' ####################
 #' # EXAMPLE 2: logical
 #' ####################
+#' on_disk_dir <- create_new_directory()
 #' odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
 #' features_df_2, on_disk_dir)
 create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, on_disk_dir, file_name = NULL, return_metadata_ondisc_matrix = FALSE) {

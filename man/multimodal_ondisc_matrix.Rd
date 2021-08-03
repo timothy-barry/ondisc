@@ -27,17 +27,3 @@ Construct a \code{multimodal_ondisc_matrix} from a list of \code{metadata_ondisc
 \item{\code{global_cell_covariates}}{a data frame containing the cell-specific covariates pooled across all modalities.}
 }}
 
-\examples{
-# NOTE: You must create the RDS files "expressions.rds" and
-# "perturbations.rds" to run this example. Navigate to the help file of
-# "create_ondisc_matrix_from_mtx" (via ?create_ondisc_matrix_from_mtx),
-# and execute both code blocks.
-expression_fp <- paste0(tempdir(), "/expressions.rds")
-perturbations_fp <- paste0(tempdir(), "/perturbations.rds")
-if (file.exists(expression_fp) && file.exists(perturbations_fp)) {
-    expressions <- readRDS(expression_fp)
-    perturbations <- readRDS(perturbations_fp)
-    crispr_experiment <- multimodal_ondisc_matrix(list(expressions = expressions,
-    perturbations = perturbations))
-}
-}
