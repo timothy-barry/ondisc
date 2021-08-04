@@ -10,7 +10,7 @@ create_ondisc_matrix_from_mtx(
   features_fp,
   odm_fp,
   n_lines_per_chunk = 3e+08,
-  return_metadata_ondisc_matrix = FALSE,
+  return_metadata_ondisc_matrix = TRUE,
   progress = TRUE
 )
 }
