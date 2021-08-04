@@ -73,6 +73,8 @@ return_metadata_ondisc_matrix = TRUE)
 
 
 # Third example: initialize from a list of .mtx files
+tempfile <- create_new_directory()
+odm_fp <- paste0(tempfile, "/expression_odm")
 n_mat <- 5
 n_row_multi <- 300
 n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
@@ -91,6 +93,6 @@ for (i in seq(1,n_mat)) {
 mtx_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
 barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
 features_fp <- r_mats_plus_data_multi[[1]]$features_fp
-odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp,
+odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp,
 return_metadata_ondisc_matrix = TRUE)
 }

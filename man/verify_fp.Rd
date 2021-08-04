@@ -10,7 +10,7 @@ verify_fp(fp)
 \item{fp}{a file path}
 }
 \value{
-
+boolean; if TRUE, no problem; if FALSE, problem.
 }
 \description{
 Verifies that a file path to be used as the storage location for an ondisc matrix is acceptable.

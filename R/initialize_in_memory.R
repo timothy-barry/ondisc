@@ -9,8 +9,7 @@
 #' @param r_matrix an R matrix. The matrix can be represented as a standard (dense) R matrix or a sparse matrix of class "dgTMatrix". Integer and logical (i.e., boolean) matrices are allowed.
 #' @param barcodes a character vector giving the cell barcodes.
 #' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
-#' @param on_disk_dir directory in which to store the .h5 file.
-#' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
+#' @param odm_fp location to write the ondisc matrix to disk
 #' @param return_metadata_ondisc_matrix (optional, default FALSE) return the output as a metadata_ondisc_matrix? FALSE returns a list containing an `ondisc_matrix`, a cell-specific covariate matrix, and a feature-specific covariate matrix. TRUE returns a `metadata_ondisc_matrix.`
 #'
 #' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a `metadata_ondisc_matrix` before returning.

@@ -42,6 +42,7 @@ save_odm <- function(odm) {
 
 #' Read ODM
 #' @rdname save_odm
+#' @export
 #' @param odm_fp file path to an ondisc matrix (or metadata ondisc matrix)
 read_odm <- function(odm_fp) {
   h5_file <- paste0(odm_fp, "/data.h5")
