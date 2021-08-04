@@ -102,16 +102,15 @@ get_accumulator_funct_arg_list <- function(terminal_symbol) {
 #'
 #' Runs the first step of the .mtx algo.
 #'
-#' @param mtx_fp file path to .mtx file
+#' @param file_matadata a list of file matadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param initialize_accumulator initialize accumulator function
 #' @param bag_of_variables the bag of variables
-#' @param is_logical (boolean) is matrix logical
-#' @param n_lines_per_chunk number of lines to process per chunk
-#' @param n_rows_to_skip number of rows to skip in .mtx file
+#' @param progress progress
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_core_algo_step_1 <- function(mtx_fp, initialize_accumulator, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress) {
+run_core_algo_step_1 <- function(file_matadata, initialize_accumulator, bag_of_variables, progress) {
+  mtx_fp <- file_matadata$mtx_fp
   symbols <- symbols_enum()
   initializer <- function() initialize_accumulator(terminal_symbol = symbols$n_nonzero_feature, bag_of_variables = bag_of_variables)
   arguments <- arguments_enum()
@@ -128,9 +127,9 @@ run_core_algo_step_1 <- function(mtx_fp, initialize_accumulator, bag_of_variable
   }
 
   if (length(mtx_fp) == 1) {
-    return(run_core_algo_step_1_mtxchunked(mtx_fp, get_accumulated_row_ptr, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, arguments, acc_init))
+    return(run_core_algo_step_1_mtxchunked(file_matadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init))
   } else {
-    return(run_core_algo_step_1_mtxfilelist(mtx_fp, get_accumulated_row_ptr, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, arguments, acc_init))
+    return(run_core_algo_step_1_mtxfilelist(file_matadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init))
   }
 }
 
@@ -138,26 +137,24 @@ run_core_algo_step_1 <- function(mtx_fp, initialize_accumulator, bag_of_variable
 #'
 #' Runs the first step of the .mtx algo.
 #'
-#' @param mtx_fp file path to .mtx file
+#' @param file_matadata a list of file matadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param get_accumulated_row_ptr the function to compute accumulated row pointer
 #' @param bag_of_variables the bag of variables
-#' @param is_logical (boolean) is matrix logical
-#' @param n_lines_per_chunk number of lines to process per chunk
-#' @param n_rows_to_skip number of rows to skip in .mtx file
 #' @param arguments arguments
 #' @param acc_init empty accumulator, list of three elements: (i) a vector to store the n_nonzero_features accumulator, and (ii) a list to store the number of nonzero features in each chunk (iii) empty accumulator.
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_core_algo_step_1_mtxfilelist <- function(mtx_fp, get_accumulated_row_ptr, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, arguments, acc_init) {
+run_core_algo_step_1_mtxfilelist <- function(file_matadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init) {
+  mtx_fp <- file_matadata$mtx_fp
   acc <- acc_init
   for (i in seq(1, length(mtx_fp))) {
     x <- readr::read_delim(file = mtx_fp[i],
                            delim = " ",
-                           skip = n_rows_to_skip[i],
+                           skip = file_matadata$n_rows_to_skip[i],
                            col_names = arguments$feature_idxs,
                            progress = progress,
-                           col_types = if (is_logical) "i_" else "i__")
+                           col_types = if (file_matadata$is_logical) "i_" else "i__")
     acc <- get_accumulated_row_ptr(x, 0, acc)
   }
   return(acc)
@@ -168,26 +165,24 @@ run_core_algo_step_1_mtxfilelist <- function(mtx_fp, get_accumulated_row_ptr, ba
 #'
 #' Runs the first step of the .mtx algo.
 #'
-#' @param mtx_fp file path to .mtx file
+#' @param file_matadata a list of file matadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param get_accumulated_row_ptr the function to compute accumulated row pointer
 #' @param bag_of_variables the bag of variables
-#' @param is_logical (boolean) is matrix logical
-#' @param n_lines_per_chunk number of lines to process per chunk
-#' @param n_rows_to_skip number of rows to skip in .mtx file
 #' @param arguments arguments
 #' @param acc_init empty accumulator, list of three elements: (i) a vector to store the n_nonzero_features accumulator, and (ii) a list to store the number of nonzero features in each chunk (iii) empty accumulator.
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_core_algo_step_1_mtxchunked <- function(mtx_fp, get_accumulated_row_ptr, bag_of_variables, is_logical, n_lines_per_chunk, n_rows_to_skip, progress,arguments, acc_init) {
+run_core_algo_step_1_mtxchunked <- function(file_matadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init) {
+  mtx_fp <- file_matadata$mtx_fp
   ret <- readr::read_delim_chunked(file = mtx_fp,
-                            chunk_size = n_lines_per_chunk,
-                            skip = n_rows_to_skip,
+                            chunk_size = file_matadata$n_lines_per_chunk,
+                            skip = file_matadata$n_rows_to_skip,
                             callback = readr::AccumulateCallback$new(get_accumulated_row_ptr, acc = acc_init),
                             delim = " ",
                             col_names = arguments$feature_idxs,
                             progress = progress,
-                            col_types = if (is_logical) "i_" else "i__")
+                            col_types = if (file_matadata$is_logical) "i_" else "i__")
   return(ret)
 }
 
@@ -286,11 +281,8 @@ run_subtask_2c <- function(x, h5_fp, is_logical, row_ptr, n_nonzero_features_per
 #' This function runs step 2 of the core mtx algorithm. It (a) computes the terminal symbols, (b) writes to the CSC matrix, and (c) sorts the data by feature_idx, then writes to the CSR matrix.
 #'
 #' @param h5_fp full path to the h5 file on-disk
-#' @param mtx_fp file path to mtx
-#' @param is_logical is the mtx file logical
+#' @param file_matadata a list of file matadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param bag_of_variables the bag of variables containing the variables to pass to the accumulator functions
-#' @param n_lines_per_chunk number of elements to load per chunk
-#' @param n_rows_to_skip n rows to skip in mtx file
 #' @param initial_accumulators list of starting accumulators
 #' @param terminal_functs_args list of accumulator function names and arguments
 #' @param row_ptr the starting row pointer
@@ -298,7 +290,8 @@ run_subtask_2c <- function(x, h5_fp, is_logical, row_ptr, n_nonzero_features_per
 #'
 #' @return a list containing the values of the terminals
 #' @noRd
-run_core_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk, progress) {
+run_core_algo_step_2 <- function(h5_fp, file_matadata, bag_of_variables, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk, progress) {
+  mtx_fp <- file_matadata$mtx_fp
   chunk_no <- 1L
   # Define closure to be called by readr::read_delim_chunked
   closure <- function(x, pos, acc) {
@@ -311,10 +304,10 @@ run_core_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_
     run_subtask_2a(x, bag_of_variables, acc[[1]], terminal_functs_args)
     # run subtask b
     if (progress) cat("\nWriting CSC data.\n")
-    run_subtask_2b(x, pos, h5_fp, is_logical)
+    run_subtask_2b(x, pos, h5_fp, file_matadata$is_logical)
     # run subtask c
     if (progress) cat("Writing CSR data.\n")
-    run_subtask_2c(x, h5_fp, is_logical, acc[[2]], n_nonzero_features_per_chunk, chunk_no, bag_of_variables$n_features)
+    run_subtask_2c(x, h5_fp, file_matadata$is_logical, acc[[2]], n_nonzero_features_per_chunk, chunk_no, bag_of_variables$n_features)
     # increment chunk_no in enclosing environment
     chunk_no <<- chunk_no + 1L
     return(acc)
@@ -324,18 +317,15 @@ run_core_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_
   acc_init <- list(initial_accumulators, row_ptr)
 
   if (length(mtx_fp) == 1) {
-    return(run_core_algo_step_2_mtxchunked(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments))
+    return(run_core_algo_step_2_mtxchunked(file_matadata, progress, closure, acc_init, arguments))
   } else {
-    return(run_core_algo_step_2_mtxfilelist(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments, bag_of_variables))
+    return(run_core_algo_step_2_mtxfilelist(file_matadata, progress, closure, acc_init, arguments, bag_of_variables))
   }
 }
 
 #' Run mtx algo step 2 in: chunk mode on one large .mtx file
 #'
-#' @param mtx_fp file path to mtx
-#' @param is_logical is the mtx file logical
-#' @param n_lines_per_chunk number of elements to load per chunk
-#' @param n_rows_to_skip n rows to skip in mtx file
+#' @param file_matadata a list of file matadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param progress progress
 #' @param closure closure function to calculate the terminals and write to the h5 file
 #' @param acc_init empty accumulator
@@ -343,24 +333,21 @@ run_core_algo_step_2 <- function(h5_fp, mtx_fp, is_logical, bag_of_variables, n_
 #'
 #' @return list containing the values of the terminals
 #' @noRd
-run_core_algo_step_2_mtxchunked <- function(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments) {
-  terminals <- readr::read_delim_chunked(file = mtx_fp,
-                                         chunk_size = n_lines_per_chunk,
-                                         skip = n_rows_to_skip,
+run_core_algo_step_2_mtxchunked <- function(file_matadata, progress, closure, acc_init, arguments) {
+  terminals <- readr::read_delim_chunked(file = file_matadata$mtx_fp,
+                                         chunk_size = file_matadata$n_lines_per_chunk,
+                                         skip = file_matadata$n_rows_to_skip,
                                          callback = readr::AccumulateCallback$new(closure, acc = acc_init),
                                          delim = " ",
-                                         col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (is_logical) NULL else arguments$umi_counts),
+                                         col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (file_matadata$is_logical) NULL else arguments$umi_counts),
                                          progress = progress,
-                                         col_types = if (is_logical) "ii" else "iii")
+                                         col_types = if (file_matadata$is_logical) "ii" else "iii")
   return(terminals)
 }
 
 #' Run mtx algo step 2 in list of .mtx files mode
 #'
-#' @param mtx_fp file path to mtx
-#' @param is_logical is the mtx file logical
-#' @param n_lines_per_chunk number of elements to load per chunk
-#' @param n_rows_to_skip n rows to skip in mtx file
+#' @param file_matadata a list of file matadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param progress progress
 #' @param closure closure function to calculate the terminals and write to the h5 file
 #' @param acc_init empty accumulator
@@ -369,17 +356,18 @@ run_core_algo_step_2_mtxchunked <- function(mtx_fp, is_logical, n_lines_per_chun
 #'
 #' @return list containing the values of the terminals
 #' @noRd
-run_core_algo_step_2_mtxfilelist <- function(mtx_fp, is_logical, n_lines_per_chunk, n_rows_to_skip, progress, closure, acc_init, arguments, bag_of_variables) {
+run_core_algo_step_2_mtxfilelist <- function(file_matadata, progress, closure, acc_init, arguments, bag_of_variables) {
   acc <- acc_init
+  mtx_fp <- file_matadata$mtx_fp
   cell_idx <- as.integer(c(0, cumsum(bag_of_variables$n_cells_in_files)))
   pos <- 1L
   for (i in seq(1, length(mtx_fp))) {
     x <- readr::read_delim(file = mtx_fp[i],
                            delim = " ",
-                           skip = n_rows_to_skip[i],
-                           col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (is_logical) NULL else arguments$umi_counts),
+                           skip = file_matadata$n_rows_to_skip[i],
+                           col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (file_matadata$is_logical) NULL else arguments$umi_counts),
                            progress = progress,
-                           col_types = if (is_logical) "ii" else "iii")
+                           col_types = if (file_matadata$is_logical) "ii" else "iii")
     #increase col_idx
     x$cell_idxs = x$cell_idxs + cell_idx[i]
     acc <- closure(x, pos, acc)
@@ -395,20 +383,17 @@ run_core_algo_step_2_mtxfilelist <- function(mtx_fp, is_logical, n_lines_per_chu
 #' (ii) write CSC matrix, write CSR matrix, compute covariate matrices
 #'
 #' @param h5_fp file path to h5 file
-#' @param mtx_fp file path to .mtx file
-#' @param is_logical (logical) is expression matrix logical?
+#' @param file_matadata a list of file matadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param covariates a list of two elements: the feature covariates and the cell covariates
 #' @param bag_of_variables environment containing named variables
-#' @param n_lines_per_chunk number of elements to load per chunk
-#' @param n_rows_to_skip number of rows to skip in .mtx file
+#' @param progress progress
 #' @noRd
-run_core_algo <- function(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, progress) {
+run_core_algo <- function(h5_fp, file_matadata, covariates, bag_of_variables, progress) {
   grammar <- initialize_grammar()
   symbols <- symbols_enum()
 
   # Run step 1 of core algorithm
-  row_ptrs <- run_core_algo_step_1(mtx_fp, initialize_accumulator, bag_of_variables,
-                                  is_logical, n_lines_per_chunk, n_rows_to_skip, progress)
+  row_ptrs <- run_core_algo_step_1(file_matadata, initialize_accumulator, bag_of_variables, progress)
 
   # Compute row pointer and write to disk.
   row_ptr <- c(0L, cumsum(row_ptrs[[1]]))
@@ -426,8 +411,7 @@ run_core_algo <- function(h5_fp, mtx_fp, is_logical, covariates, bag_of_variable
   terminal_functs_args <- lapply(terminal_symbols, get_accumulator_funct_arg_list)
 
   # Run step 2 of core algorithm
-  terminal_values_and_row_ptr <- run_core_algo_step_2(h5_fp, mtx_fp, is_logical, bag_of_variables,
-                                                     n_lines_per_chunk, n_rows_to_skip, initial_accumulators,
+  terminal_values_and_row_ptr <- run_core_algo_step_2(h5_fp, file_matadata, bag_of_variables, initial_accumulators,
                                                      terminal_functs_args, row_ptr, row_ptrs[[2]], progress)
   # Compute and write column pointer to CSC matrix
   terminal_values <- terminal_values_and_row_ptr[[1]]

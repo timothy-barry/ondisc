@@ -73,6 +73,11 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()
 
+  # Define "file_matadata" list for storing file informations
+  file_matadata <- vector(mode = "list")
+  file_matadata$mtx_fp <- mtx_fp
+  file_matadata$n_lines_per_chunk <- n_lines_per_chunk
+
   # Extract .mtx metadata
   mtx_metadata <- get_mtx_metadata(mtx_fp)
   bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
@@ -93,12 +98,14 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 
   # Save is_logical and n_rows_to_skip in variables
   is_logical <- mtx_metadata$is_logical
-  n_rows_to_skip <- mtx_metadata$n_rows_to_skip
+  file_matadata$is_logical <- is_logical
+  file_matadata$n_rows_to_skip <- mtx_metadata$n_rows_to_skip
 
   # Run core algorithm
-  out <- run_core_algo(h5_fp, mtx_fp, is_logical, covariates, bag_of_variables, n_lines_per_chunk, n_rows_to_skip, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
+  out <- run_core_algo(h5_fp, file_matadata, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
   # prepare the output
   odm <- internal_initialize_ondisc_matrix(odm_fp = odm_fp, logical_mat = is_logical, underlying_dimension = c(mtx_metadata$n_features, mtx_metadata$n_cells))
+
   out$ondisc_matrix <- odm
   if (return_metadata_ondisc_matrix) {
     out <- metadata_ondisc_matrix(ondisc_matrix = out$ondisc_matrix,
@@ -158,5 +165,19 @@ internal_initialize_ondisc_matrix <- function(odm_fp, logical_mat, underlying_di
 #' odm_plus_covariates_list <- create_ondisc_matrix_from_h5(h5_list, storage_dir)
 #' }
 create_ondisc_matrix_from_h5_list <- function(h5_list, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
-  # add code here!
+  # Define "bag_of_variables" environment for storing args
+  bag_of_variables <- new.env()
+
+  # Extract barcodes and features_df, compute feature matadata
+  barcodes_list <- get_h5_barcodes(h5_list)
+  barcodes <- unlist(barcodes_list)
+  features_df <- get_h5_features(h5_list)
+  features_meatadata <- get_features_metadata_from_table(features_df, bag_of_variables)
+
+  # Extract cell metadata at the same time
+  metadata <- get_h5_cells_metadata(h5_list)
+  bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
+  bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
+  bag_of_variables[[arguments_enum()$n_cells_in_files]] <- mtx_metadata$n_cells_in_files
+
 }
