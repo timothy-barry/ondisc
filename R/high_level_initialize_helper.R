@@ -190,7 +190,7 @@ get_h5_barcodes <- function(h5_list) {
 #'
 #' @param h5_list a vector of paths to the h5 file
 #'
-#' @returna features_df data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
+#' @return features_df data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
 #' @noRd
 get_h5_features <- function(h5_list) {
   h5_info <- rhdf5::h5ls(h5_list[1])
@@ -208,8 +208,8 @@ get_h5_features <- function(h5_list) {
 #' @param h5_list a vector of paths to the h5 file
 #'
 #' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
-#'     data points (i.e., fraction of entries that are zero),
-#'     (iv) (always TRUE) matrix is logical
+#'     data points (i.e., fraction of entries that are zero)
+#' @noRd
 get_h5_cells_metadata <- function(h5_list) {
   cumulative_n_cells <- 0L
   cumulative_n_data_points <- 0L
@@ -224,4 +224,9 @@ get_h5_cells_metadata <- function(h5_list) {
     n_data_points <- h5_info$dim[idx]
     cumulative_n_data_points <- cumulative_n_data_points + as.integer(n_data_points)
   }
+  out <- list()
+  out$n_cells <- cumulative_n_cells
+  out$n_data_points <- cumulative_n_data_points
+  out$n_cells_in_files <- n_cells_in_files
+  return(out)
 }

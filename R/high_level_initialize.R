@@ -177,9 +177,9 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, on_disk_dir = NULL, file_
   features_meatadata <- get_features_metadata_from_table(features_df, bag_of_variables)
 
   # Extract cell metadata at the same time
-  metadata <- get_h5_cells_metadata(h5_list)
-  bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
-  bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
-  bag_of_variables[[arguments_enum()$n_cells_in_files]] <- mtx_metadata$n_cells_in_files
+  cells_metadata <- get_h5_cells_metadata(h5_list)
+  bag_of_variables[[arguments_enum()$n_cells]] <- cells_metadata$n_cells
+  bag_of_variables[[arguments_enum()$n_features]] <- cells_metadata$n_features
+  bag_of_variables[[arguments_enum()$n_cells_in_files]] <- cells_metadata$n_cells_in_files
 
 }
