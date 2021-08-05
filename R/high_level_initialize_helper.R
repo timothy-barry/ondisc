@@ -125,3 +125,108 @@ verify_fp <- function(fp) {
   }
   return(OK)
 }
+
+
+#' Get metadata for features_df,a data frame giving the names of the features.
+#'
+#' Gets metadata from a features data frame features_df.
+#'
+#' @param features_df a data frame giving the names of the features.
+#' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
+#'
+#' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
+#' @noRd
+get_features_metadata_from_table <- function(features_df, bag_of_variables = NULL) {
+  n_cols <- ncol(features_df)
+  feature_names <- n_cols >= 2
+  mt_genes_present <- FALSE
+  if (feature_names) {
+    # Assume the second column is always feature_name. Or we can extract by the col name
+    gene_names <- dplyr::pull(features_df, 2)
+    mt_genes <- grepl(pattern = "^MT-", x = gene_names)
+    if (any(mt_genes)) {
+      mt_genes_present <- TRUE
+      if (!is.null(bag_of_variables)) {
+        bag_of_variables[[arguments_enum()$mt_gene_bool]] <- mt_genes
+      }
+    }
+  }
+  return(list(feature_names = feature_names, n_cols = n_cols, mt_genes_present = mt_genes_present))
+}
+
+
+#' Get h5 full name by the dataset name
+#'
+#' @param h5_info a dataframe that contains the information of the  h5 file
+#' @param name the dataset name of
+#'
+#' @return full name of the dataset
+#'
+#' @noRd
+get_h5_full_name <- function(h5_info, name) {
+  idx <- which(h5_info$name == name)
+  return(paste(h5_info$group[idx], name,sep = "/"))
+}
+
+
+#' Get h5 barcodes
+#'
+#' @param h5_list a vector of paths to the h5 file
+#'
+#' @return a list of barcodes for each h5 file
+#' @noRd
+get_h5_barcodes <- function(h5_list) {
+  barcodes_list <- vector(mode = "list", length = length(h5_list))
+  for (i in seq(1,length(h5_list))) {
+    h5_info <- rhdf5::h5ls(h5_list[i])
+    barcodes_name <- get_h5_full_name(h5_info, "barcodes")
+    barcodes_list[[i]] <- rhdf5::h5read(h5_list[i], barcodes_name)
+  }
+  return(barcodes_list)
+}
+
+
+#' Get h5 features
+#'
+#' @param h5_list a vector of paths to the h5 file
+#'
+#' @return features_df data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
+#' @noRd
+get_h5_features <- function(h5_list) {
+  h5_info <- rhdf5::h5ls(h5_list[1])
+  genes_name <- get_h5_full_name(h5_info, "genes")
+  id <- rhdf5::h5read(h5_list[1], genes_name)
+  gene_names_name <- get_h5_full_name(h5_info, "gene_names")
+  name <- rhdf5::h5read(h5_list[1], gene_names_name)
+  features_df <- data.frame(id, name)
+  return(features_df)
+}
+
+
+#' Get h5 cells metadata
+#'
+#' @param h5_list a vector of paths to the h5 file
+#'
+#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
+#'     data points (i.e., fraction of entries that are zero)
+#' @noRd
+get_h5_cells_metadata <- function(h5_list) {
+  cumulative_n_cells <- 0L
+  cumulative_n_data_points <- 0L
+  n_cells_in_files <- vector(mode = "integer", length = length(h5_list))
+  for (i in seq(1,length(h5_list))) {
+    h5_info <- rhdf5::h5ls(h5_list[i])
+    shape_name <- get_h5_full_name(h5_info, "shape")
+    shape <- rhdf5::h5read(h5_list[i], shape_name)
+    cumulative_n_cells <- cumulative_n_cells + shape[2]
+    n_cells_in_files[i] <- shape[2]
+    idx <- which(h5_info$name == "data")
+    n_data_points <- h5_info$dim[idx]
+    cumulative_n_data_points <- cumulative_n_data_points + as.integer(n_data_points)
+  }
+  out <- list()
+  out$n_cells <- cumulative_n_cells
+  out$n_data_points <- cumulative_n_data_points
+  out$n_cells_in_files <- n_cells_in_files
+  return(out)
+}
