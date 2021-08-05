@@ -109,7 +109,7 @@ get_mtx_metadata <- function(mtx_fp) {
 #'
 #' @param fp a file path
 #'
-#' @return
+#' @return boolean; if TRUE, no problem; if FALSE, problem.
 verify_fp <- function(fp) {
   if (!dir.exists(fp)) {
     # side effect: create directory
