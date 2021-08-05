@@ -5,12 +5,14 @@
 \alias{read_odm}
 \title{Save ODM}
 \usage{
-save_odm(odm)
+save_odm(odm, name)
 
-read_odm(odm_fp)
+read_odm(odm_fp, name = NULL)
 }
 \arguments{
 \item{odm}{a metadata_ondisc_matrix object or ondisc_matrix object}
+
+\item{name}{name to label save}
 
 \item{odm_fp}{file path to an ondisc matrix (or metadata ondisc matrix)}
 }
@@ -28,6 +30,8 @@ barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
 odm_fp = odm_fp,
 return_metadata_ondisc_matrix = TRUE)
-save_odm(expression_data)
-expression_data_loaded <- read_odm(odm_fp)
+expression_data <- expression_data[,1:10]
+save_odm(expression_data, "filtered")
+expression_data_loaded_unfiltered <- read_odm(odm_fp)
+expression_data_loaded_filtered <- read_odm(odm_fp, "filtered")
 }
