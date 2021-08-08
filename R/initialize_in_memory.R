@@ -127,30 +127,6 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
 }
 
 
-#' Get metadata for features_df,a data frame giving the names of the features.
-#'
-#' Gets metadata from a features data frame features_df.
-#'
-#' @param features_df a data frame giving the names of the features.
-#'
-#' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
-#' @noRd
-get_features_metadata_from_table <- function(features_df) {
-  n_cols <- ncol(features_df)
-  feature_names <- n_cols >= 2
-  mt_genes_present <- FALSE
-  if (feature_names) {
-    # Assume the second column is always feature_name. Or we can extract by the col name
-    gene_names <- dplyr::pull(features_df, 2)
-    mt_genes <- grepl(pattern = "^MT-", x = gene_names)
-    if (any(mt_genes)) {
-      mt_genes_present <- TRUE
-    }
-  }
-  return(list(feature_names = feature_names, n_cols = n_cols, mt_genes_present = mt_genes_present))
-}
-
-
 #' Get metadata for r_matrix,an R matrix. The matrix can be either integer or logical..
 #'
 #' @param r_matrix an R matrix. The matrix can be either integer or logical
