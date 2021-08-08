@@ -129,6 +129,19 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// read_integer_vector_hdf5
+IntegerVector read_integer_vector_hdf5(const std::string& file_name_in, const std::string& dataset_name_in, int data_len);
+RcppExport SEXP _ondisc_read_integer_vector_hdf5(SEXP file_name_inSEXP, SEXP dataset_name_inSEXP, SEXP data_lenSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type dataset_name_in(dataset_name_inSEXP);
+    Rcpp::traits::input_parameter< int >::type data_len(data_lenSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_integer_vector_hdf5(file_name_in, dataset_name_in, data_len));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_mtx_metadata
 List get_mtx_metadata(CharacterVector mtx_fp);
 RcppExport SEXP _ondisc_get_mtx_metadata(SEXP mtx_fpSEXP) {
@@ -172,6 +185,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_write_data_h5", (DL_FUNC) &_ondisc_write_data_h5, 4},
     {"_ondisc_map_memory_to_disk", (DL_FUNC) &_ondisc_map_memory_to_disk, 8},
     {"_ondisc_map_memory_to_disk_logical_matrix", (DL_FUNC) &_ondisc_map_memory_to_disk_logical_matrix, 6},
+    {"_ondisc_read_integer_vector_hdf5", (DL_FUNC) &_ondisc_read_integer_vector_hdf5, 3},
     {"_ondisc_get_mtx_metadata", (DL_FUNC) &_ondisc_get_mtx_metadata, 1},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},

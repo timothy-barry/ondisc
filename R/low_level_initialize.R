@@ -19,7 +19,7 @@ initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata, features_metadata, b
 
   # Write metadata
   cell_barcodes <- vector(mode = "character")
-  if (file_path == TRUE){
+  if (file_path == TRUE) {
     if (length(barcodes) == 1) {
       cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes, col_names = FALSE, col_types = "c", progress = progress))
     } else {

@@ -97,6 +97,14 @@ map_memory_to_disk_logical_matrix <- function(file_name_in, m_cell_idxs, cell_id
     invisible(.Call(`_ondisc_map_memory_to_disk_logical_matrix`, file_name_in, m_cell_idxs, cell_idxs_name, n_features, m_row_ptr, f_row_ptr))
 }
 
+#' @title read intege vector from hdf5
+#' @param file_name_in name of h5 file
+#' @param dataset_name_in name of dataset to read
+#' @param data_len length of integer vector
+read_integer_vector_hdf5 <- function(file_name_in, dataset_name_in, data_len) {
+    .Call(`_ondisc_read_integer_vector_hdf5`, file_name_in, dataset_name_in, data_len)
+}
+
 #' Get mtx metadata
 #'
 #' @param mtx_fp path to the mtx file
