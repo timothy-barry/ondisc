@@ -10,12 +10,3 @@ test_that("Compare ground truth matrix to on_disc_matrix", {
     expect_true(all(m3 == m4))
   }
 })
-
-
-# test_that("Test odm constructor", {
-#  for (i in seq(1, n_datasets)) {
-#    h5_file <- cov_odms[[i]]@ondisc_matrix@h5_file
-#    x <- ondisc_matrix(h5_file)
-#    expect_equal(x, cov_odms[[i]]@ondisc_matrix)
-#  }
-# })

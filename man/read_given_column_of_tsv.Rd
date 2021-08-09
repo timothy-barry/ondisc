@@ -4,7 +4,7 @@
 \alias{read_given_column_of_tsv}
 \title{Read given column of tsv}
 \usage{
-read_given_column_of_tsv(col_idx, n_cols, tsv_file, progress = FALSE)
+read_given_column_of_tsv(col_idx, n_cols, tsv_file)
 }
 \arguments{
 \item{col_idx}{index of column to read}

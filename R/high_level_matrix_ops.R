@@ -50,6 +50,7 @@ get_names <- function(x, name_to_get) {
 #' @param x an ondisc_matrix
 #' @param idx a numeric, character, or logical index
 #' @param subset_on_cell (boolean) subset on cell (TRUE) or feature (FALSE)
+#' @param subset_string_arrays (boolean) subset the character vectors (i.e., cell barcodes, feature IDs, and feature names) as well? This is necessary only when returning a subset matrix, not when preparing to extract a submatrix into memory.
 #'
 #' @return a subset ondisc_matrix
 #' @export

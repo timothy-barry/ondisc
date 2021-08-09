@@ -23,6 +23,8 @@ create_ondisc_matrix_from_mtx(
 
 \item{odm_fp}{location to write the ondisc matrix to disk}
 
+\item{metadata_fp}{location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
+
 \item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
 
 \item{progress}{(optional; default FALSE) print progress messages?}

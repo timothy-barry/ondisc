@@ -4,7 +4,6 @@ cov_odms_from_memory <- lapply(r_mats_plus_metadata, function(l) {
   metadata_odm <- create_ondisc_matrix_from_R_matrix(r_matrix = as.matrix(l$r_mat),
                                                      barcodes = l$barcodes,
                                                      features_df = l$features_df,
-                                                     return_metadata_ondisc_matrix = TRUE,
                                                      odm_fp = file_dir)
 })
 

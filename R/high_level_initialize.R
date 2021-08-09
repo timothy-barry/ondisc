@@ -13,6 +13,7 @@
 #' @param features_fp file path to the features.tsv file. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded.
 #' @param n_lines_per_chunk (optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.
 #' @param odm_fp location to write the ondisc matrix to disk
+#' @param metadata_fp location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #' @param progress (optional; default FALSE) print progress messages?
 #' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
 #' @export

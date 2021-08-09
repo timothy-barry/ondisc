@@ -12,6 +12,8 @@ subset_by_feature_or_cell(x, idx, subset_on_cell, subset_string_arrays = FALSE)
 \item{idx}{a numeric, character, or logical index}
 
 \item{subset_on_cell}{(boolean) subset on cell (TRUE) or feature (FALSE)}
+
+\item{subset_string_arrays}{(boolean) subset the character vectors (i.e., cell barcodes, feature IDs, and feature names) as well? This is necessary only when returning a subset matrix, not when preparing to extract a submatrix into memory.}
 }
 \value{
 a subset ondisc_matrix

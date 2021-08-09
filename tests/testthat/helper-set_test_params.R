@@ -22,11 +22,11 @@ cov_odms <- lapply(seq(1, n_datasets), function(i) {
   bern <- as.logical(rbinom(1, 1, 0.5))
   chunk_size <- if (bern) n_nonzero + 1 else sample(x = seq(2, n_nonzero), 1)
   file_dir <- create_new_directory()
+  odm_fp <- paste0(file_dir, "/mat.odm")
   metadata_odm <- create_ondisc_matrix_from_mtx(mtx_fp = r_mats_plus_metadata[[i]]$matrix_fp,
                                                 barcodes_fp =  r_mats_plus_metadata[[i]]$barcodes_fp,
                                                 features_fp = r_mats_plus_metadata[[i]]$features_fp,
                                                 odm_fp = file_dir,
                                                 n_lines_per_chunk = chunk_size,
-                                                return_metadata_ondisc_matrix = TRUE,
                                                 progress = FALSE)
 })

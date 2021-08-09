@@ -30,9 +30,9 @@ get_features_metadata <- function(features_fp, bag_of_variables) {
 #' @param tsv_file file path to .tsv file
 #'
 #' @return contents of the specified column in vector form
-read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file, progress = FALSE) {
+read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file) {
   type_pattern <- c(rep("_", col_idx - 1), "c", rep("_", n_cols - col_idx)) %>% paste0(collapse = "")
-  dplyr::pull(readr::read_tsv(file = tsv_file, col_names = FALSE, col_types = type_pattern, progress = progress))
+  dplyr::pull(readr::read_tsv(file = tsv_file, col_names = FALSE, col_types = type_pattern))
 }
 
 
