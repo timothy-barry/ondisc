@@ -6,7 +6,6 @@
 #' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
 #'
 #' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
-#' @noRd
 get_features_metadata <- function(features_fp, bag_of_variables) {
   first_row <- readr::read_tsv(file = features_fp, n_max = 1, col_names = FALSE, col_types = readr::cols())
   n_cols <- ncol(first_row)
@@ -24,31 +23,6 @@ get_features_metadata <- function(features_fp, bag_of_variables) {
 }
 
 
-#' Generate on disc_matrix_name
-#'
-#' Generates the name of an on_disc_matrix object given a directory.
-#' This function searches for files named on_disc_matrix_id.h5 in the specified directory.
-#' If none exists, it returns on_disc_matrix_1.h5. Else, it returns n_disc_matrix_id.h5
-#' with a unique integer in place of id.
-#'
-#' @param on_disc_dir directory in which to store the on_disc_matrix.
-#' @return a new name for an on_disc_matrix.
-#' @noRd
-generate_on_disc_matrix_name <- function(on_disc_dir) {
-  # Only list ondisc_matrix_<id>.h5 files
-  base_name <- "ondisc_matrix_"
-  fs <- list.files(on_disc_dir, pattern = paste0(base_name, "[0-9]+\\.h5"))
-  if (length(fs) == 0) {
-    name <- paste0(base_name, "1.h5")
-  } else {
-    ints_in_use <- gsub(pattern = paste0(base_name, "(\\d+)\\.h5"), replacement = "\\1", x = fs) %>% as.integer()
-    new_int <- max(ints_in_use) + 1
-    name <- paste0(base_name, new_int, ".h5")
-  }
-  return(name)
-}
-
-
 #' Read given column of tsv
 #'
 #' @param col_idx index of column to read
@@ -56,7 +30,6 @@ generate_on_disc_matrix_name <- function(on_disc_dir) {
 #' @param tsv_file file path to .tsv file
 #'
 #' @return contents of the specified column in vector form
-#' @noRd
 read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file, progress = FALSE) {
   type_pattern <- c(rep("_", col_idx - 1), "c", rep("_", n_cols - col_idx)) %>% paste0(collapse = "")
   dplyr::pull(readr::read_tsv(file = tsv_file, col_names = FALSE, col_types = type_pattern, progress = progress))
@@ -98,36 +71,7 @@ get_mtx_metadata <- function(mtx_fp) {
 }
 
 
-#' Verify fp
-#'
-#' Verifies that a file path to be used as the storage location for an ondisc matrix is acceptable.
-#'
-#' There are three cases:
-#' - case 1. The directory does not exist; return TRUE, and as a side-effect, create the empty directory.
-#' - case 2. The directory does exist and is empty; return TRUE.
-#' - case 3. The directory does exist and is nonempty; return FALSE.
-#'
-#' @param fp a file path
-#'
-#' @return boolean; if TRUE, no problem; if FALSE, problem.
-verify_fp <- function(fp) {
-  if (!dir.exists(fp)) {
-    # side effect: create directory
-    dir.create(path = fp, recursive = TRUE)
-    OK <- TRUE
-  } else {
-    empty_dir <- length(list.files(fp)) == 0
-    if (empty_dir) {
-      OK <- TRUE
-    } else {
-      OK <- FALSE
-    }
-  }
-  return(OK)
-}
-
-
-#' Get metadata for features_df,a data frame giving the names of the features.
+#' Get metadata for features_df, a data frame giving the names of the features.
 #'
 #' Gets metadata from a features data frame features_df.
 #'
@@ -135,7 +79,6 @@ verify_fp <- function(fp) {
 #' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
 #'
 #' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
-#' @noRd
 get_features_metadata_from_table <- function(features_df, bag_of_variables = NULL) {
   n_cols <- ncol(features_df)
   feature_names <- n_cols >= 2
@@ -165,7 +108,7 @@ get_features_metadata_from_table <- function(features_df, bag_of_variables = NUL
 #' @noRd
 get_h5_full_name <- function(h5_info, name) {
   idx <- which(h5_info$name == name)
-  return(paste(h5_info$group[idx], name,sep = "/"))
+  return(paste(h5_info$group[idx], name, sep = "/"))
 }
 
 
@@ -174,7 +117,6 @@ get_h5_full_name <- function(h5_info, name) {
 #' @param h5_list a vector of paths to the h5 file
 #'
 #' @return a list of barcodes for each h5 file
-#' @noRd
 get_h5_barcodes <- function(h5_list) {
   barcodes_list <- vector(mode = "list", length = length(h5_list))
   for (i in seq(1,length(h5_list))) {
@@ -191,7 +133,6 @@ get_h5_barcodes <- function(h5_list) {
 #' @param h5_list a vector of paths to the h5 file
 #'
 #' @return features_df data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
-#' @noRd
 get_h5_features <- function(h5_list) {
   h5_info <- rhdf5::h5ls(h5_list[1])
   genes_name <- get_h5_full_name(h5_info, "genes")
@@ -209,7 +150,6 @@ get_h5_features <- function(h5_list) {
 #'
 #' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
 #'     data points (i.e., fraction of entries that are zero)
-#' @noRd
 get_h5_cells_metadata <- function(h5_list) {
   cumulative_n_cells <- 0L
   cumulative_n_data_points <- 0L
@@ -229,4 +169,30 @@ get_h5_cells_metadata <- function(h5_list) {
   out$n_data_points <- cumulative_n_data_points
   out$n_cells_in_files <- n_cells_in_files
   return(out)
+}
+
+
+#' Get string
+#'
+#' @param barcodes_fp path to barcodes file(s)
+#' @param features_fp path the features file
+#' @param features_metadata the features_metadata list
+#'
+#' @return list containing (i) cell barcodes, (ii) feature IDs, and (iii) feature names (NA_character_ if absent)
+get_string_arrays <- function(barcodes_fp, features_fp, features_metadata) {
+  # barcodes first
+  cell_barcodes <- vector(mode = "character")
+  for (i in seq(1L, length(barcodes_fp))) {
+    single_cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes_fp[i], col_names = FALSE, col_types = "c"))
+    # concatenate cell_barcodes in each file to a single barcodes vector
+    cell_barcodes <- c(cell_barcodes, single_cell_barcodes)
+  }
+  # feature IDs and names next
+  feature_ids <- read_given_column_of_tsv(col_idx = 1, n_cols = features_metadata$n_cols, tsv_file = features_fp)
+  if (features_metadata$feature_names) {
+    feature_names <- read_given_column_of_tsv(col_idx = 2, n_cols = features_metadata$n_cols, tsv_file = features_fp)
+  } else {
+    feature_names <- NA_character_
+  }
+  return(list(cell_barcodes = cell_barcodes, feature_ids = feature_ids, feature_names = feature_names))
 }

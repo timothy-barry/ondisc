@@ -5,14 +5,14 @@
 \alias{read_odm}
 \title{Save ODM}
 \usage{
-save_odm(odm, name)
+save_odm(odm, metadata_fp)
 
 read_odm(odm_fp, name = NULL)
 }
 \arguments{
 \item{odm}{a metadata_ondisc_matrix object or ondisc_matrix object}
 
-\item{name}{name to label save}
+\item{metadata_fp}{file path to metadata.rds object}
 
 \item{odm_fp}{file path to an ondisc matrix (or metadata ondisc matrix)}
 }
@@ -20,18 +20,5 @@ read_odm(odm_fp, name = NULL)
 Saves an ondisc matrix or metadata ondisc matrix.
 }
 \examples{
-tempfile <- create_new_directory()
-odm_fp <- paste0(tempfile, "/expression_odm")
-file_locs <- system.file("extdata",package = "ondisc",
-c("gene_expression.mtx", "genes.tsv", "cell_barcodes.tsv"))
-names(file_locs) <- c("expressions", "features", "barcodes")
-expression_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
-barcodes_fp = file_locs[["barcodes"]],
-features_fp = file_locs[["features"]],
-odm_fp = odm_fp,
-return_metadata_ondisc_matrix = TRUE)
-expression_data <- expression_data[,1:10]
-save_odm(expression_data, "filtered")
-expression_data_loaded_unfiltered <- read_odm(odm_fp)
-expression_data_loaded_filtered <- read_odm(odm_fp, "filtered")
+
 }

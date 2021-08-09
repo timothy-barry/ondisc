@@ -28,3 +28,17 @@ combine_multimodal_dataframes <- function(df_list, modality_names) {
   colnames(out) <- new_names
   return(out)
 }
+
+
+#' Append file extension
+#'
+#' Appends a given file extension onto a file name (if not already present)
+#'
+#' @param file_name name of a file
+#' @param extension extension
+#'
+#' @return the file name with the given extension
+append_file_extension <- function(file_name, extension) {
+  if (!grepl(pattern = paste0("\\.", extension, "$"), x = file_name)) file_name <- paste0(file_name, paste0(".", extension))
+  return(file_name)
+}

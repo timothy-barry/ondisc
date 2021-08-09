@@ -21,33 +21,23 @@
 #' @slot feature_subset integer vector recording the features currently in use.
 #' @slot underlying_dimension the dimension of the (unsubset) expression matrix.
 ondisc_matrix <- setClass("ondisc_matrix",
-                           slots = list(odm_fp = "character",
-                                        h5_file = "character",
+                           slots = list(h5_file = "character",
                                         logical_mat = "logical",
+                                        underlying_dimension = "integer",
                                         cell_subset = "integer",
                                         feature_subset = "integer",
-                                        underlying_dimension = "integer"),
-                           prototype = list(odm_fp = NA_character_,
-                                            h5_file = NA_character_,
+                                        feature_ids = "character",
+                                        feature_names = "character",
+                                        cell_barcodes = "character"),
+                           prototype = list(h5_file = NA_character_,
                                             logical_mat = FALSE,
+                                            underlying_dimension = NA_integer_,
                                             cell_subset = NA_integer_,
                                             feature_subset = NA_integer_,
-                                            underlying_dimension = NA_integer_))
-
-#' `ondisc_matrix` constructor
-#'
-#' Construct an `ondisc_matrix` from an initialized .h5 file.
-#'
-#' @param h5_file a .h5 file storing the on-disk portion of an initialized `ondisc_matrix` object.
-#'
-#' @return an initialized `ondisc_matrix` object.
-ondisc_matrix <- function(h5_file) {
-  out <- new(Class = "ondisc_matrix")
-  out@h5_file <- h5_file
-  out@underlying_dimension <- as.integer(rhdf5::h5read(file = h5_file, name = "dimension"))
-  out@logical_mat <- as.logical(rhdf5::h5read(file = h5_file, name = "logical_mat"))
-  return(out)
-}
+                                            feature_ids = NA_character_,
+                                            feature_names = NA_character_,
+                                            cell_barcodes = NA_character_)
+                          )
 
 ###########################
 # 2. metadata_ondisc_matrix

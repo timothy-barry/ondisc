@@ -9,8 +9,8 @@ create_ondisc_matrix_from_mtx(
   barcodes_fp,
   features_fp,
   odm_fp,
+  metadata_fp = NULL,
   n_lines_per_chunk = 3e+08,
-  return_metadata_ondisc_matrix = TRUE,
   progress = TRUE
 )
 }
@@ -24,8 +24,6 @@ create_ondisc_matrix_from_mtx(
 \item{odm_fp}{location to write the ondisc matrix to disk}
 
 \item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
-
-\item{return_metadata_ondisc_matrix}{(optional) return the output as a metadata_ondisc_matrix (instead of a list)? Defaults to FALSE.}
 
 \item{progress}{(optional; default FALSE) print progress messages?}
 }
@@ -55,8 +53,7 @@ names(file_locs) <- c("expressions", "features", "barcodes")
 expression_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
 barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
-odm_fp = odm_fp,
-return_metadata_ondisc_matrix = TRUE)
+odm_fp = odm_fp)
 
 # Second example: initialize a metadata_ondisc_matrix using simulated
 # gRNA perturbation data; store in tempdir()
@@ -68,8 +65,7 @@ names(file_locs) <- c("perturbations", "features", "barcodes")
 perturbation_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["perturbations"]],
 barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
-odm_fp = odm_fp,
-return_metadata_ondisc_matrix = TRUE)
+odm_fp = odm_fp)
 
 
 # Third example: initialize from a list of .mtx files
@@ -93,6 +89,5 @@ for (i in seq(1,n_mat)) {
 mtx_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
 barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
 features_fp <- r_mats_plus_data_multi[[1]]$features_fp
-odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp,
-return_metadata_ondisc_matrix = TRUE)
+odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp)
 }

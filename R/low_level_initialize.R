@@ -5,53 +5,15 @@
 #' @param h5_fp file path to the .h5 file to be initialized
 #' @param mtx_metadata metadata of the .mtx file
 #' @param features_metadata metadata of the features.tsv file
-#' @param barcodes file path to the barcodes.tsv file OR a barcodes R object
-#' @param features file path to the features.tsv file OR a features R object
-#' @param file_path bool argument to determine whether the input are file path or R object. TRUE for file path, FALSE for R object.
-#'
 #' @return NULL
 #' @noRd
-initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata, features_metadata, barcodes, features, progress, file_path) {
+initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata) {
   # Create the .h5 file
   status <- rhdf5::h5createFile(h5_fp)
-  if(!status)
-    stop(sprintf("Creating %s failed", h5_fp))
-
-  # Write metadata
-  cell_barcodes <- vector(mode = "character")
-  if (file_path == TRUE) {
-    if (length(barcodes) == 1) {
-      cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes, col_names = FALSE, col_types = "c", progress = progress))
-    } else {
-      # handle list of barcodes input
-      for (i in 1:length(barcodes)) {
-        single_cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes[i], col_names = FALSE, col_types = "c", progress = progress))
-        # concatenate cell_barcodes in each file to a single barcodes vector
-        cell_barcodes <- c(cell_barcodes, single_cell_barcodes)
-      }
-    }
-  } else {
-    cell_barcodes <- barcodes
-  }
-  rhdf5::h5write(cell_barcodes, h5_fp, "cell_barcodes")
-
-  if (file_path == TRUE) {
-    feature_ids <- read_given_column_of_tsv(col_idx = 1, n_cols = features_metadata$n_cols, tsv_file = features, progress = progress)
-  } else {
-    feature_ids <- dplyr::pull(features, 1)
-  }
-  rhdf5::h5write(feature_ids, h5_fp, "feature_ids")
-
-  if (features_metadata$feature_names) {
-    if (file_path == TRUE) {
-      feature_names <- read_given_column_of_tsv(col_idx = 2, n_cols = features_metadata$n_cols, tsv_file = features, progress = progress)
-    } else {
-      feature_names <- dplyr::pull(features, 2)
-    }
-    rhdf5::h5write(feature_names, h5_fp, "feature_names")
-  }
+  if (!status) stop(sprintf("Creating %s failed", h5_fp))
+  # write the dimension,
   rhdf5::h5write(c(mtx_metadata$n_features, mtx_metadata$n_cells), h5_fp, "dimension")
-  rhdf5::h5write(mtx_metadata$is_logical, h5_fp, "logical_mat")
+  rhdf5::h5write(as.integer(mtx_metadata$is_logical), h5_fp, "logical_mat")
 
   # Initialize CSC
   rhdf5::h5createDataset(file = h5_fp, dataset = "cell_ptr", dims = mtx_metadata$n_cells + 1, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_cells, 10))
@@ -66,9 +28,8 @@ initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata, features_metadata, b
   if (!mtx_metadata$is_logical) {
     rhdf5::h5createDataset(file = h5_fp, dataset = "data_csr", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50))
   }
-
-  invisible(NULL)
 }
+
 
 #' Initialize accumulator
 #'
@@ -375,6 +336,7 @@ run_core_algo_step_2_mtxfilelist <- function(file_matadata, progress, closure, a
   }
   return(acc)
 }
+
 
 #' Run core mtx algo
 #'

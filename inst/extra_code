@@ -1,0 +1,37 @@
+# cell barcodes 
+
+ cell_barcodes <- vector(mode = "character")
+  if (file_path == TRUE) {
+    if (length(barcodes) == 1) {
+      cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes, col_names = FALSE, col_types = "c", progress = progress))
+    } else {
+      # handle list of barcodes input
+      for (i in 1:length(barcodes)) {
+        single_cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes[i], col_names = FALSE, col_types = "c", progress = progress))
+        # concatenate cell_barcodes in each file to a single barcodes vector
+        cell_barcodes <- c(cell_barcodes, single_cell_barcodes)
+      }
+    }
+  } else {
+    cell_barcodes <- barcodes
+  }
+  rhdf5::h5write(cell_barcodes, h5_fp, "cell_barcodes")
+
+
+# features
+
+  if (file_path == TRUE) {
+    feature_ids <- read_given_column_of_tsv(col_idx = 1, n_cols = features_metadata$n_cols, tsv_file = features, progress = progress)
+  } else {
+    feature_ids <- dplyr::pull(features, 1)
+  }
+  rhdf5::h5write(feature_ids, h5_fp, "feature_ids")
+
+  if (features_metadata$feature_names) {
+    if (file_path == TRUE) {
+      feature_names <- read_given_column_of_tsv(col_idx = 2, n_cols = features_metadata$n_cols, tsv_file = features, progress = progress)
+    } else {
+      feature_names <- dplyr::pull(features, 2)
+    }
+    rhdf5::h5write(feature_names, h5_fp, "feature_names")
+  }
