@@ -9,7 +9,7 @@ create_ondisc_matrix_from_R_matrix(
   barcodes,
   features_df,
   odm_fp,
-  return_metadata_ondisc_matrix = FALSE
+  metadata_fp = NULL
 )
 }
 \arguments{
@@ -57,13 +57,13 @@ features_df_2 <- dplyr::select(features_df, id)
 # EXAMPLE 1: integer counts
 ###########################
 odm_fp <- paste0(create_new_directory(), "/integer_odm")
-odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
-features_df, odm_fp, TRUE)
+odm_integer <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
+features_df, odm_fp)
 
 ####################
 # EXAMPLE 2: logical
 ####################
 odm_fp <- paste0(create_new_directory(), "/logical_odm")
-odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
-features_df_2, odm_fp, TRUE)
+odm_logical <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
+features_df_2, odm_fp)
 }

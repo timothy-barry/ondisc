@@ -71,33 +71,6 @@ get_mtx_metadata <- function(mtx_fp) {
 }
 
 
-#' Get metadata for features_df, a data frame giving the names of the features.
-#'
-#' Gets metadata from a features data frame features_df.
-#'
-#' @param features_df a data frame giving the names of the features.
-#' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
-#'
-#' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
-get_features_metadata_from_table <- function(features_df, bag_of_variables = NULL) {
-  n_cols <- ncol(features_df)
-  feature_names <- n_cols >= 2
-  mt_genes_present <- FALSE
-  if (feature_names) {
-    # Assume the second column is always feature_name. Or we can extract by the col name
-    gene_names <- dplyr::pull(features_df, 2)
-    mt_genes <- grepl(pattern = "^MT-", x = gene_names)
-    if (any(mt_genes)) {
-      mt_genes_present <- TRUE
-      if (!is.null(bag_of_variables)) {
-        bag_of_variables[[arguments_enum()$mt_gene_bool]] <- mt_genes
-      }
-    }
-  }
-  return(list(feature_names = feature_names, n_cols = n_cols, mt_genes_present = mt_genes_present))
-}
-
-
 #' Get h5 full name by the dataset name
 #'
 #' @param h5_info a dataframe that contains the information of the  h5 file

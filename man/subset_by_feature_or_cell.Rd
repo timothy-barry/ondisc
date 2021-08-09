@@ -4,7 +4,7 @@
 \alias{subset_by_feature_or_cell}
 \title{Subset by feature or cell}
 \usage{
-subset_by_feature_or_cell(x, idx, subset_on_cell)
+subset_by_feature_or_cell(x, idx, subset_on_cell, subset_string_arrays = FALSE)
 }
 \arguments{
 \item{x}{an ondisc_matrix}

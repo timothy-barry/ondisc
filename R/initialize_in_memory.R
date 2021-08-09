@@ -36,18 +36,18 @@
 #' # EXAMPLE 1: integer counts
 #' ###########################
 #' odm_fp <- paste0(create_new_directory(), "/integer_odm")
-#' odm_plus_covariate_matrices <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
-#' features_df, odm_fp, TRUE)
+#' odm_integer <- create_ondisc_matrix_from_R_matrix(r_matrix, barcodes,
+#' features_df, odm_fp)
 #'
 #' ####################
 #' # EXAMPLE 2: logical
 #' ####################
 #' odm_fp <- paste0(create_new_directory(), "/logical_odm")
-#' odm_plus_covariate_matrices_2 <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
-#' features_df_2, odm_fp, TRUE)
-create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, odm_fp, return_metadata_ondisc_matrix = FALSE) {
-  # create the odm directory; if directory exists and nonempty, throw error.
-  if (!verify_fp(odm_fp)) stop("odm_fp must be the name of a file to create; it cannot be the name of an existing, non-empty directory.")
+#' odm_logical <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
+#' features_df_2, odm_fp)
+create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, odm_fp, metadata_fp = NULL) {
+  # generate random ODM ID
+  odm_id <- sample(seq(0L, .Machine$integer.max), size = 1)
 
   ### STEP1: compute the cell- and feature- specific covariate matrices
   # Extract features and expression metadata
@@ -86,9 +86,6 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   colnames(cell_covariates) <- gsub('_cell', "", colnames(cell_covariates))
 
   ### STEP2: Generate ondisc_matrix and write the R matrix to disk in CSC and CSR format.
-  # Generate a name for the ondisc_matrix .h5 file, if necessary
-  h5_fp <- paste0(odm_fp, "/data.h5")
-
   # Create in-memory CSC and CSR representations of r_matrix
   if (is(r_matrix, "dgTMatrix")) { # sparse triplet form case
     csc_r_matrix <- Matrix::sparseMatrix(i = r_matrix@i,
@@ -108,22 +105,35 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
   }
 
-  # Write in memory matrix to the .h5 file on-disk(side-effect)
-  write_matrix_to_h5(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix)
+  # append ".ods" to odm_fp
+  odm_fp <- append_file_extension(odm_fp, "odm")
 
-  # Create ondisc_matrix.
-  ondisc_matrix <- internal_initialize_ondisc_matrix(odm_fp = odm_fp, logical_mat = expression_metadata$is_logical, underlying_dimension = c(expression_metadata$n_features, expression_metadata$n_cells))
+  # initialize the ODM
+  initialize_h5_file_on_disk(h5_fp = odm_fp, mtx_metadata = expression_metadata, odm_id = odm_id)
 
-  # Determine whether to return a metadata_ondisc_matrix
-  out <- list(ondisc_matrix = ondisc_matrix,
-              feature_covariates = feature_covariates,
-              cell_covariates = cell_covariates)
-  if (return_metadata_ondisc_matrix) {
-    out <- metadata_ondisc_matrix(ondisc_matrix = out$ondisc_matrix,
-                                  cell_covariates = out$cell_covariates,
-                                  feature_covariates = out$feature_covariates)
-  }
-  return(out)
+  # Write in memory matrix to the .h5 file on-disk (side-effect)
+  write_matrix_to_h5(h5_fp = odm_fp, expression_metadata = expression_metadata, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix)
+
+  ### STEP3: Prepare output
+  odm <- ondisc_matrix(h5_file = odm_fp,
+                       logical_mat = expression_metadata$is_logical,
+                       underlying_dimension = c(expression_metadata$n_features, expression_metadata$n_cells),
+                       feature_ids = dplyr::pull(features_df, 1),
+                       feature_names = if (features_metadata$feature_names) dplyr::pull(features_df, 2) else NA_character_,
+                       cell_barcodes = barcodes,
+                       odm_id = odm_id)
+
+  # initialize the metadata odm
+  metadata_odm <- metadata_ondisc_matrix(ondisc_matrix = odm,
+                                         cell_covariates = cell_covariates,
+                                         feature_covariates = feature_covariates)
+
+  # save the metadata
+  if (is.null(metadata_fp)) metadata_fp <- paste0(dirname(odm_fp), "/metadata.rds")
+  save_odm(metadata_odm, metadata_fp)
+
+  # return initialized object
+  return(metadata_odm)
 }
 
 
@@ -133,20 +143,45 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
 #'
 #' @return a list with the following entries: (i) n_genes, (ii) n_cells, (iii) the number of data points (i.e., number of entries that are zero), (iv) (TRUE/FALSE) matrix is logical.
 #' @noRd
-get_expression_metadata_from_r_matrix <- function (r_matrix) {
+get_expression_metadata_from_r_matrix <- function(r_matrix) {
   n_features <- nrow(r_matrix)
   n_cells <- ncol(r_matrix)
-
   if (is.logical(r_matrix)) {
     is_logical <- TRUE
-    n_data_points <- sum(r_matrix == TRUE)
+    n_data_points <- sum(r_matrix)
   } else {
     is_logical <- FALSE
     n_data_points <- sum(r_matrix != 0)
   }
-
   return(list(n_features = n_features, n_cells = n_cells, n_data_points = n_data_points,
               is_logical = is_logical))
+}
+
+
+#' Get metadata for features_df, a data frame giving the names of the features.
+#'
+#' Gets metadata from a features data frame features_df.
+#'
+#' @param features_df a data frame giving the names of the features.
+#' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
+#'
+#' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
+get_features_metadata_from_table <- function(features_df, bag_of_variables = NULL) {
+  n_cols <- ncol(features_df)
+  feature_names <- n_cols >= 2
+  mt_genes_present <- FALSE
+  if (feature_names) {
+    # Assume the second column is always feature_name. Or we can extract by the col name
+    gene_names <- dplyr::pull(features_df, 2)
+    mt_genes <- grepl(pattern = "^MT-", x = gene_names)
+    if (any(mt_genes)) {
+      mt_genes_present <- TRUE
+      if (!is.null(bag_of_variables)) {
+        bag_of_variables[[arguments_enum()$mt_gene_bool]] <- mt_genes
+      }
+    }
+  }
+  return(list(feature_names = feature_names, n_cols = n_cols, mt_genes_present = mt_genes_present))
 }
 
 
@@ -164,24 +199,20 @@ get_expression_metadata_from_r_matrix <- function (r_matrix) {
 #'
 #' @return NULL
 #' @noRd
-write_matrix_to_h5 <- function(h5_fp, expression_metadata, features_metadata, barcodes, features_df, csc_r_matrix, csr_r_matrix) {
-  # Initialize the .h5 file
-  initialize_h5_file_on_disk(h5_fp = h5_fp, mtx_metadata = expression_metadata, features_metadata = features_metadata, barcodes = barcodes, features = features_df, progress = TRUE, file_path = FALSE)
-
+write_matrix_to_h5 <- function(h5_fp, expression_metadata, csc_r_matrix, csr_r_matrix) {
   # Write CSC
-  rhdf5::h5write(csc_r_matrix@p, file=h5_fp, name="cell_ptr")
-  rhdf5::h5write(csc_r_matrix@i, file=h5_fp, name="feature_idxs")
+  rhdf5::h5write(csc_r_matrix@p, file = h5_fp, name="cell_ptr")
+  rhdf5::h5write(csc_r_matrix@i, file = h5_fp, name="feature_idxs")
   if (!expression_metadata$is_logical) {
-    rhdf5::h5write(csc_r_matrix@x, file=h5_fp, name="data_csc")
+    rhdf5::h5write(csc_r_matrix@x, file = h5_fp, name="data_csc")
   }
 
   # Write CSR
-  rhdf5::h5write(csr_r_matrix@p, file=h5_fp, name="feature_ptr")
-  rhdf5::h5write(csr_r_matrix@j, file=h5_fp, name="cell_idxs")
+  rhdf5::h5write(csr_r_matrix@p, file = h5_fp, name = "feature_ptr")
+  rhdf5::h5write(csr_r_matrix@j, file = h5_fp, name = "cell_idxs")
   if (!expression_metadata$is_logical) {
-    rhdf5::h5write(csr_r_matrix@x, file=h5_fp, name="data_csr")
+    rhdf5::h5write(csr_r_matrix@x, file = h5_fp, name = "data_csr")
   }
 
   invisible(NULL)
 }
-
