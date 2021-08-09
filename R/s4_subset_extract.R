@@ -30,14 +30,14 @@ setMethod(f = "[",
 #' @export
 setMethod(f = "[",
           signature = signature(x = "ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
-          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE))
+          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE, subset_string_arrays = TRUE))
 
 # 3. subset feature, odm
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
           signature = signature(x = "ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
-          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = j, subset_on_cell = TRUE))
+          definition = function(x, i, j) subset_by_feature_or_cell(x = x, idx = j, subset_on_cell = TRUE, subset_string_arrays = TRUE))
 
 # 4. subset both cell and feature, odm
 #' @rdname subset-odm
@@ -45,10 +45,10 @@ setMethod(f = "[",
 setMethod(f = "[",
           signature = signature(x = "ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
           definition = function(x, i, j) {
-            subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE) %>% subset_by_feature_or_cell(x = ., idx = j, subset_on_cell = TRUE)
+            subset_by_feature_or_cell(x = x, idx = i, subset_on_cell = FALSE, subset_string_arrays = TRUE) %>% subset_by_feature_or_cell(x = ., idx = j, subset_on_cell = TRUE, subset_string_arrays = TRUE)
           })
 
-# 5. subst both cell and feature, m_odm
+# 5. subset both cell and feature, m_odm
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",

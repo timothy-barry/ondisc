@@ -22,13 +22,12 @@ get_subset_vector <- function(x, cell_idx) {
 #' @return the dimension
 #' @noRd
 get_dim <- function(x) {
-  cell_unsubset <- identical(x@cell_subset, NA_integer_)
   feature_unsubset <- identical(x@feature_subset, NA_integer_)
-
-  if (cell_unsubset || feature_unsubset) dim_h5 <- rhdf5::h5read(file = x@h5_file, name = "dimension") %>% as.integer()
-  n_row_out <- if (feature_unsubset) dim_h5[1] else length(x@feature_subset)
-  n_col_out <- if (cell_unsubset) dim_h5[2] else length(x@cell_subset)
-  return(c(n_row_out, n_col_out))
+  cell_unsubset <- identical(x@cell_subset, NA_integer_)
+  underlying_dim <- x@underlying_dimension
+  out <- c(if (feature_unsubset) underlying_dim[1] else length(x@feature_subset),
+           if (cell_unsubset) underlying_dim[2] else length(x@cell_subset))
+  return(out)
 }
 
 
@@ -40,9 +39,7 @@ get_dim <- function(x) {
 #' @return a character vector containing the requested names
 #' @noRd
 get_names <- function(x, name_to_get) {
-  names_out <- rhdf5::h5read(file = x@h5_file, name = name_to_get) %>% as.character()
-  idx <- get_subset_vector(x, name_to_get == "cell_barcodes")
-  if (identical(idx, NA_integer_)) names_out else names_out[idx]
+  return(slot(x, name_to_get))
 }
 
 
@@ -56,7 +53,7 @@ get_names <- function(x, name_to_get) {
 #'
 #' @return a subset ondisc_matrix
 #' @export
-subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
+subset_by_feature_or_cell <- function(x, idx, subset_on_cell, subset_string_arrays = FALSE) {
   subset_slot <- paste0(if (subset_on_cell) "cell" else "feature", "_subset")
   if (identical(slot(x, subset_slot), NA_integer_)) {
     n_elements <- if (subset_on_cell) ncol(x) else nrow(x)
@@ -65,18 +62,26 @@ subset_by_feature_or_cell <- function(x, idx, subset_on_cell) {
   # perform different subset operation based on class of idx
   if (is(idx, "numeric")) {
     if (max(idx) > length(slot(x, subset_slot))) stop("Numeric index out of bounds.")
-    slot(x, subset_slot) <- slot(x, subset_slot)[idx]
   } else if (is(idx, "logical")) {
     if (length(idx) > length(slot(x, subset_slot))) stop("Logical vector too long.")
-    slot(x, subset_slot) <- slot(x, subset_slot)[idx]
   } else if (is(idx, "character")) {
-    all_ids <- rhdf5::h5read(file = x@h5_file, name = if (subset_on_cell) "cell_barcodes" else "feature_ids")
-    curr_ids <- all_ids[slot(x, subset_slot)]
-    within_cur_ids_idxs <- match(x = idx, table = curr_ids)
-    if (any(is.na(within_cur_ids_idxs))) stop(paste(if(subset_on_cell) "Cell barcode" else "feature id","not present in data."))
-    slot(x, subset_slot) <- slot(x, subset_slot)[within_cur_ids_idxs]
+    curr_ids <- slot(x, if (subset_on_cell) "cell_barcodes" else "feature_ids")
+    # update to integer idx
+    idx <- match(x = idx, table = curr_ids)
+    if (any(is.na(idx))) stop(paste(if (subset_on_cell) "Cell barcode" else "feature id","not present in data."))
   } else {
     stop("idx must be of type numeric, character, or logical.")
+  }
+  # perform the subset on the subset_slot
+  slot(x, subset_slot) <- slot(x, subset_slot)[idx]
+  # Also index into the string arrays, if necessary.
+  if (subset_string_arrays) {
+    if (subset_on_cell) {
+      slot(x, "cell_barcodes") <- slot(x, "cell_barcodes")[idx]
+    } else {
+      slot(x, "feature_names") <- slot(x, "feature_names")[idx]
+      slot(x, "feature_ids") <- slot(x, "feature_ids")[idx]
+    }
   }
   return(x)
 }
