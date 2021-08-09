@@ -28,7 +28,8 @@ ondisc_matrix <- setClass("ondisc_matrix",
                                         feature_subset = "integer",
                                         feature_ids = "character",
                                         feature_names = "character",
-                                        cell_barcodes = "character"),
+                                        cell_barcodes = "character",
+                                        odm_id = "integer"),
                            prototype = list(h5_file = NA_character_,
                                             logical_mat = FALSE,
                                             underlying_dimension = NA_integer_,
@@ -36,7 +37,8 @@ ondisc_matrix <- setClass("ondisc_matrix",
                                             feature_subset = NA_integer_,
                                             feature_ids = NA_character_,
                                             feature_names = NA_character_,
-                                            cell_barcodes = NA_character_)
+                                            cell_barcodes = NA_character_,
+                                            odm_id = NA_integer_)
                           )
 
 ###########################

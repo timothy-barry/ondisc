@@ -1,49 +1,79 @@
-#' Save ODM
+#' Save or read an `ondisc_matrix`
 #'
-#' Saves an ondisc matrix (or metadata ondisc matrix).
+#' Functions to save and read `ondisc_matrix` objects.
 #'
-#' This function does not change the underlying .odm expression file. Instead, it creates a new metadata.rds file representing a new "version" of the underlying expression matrix.
+#' The backing .odm file is a static, read-only file that is never altered or copied.
+#' `read_odm` constructs an `ondisc_matrix` from a given backing .odm file and (optionally) a metadata file.
+#' `save_odm` writes a new metadata file to disk (potentially overwriting a previous metadata file of the same name), leaving the backing .odm file unaltered.
 #'
-#' @param odm a metadata_ondisc_matrix object or ondisc_matrix object
-#' @param metadata_fp file path to metadata.rds object
+#' @param odm an ondisc_matrix object
+#' @param metadata_fp path to metadata RDS file
 #'
 #' @return NULL
 #' @export
+#' @examples
+#' # initialize a new ondisc matrix, supplying paths for backing .odm file and metadata RDS file
+#' tempfile <- create_new_directory()
+#' odm_fp <- paste0(tempfile, "/expression_odm.odm")
+#' metadata_fp <- paste0(tempfile, "/metadata.rds")
+#' file_locs <- system.file("extdata",package = "ondisc",
+#'                         c("gene_expression.mtx", "genes.tsv", "cell_barcodes.tsv"))
+#' names(file_locs) <- c("expressions", "features", "barcodes")
+#' odm <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
+#'                                                 barcodes_fp = file_locs[["barcodes"]],
+#'                                                 features_fp = file_locs[["features"]],
+#'                                                 odm_fp = odm_fp, metadata_fp = metadata_fp)
+#'
+#' # assign a new ondisc_matrix by subsetting the original
+#' odm_subset <- odm[1:10,]
+#' # save the subsetted odm, and remove it from memory
+#' metadata_subset_fp <- paste0(tempfile, "/metadata_subset.rds")
+#' save_odm(odm_subset, metadata_subset_fp)
+#' rm(odm_subset)
+#' # Load the subsetted odm back into memory
+#' odm_subset <- read_odm(odm_fp, metadata_subset_fp)
 save_odm <- function(odm, metadata_fp) {
   if (is(odm, "multimodal_ondisc_matrix")) stop("Save function not yet implemented for multimodal_ondisc_matrix class.")
 
-  aux_info <- list()
+  metadata <- list()
   # if is metadata_ondisc_matrix, save cell-specific and feature-specific covariates, and update odm to the ondisc matrix contained therein.
   if (is(odm, "metadata_ondisc_matrix")) {
-    aux_info$cell_covariates <- odm@cell_covariates
-    aux_info$feature_covariates <- odm@feature_covariates
+    metadata$cell_covariates <- odm@cell_covariates
+    metadata$feature_covariates <- odm@feature_covariates
     odm <- odm@ondisc_matrix
   }
 
   # save aux info
-  fields <- c("cell_subset", "feature_subset", "feature_ids", "feature_names", "cell_barcodes")
-  for (field in fields) aux_info[[field]] <- slot(odm, field)
+  fields <- c("cell_subset", "feature_subset", "feature_ids", "feature_names", "cell_barcodes", "odm_id")
+  for (field in fields) metadata[[field]] <- slot(odm, field)
 
   # save RDS
   metadata_fp <- append_file_extension(metadata_fp, "rds")
-  saveRDS(object = aux_info, file = metadata_fp)
+  saveRDS(object = metadata, file = metadata_fp)
 }
 
 
 #' Read ODM
 #' @rdname save_odm
+#' @param odm_fp file path to a backing .odm file
 #' @export
-#' @param odm_fp file path to a .odm file
+#' @param odm_fp path to a backing .odm file
 read_odm <- function(odm_fp, metadata_fp = NULL) {
   # first, obtain underlying dimension and logical_marix boolean
   underlying_dimension <- read_integer_vector_hdf5(odm_fp, "dimension", 2L)
   logical_mat <- as.logical(read_integer_vector_hdf5(odm_fp, "logical_mat", 1L))
+  odm_id_backing <- read_integer_vector_hdf5(odm_fp, "odm_id", 1L)
   odm <- ondisc_matrix(h5_file = odm_fp,
                        logical_mat = logical_mat,
-                       underlying_dimension = underlying_dimension)
+                       underlying_dimension = underlying_dimension,
+                       odm_id = odm_id_backing)
   # if name is non-null, modify the output futher
   if (!is.null(metadata_fp)) {
     metadata <- readRDS(metadata_fp)
+    # verify metadata_odm_id matches backing odm_id
+    if (metadata$odm_id != odm_id_backing) {
+      stop("ODM-ID of backing .odm file does not match that of metadata file. Try loading a different metadata file.")
+    }
     fields <- c("cell_subset", "feature_subset", "feature_ids", "feature_names", "cell_barcodes")
     for (field in fields) slot(odm, field) <- metadata[[field]]
     # if cell covariates and feature covariates are available, initialize the metadata_ondisc_matrix

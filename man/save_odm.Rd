@@ -3,22 +3,46 @@
 \name{save_odm}
 \alias{save_odm}
 \alias{read_odm}
-\title{Save ODM}
+\title{Save or read an \code{ondisc_matrix}}
 \usage{
 save_odm(odm, metadata_fp)
 
-read_odm(odm_fp, name = NULL)
+read_odm(odm_fp, metadata_fp = NULL)
 }
 \arguments{
-\item{odm}{a metadata_ondisc_matrix object or ondisc_matrix object}
+\item{odm}{an ondisc_matrix object}
 
-\item{metadata_fp}{file path to metadata.rds object}
+\item{metadata_fp}{path to metadata RDS file}
 
-\item{odm_fp}{file path to an ondisc matrix (or metadata ondisc matrix)}
+\item{odm_fp}{path to a backing .odm file}
 }
 \description{
-Saves an ondisc matrix or metadata ondisc matrix.
+Functions to save and read \code{ondisc_matrix} objects.
+}
+\details{
+The backing .odm file is a static, read-only file that is never altered or copied.
+\code{read_odm} constructs an \code{ondisc_matrix} from a given backing .odm file and (optionally) a metadata file.
+\code{save_odm} writes a new metadata file to disk (potentially overwriting a previous metadata file of the same name), leaving the backing .odm file unaltered.
 }
 \examples{
+# initialize a new ondisc matrix, supplying paths for backing .odm file and metadata RDS file
+tempfile <- create_new_directory()
+odm_fp <- paste0(tempfile, "/expression_odm.odm")
+metadata_fp <- paste0(tempfile, "/metadata.rds")
+file_locs <- system.file("extdata",package = "ondisc",
+                        c("gene_expression.mtx", "genes.tsv", "cell_barcodes.tsv"))
+names(file_locs) <- c("expressions", "features", "barcodes")
+odm <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
+                                                barcodes_fp = file_locs[["barcodes"]],
+                                                features_fp = file_locs[["features"]],
+                                                odm_fp = odm_fp, metadata_fp = metadata_fp)
 
+# assign a new ondisc_matrix by subsetting the original
+odm_subset <- odm[1:10,]
+# save the subsetted odm, and remove it from memory
+metadata_subset_fp <- paste0(tempfile, "/metadata_subset.rds")
+save_odm(odm_subset, metadata_subset_fp)
+rm(odm_subset)
+# Load the subsetted odm back into memory
+odm_subset <- read_odm(odm_fp, metadata_subset_fp)
 }

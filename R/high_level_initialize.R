@@ -68,6 +68,9 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates.
   # mtx_metadata stores general information about the .mtx file, and features_metadata stores general information about the .tsv files.
 
+  # generate random ODM id
+  odm_id <- sample(seq(0L, .Machine$integer.max), size = 1)
+
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()
 
@@ -87,7 +90,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   odm_fp <- append_file_extension(odm_fp, "odm")
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(odm_fp, mtx_metadata)
+  initialize_h5_file_on_disk(odm_fp, mtx_metadata, odm_id)
 
   # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(mtx_metadata, features_metadata)
@@ -104,7 +107,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
                        underlying_dimension = c(mtx_metadata$n_features, mtx_metadata$n_cells),
                        feature_ids = string_arrays$feature_ids,
                        feature_names = string_arrays$feature_names,
-                       cell_barcodes = string_arrays$cell_barcodes)
+                       cell_barcodes = string_arrays$cell_barcodes,
+                       odm_id = odm_id)
 
   # initialize the metadata odm
   metadata_odm <- metadata_ondisc_matrix(ondisc_matrix = odm,

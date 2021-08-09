@@ -7,13 +7,14 @@
 #' @param features_metadata metadata of the features.tsv file
 #' @return NULL
 #' @noRd
-initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata) {
+initialize_h5_file_on_disk <- function(h5_fp, mtx_metadata, odm_id) {
   # Create the .h5 file
   status <- rhdf5::h5createFile(h5_fp)
   if (!status) stop(sprintf("Creating %s failed", h5_fp))
-  # write the dimension,
+  # write the dimension, logical_mat, and odm_id
   rhdf5::h5write(c(mtx_metadata$n_features, mtx_metadata$n_cells), h5_fp, "dimension")
   rhdf5::h5write(as.integer(mtx_metadata$is_logical), h5_fp, "logical_mat")
+  rhdf5::h5write(odm_id, h5_fp, "odm_id")
 
   # Initialize CSC
   rhdf5::h5createDataset(file = h5_fp, dataset = "cell_ptr", dims = mtx_metadata$n_cells + 1, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_cells, 10))
