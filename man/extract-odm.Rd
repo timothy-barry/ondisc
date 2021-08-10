@@ -7,6 +7,9 @@
 \alias{[[,ondisc_matrix,missing,ANY-method}
 \alias{[[,ondisc_matrix,ANY,ANY-method}
 \alias{[[,metadata_ondisc_matrix,ANY,ANY-method}
+\alias{[[,metadata_ondisc_matrix,missing,ANY-method}
+\alias{[[,metadata_ondisc_matrix,ANY,missing-method}
+\alias{[[,metadata_ondisc_matrix,missing,missing-method}
 \alias{[[,multimodal_ondisc_matrix,ANY,ANY-method}
 \title{Pull a submatrix into memory using the \code{[[} operator.}
 \usage{
@@ -19,6 +22,12 @@
 \S4method{[[}{ondisc_matrix,ANY,ANY}(x, i, j)
 
 \S4method{[[}{metadata_ondisc_matrix,ANY,ANY}(x, i, j)
+
+\S4method{[[}{metadata_ondisc_matrix,missing,ANY}(x, i, j)
+
+\S4method{[[}{metadata_ondisc_matrix,ANY,missing}(x, i, j)
+
+\S4method{[[}{metadata_ondisc_matrix,missing,missing}(x, i, j)
 
 \S4method{[[}{multimodal_ondisc_matrix,ANY,ANY}(x, i, j)
 }
@@ -33,15 +42,12 @@
 a matrix (as implemented by the Matrix package).
 }
 \description{
-Apply the \code{[[} operator to an \code{ondisc_matrix} to pull a submatrix into memory. You can pass logical, character,
+Apply the \code{[[} operator to an \code{ondisc_matrix} or \code{covariate_ondisc_matrix} to pull a submatrix into memory. You can pass logical, character,
 or numeric vectors to \code{[[}; character vectors are assumed to refer to feature IDs (for rows) and cell barcodes
 (for columns).
 }
 \details{
-You can apply \code{[[} to \code{ondisc_matrix} objects only. You cannot apply \code{[[} to \code{metadata_ondisc_matrix} or
-\code{multimodal_ondisc_matrix} objects, because in the latter case the data to be accessed is ambiguous.
-
-You can remember the difference between \code{[} and \code{[[} by thinking about R lists: \code{[} is used to subset a list, and
+One can remember the difference between \code{[} and \code{[[} by recalling R lists: \code{[} is used to subset a list, and
 \code{[[} is used to access elements stored \emph{inside} a list. Similarly, \code{[} is used to subset an \code{ondisc_matrix}, and
 \code{[[} is used to access a submatrix usable within R.
 }

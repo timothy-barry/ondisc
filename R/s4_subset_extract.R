@@ -124,14 +124,11 @@ setMethod(f = "[",
 
 #' Pull a submatrix into memory using the `[[` operator.
 #'
-#' Apply the `[[` operator to an `ondisc_matrix` to pull a submatrix into memory. You can pass logical, character,
+#' Apply the `[[` operator to an `ondisc_matrix` or `covariate_ondisc_matrix` to pull a submatrix into memory. You can pass logical, character,
 #' or numeric vectors to `[[`; character vectors are assumed to refer to feature IDs (for rows) and cell barcodes
 #' (for columns).
 #'
-#' You can apply `[[` to `ondisc_matrix` objects only. You cannot apply `[[` to `metadata_ondisc_matrix` or
-#' `multimodal_ondisc_matrix` objects, because in the latter case the data to be accessed is ambiguous.
-#'
-#' You can remember the difference between `[` and `[[` by thinking about R lists: `[` is used to subset a list, and
+#' One can remember the difference between `[` and `[[` by recalling R lists: `[` is used to subset a list, and
 #' `[[` is used to access elements stored *inside* a list. Similarly, `[` is used to subset an `ondisc_matrix`, and
 #' `[[` is used to access a submatrix usable within R.
 #'
@@ -179,19 +176,24 @@ setMethod(f = "[[",
           x@ondisc_matrix[[i, j]]
 )
 
+#' @export
+#' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "ANY"),
           definition = function(x, i, j)
             x@ondisc_matrix[[, j]]
 )
 
+#' @export
+#' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "missing"),
           definition = function(x, i, j)
             x@ondisc_matrix[[i, ]]
 )
 
-
+#' @export
+#' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "missing"),
           definition = function(x, i, j)

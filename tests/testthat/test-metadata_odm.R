@@ -53,8 +53,9 @@ test_that("subset metadata_odm", {
 test_that("extract metadata_odm", {
   for (i in 1:n_datasets) {
     metadata_odm <- cov_odms[[i]]
-    expect_error(metadata_odm[[1,]])
-    expect_error(metadata_odm[[,1]])
-    expect_error(metadata_odm[[1, 1]])
+    d <- dim(metadata_odm)
+    expect_equal(metadata_odm[[d[1],]], metadata_odm@ondisc_matrix[[d[1],]])
+    expect_equal(metadata_odm[[,d[2]]], metadata_odm@ondisc_matrix[[,d[2]]])
+    expect_equal(metadata_odm[[d[1],d[2]]], metadata_odm@ondisc_matrix[[d[1],d[2]]])
   }
 })
