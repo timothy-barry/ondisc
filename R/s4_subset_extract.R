@@ -115,7 +115,7 @@ setMethod(f = "[",
           signature = signature(x = "multimodal_ondisc_matrix", i = "ANY"),
           definition = function(x, i, j, drop) stop(
             "The operation [i,] is invalid, because multimodal_ondisc_matrix objects can
-          be subset only by cell, not feature. Use [,i] to subset by cell instead."))
+            be subset only by cell, not feature. Use [,i] to subset by cell instead."))
 
 
 #################
@@ -174,12 +174,30 @@ setMethod(f = "[[",
 #' @export
 #' @rdname extract-odm
 setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix"),
-          definition = function(x, i, j) stop(
-            "You cannot use the [[,]] operator on this object because it is a metadata_ondisc_matrix,
-            not an ondisc_matrix. To access the ondisc_matrix stored within this object, use the @
-            symbol and access the field `ondisc_matrix.`")
+          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "ANY"),
+          definition = function(x, i, j)
+          x@ondisc_matrix[[i, j]]
 )
+
+setMethod(f = "[[",
+          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "ANY"),
+          definition = function(x, i, j)
+            x@ondisc_matrix[[, j]]
+)
+
+setMethod(f = "[[",
+          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "missing"),
+          definition = function(x, i, j)
+            x@ondisc_matrix[[i, ]]
+)
+
+
+setMethod(f = "[[",
+          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "missing"),
+          definition = function(x, i, j)
+            x@ondisc_matrix[[, ]]
+)
+
 
 # 6. multimodal_odm
 #' @export
