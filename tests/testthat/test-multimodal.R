@@ -58,3 +58,18 @@ test_that("extract multimodal_odm", {
     expect_error(multimodal_mat[[,1]])
     expect_error(multimodal_mat[[1,1]])
 })
+
+
+test_that("covariate matrices", {
+  expect_error(get_feature_covariates(multimodal_mat))
+  expect_error(mutate_feature_covariates(multimodal_mat))
+  expect_equal(multimodal_mat@global_cell_covariates,
+                        get_cell_covariates(multimodal_mat))
+  expect_true("test_col" %in% (mutate_cell_covariates(multimodal_mat, test_col = 1) %>%
+                                 get_cell_covariates() %>% colnames()))
+})
+
+
+test_that("get modality", {
+  expect_identical(get_modality(multimodal_mat, "modality_1"), multimodal_mat@modalities$modality_1)
+})

@@ -35,3 +35,12 @@ test_that("gets after subset", {
       }
     }
 })
+
+
+test_that("covariate matrix gets", {
+  on_disc_mat <- cov_odms[[1]]@ondisc_matrix
+  expect_error(get_feature_covariates(on_disc_mat))
+  expect_error(get_cell_covariates(on_disc_mat))
+  expect_error(mutate_cell_covariates(on_disc_mat))
+  expect_error(mutate_feature_covariates(on_disc_mat))
+})

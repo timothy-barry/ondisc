@@ -20,6 +20,17 @@ test_that("metadata_odm get feature ids, names, and cell barcodes", {
 })
 
 
+test_that("metadata_odm get/mutate feature dfs", {
+  metadata_odm <- cov_odms[[1]]
+  expect_equal(get_feature_covariates(metadata_odm), metadata_odm@feature_covariates)
+  expect_equal(get_cell_covariates(metadata_odm), metadata_odm@cell_covariates)
+  expect_true("test_col" %in% (mutate_feature_covariates(metadata_odm, test_col = 1) %>%
+                                 get_feature_covariates() %>% colnames()))
+  expect_true("test_col" %in% (mutate_cell_covariates(metadata_odm, test_col = 1) %>%
+                                 get_cell_covariates() %>% colnames()))
+})
+
+
 test_that("subset metadata_odm", {
   for (i in seq(1, n_datasets)) {
     metadata_odm <- cov_odms[[i]]
