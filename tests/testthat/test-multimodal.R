@@ -15,6 +15,7 @@ metadata_odms <- lapply(c(1, 2), function(i) {
 names(metadata_odms) <- c("modality_1", "modality_2")
 multimodal_mat <- multimodal_ondisc_matrix(covariate_ondisc_matrix_list = metadata_odms)
 
+
 # run tests
 test_that("multimodal_odm show", {
   show(multimodal_mat)
