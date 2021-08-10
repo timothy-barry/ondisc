@@ -4,12 +4,12 @@
 \alias{multimodal_ondisc_matrix}
 \title{\code{multimodal_ondisc_matrix} class}
 \usage{
-multimodal_ondisc_matrix(metadata_ondisc_matrix_list)
+multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
 
-multimodal_ondisc_matrix(metadata_ondisc_matrix_list)
+multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
 }
 \arguments{
-\item{metadata_ondisc_matrix_list}{a named list containing \code{metadata_ondisc_matrices}; the names are taken to be the names of the modalities.}
+\item{covariate_ondisc_matrix_list}{a named list containing \code{metadata_ondisc_matrices}; the names are taken to be the names of the modalities.}
 }
 \value{
 a multimodal_ondisc_matrix
@@ -17,12 +17,12 @@ a multimodal_ondisc_matrix
 \description{
 A \code{multimodal_ondisc_matrix} represents multimodal data.
 
-Construct a \code{multimodal_ondisc_matrix} from a list of \code{metadata_ondisc_matrix} objects.
+Construct a \code{multimodal_ondisc_matrix} from a list of \code{covariate_ondisc_matrix} objects.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{modalities}}{a list containing \code{metadata_ondisc_matrix} objects representing different modalities.}
+\item{\code{modalities}}{a list containing \code{covariate_ondisc_matrix} objects representing different modalities.}
 
 \item{\code{global_cell_covariates}}{a data frame containing the cell-specific covariates pooled across all modalities.}
 }}

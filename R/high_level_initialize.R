@@ -15,10 +15,10 @@
 #' @param odm_fp location to write the ondisc matrix to disk
 #' @param metadata_fp location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #' @param progress (optional; default FALSE) print progress messages?
-#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
+#' @return A `covariate_ondisc_matrix`.
 #' @export
 #' @examples
-#' # First example: initialize a metadata_ondisc_matrix
+#' # First example: initialize a `covariate_ondisc_matrix`
 #' # using simulated expression data; store output in tempdir()
 #' tempfile <- create_new_directory()
 #' odm_fp <- paste0(tempfile, "/expression_odm")
@@ -30,7 +30,7 @@
 #' features_fp = file_locs[["features"]],
 #' odm_fp = odm_fp)
 #'
-#' # Second example: initialize a metadata_ondisc_matrix using simulated
+#' # Second example: initialize a `covariate_ondisc_matrix` using simulated
 #' # gRNA perturbation data; store in tempdir()
 #' tempfile <- create_new_directory()
 #' odm_fp <- paste0(tempfile, "/expression_odm")
@@ -112,7 +112,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
                        odm_id = odm_id)
 
   # initialize the metadata odm
-  metadata_odm <- metadata_ondisc_matrix(ondisc_matrix = odm,
+  metadata_odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
                                          cell_covariates = out$cell_covariates,
                                          feature_covariates = out$feature_covariates)
 
@@ -132,10 +132,9 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' @param h5_list a list of .h5 files to convert into `ondisc_matrix` format; the .h5 file should have the same features measured on different sets of cells.
 #' @param on_disk_dir (optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.
 #' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
-#' @param return_metadata_ondisc_matrix (optional; default FALSE) return the output as a metadata_ondisc_matrix (instead of a list)
 #' @param progress progress (optional; default FALSE) print progress messages?
 #'
-#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
+#' @return A covariate_ondisc_matrix.
 #' @export
 #'
 #' @examples
@@ -152,7 +151,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' # create the ondisc matrix
 #' odm_plus_covariates_list <- create_ondisc_matrix_from_h5(h5_list, storage_dir)
 #' }
-create_ondisc_matrix_from_h5_list <- function(h5_list, on_disk_dir = NULL, file_name = NULL, return_metadata_ondisc_matrix = FALSE, progress = TRUE) {
+create_ondisc_matrix_from_h5_list <- function(h5_list, on_disk_dir = NULL, file_name = NULL, progress = TRUE) {
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()
 

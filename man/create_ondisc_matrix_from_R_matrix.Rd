@@ -24,10 +24,10 @@ create_ondisc_matrix_from_R_matrix(
 \item{metadata_fp}{location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
 }
 \value{
-A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a \code{metadata_ondisc_matrix} before returning.
+A \code{covariate_ondisc_matrix} object.
 }
 \description{
-Initializes an \code{ondisc_matrix} from an R matrix. Returns an \code{ondisc_matrix} alongside cell-specific and feature-specific covariate matrices (or optionally, a \code{metadata_ondisc_matrix}).
+Initializes an \code{ondisc_matrix} from an R matrix. Returns an \code{ondisc_matrix} alongside cell-specific and feature-specific covariate matrices (or optionally, a \code{covariate_ondisc_matrix}).
 }
 \details{
 This function computes the following cell-specific and feature-specific covariates:

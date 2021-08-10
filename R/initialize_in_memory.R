@@ -1,6 +1,6 @@
 #' Create an `ondisc` matrix from an R matrix
 #'
-#' Initializes an `ondisc_matrix` from an R matrix. Returns an `ondisc_matrix` alongside cell-specific and feature-specific covariate matrices (or optionally, a `metadata_ondisc_matrix`).
+#' Initializes an `ondisc_matrix` from an R matrix. Returns an `ondisc_matrix` alongside cell-specific and feature-specific covariate matrices (or optionally, a `covariate_ondisc_matrix`).
 #'
 #' This function computes the following cell-specific and feature-specific covariates:
 #' - cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).
@@ -12,7 +12,7 @@
 #' @param odm_fp location to write the backing .odm file.
 #' @param metadata_fp location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #'
-#' @return A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a `metadata_ondisc_matrix` before returning.
+#' @return A `covariate_ondisc_matrix` object.
 #' @export
 #'
 #' @examples
@@ -124,7 +124,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
                        odm_id = odm_id)
 
   # initialize the metadata odm
-  metadata_odm <- metadata_ondisc_matrix(ondisc_matrix = odm,
+  metadata_odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
                                          cell_covariates = cell_covariates,
                                          feature_covariates = feature_covariates)
 

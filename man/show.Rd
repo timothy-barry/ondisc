@@ -3,13 +3,13 @@
 \name{show}
 \alias{show}
 \alias{show,ondisc_matrix-method}
-\alias{show,metadata_ondisc_matrix-method}
+\alias{show,covariate_ondisc_matrix-method}
 \alias{show,multimodal_ondisc_matrix-method}
 \title{Print basic information to the console}
 \usage{
 \S4method{show}{ondisc_matrix}(object)
 
-\S4method{show}{metadata_ondisc_matrix}(object)
+\S4method{show}{covariate_ondisc_matrix}(object)
 
 \S4method{show}{multimodal_ondisc_matrix}(object)
 }

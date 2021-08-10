@@ -5,7 +5,7 @@
 #' Functions to mutate cell-specific or feature-specific covariate matrix. Returns an `ondisc` object.
 #'
 #' @name mutate-covariates
-#' @param x an object of class `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' @param x an object of class `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @param ... arguments to dplyr::mutate
 #' @return an updated `ondisc` object
 NULL
@@ -28,17 +28,17 @@ setMethod("mutate_cell_covariates", signature("ondisc_matrix"), function(x, ...)
 #' @export
 setMethod("mutate_feature_covariates", signature("ondisc_matrix"), function(x, ...) stop("This ondisc_matrix object does not have feature covariates."))
 
-# metadata_ondisc_matrix functions
+# covariate_ondisc_matrix functions
 #' @rdname mutate-covariates
 #' @export
-setMethod("mutate_cell_covariates", signature("metadata_ondisc_matrix"), function(x, ...) {
+setMethod("mutate_cell_covariates", signature("covariate_ondisc_matrix"), function(x, ...) {
   x@cell_covariates <- dplyr::mutate(x@cell_covariates, ...)
   return(x)
 })
 
 #' @rdname mutate-covariates
 #' @export
-setMethod("mutate_feature_covariates", signature("metadata_ondisc_matrix"), function(x, ...) {
+setMethod("mutate_feature_covariates", signature("covariate_ondisc_matrix"), function(x, ...) {
   x@feature_covariates <- dplyr::mutate(x@feature_covariates, ...)
   return(x)
 })
@@ -78,7 +78,7 @@ get_modality <- function(multimodal_mat, modality_name) {
 #' Functions to get cell-specific or feature-specific covariate matrices from `ondisc` objects.
 #'
 #' @name get-covariates
-#' @param x an object of class `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' @param x an object of class `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @return a covariate matrix (in data frame form)
 NULL
 
@@ -100,14 +100,14 @@ setMethod("get_cell_covariates", signature("ondisc_matrix"), function(x) stop("T
 #' @export
 setMethod("get_feature_covariates", signature("ondisc_matrix"), function(x) stop("This ondisc_matrix object does not have feature covariates."))
 
-# metadata_ondisc_matrix functions
+# covariate_ondisc_matrix functions
 #' @rdname get-covariates
 #' @export
-setMethod("get_cell_covariates", signature("metadata_ondisc_matrix"), function(x) x@cell_covariates)
+setMethod("get_cell_covariates", signature("covariate_ondisc_matrix"), function(x) x@cell_covariates)
 
 #' @rdname get-covariates
 #' @export
-setMethod("get_feature_covariates", signature("metadata_ondisc_matrix"), function(x) x@feature_covariates)
+setMethod("get_feature_covariates", signature("covariate_ondisc_matrix"), function(x) x@feature_covariates)
 
 # multimodal_ondisc_matrix functions
 #' @rdname get-covariates

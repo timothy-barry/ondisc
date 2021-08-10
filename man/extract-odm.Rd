@@ -6,10 +6,10 @@
 \alias{[[,ondisc_matrix,ANY,missing-method}
 \alias{[[,ondisc_matrix,missing,ANY-method}
 \alias{[[,ondisc_matrix,ANY,ANY-method}
-\alias{[[,metadata_ondisc_matrix,ANY,ANY-method}
-\alias{[[,metadata_ondisc_matrix,missing,ANY-method}
-\alias{[[,metadata_ondisc_matrix,ANY,missing-method}
-\alias{[[,metadata_ondisc_matrix,missing,missing-method}
+\alias{[[,covariate_ondisc_matrix,ANY,ANY-method}
+\alias{[[,covariate_ondisc_matrix,missing,ANY-method}
+\alias{[[,covariate_ondisc_matrix,ANY,missing-method}
+\alias{[[,covariate_ondisc_matrix,missing,missing-method}
 \alias{[[,multimodal_ondisc_matrix,ANY,ANY-method}
 \title{Pull a submatrix into memory using the \code{[[} operator.}
 \usage{
@@ -21,13 +21,13 @@
 
 \S4method{[[}{ondisc_matrix,ANY,ANY}(x, i, j)
 
-\S4method{[[}{metadata_ondisc_matrix,ANY,ANY}(x, i, j)
+\S4method{[[}{covariate_ondisc_matrix,ANY,ANY}(x, i, j)
 
-\S4method{[[}{metadata_ondisc_matrix,missing,ANY}(x, i, j)
+\S4method{[[}{covariate_ondisc_matrix,missing,ANY}(x, i, j)
 
-\S4method{[[}{metadata_ondisc_matrix,ANY,missing}(x, i, j)
+\S4method{[[}{covariate_ondisc_matrix,ANY,missing}(x, i, j)
 
-\S4method{[[}{metadata_ondisc_matrix,missing,missing}(x, i, j)
+\S4method{[[}{covariate_ondisc_matrix,missing,missing}(x, i, j)
 
 \S4method{[[}{multimodal_ondisc_matrix,ANY,ANY}(x, i, j)
 }

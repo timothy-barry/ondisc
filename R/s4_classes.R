@@ -42,34 +42,34 @@ ondisc_matrix <- setClass("ondisc_matrix",
                           )
 
 ###########################
-# 2. metadata_ondisc_matrix
+# 2. covariate_ondisc_matrix
 ###########################
 
-#' `metadata_ondisc_matrix` class
+#' `covariate_ondisc_matrix` class
 #'
-#' A `metadata_ondisc_matrix` stores an `ondisc_matrix`, along with cell-specific and feature-specific covariate matrices.
+#' A `covariate_ondisc_matrix` stores an `ondisc_matrix`, along with cell-specific and feature-specific covariate matrices.
 #'
 #' @slot ondisc_matrix an ondisc_matrix.
 #' @slot cell_covariates a data frame of cell covariates.
 #' @slot feature_covariates a data frame of feature covariates.
-metadata_ondisc_matrix <- setClass("metadata_ondisc_matrix",
+covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
                           slots = list(ondisc_matrix = "ondisc_matrix",
                                        cell_covariates = "data.frame",
                                        feature_covariates = "data.frame"))
 
 
-#' `metadata_ondisc_matrix` constructor
+#' `covariate_ondisc_matrix` constructor
 #'
-#' Construct a `metadata_ondisc_matrix` by passing an `ondisc_matrix`, along with its associated `cell_covariates` and `feature_covariates`.
+#' Construct a `covariate_ondisc_matrix` by passing an `ondisc_matrix`, along with its associated `cell_covariates` and `feature_covariates`.
 #'
 #' @param ondisc_matrix an `ondisc_matrix`.
 #' @param cell_covariates a data frame storing the cell-specific covariates.
 #' @param feature_covariates a data frame storing the feature-specific covariates.
 #'
-#' @return a `metadata_ondisc_matrix`.
+#' @return a `covariate_ondisc_matrix`.
 #' @export
-metadata_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_covariates) {
-  out <- new("metadata_ondisc_matrix")
+covariate_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_covariates) {
+  out <- new("covariate_ondisc_matrix")
   out@ondisc_matrix <- ondisc_matrix
   out@cell_covariates <- cell_covariates
   out@feature_covariates <- feature_covariates
@@ -81,25 +81,25 @@ metadata_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_covar
 #'
 #' A `multimodal_ondisc_matrix` represents multimodal data.
 #'
-#' @slot modalities a list containing `metadata_ondisc_matrix` objects representing different modalities.
+#' @slot modalities a list containing `covariate_ondisc_matrix` objects representing different modalities.
 #' @slot global_cell_covariates a data frame containing the cell-specific covariates pooled across all modalities.
 multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(modalities = "list",
                                                           global_cell_covariates = "data.frame"))
 
 #' `multimodal_ondisc_matrix` constructor
 #'
-#' Construct a `multimodal_ondisc_matrix` from a list of `metadata_ondisc_matrix` objects.
+#' Construct a `multimodal_ondisc_matrix` from a list of `covariate_ondisc_matrix` objects.
 #'
-#' @param metadata_ondisc_matrix_list a named list containing `metadata_ondisc_matrices`; the names are taken to be the names of the modalities.
+#' @param covariate_ondisc_matrix_list a named list containing `metadata_ondisc_matrices`; the names are taken to be the names of the modalities.
 #'
 #' @return a multimodal_ondisc_matrix
 #' @export
-multimodal_ondisc_matrix <- function(metadata_ondisc_matrix_list) {
+multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
   out <- new(Class = "multimodal_ondisc_matrix")
-  out@modalities <- metadata_ondisc_matrix_list
-  df_list <- lapply(X = metadata_ondisc_matrix_list,
+  out@modalities <- covariate_ondisc_matrix_list
+  df_list <- lapply(X = covariate_ondisc_matrix_list,
                     FUN = function(cov_odm) cov_odm@cell_covariates)
-  modality_names <- names(metadata_ondisc_matrix_list)
+  modality_names <- names(covariate_ondisc_matrix_list)
   global_df <- combine_multimodal_dataframes(df_list, modality_names)
   out@global_cell_covariates <- global_df
   return(out)

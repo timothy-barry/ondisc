@@ -3,7 +3,7 @@
 \name{dim}
 \alias{dim}
 \alias{dim,ondisc_matrix-method}
-\alias{dim,metadata_ondisc_matrix-method}
+\alias{dim,covariate_ondisc_matrix-method}
 \alias{dim,multimodal_ondisc_matrix-method}
 \alias{ncol}
 \alias{nrow}
@@ -13,7 +13,7 @@
 \usage{
 \S4method{dim}{ondisc_matrix}(x)
 
-\S4method{dim}{metadata_ondisc_matrix}(x)
+\S4method{dim}{covariate_ondisc_matrix}(x)
 
 \S4method{dim}{multimodal_ondisc_matrix}(x)
 
@@ -26,13 +26,13 @@ nrow(x)
 \S4method{nrow}{multimodal_ondisc_matrix}(x)
 }
 \arguments{
-\item{x}{an \code{ondisc_matrix}, \code{metadata_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.}
+\item{x}{an \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.}
 }
 \value{
-If \code{x} is an \code{ondisc_matrix} or \code{metadata_ondisc_matrix}, length-two integer vector containing
+If \code{x} is an \code{ondisc_matrix} or \code{covariate_ondisc_matrix}, length-two integer vector containing
 the dimension of \code{x}; if \code{x} is a \code{multimodal_ondisc_matrix}, a list of integer vectors containing the dimensions
 of the constituent modalities of \code{x}.
 }
 \description{
-Return the dimension of an \code{ondisc_matrix}, \code{metadata_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.
+Return the dimension of an \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.
 }

@@ -6,10 +6,10 @@
 \alias{[,ondisc_matrix,ANY,missing,missing-method}
 \alias{[,ondisc_matrix,missing,ANY,missing-method}
 \alias{[,ondisc_matrix,ANY,ANY,missing-method}
-\alias{[,metadata_ondisc_matrix,ANY,ANY,missing-method}
-\alias{[,metadata_ondisc_matrix,ANY,missing,missing-method}
-\alias{[,metadata_ondisc_matrix,missing,ANY,missing-method}
-\alias{[,metadata_ondisc_matrix,missing,missing,missing-method}
+\alias{[,covariate_ondisc_matrix,ANY,ANY,missing-method}
+\alias{[,covariate_ondisc_matrix,ANY,missing,missing-method}
+\alias{[,covariate_ondisc_matrix,missing,ANY,missing-method}
+\alias{[,covariate_ondisc_matrix,missing,missing,missing-method}
 \alias{[,multimodal_ondisc_matrix,missing,missing,missing-method}
 \alias{[,multimodal_ondisc_matrix,missing,ANY,missing-method}
 \alias{[,multimodal_ondisc_matrix,ANY,ANY,ANY-method}
@@ -23,13 +23,13 @@
 
 \S4method{[}{ondisc_matrix,ANY,ANY,missing}(x, i, j)
 
-\S4method{[}{metadata_ondisc_matrix,ANY,ANY,missing}(x, i, j, drop)
+\S4method{[}{covariate_ondisc_matrix,ANY,ANY,missing}(x, i, j, drop)
 
-\S4method{[}{metadata_ondisc_matrix,ANY,missing,missing}(x, i, j, drop)
+\S4method{[}{covariate_ondisc_matrix,ANY,missing,missing}(x, i, j, drop)
 
-\S4method{[}{metadata_ondisc_matrix,missing,ANY,missing}(x, i, j, drop)
+\S4method{[}{covariate_ondisc_matrix,missing,ANY,missing}(x, i, j, drop)
 
-\S4method{[}{metadata_ondisc_matrix,missing,missing,missing}(x, i, j, drop)
+\S4method{[}{covariate_ondisc_matrix,missing,missing,missing}(x, i, j, drop)
 
 \S4method{[}{multimodal_ondisc_matrix,missing,missing,missing}(x, i, j, drop)
 
@@ -38,7 +38,7 @@
 \S4method{[}{multimodal_ondisc_matrix,ANY,ANY,ANY}(x, i, j, drop)
 }
 \arguments{
-\item{x}{an \code{ondisc_matrix}, \code{metadata_ondisc_matrix}, or \code{multimodal_ondisc_matrix} object.}
+\item{x}{an \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix} object.}
 
 \item{i}{a vector (numeric, logical, or character) indicating features to keep.}
 
@@ -50,11 +50,11 @@
 An appropriately subset object of the same class as \code{x}.
 }
 \description{
-Apply the \code{[} operator to an \code{ondisc_matrix}, \code{metadata_ondisc_matrix}, or \code{multimodal_ondisc_matrix}
+Apply the \code{[} operator to an \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}
 to subset the object. You can pass logical, character, or numeric vectors to \code{[}; character
 vectors are assumed to refer to feature IDs (for rows) and cell barcodes (for columns).
 }
 \details{
-You can subset an \code{ondisc_matrix} and a \code{metadata_ondisc_matrix} by cell and/or feature. You can subset a
+You can subset an \code{ondisc_matrix} and a \code{covariate_ondisc_matrix} by cell and/or feature. You can subset a
 \code{multimodal_ondisc_matrix} by cell only (because the features differ across modalities).
 }

@@ -16,7 +16,7 @@ r_mats_plus_metadata <- lapply(seq(1, n_datasets), function(i) {
 r_mats <- lapply(r_mats_plus_metadata, function(l) l$r_mat)
 
 
-# 3. Initialize metadata_ondisc_matrix objects for each dataset (in a separate directory). Use variable chunk size.
+# 3. Initialize covariate_ondisc_matrix objects for each dataset (in a separate directory). Use variable chunk size.
 cov_odms <- lapply(seq(1, n_datasets), function(i) {
   n_nonzero <- r_mats_plus_metadata[[i]]$n_nonzero
   bern <- as.logical(rbinom(1, 1, 0.5))

@@ -3,14 +3,14 @@
 
 #' Subset using the `[` operator.
 #'
-#' Apply the `[` operator to an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`
+#' Apply the `[` operator to an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`
 #' to subset the object. You can pass logical, character, or numeric vectors to `[`; character
 #' vectors are assumed to refer to feature IDs (for rows) and cell barcodes (for columns).
 #'
-#' You can subset an `ondisc_matrix` and a `metadata_ondisc_matrix` by cell and/or feature. You can subset a
+#' You can subset an `ondisc_matrix` and a `covariate_ondisc_matrix` by cell and/or feature. You can subset a
 #' `multimodal_ondisc_matrix` by cell only (because the features differ across modalities).
 #'
-#' @param x an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix` object.
+#' @param x an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix` object.
 #' @param i a vector (numeric, logical, or character) indicating features to keep.
 #' @param j a vector (numeric, logical, or character) indicating cells to keep.
 #' @param drop not used
@@ -52,7 +52,7 @@ setMethod(f = "[",
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "ANY", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[i,j]
             x@cell_covariates <- x@cell_covariates[j,,drop=FALSE]
@@ -64,7 +64,7 @@ setMethod(f = "[",
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[i,]
             x@feature_covariates <- x@feature_covariates[i,,drop=FALSE]
@@ -75,7 +75,7 @@ setMethod(f = "[",
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "ANY", drop = "missing"),
           definition = function(x, i, j, drop) {
             x@ondisc_matrix <- x@ondisc_matrix[,j]
             x@cell_covariates <- x@cell_covariates[j,,drop=FALSE]
@@ -86,7 +86,7 @@ setMethod(f = "[",
 #' @rdname subset-odm
 #' @export
 setMethod(f = "[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "missing", drop = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) return(x))
 
 # 9. subset nothing, mm_odm
@@ -171,7 +171,7 @@ setMethod(f = "[[",
 #' @export
 #' @rdname extract-odm
 setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "ANY"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "ANY"),
           definition = function(x, i, j)
           x@ondisc_matrix[[i, j]]
 )
@@ -179,7 +179,7 @@ setMethod(f = "[[",
 #' @export
 #' @rdname extract-odm
 setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "ANY"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "ANY"),
           definition = function(x, i, j)
             x@ondisc_matrix[[, j]]
 )
@@ -187,7 +187,7 @@ setMethod(f = "[[",
 #' @export
 #' @rdname extract-odm
 setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "ANY", j = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "missing"),
           definition = function(x, i, j)
             x@ondisc_matrix[[i, ]]
 )
@@ -195,7 +195,7 @@ setMethod(f = "[[",
 #' @export
 #' @rdname extract-odm
 setMethod(f = "[[",
-          signature = signature(x = "metadata_ondisc_matrix", i = "missing", j = "missing"),
+          signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "missing"),
           definition = function(x, i, j)
             x@ondisc_matrix[[, ]]
 )

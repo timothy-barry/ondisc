@@ -30,7 +30,7 @@ create_ondisc_matrix_from_mtx(
 \item{progress}{(optional; default FALSE) print progress messages?}
 }
 \value{
-A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
+A \code{covariate_ondisc_matrix}.
 }
 \description{
 Initializes an \code{ondisc_matrix} from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an \code{ondisc_matrix} along with cell-specific and feature-specific covariate matrices.
@@ -45,7 +45,7 @@ The function can compute the following cell-specific and feature-specific covari
 The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 }
 \examples{
-# First example: initialize a metadata_ondisc_matrix
+# First example: initialize a `covariate_ondisc_matrix`
 # using simulated expression data; store output in tempdir()
 tempfile <- create_new_directory()
 odm_fp <- paste0(tempfile, "/expression_odm")
@@ -57,7 +57,7 @@ barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
 odm_fp = odm_fp)
 
-# Second example: initialize a metadata_ondisc_matrix using simulated
+# Second example: initialize a `covariate_ondisc_matrix` using simulated
 # gRNA perturbation data; store in tempdir()
 tempfile <- create_new_directory()
 odm_fp <- paste0(tempfile, "/expression_odm")

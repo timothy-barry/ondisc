@@ -3,11 +3,11 @@
 
 #' Get dimension
 #'
-#' Return the dimension of an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' Return the dimension of an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #'
-#' @param x an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' @param x an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @name dim
-#' @return If `x` is an `ondisc_matrix` or `metadata_ondisc_matrix`, length-two integer vector containing
+#' @return If `x` is an `ondisc_matrix` or `covariate_ondisc_matrix`, length-two integer vector containing
 #' the dimension of `x`; if `x` is a `multimodal_ondisc_matrix`, a list of integer vectors containing the dimensions
 #' of the constituent modalities of `x`.
 NULL
@@ -18,7 +18,7 @@ setMethod("dim", signature("ondisc_matrix"), function(x) get_dim(x))
 
 #' @export
 #' @rdname dim
-setMethod("dim", signature("metadata_ondisc_matrix"), function(x) get_dim(x@ondisc_matrix))
+setMethod("dim", signature("covariate_ondisc_matrix"), function(x) get_dim(x@ondisc_matrix))
 
 #' @export
 #' @rdname dim
@@ -60,10 +60,10 @@ setMethod("show", signature = signature("ondisc_matrix"), function(object) {
 
 #' @rdname show
 #' @export
-setMethod("show", signature = signature("metadata_ondisc_matrix"), function(object) {
+setMethod("show", signature = signature("covariate_ondisc_matrix"), function(object) {
   cell_covariates <- colnames(object@cell_covariates)
   feature_covariates <- colnames(object@feature_covariates)
-  cat("A metadata_ondisc_matrix with the following components:\n")
+  cat("A covariate_ondisc_matrix with the following components:\n")
   cat("\t"); show(object@ondisc_matrix)
   paste0("\tA cell covariate matrix with columns ", paste(crayon::blue(cell_covariates), collapse = ", "), ".\n") %>% cat()
   paste0("\tA feature covariate matrix with columns ", paste(crayon::blue(feature_covariates), collapse = ", "), ".\n") %>% cat()
@@ -108,7 +108,7 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
 
 #' Get cell barcodes, feature names, and feature IDs
 #'
-#' Obtain cell barcodes, feature names, and feature IDs of an `ondisc_matrix`, `metadata_ondisc_matrix`,
+#' Obtain cell barcodes, feature names, and feature IDs of an `ondisc_matrix`, `covariate_ondisc_matrix`,
 #' or `multimodal_ondisc_matrix`.
 #'
 #' The following functions can be used to obtain feature and cell identifiers:
@@ -149,13 +149,13 @@ setMethod("get_cell_barcodes", signature("ondisc_matrix"), function(x) get_names
 
 #' @rdname get-names
 #' @export
-setMethod("get_feature_ids", signature("metadata_ondisc_matrix"), function(x) get_feature_ids(x@ondisc_matrix))
+setMethod("get_feature_ids", signature("covariate_ondisc_matrix"), function(x) get_feature_ids(x@ondisc_matrix))
 #' @rdname get-names
 #' @export
-setMethod("get_feature_names", signature("metadata_ondisc_matrix"), function(x) get_feature_names(x@ondisc_matrix))
+setMethod("get_feature_names", signature("covariate_ondisc_matrix"), function(x) get_feature_names(x@ondisc_matrix))
 #' @rdname get-names
 #' @export
-setMethod("get_cell_barcodes", signature("metadata_ondisc_matrix"), function(x) get_cell_barcodes(x@ondisc_matrix))
+setMethod("get_cell_barcodes", signature("covariate_ondisc_matrix"), function(x) get_cell_barcodes(x@ondisc_matrix))
 
 #' @rdname get-names
 #' @export

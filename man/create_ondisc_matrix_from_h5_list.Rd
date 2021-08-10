@@ -8,7 +8,6 @@ create_ondisc_matrix_from_h5_list(
   h5_list,
   on_disk_dir = NULL,
   file_name = NULL,
-  return_metadata_ondisc_matrix = FALSE,
   progress = TRUE
 )
 }
@@ -19,12 +18,10 @@ create_ondisc_matrix_from_h5_list(
 
 \item{file_name}{(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.}
 
-\item{return_metadata_ondisc_matrix}{(optional; default FALSE) return the output as a metadata_ondisc_matrix (instead of a list)}
-
 \item{progress}{progress (optional; default FALSE) print progress messages?}
 }
 \value{
-A list containing (i) an ondisc_matrix, (ii) a cell-specific covariate matrix, and (iii) a feature-specific covariate matrix; if the parameter return_metadata_ondisc_matrix set to TRUE, converts the list to a metadata_ondisc_matrix before returning.
+A covariate_ondisc_matrix.
 }
 \description{
 Creates an \code{ondisc_matrix} from a list of .h5 files storing single-cell expression data.

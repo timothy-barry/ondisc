@@ -8,9 +8,9 @@
 \alias{get_feature_ids,ondisc_matrix-method}
 \alias{get_feature_names,ondisc_matrix-method}
 \alias{get_cell_barcodes,ondisc_matrix-method}
-\alias{get_feature_ids,metadata_ondisc_matrix-method}
-\alias{get_feature_names,metadata_ondisc_matrix-method}
-\alias{get_cell_barcodes,metadata_ondisc_matrix-method}
+\alias{get_feature_ids,covariate_ondisc_matrix-method}
+\alias{get_feature_names,covariate_ondisc_matrix-method}
+\alias{get_cell_barcodes,covariate_ondisc_matrix-method}
 \alias{get_feature_ids,multimodal_ondisc_matrix-method}
 \alias{get_feature_names,multimodal_ondisc_matrix-method}
 \alias{get_cell_barcodes,multimodal_ondisc_matrix-method}
@@ -28,11 +28,11 @@ get_cell_barcodes(x)
 
 \S4method{get_cell_barcodes}{ondisc_matrix}(x)
 
-\S4method{get_feature_ids}{metadata_ondisc_matrix}(x)
+\S4method{get_feature_ids}{covariate_ondisc_matrix}(x)
 
-\S4method{get_feature_names}{metadata_ondisc_matrix}(x)
+\S4method{get_feature_names}{covariate_ondisc_matrix}(x)
 
-\S4method{get_cell_barcodes}{metadata_ondisc_matrix}(x)
+\S4method{get_cell_barcodes}{covariate_ondisc_matrix}(x)
 
 \S4method{get_feature_ids}{multimodal_ondisc_matrix}(x)
 
@@ -47,7 +47,7 @@ get_cell_barcodes(x)
 A character vector or list of character vectors containing the requested identifiers.
 }
 \description{
-Obtain cell barcodes, feature names, and feature IDs of an \code{ondisc_matrix}, \code{metadata_ondisc_matrix},
+Obtain cell barcodes, feature names, and feature IDs of an \code{ondisc_matrix}, \code{covariate_ondisc_matrix},
 or \code{multimodal_ondisc_matrix}.
 }
 \details{

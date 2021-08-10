@@ -6,8 +6,8 @@
 \alias{mutate_feature_covariates}
 \alias{mutate_cell_covariates,ondisc_matrix-method}
 \alias{mutate_feature_covariates,ondisc_matrix-method}
-\alias{mutate_cell_covariates,metadata_ondisc_matrix-method}
-\alias{mutate_feature_covariates,metadata_ondisc_matrix-method}
+\alias{mutate_cell_covariates,covariate_ondisc_matrix-method}
+\alias{mutate_feature_covariates,covariate_ondisc_matrix-method}
 \alias{mutate_cell_covariates,multimodal_ondisc_matrix-method}
 \alias{mutate_feature_covariates,multimodal_ondisc_matrix-method}
 \title{Mutate covariate matrices.}
@@ -20,16 +20,16 @@ mutate_feature_covariates(x, ...)
 
 \S4method{mutate_feature_covariates}{ondisc_matrix}(x, ...)
 
-\S4method{mutate_cell_covariates}{metadata_ondisc_matrix}(x, ...)
+\S4method{mutate_cell_covariates}{covariate_ondisc_matrix}(x, ...)
 
-\S4method{mutate_feature_covariates}{metadata_ondisc_matrix}(x, ...)
+\S4method{mutate_feature_covariates}{covariate_ondisc_matrix}(x, ...)
 
 \S4method{mutate_cell_covariates}{multimodal_ondisc_matrix}(x, ...)
 
 \S4method{mutate_feature_covariates}{multimodal_ondisc_matrix}(x, ...)
 }
 \arguments{
-\item{x}{an object of class \code{ondisc_matrix}, \code{metadata_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.}
+\item{x}{an object of class \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.}
 
 \item{...}{arguments to dplyr::mutate}
 }
