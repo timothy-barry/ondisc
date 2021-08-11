@@ -49,6 +49,10 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   # generate random ODM ID
   odm_id <- sample(seq(0L, .Machine$integer.max), size = 1)
 
+  # set odm_fp, check if exists
+  odm_fp <- append_file_extension(odm_fp, "odm")
+  if (file.exists(odm_fp)) stop(paste0("File ", odm_fp, " already exists. Ending function."))
+
   ### STEP1: compute the cell- and feature- specific covariate matrices
   # Extract features and expression metadata
   features_metadata <- get_features_metadata_from_table(features_df)
@@ -104,9 +108,6 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
     csc_r_matrix <- as(r_matrix, "dgCMatrix")
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
   }
-
-  # append ".ods" to odm_fp
-  odm_fp <- append_file_extension(odm_fp, "odm")
 
   # initialize the ODM
   initialize_h5_file_on_disk(h5_fp = odm_fp, mtx_metadata = expression_metadata, odm_id = odm_id)

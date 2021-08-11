@@ -69,6 +69,10 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates.
   # mtx_metadata stores general information about the .mtx file, and features_metadata stores general information about the .tsv files.
 
+  # set the h5 file path
+  odm_fp <- append_file_extension(odm_fp, "odm")
+  if (file.exists(odm_fp)) stop(paste0("File ", odm_fp, " already exists. Ending function."))
+
   # generate random ODM id
   odm_id <- sample(seq(0L, .Machine$integer.max), size = 1)
 
@@ -86,9 +90,6 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 
   # Extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
   features_metadata <- get_features_metadata(features_fp, bag_of_variables)
-
-  # set the h5 file path
-  odm_fp <- append_file_extension(odm_fp, "odm")
 
   # Initialize the .h5 file on-disk (side-effect)
   initialize_h5_file_on_disk(odm_fp, mtx_metadata, odm_id)

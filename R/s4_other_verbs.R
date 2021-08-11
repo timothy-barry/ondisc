@@ -119,3 +119,15 @@ setMethod("get_cell_covariates", signature("multimodal_ondisc_matrix"), function
 setMethod("get_feature_covariates", signature("multimodal_ondisc_matrix"), function(x) {
   stop("get_feature_covariates not supported for objects of class multimodal_ondisc_matrix.")
 })
+
+# 3. Get `ondisc_matrix`
+#'
+#' Get the ondisc_matrix stored in a `covariate_ondisc_matrix.`
+#'
+#' @param covariate_odm a `covariate_ondisc_matrix` object
+#'
+#' @return the `ondisc_matrix` stored within the `covariate_ondisc_matrix` object
+#' @export
+get_ondisc_matrix <- function(covariate_odm) {
+  return(covariate_odm@ondisc_matrix)
+}
