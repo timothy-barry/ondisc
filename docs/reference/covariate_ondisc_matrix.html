@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>get_random_subset — get_random_subset • ondisc</title>
+<title>covariate_ondisc_matrix class — covariate_ondisc_matrix • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="get_random_subset — get_random_subset" />
-<meta property="og:description" content="Return a random integer subset (of random length) of the set n." />
+<meta property="og:title" content="covariate_ondisc_matrix class — covariate_ondisc_matrix" />
+<meta property="og:description" content="A covariate_ondisc_matrix stores an ondisc_matrix, along with cell-specific and feature-specific covariate matrices.
+Construct a covariate_ondisc_matrix by passing an ondisc_matrix, along with its associated cell_covariates and feature_covariates." />
 
 
 
@@ -124,29 +125,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>get_random_subset</h1>
+    <h1><code>covariate_ondisc_matrix</code> class</h1>
     
-    <div class="hidden name"><code>get_random_subset.Rd</code></div>
+    <div class="hidden name"><code>covariate_ondisc_matrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Return a random integer subset (of random length) of the set n.</p>
+    <p>A <code>covariate_ondisc_matrix</code> stores an <code>ondisc_matrix</code>, along with cell-specific and feature-specific covariate matrices.</p>
+<p>Construct a <code>covariate_ondisc_matrix</code> by passing an <code>ondisc_matrix</code>, along with its associated <code>cell_covariates</code> and <code>feature_covariates</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_random_subset</span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>covariate_ondisc_matrix</span><span class='op'>(</span><span class='va'>ondisc_matrix</span>, <span class='va'>cell_covariates</span>, <span class='va'>feature_covariates</span><span class='op'>)</span>
+
+<span class='fu'>covariate_ondisc_matrix</span><span class='op'>(</span><span class='va'>ondisc_matrix</span>, <span class='va'>cell_covariates</span>, <span class='va'>feature_covariates</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>an integer</p></td>
+      <th>ondisc_matrix</th>
+      <td><p>an <code>ondisc_matrix</code>.</p></td>
+    </tr>
+    <tr>
+      <th>cell_covariates</th>
+      <td><p>a data frame storing the cell-specific covariates.</p></td>
+    </tr>
+    <tr>
+      <th>feature_covariates</th>
+      <td><p>a data frame storing the feature-specific covariates.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a random subset of 1, 2, ..., n.</p>
+    <p>a <code>covariate_ondisc_matrix</code>.</p>
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+
+    
+
+<dl>
+<dt><code>ondisc_matrix</code></dt><dd><p>an ondisc_matrix.</p></dd>
+
+<dt><code>cell_covariates</code></dt><dd><p>a data frame of cell covariates.</p></dd>
+
+<dt><code>feature_covariates</code></dt><dd><p>a data frame of feature covariates.</p></dd>
+
+</dl>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

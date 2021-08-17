@@ -133,7 +133,7 @@
     <p>Subsets an ondisc_matrix by either feature or cell.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>subset_by_feature_or_cell</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>idx</span>, <span class='va'>subset_on_cell</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>subset_by_feature_or_cell</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>idx</span>, <span class='va'>subset_on_cell</span>, subset_string_arrays <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,6 +149,10 @@
     <tr>
       <th>subset_on_cell</th>
       <td><p>(boolean) subset on cell (TRUE) or feature (FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>subset_string_arrays</th>
+      <td><p>(boolean) subset the character vectors (i.e., cell barcodes, feature IDs, and feature names) as well? This is necessary only when returning a subset matrix, not when preparing to extract a submatrix into memory.</p></td>
     </tr>
     </table>
 

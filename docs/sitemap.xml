@@ -4,10 +4,28 @@
     <loc>https://timothy-barry.github.io/ondisc//index.html</loc>
   </url>
   <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/append_file_extension.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/covariate_ondisc_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/create_new_directory.html</loc>
+  </url>
+  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/create_ondisc_matrix_from_R_matrix.html</loc>
   </url>
   <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/create_ondisc_matrix_from_h5_list.html</loc>
+  </url>
+  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/create_ondisc_matrix_from_mtx.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/create_random_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/create_synthetic_data.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/dim.html</loc>
@@ -19,25 +37,64 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/extract_matrix.html</loc>
   </url>
   <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get-covariates.html</loc>
+  </url>
+  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get-names.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_features_metadata.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_features_metadata_from_table.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_h5_barcodes.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_h5_cells_metadata.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_h5_features.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_modality.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get_mtx_metadata.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/head-ondisc_matrix-method.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_ondisc_matrix.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/metadata_ondisc_matrix.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_random_subset.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/get_string_arrays.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/head-ondisc_matrix-method.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/multimodal_ondisc_matrix.html</loc>
   </url>
   <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/mutate-covariates.html</loc>
+  </url>
+  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/ondisc.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/ondisc_matrix.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/ondisc_matrix-class.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/read_given_column_of_tsv.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/read_integer_vector_hdf5.html</loc>
+  </url>
+  <url>
+    <loc>https://timothy-barry.github.io/ondisc//reference/save_odm.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/show.html</loc>
@@ -47,11 +104,5 @@
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/subset_by_feature_or_cell.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//articles/tutorial_odm_class.html</loc>
-  </url>
-  <url>
-    <loc>https://timothy-barry.github.io/ondisc//articles/tutorial_other_classes.html</loc>
   </url>
 </urlset>

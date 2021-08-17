@@ -82,20 +82,19 @@
   <div class="contents col-md-9">
 <div id="ondisc-large-scale-computing-on-single-cell-data-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#ondisc-large-scale-computing-on-single-cell-data-" class="anchor"></a><code>ondisc</code>: large-scale computing on single-cell data <img src="reference/figures/hex.jpg" align="right" alt="" width="180">
+<a href="#ondisc-large-scale-computing-on-single-cell-data-" class="anchor"></a><code>ondisc</code>: large-scale computing on single-cell data <img src="reference/figures/hex_alt.png" align="right" alt="" width="180">
 </h1></div>
 <!-- badges: start -->
 
-<p>Single-cell datasets are growing in size, posing challenges as well as opportunities to biology researchers. <code>ondisc</code> (short for “on-disk single cell”) is an R package that enables users to easily and efficiently analyze large-scale single-cell data. <code>ondisc</code> makes computing on large-scale single-cell data <strong>FUN</strong>:</p>
-<ul>
-<li>
-<strong>Fast</strong>: <code>ondisc</code> is powered by several novel, highly efficient algorithms and data structures. All low-level code is written in C++ or C for maximum performance.</li>
-<li>
-<strong>Universal</strong>: <code>ondisc</code> runs on all platforms, from laptops to supercomputers. <code>ondisc</code> works seamlessly when the size of the data exceeds the amount of available memory.</li>
-<li>
-<strong>Ntuitive</strong>: <code>ondisc</code> leverages ideas from functional programming, making it simple for R users users to pick up and incorporate into their programs.</li>
-</ul>
-<p>Take a look at the <a href="https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html">tutorials</a> on the <a href="https://timothy-barry.github.io/ondisc/index.html">package website</a>.</p>
+<p>Single-cell datasets are growing in size, posing challenges as well as opportunities to biology researchers. <code>ondisc</code> (short for “on-disk single cell”) is an R package that empowers users to easily and efficiently compute on large-scale single-cell data. <code>ondisc</code> is especially well-suited to fixed memory and distributed CRISPR screen and differential expression analyses.</p>
+<p><strong>NOTE</strong>: The package currently is undergoing considerable API changes. Use with caution. We anticipate that an updated, stable version of the package (along with detailed documentation) will be available in September, 2021.</p>
+<!-- Single-cell datasets are growing in size, posing challenges as well as opportunities to biology researchers. `ondisc` (short for "on-disk single cell") is an R package that enables users to easily and efficiently analyze large-scale single-cell data. `ondisc` makes computing on large-scale single-cell data **FUN**:
+
+- **Fast**: `ondisc` is powered by several novel, highly efficient algorithms and data structures. All low-level code is written in C++ or C for maximum performance.
+- **Universal**: `ondisc` runs on all platforms, from laptops to supercomputers. `ondisc` works seamlessly when the size of the data exceeds the amount of available memory. 
+- **Ntuitive**: `ondisc` leverages ideas from functional programming, making it simple for R users users to pick up and incorporate into their programs.
+
+Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html) on the [package website](https://timothy-barry.github.io/ondisc/index.html). -->
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -106,7 +105,6 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"timothy-barry/ondisc"</span><span class="op">)</span></code></pre></div>
-<p>You can browse the source code on Github <a href="https://github.com/timothy-barry/ondisc">here</a>.</p>
 </div>
 </div>
   </div>

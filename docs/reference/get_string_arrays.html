@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>get_random_subset — get_random_subset • ondisc</title>
+<title>Get string — get_string_arrays • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="get_random_subset — get_random_subset" />
-<meta property="og:description" content="Return a random integer subset (of random length) of the set n." />
+<meta property="og:title" content="Get string — get_string_arrays" />
+<meta property="og:description" content="Get string" />
 
 
 
@@ -124,29 +124,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>get_random_subset</h1>
+    <h1>Get string</h1>
     
-    <div class="hidden name"><code>get_random_subset.Rd</code></div>
+    <div class="hidden name"><code>get_string_arrays.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Return a random integer subset (of random length) of the set n.</p>
+    <p>Get string</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_random_subset</span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_string_arrays</span><span class='op'>(</span><span class='va'>barcodes_fp</span>, <span class='va'>features_fp</span>, <span class='va'>features_metadata</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>an integer</p></td>
+      <th>barcodes_fp</th>
+      <td><p>path to barcodes file(s)</p></td>
+    </tr>
+    <tr>
+      <th>features_fp</th>
+      <td><p>path the features file</p></td>
+    </tr>
+    <tr>
+      <th>features_metadata</th>
+      <td><p>the features_metadata list</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a random subset of 1, 2, ..., n.</p>
+    <p>list containing (i) cell barcodes, (ii) feature IDs, and (iii) feature names (NA_character_ if absent)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

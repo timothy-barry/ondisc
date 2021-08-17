@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>get_random_subset — get_random_subset • ondisc</title>
+<title>Get covariate matrices. — get-covariates • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="get_random_subset — get_random_subset" />
-<meta property="og:description" content="Return a random integer subset (of random length) of the set n." />
+<meta property="og:title" content="Get covariate matrices. — get-covariates" />
+<meta property="og:description" content="Functions to get cell-specific or feature-specific covariate matrices from ondisc objects." />
 
 
 
@@ -124,29 +124,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>get_random_subset</h1>
+    <h1>Get covariate matrices.</h1>
     
-    <div class="hidden name"><code>get_random_subset.Rd</code></div>
+    <div class="hidden name"><code>get-covariates.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Return a random integer subset (of random length) of the set n.</p>
+    <p>Functions to get cell-specific or feature-specific covariate matrices from <code>ondisc</code> objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_random_subset</span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_cell_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>get_feature_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S4 method for ondisc_matrix</span>
+<span class='fu'>get_cell_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S4 method for ondisc_matrix</span>
+<span class='fu'>get_feature_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S4 method for covariate_ondisc_matrix</span>
+<span class='fu'>get_cell_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S4 method for covariate_ondisc_matrix</span>
+<span class='fu'>get_feature_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S4 method for multimodal_ondisc_matrix</span>
+<span class='fu'>get_cell_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='co'># S4 method for multimodal_ondisc_matrix</span>
+<span class='fu'>get_feature_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>an integer</p></td>
+      <th>x</th>
+      <td><p>an object of class <code>ondisc_matrix</code>, <code>covariate_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a random subset of 1, 2, ..., n.</p>
+    <p>a covariate matrix (in data frame form)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

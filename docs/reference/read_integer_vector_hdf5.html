@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>get_random_subset — get_random_subset • ondisc</title>
+<title>read intege vector from hdf5 — read_integer_vector_hdf5 • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="get_random_subset — get_random_subset" />
-<meta property="og:description" content="Return a random integer subset (of random length) of the set n." />
+<meta property="og:title" content="read intege vector from hdf5 — read_integer_vector_hdf5" />
+<meta property="og:description" content="read intege vector from hdf5" />
 
 
 
@@ -124,29 +124,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>get_random_subset</h1>
+    <h1>read intege vector from hdf5</h1>
     
-    <div class="hidden name"><code>get_random_subset.Rd</code></div>
+    <div class="hidden name"><code>read_integer_vector_hdf5.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Return a random integer subset (of random length) of the set n.</p>
+    <p>read intege vector from hdf5</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_random_subset</span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>read_integer_vector_hdf5</span><span class='op'>(</span><span class='va'>file_name_in</span>, <span class='va'>dataset_name_in</span>, <span class='va'>data_len</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>an integer</p></td>
+      <th>file_name_in</th>
+      <td><p>name of h5 file</p></td>
+    </tr>
+    <tr>
+      <th>dataset_name_in</th>
+      <td><p>name of dataset to read</p></td>
+    </tr>
+    <tr>
+      <th>data_len</th>
+      <td><p>length of integer vector</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a random subset of 1, 2, ..., n.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
