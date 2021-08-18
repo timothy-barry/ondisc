@@ -12,8 +12,7 @@ coverage](https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg
 
 Single-cell datasets are growing in size, posing challenges as well as
 opportunities to biology researchers. `ondisc` (short for “on-disk
-single cell”) is an R package that empowers users to easily and
-efficiently compute on large-scale single-cell data. `ondisc` is
+single cell”) is an R package that facilitates computing on large-scale single-cell data. `ondisc` is
 especially well-suited to fixed memory and distributed CRISPR screen and
 differential expression analyses.
 
