@@ -14,12 +14,6 @@
 #'
 #' It is best to avoid interacting with the slots of an `ondisc_matrix` directly. Instead, use the functions
 #' and operators provided by the package.
-#'
-#' @slot h5_file path to an initialized .h5 file stored on-disk.
-#' @slot logical_mat logical value indicating whether the matrix is logical.
-#' @slot cell_subset integer vector recording the cells currently in use.
-#' @slot feature_subset integer vector recording the features currently in use.
-#' @slot underlying_dimension the dimension of the (unsubset) expression matrix.
 ondisc_matrix <- setClass("ondisc_matrix",
                            slots = list(h5_file = "character",
                                         logical_mat = "logical",
@@ -29,17 +23,43 @@ ondisc_matrix <- setClass("ondisc_matrix",
                                         feature_ids = "character",
                                         feature_names = "character",
                                         cell_barcodes = "character",
-                                        odm_id = "integer"),
-                           prototype = list(h5_file = NA_character_,
-                                            logical_mat = FALSE,
-                                            underlying_dimension = NA_integer_,
-                                            cell_subset = NA_integer_,
-                                            feature_subset = NA_integer_,
-                                            feature_ids = NA_character_,
-                                            feature_names = NA_character_,
-                                            cell_barcodes = NA_character_,
-                                            odm_id = NA_integer_)
-                          )
+                                        odm_id = "integer"))
+
+
+#' Instantiate an `ondisc_matrix` object
+#'
+#' Constructor function for `ondisc_matrix` class.
+#'
+#' @param h5_file location of backing .odm file on disk.
+#' @param logical_mat boolean indicating whether matrix is logical
+#' @param underlying_dimension dimension of underlying expression matrix
+#' @param cell_subset integer vector indicating cells in use
+#' @param feature_subset integet vector indicating features in use
+#' @param feature_ids character vector of feature IDs
+#' @param feature_names character vector of feature names
+#' @param cell_barcodes character vector of cell barcodes
+#' @param odm_id unique (with high probability) integer
+#'
+#' @return initialized `ondisc_matrix` object
+#' @export
+ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlying_dimension = NA_integer_, cell_subset = NA_integer_, feature_subset = NA_integer_, feature_ids = NA_character_, feature_names = NA_character_, cell_barcodes = NA_character_, odm_id = NA_integer_) {
+  out <- new("ondisc_matrix")
+  out@h5_file <- h5_file
+  out@logical_mat <- logical_mat
+  out@underlying_dimension <- underlying_dimension
+  out@cell_subset <- cell_subset
+  out@feature_subset <- feature_subset
+  out@feature_ids <- feature_ids
+  out@feature_names <- feature_names
+  out@cell_barcodes <- cell_barcodes
+  out@odm_id <- odm_id
+  check_dup <- function(v) any(duplicated(v))
+  if (check_dup(cell_barcodes)) warning("Cell barcodes contain duplicates.")
+  if (check_dup(feature_names)) warning("Feature names contain duplicates.")
+  if (check_dup(feature_ids)) warning("Feature IDs contain duplicates.")
+  return(out)
+}
+
 
 ###########################
 # 2. covariate_ondisc_matrix
@@ -95,6 +115,14 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #' @return a multimodal_ondisc_matrix
 #' @export
 multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
+  # check that cell barcodes coincide across modalities
+  barcodes_list <- lapply(covariate_ondisc_matrix_list, get_cell_barcodes)
+  for (i in seq(2L, length(barcodes_list))) {
+    if (!identical(barcodes_list[[1]], barcodes_list[[i]])) {
+      warning("Cell barcodes are not identical across modalities.")
+      break()
+    }
+  }
   out <- new(Class = "multimodal_ondisc_matrix")
   out@modalities <- covariate_ondisc_matrix_list
   df_list <- lapply(X = covariate_ondisc_matrix_list,
