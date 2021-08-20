@@ -46,6 +46,7 @@ read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file) {
 #'     data points (i.e., fraction of entries that are zero),
 #'     (iv) (TRUE/FALSE) matrix is logical,
 #'     (v) number of rows to skip before reading the data
+#'     (vi) number of data points in each file,
 get_mtx_metadata <- function(mtx_fp) {
   if (length(mtx_fp) == 1) {
     out <- .Call(`_ondisc_get_mtx_metadata`, mtx_fp)
@@ -121,8 +122,11 @@ get_h5_features <- function(h5_list) {
 #'
 #' @param h5_list a vector of paths to the h5 file
 #'
-#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
-#'     data points (i.e., fraction of entries that are zero)
+#' @return a list containing (i)n_cells, (ii) the number of
+#'     data points (i.e., fraction of entries that are zero),
+#'     (iii) number of data points in each file,
+#'     (iv) (always FALSE) matrix is logical
+#' @noRd
 get_h5_cells_metadata <- function(h5_list) {
   cumulative_n_cells <- 0L
   cumulative_n_data_points <- 0L
@@ -141,6 +145,7 @@ get_h5_cells_metadata <- function(h5_list) {
   out$n_cells <- cumulative_n_cells
   out$n_data_points <- cumulative_n_data_points
   out$n_cells_in_files <- n_cells_in_files
+  out$is_logical <- FALSE
   return(out)
 }
 

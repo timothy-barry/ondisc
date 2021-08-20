@@ -131,8 +131,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' Creates an `ondisc_matrix` from a list of .h5 files storing single-cell expression data.
 #'
 #' @param h5_list a list of .h5 files to convert into `ondisc_matrix` format; the .h5 file should have the same features measured on different sets of cells.
-#' @param on_disk_dir (optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.
-#' @param file_name (optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.
+#' @param odm_fp location to write the ondisc matrix to disk
 #' @param progress progress (optional; default FALSE) print progress messages?
 #'
 #' @return A covariate_ondisc_matrix.
@@ -147,25 +146,49 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' "GSM3722727_K562-dCas9-KRAB_5K-sgRNAs_Batch-4_1_filtered_gene_bc_matrices_h5.h5",
 #' "GSM3722729_K562-dCas9-KRAB_5K-sgRNAs_Batch-1_1_filtered_gene_bc_matrices_h5.h5")
 #' h5_list <- system.file("extdata", f_names, package = "crisprdata")
+#' tempfile <- create_new_directory()
+#' odm_fp <- paste0(tempfile, "/expression_odm")
 #' # initialize a directory to store ondisc matrix
 #' storage_dir <- create_new_directory()
 #' # create the ondisc matrix
 #' odm_plus_covariates_list <- create_ondisc_matrix_from_h5(h5_list, storage_dir)
 #' }
-create_ondisc_matrix_from_h5_list <- function(h5_list, on_disk_dir = NULL, file_name = NULL, progress = TRUE) {
+create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, progress = TRUE) {
+  # bag_of_variables is used to store quantities to compute the feature- and cell-covariates.
+  # cells_metadata stores general information about the .h5 file and the cells
+  # features_metadata stores general information about the .tsv files.
+
+  # set the h5 file path
+  odm_fp <- append_file_extension(odm_fp, "odm")
+  if (file.exists(odm_fp)) stop(paste0("File ", odm_fp, " already exists. Ending function."))
+
+  # generate random ODM id
+  odm_id <- sample(seq(0L, .Machine$integer.max), size = 1)
+
   # Define "bag_of_variables" environment for storing args
   bag_of_variables <- new.env()
 
-  # Extract barcodes and features_df, compute feature matadata
+  # Extract barcodes and features_df, compute feature matadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
   barcodes_list <- get_h5_barcodes(h5_list)
   barcodes <- unlist(barcodes_list)
   features_df <- get_h5_features(h5_list)
-  features_meatadata <- get_features_metadata_from_table(features_df, bag_of_variables)
+  features_metadata <- get_features_metadata_from_table(features_df, bag_of_variables)
 
   # Extract cell metadata at the same time
   cells_metadata <- get_h5_cells_metadata(h5_list)
+  cells_metadata$h5_list <- h5_list
+  cells_metadata$n_features <- nrow(features_df)
   bag_of_variables[[arguments_enum()$n_cells]] <- cells_metadata$n_cells
   bag_of_variables[[arguments_enum()$n_features]] <- cells_metadata$n_features
   bag_of_variables[[arguments_enum()$n_cells_in_files]] <- cells_metadata$n_cells_in_files
+
+  # Initialize the .h5 file on-disk (side-effect)
+  initialize_h5_file_on_disk(odm_fp, cells_metadata, odm_id)
+
+  # Determine which covariates to compute
+  covariates <- map_inputs_to_covariates(cells_metadata, features_metadata)
+
+  # Run core algorithm
+  out <- run_core_algo(odm_fp, cells_metadata, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
 
 }
