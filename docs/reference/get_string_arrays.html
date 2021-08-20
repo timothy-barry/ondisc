@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract matrix — extract_matrix • ondisc</title>
+<title>Get string — get_string_arrays • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract matrix — extract_matrix" />
-<meta property="og:description" content="Extract matrix" />
+<meta property="og:title" content="Get string — get_string_arrays" />
+<meta property="og:description" content="Get string" />
 
 
 
@@ -124,29 +124,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract matrix</h1>
+    <h1>Get string</h1>
     
-    <div class="hidden name"><code>extract_matrix.Rd</code></div>
+    <div class="hidden name"><code>get_string_arrays.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract matrix</p>
+    <p>Get string</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_matrix</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_string_arrays</span><span class='op'>(</span><span class='va'>barcodes_fp</span>, <span class='va'>features_fp</span>, <span class='va'>features_metadata</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>an ondisc_matrix.</p></td>
+      <th>barcodes_fp</th>
+      <td><p>path to barcodes file(s)</p></td>
+    </tr>
+    <tr>
+      <th>features_fp</th>
+      <td><p>path the features file</p></td>
+    </tr>
+    <tr>
+      <th>features_metadata</th>
+      <td><p>the features_metadata list</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an in-memory version of x in the form of a Matrix object.</p>
+    <p>list containing (i) cell barcodes, (ii) feature IDs, and (iii) feature names (NA_character_ if absent)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

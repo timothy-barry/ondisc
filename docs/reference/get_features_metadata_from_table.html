@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract matrix — extract_matrix • ondisc</title>
+<title>Get metadata for features_df, a data frame giving the names of the features. — get_features_metadata_from_table • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract matrix — extract_matrix" />
-<meta property="og:description" content="Extract matrix" />
+<meta property="og:title" content="Get metadata for features_df, a data frame giving the names of the features. — get_features_metadata_from_table" />
+<meta property="og:description" content="Gets metadata from a features data frame features_df." />
 
 
 
@@ -124,29 +124,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract matrix</h1>
+    <h1>Get metadata for features_df, a data frame giving the names of the features.</h1>
     
-    <div class="hidden name"><code>extract_matrix.Rd</code></div>
+    <div class="hidden name"><code>get_features_metadata_from_table.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract matrix</p>
+    <p>Gets metadata from a features data frame features_df.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_matrix</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_features_metadata_from_table</span><span class='op'>(</span><span class='va'>features_df</span>, bag_of_variables <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>an ondisc_matrix.</p></td>
+      <th>features_df</th>
+      <td><p>a data frame giving the names of the features.</p></td>
+    </tr>
+    <tr>
+      <th>bag_of_variables</th>
+      <td><p>the bag of variables to which to add the mt_genes logical vector (if applicable)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an in-memory version of x in the form of a Matrix object.</p>
+    <p>a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

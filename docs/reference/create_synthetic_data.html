@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Create synthetic data — create_synthetic_data" />
-<meta property="og:description" content="Generate synthetic datasets (consisting of a matrix.mtx file, a barcodes.tsv file, and a features.tsv file) and store these datasets in simulated_data_dir, with indices appended to the file names." />
+<meta property="og:description" content="Creates synthetic data for testing purposes. Optionally writes the data to disk." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ondisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
       </span>
     </div>
 
@@ -93,6 +93,18 @@
     </li>
     <li>
       <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    ondisc in action
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
     </li>
   </ul>
 </li>
@@ -118,48 +130,50 @@
     </div>
 
     <div class="ref-description">
-    <p>Generate synthetic datasets (consisting of a matrix.mtx file, a barcodes.tsv file, and a features.tsv file) and store these datasets in simulated_data_dir, with indices appended to the file names.</p>
+    <p>Creates synthetic data for testing purposes. Optionally writes the data to disk.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_synthetic_data</span><span class='op'>(</span>
-  <span class='va'>n_datasets</span>,
-  <span class='va'>simulated_data_dir</span>,
-  n_row <span class='op'>=</span> <span class='cn'>NULL</span>,
-  n_col <span class='op'>=</span> <span class='cn'>NULL</span>,
-  seed <span class='op'>=</span> <span class='cn'>NULL</span>,
-  idx_start <span class='op'>=</span> <span class='fl'>1L</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>create_synthetic_data</span><span class='op'>(</span><span class='va'>n_row</span>, <span class='va'>n_col</span>, <span class='va'>logical_mat</span>, write_as_mtx_to_disk <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n_datasets</th>
-      <td><p>number of datasets to generate</p></td>
-    </tr>
-    <tr>
-      <th>simulated_data_dir</th>
-      <td><p>directory in which to store the generated datasets</p></td>
-    </tr>
-    <tr>
       <th>n_row</th>
-      <td><p>number of rows in datasets (by default random)</p></td>
+      <td><p>number of rows</p></td>
     </tr>
     <tr>
       <th>n_col</th>
-      <td><p>number of columns in datasets (by default random)</p></td>
+      <td><p>number of columns</p></td>
     </tr>
     <tr>
-      <th>seed</th>
-      <td><p>(optional) seed to set</p></td>
+      <th>logical_mat</th>
+      <td><p>boolean indicating whether a given dataset is logical (TRUE) or integer (FALSE).</p></td>
     </tr>
     <tr>
-      <th>idx_start</th>
-      <td><p>index at which to start (default 1)</p></td>
+      <th>write_as_mtx_to_disk</th>
+      <td><p>boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>a list:
+(i) R matrix
+(ii) in-memory cell barcodes
+(iii) in-memory features df
+(iv) number of nonzero entries in expression matrix
+(v) file path to the .mtx file
+(vi) file path to the barcodes.tsv file
+(vii) file path to the features.tsv file</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>n_row</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
+<span class='va'>n_col</span> <span class='op'>&lt;-</span> <span class='fl'>500</span>
+<span class='va'>logical_mat</span> <span class='op'>&lt;-</span> <span class='cn'>FALSE</span>
+<span class='va'>synth_data</span> <span class='op'>&lt;-</span> <span class='fu'>create_synthetic_data</span><span class='op'>(</span><span class='va'>n_row</span>, <span class='va'>n_col</span>, <span class='va'>logical_mat</span><span class='op'>)</span>
+<span class='co'># side-effect: creates .mtx file, barcodes.tsv file, and features.tsv file on disk.</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -171,7 +185,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Timothy Barry.</p>
+  <p>Developed by Tim Barry.</p>
 </div>
 
 <div class="pkgdown">

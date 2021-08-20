@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Fast, Universal, and Intuitive Computing on Large-Scale Single-Cell Data">
-<meta property="og:description" content='Single-cell datasets are growing in size, posing challenges as well as opportunities for biology researchers. ondisc (short for "on-disk single cell") enables users to easily and efficiently analyze large-scale single-cell data. ondisc makes computing on large-scale single-cell data FUN: Fast, Universal, and iNtuitive.'>
+<meta property="og:description" content='Single-cell datasets are growing in size, posing challenges as well as opportunities for biology researchers. ondisc (short for "on-disk single cell") enables users to easily and efficiently analyze large-scale single-cell data. ondisc aims to make computing on large-scale single-cell data FUN: Fast, Universal, and iNtuitive.'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ondisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
       </span>
     </div>
 
@@ -82,20 +82,19 @@
   <div class="contents col-md-9">
 <div id="ondisc-large-scale-computing-on-single-cell-data-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#ondisc-large-scale-computing-on-single-cell-data-" class="anchor"></a><code>ondisc</code>: large-scale computing on single-cell data <img src="reference/figures/hex.jpg" align="right" alt="" width="180">
+<a href="#ondisc-large-scale-computing-on-single-cell-data-" class="anchor"></a><code>ondisc</code>: large-scale computing on single-cell data <img src="reference/figures/hex_alt.png" align="right" alt="" width="180">
 </h1></div>
 <!-- badges: start -->
 
-<p>Single-cell datasets are growing in size, posing challenges as well as opportunities to biology researchers. <code>ondisc</code> (short for “on-disk single cell”) is an R package that enables users to easily and efficiently analyze large-scale single-cell data. <code>ondisc</code> makes computing on large-scale single-cell data <strong>FUN</strong>:</p>
-<ul>
-<li>
-<strong>Fast</strong>: <code>ondisc</code> is powered by several novel, highly efficient algorithms and data structures. All low-level code is written in C++ or C for maximum performance.</li>
-<li>
-<strong>Universal</strong>: <code>ondisc</code> runs on all platforms, from laptops to supercomputers. <code>ondisc</code> works seamlessly when the size of the data exceeds the amount of available memory.</li>
-<li>
-<strong>Ntuitive</strong>: <code>ondisc</code> leverages ideas from functional programming, making it simple for R users users to pick up and incorporate into their programs.</li>
-</ul>
-<p>Take a look at the <a href="https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html">tutorials</a> on the <a href="https://timothy-barry.github.io/ondisc/index.html">package website</a>.</p>
+<p>Single-cell datasets are growing in size, posing challenges as well as opportunities to biology researchers. <code>ondisc</code> (short for “on-disk single cell”) is an R package that facilitates computing on large-scale single-cell data. <code>ondisc</code> is especially well-suited to fixed memory and distributed CRISPR screen and differential expression analyses.</p>
+<p><strong>NOTE</strong>: The package currently is undergoing considerable API changes. Use with caution. We anticipate that an updated, stable version of the package (along with detailed documentation) will be available in September, 2021.</p>
+<!-- Single-cell datasets are growing in size, posing challenges as well as opportunities to biology researchers. `ondisc` (short for "on-disk single cell") is an R package that enables users to easily and efficiently analyze large-scale single-cell data. `ondisc` makes computing on large-scale single-cell data **FUN**:
+
+- **Fast**: `ondisc` is powered by several novel, highly efficient algorithms and data structures. All low-level code is written in C++ or C for maximum performance.
+- **Universal**: `ondisc` runs on all platforms, from laptops to supercomputers. `ondisc` works seamlessly when the size of the data exceeds the amount of available memory. 
+- **Ntuitive**: `ondisc` leverages ideas from functional programming, making it simple for R users users to pick up and incorporate into their programs.
+
+Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/tutorial_odm_class.html) on the [package website](https://timothy-barry.github.io/ondisc/index.html). -->
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -106,7 +105,6 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"timothy-barry/ondisc"</span><span class="op">)</span></code></pre></div>
-<p>You can browse the source code on Github <a href="https://github.com/timothy-barry/ondisc">here</a>.</p>
 </div>
 </div>
   </div>
@@ -129,8 +127,8 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://timothy-barry.github.io/">Tim Barry</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4356-627X" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Tim Barry <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4356-627X" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Songcheng Dai <br><small class="roles"> Author, contributor </small>  </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
@@ -147,7 +145,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://timothy-barry.github.io/">Tim Barry</a>.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

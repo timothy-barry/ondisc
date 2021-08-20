@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract matrix — extract_matrix • ondisc</title>
+<title>ondisc_matrix class — ondisc_matrix-class • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract matrix — extract_matrix" />
-<meta property="og:description" content="Extract matrix" />
+<meta property="og:title" content="ondisc_matrix class — ondisc_matrix-class" />
+<meta property="og:description" content="An ondisc_matrix represents a feature-by-cell expression matrix stored on-disk." />
 
 
 
@@ -124,29 +124,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract matrix</h1>
+    <h1><code>ondisc_matrix</code> class</h1>
     
-    <div class="hidden name"><code>extract_matrix.Rd</code></div>
+    <div class="hidden name"><code>ondisc_matrix-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract matrix</p>
+    <p>An <code>ondisc_matrix</code> represents a feature-by-cell expression matrix stored on-disk.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_matrix</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>an ondisc_matrix.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>an in-memory version of x in the form of a Matrix object.</p>
+    <p>It is best to avoid interacting with the slots of an <code>ondisc_matrix</code> directly. Instead, use the functions
+and operators provided by the package.</p>
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+
+    
+
+<dl>
+<dt><code>h5_file</code></dt><dd><p>path to an initialized .h5 file stored on-disk.</p></dd>
+
+<dt><code>logical_mat</code></dt><dd><p>logical value indicating whether the matrix is logical.</p></dd>
+
+<dt><code>cell_subset</code></dt><dd><p>integer vector recording the cells currently in use.</p></dd>
+
+<dt><code>feature_subset</code></dt><dd><p>integer vector recording the features currently in use.</p></dd>
+
+<dt><code>underlying_dimension</code></dt><dd><p>the dimension of the (unsubset) expression matrix.</p></dd>
+
+</dl>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

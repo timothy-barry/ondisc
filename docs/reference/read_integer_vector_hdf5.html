@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract matrix — extract_matrix • ondisc</title>
+<title>read intege vector from hdf5 — read_integer_vector_hdf5 • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract matrix — extract_matrix" />
-<meta property="og:description" content="Extract matrix" />
+<meta property="og:title" content="read intege vector from hdf5 — read_integer_vector_hdf5" />
+<meta property="og:description" content="read intege vector from hdf5" />
 
 
 
@@ -124,29 +124,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract matrix</h1>
+    <h1>read intege vector from hdf5</h1>
     
-    <div class="hidden name"><code>extract_matrix.Rd</code></div>
+    <div class="hidden name"><code>read_integer_vector_hdf5.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract matrix</p>
+    <p>read intege vector from hdf5</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_matrix</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>read_integer_vector_hdf5</span><span class='op'>(</span><span class='va'>file_name_in</span>, <span class='va'>dataset_name_in</span>, <span class='va'>data_len</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>an ondisc_matrix.</p></td>
+      <th>file_name_in</th>
+      <td><p>name of h5 file</p></td>
+    </tr>
+    <tr>
+      <th>dataset_name_in</th>
+      <td><p>name of dataset to read</p></td>
+    </tr>
+    <tr>
+      <th>data_len</th>
+      <td><p>length of integer vector</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>an in-memory version of x in the form of a Matrix object.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract matrix — extract_matrix • ondisc</title>
+<title>Get h5 features — get_h5_features • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract matrix — extract_matrix" />
-<meta property="og:description" content="Extract matrix" />
+<meta property="og:title" content="Get h5 features — get_h5_features" />
+<meta property="og:description" content="Get h5 features" />
 
 
 
@@ -124,29 +124,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract matrix</h1>
+    <h1>Get h5 features</h1>
     
-    <div class="hidden name"><code>extract_matrix.Rd</code></div>
+    <div class="hidden name"><code>get_h5_features.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract matrix</p>
+    <p>Get h5 features</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_matrix</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_h5_features</span><span class='op'>(</span><span class='va'>h5_list</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>an ondisc_matrix.</p></td>
+      <th>h5_list</th>
+      <td><p>a vector of paths to the h5 file</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an in-memory version of x in the form of a Matrix object.</p>
+    <p>features_df data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

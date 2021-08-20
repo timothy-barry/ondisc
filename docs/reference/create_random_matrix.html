@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Create a random matrix — create_random_matrix" />
-<meta property="og:description" content="All arguments optional" />
+<meta property="og:description" content="Creates and returns a random matrix." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ondisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
       </span>
     </div>
 
@@ -93,6 +93,18 @@
     </li>
     <li>
       <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    ondisc in action
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
     </li>
   </ul>
 </li>
@@ -118,15 +130,17 @@
     </div>
 
     <div class="ref-description">
-    <p>All arguments optional</p>
+    <p>Creates and returns a random matrix.</p>
     </div>
 
     <pre class="usage"><span class='fu'>create_random_matrix</span><span class='op'>(</span>
-  n_row <span class='op'>=</span> <span class='cn'>NULL</span>,
-  n_col <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>n_row</span>,
+  <span class='va'>n_col</span>,
+  <span class='va'>logical_mat</span>,
   p_zero <span class='op'>=</span> <span class='fl'>0.95</span>,
-  matrix_values <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
-  logical_mat <span class='op'>=</span> <span class='cn'>FALSE</span>
+  p_set_col_zero <span class='op'>=</span> <span class='fl'>0.05</span>,
+  p_set_row_zero <span class='op'>=</span> <span class='fl'>0.05</span>,
+  matrix_values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>10L</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -141,22 +155,30 @@
       <td><p>number of columns</p></td>
     </tr>
     <tr>
+      <th>logical_mat</th>
+      <td><p>boolean indicating whether the matrix is logical (TRUE) or integer (FALSE)</p></td>
+    </tr>
+    <tr>
       <th>p_zero</th>
       <td><p>probability an entry will be zero</p></td>
     </tr>
     <tr>
-      <th>matrix_values</th>
-      <td><p>set of values from which to draw the matrix entries</p></td>
+      <th>p_set_col_zero</th>
+      <td><p>fraction of columns to set to zero</p></td>
     </tr>
     <tr>
-      <th>logical_mat</th>
-      <td><p>should the matrix be logical (as opposed to numeric)?</p></td>
+      <th>p_set_row_zero</th>
+      <td><p>fraction of rows to set to zero</p></td>
+    </tr>
+    <tr>
+      <th>matrix_values</th>
+      <td><p>set of values from which to draw the matrix entries (applicable to integer matrices only)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a randomly-generated matrix of class TsparseMatrix</p>
+    <p>a randomly-generated matrix in sparse format</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -169,7 +191,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Timothy Barry.</p>
+  <p>Developed by Tim Barry.</p>
 </div>
 
 <div class="pkgdown">

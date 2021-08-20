@@ -1,10 +1,8 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
-articles:
-  tutorial_odm_class: tutorial_odm_class.html
-  tutorial_other_classes: tutorial_other_classes.html
-last_built: 2021-07-09T17:20Z
+articles: {}
+last_built: 2021-08-18T20:41Z
 urls:
   reference: https://timothy-barry.github.io/ondisc//reference
   article: https://timothy-barry.github.io/ondisc//articles
