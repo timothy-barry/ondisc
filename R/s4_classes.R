@@ -55,7 +55,6 @@ ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlyi
   out@odm_id <- odm_id
   check_dup <- function(v) any(duplicated(v))
   if (check_dup(cell_barcodes)) warning("Cell barcodes contain duplicates.")
-  if (check_dup(feature_names)) warning("Feature names contain duplicates.")
   if (check_dup(feature_ids)) warning("Feature IDs contain duplicates.")
   return(out)
 }
