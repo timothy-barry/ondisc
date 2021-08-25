@@ -4,7 +4,14 @@
 \alias{create_synthetic_data}
 \title{Create synthetic data}
 \usage{
-create_synthetic_data(n_row, n_col, logical_mat, write_as_mtx_to_disk = TRUE)
+create_synthetic_data(
+  n_row,
+  n_col,
+  logical_mat,
+  start_pos = 0L,
+  write_as_mtx_to_disk = TRUE,
+  write_as_h5_to_disk = FALSE
+)
 }
 \arguments{
 \item{n_row}{number of rows}
@@ -13,7 +20,11 @@ create_synthetic_data(n_row, n_col, logical_mat, write_as_mtx_to_disk = TRUE)
 
 \item{logical_mat}{boolean indicating whether a given dataset is logical (TRUE) or integer (FALSE).}
 
+\item{start_pos}{position to start numbering the barcodes}
+
 \item{write_as_mtx_to_disk}{boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.}
+
+\item{write_as_h5_to_disk}{boolean indicating whether to write the .h5 list of files to disk as side-effect.}
 }
 \value{
 a list:
@@ -24,6 +35,7 @@ a list:
 (v) file path to the .mtx file
 (vi) file path to the barcodes.tsv file
 (vii) file path to the features.tsv file
+(viii) OR a file path to the .h5 file
 }
 \description{
 Creates synthetic data for testing purposes. Optionally writes the data to disk.

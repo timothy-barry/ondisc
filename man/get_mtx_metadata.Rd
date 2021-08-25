@@ -16,6 +16,7 @@ a list containing (i) n_genes, (ii) n_cells, (iii) the number of
 data points (i.e., fraction of entries that are zero),
 (iv) (TRUE/FALSE) matrix is logical,
 (v) number of rows to skip before reading the data
+(vi) number of data points in each file,
 }
 \description{
 Get mtx metadata

@@ -4,7 +4,12 @@
 \alias{get_string_arrays}
 \title{Get string}
 \usage{
-get_string_arrays(barcodes_fp, features_fp, features_metadata)
+get_string_arrays(
+  barcodes_fp,
+  features_fp,
+  features_metadata,
+  barcode_suffixes
+)
 }
 \arguments{
 \item{barcodes_fp}{path to barcodes file(s)}
@@ -12,6 +17,8 @@ get_string_arrays(barcodes_fp, features_fp, features_metadata)
 \item{features_fp}{path the features file}
 
 \item{features_metadata}{the features_metadata list}
+
+\item{barcode_suffixes}{a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.}
 }
 \value{
 list containing (i) cell barcodes, (ii) feature IDs, and (iii) feature names (NA_character_ if absent)

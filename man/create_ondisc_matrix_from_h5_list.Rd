@@ -4,12 +4,22 @@
 \alias{create_ondisc_matrix_from_h5_list}
 \title{Create \code{ondisc_matrix} from h5}
 \usage{
-create_ondisc_matrix_from_h5_list(h5_list, odm_fp, progress = TRUE)
+create_ondisc_matrix_from_h5_list(
+  h5_list,
+  odm_fp,
+  metadata_fp = NULL,
+  barcode_suffixes = NULL,
+  progress = TRUE
+)
 }
 \arguments{
 \item{h5_list}{a list of .h5 files to convert into \code{ondisc_matrix} format; the .h5 file should have the same features measured on different sets of cells.}
 
 \item{odm_fp}{location to write the ondisc matrix to disk}
+
+\item{metadata_fp}{location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
+
+\item{barcode_suffixes}{a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.}
 
 \item{progress}{progress (optional; default FALSE) print progress messages?}
 }
@@ -33,6 +43,6 @@ odm_fp <- paste0(tempfile, "/expression_odm")
 # initialize a directory to store ondisc matrix
 storage_dir <- create_new_directory()
 # create the ondisc matrix
-odm_plus_covariates_list <- create_ondisc_matrix_from_h5(h5_list, storage_dir)
+odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, storage_dir)
 }
 }
