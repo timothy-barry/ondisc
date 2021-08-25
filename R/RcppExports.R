@@ -125,6 +125,13 @@ decrement_idxs <- function(idxs) {
     invisible(.Call(`_ondisc_decrement_idxs`, idxs))
 }
 
+#' @title increment a vector of indexes
+#' @param idxs an integer vector of indexes
+#' @noRd
+increment_idxs <- function(idxs) {
+    invisible(.Call(`_ondisc_increment_idxs`, idxs))
+}
+
 #' @title add vectors in-place
 #' @param v1 the vector to be modified in-place
 #' @param v2 the vector to add element-wise to vector v1; note: v1 may be longer than v2

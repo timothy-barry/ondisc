@@ -69,6 +69,31 @@ save_random_matrix_as_10x <- function(m, data_dir, cell_barcodes, feature_df) {
 }
 
 
+#' Save random matrix as a .h5 file
+#'
+#' Writes an R matrix to disk in .h5 format.
+#'
+#' @param m a sparse Matrix object
+#' @param data_dir the directory in which to store the matrix
+#' @param cell_barcodes the cell barcodes
+#' @param feature_df data frame of features
+#'
+#' @return the file paths to the matrix.mtx, barcodes.tsv, and features.tsv files.
+#' @noRd
+save_random_matrix_as_h5 <- function(m, data_dir, cell_barcodes, feature_df) {
+  h5_fp <- paste0(data_dir, "/matrix.h5")
+  csc_r_matrix <- as(m, "dgCMatrix")
+  # Write CSC
+  rhdf5::h5write(csc_r_matrix@p, file = h5_fp, name = "indptr")
+  rhdf5::h5write(csc_r_matrix@i, file = h5_fp, name = "indices")
+  rhdf5::h5write(csc_r_matrix@x, file = h5_fp, name = "data")
+  rhdf5::h5write(csc_r_matrix@Dim, file = h5_fp, name = "shape")
+  rhdf5::h5write(cell_barcodes, file = h5_fp, name = "barcodes")
+  rhdf5::h5write(feature_df$gene_ids, file = h5_fp, name = "genes")
+  rhdf5::h5write(feature_df$gene_names, file = h5_fp, name = "gene_names")
+  return(h5_fp)
+}
+
 #' Compare R sparse Matrix object to on_disc object on extract
 #'
 #' Takes a sparse R matrix, on_disc_matrix, vector of column indexes, and vector of row indexes; verifies that the row, column, and row-column subsets match.
@@ -103,7 +128,9 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' @param n_row number of rows
 #' @param n_col number of columns
 #' @param logical_mat boolean indicating whether a given dataset is logical (TRUE) or integer (FALSE).
+#' @param start_pos position to start numbering the barcodes
 #' @param write_as_mtx_to_disk boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.
+#' @param write_as_h5_to_disk boolean indicating whether to write the .h5 list of files to disk as side-effect.
 #' @return a list:
 #' (i) R matrix
 #' (ii) in-memory cell barcodes
@@ -112,6 +139,7 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' (v) file path to the .mtx file
 #' (vi) file path to the barcodes.tsv file
 #' (vii) file path to the features.tsv file
+#' (viii) OR a file path to the .h5 file
 #' @export
 #'
 #' @examples
@@ -120,11 +148,11 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' logical_mat <- FALSE
 #' synth_data <- create_synthetic_data(n_row, n_col, logical_mat)
 #' # side-effect: creates .mtx file, barcodes.tsv file, and features.tsv file on disk.
-create_synthetic_data <- function(n_row, n_col, logical_mat, write_as_mtx_to_disk = TRUE) {
+create_synthetic_data <- function(n_row, n_col, logical_mat, start_pos = 0L, write_as_mtx_to_disk = TRUE, write_as_h5_to_disk = FALSE) {
   # first, create an in-memory r matrix
   in_mem_r_mat <- create_random_matrix(n_row, n_col, logical_mat)
   # next, create a character vector of barcodes
-  barcodes <- paste0("cell_", seq(1, n_col))
+  barcodes <- paste0("cell_", seq(1+start_pos, n_col+start_pos))
   # next, create features dfs
   gene_names <- paste0("gene_", seq(1, n_row))
   idxs <- sort(sample(x = seq(1, n_row), size = floor(n_row/10), replace = FALSE))
@@ -134,6 +162,15 @@ create_synthetic_data <- function(n_row, n_col, logical_mat, write_as_mtx_to_dis
   # create "out," containing the matrix, gene ids, and features df
   out <- list(r_mat = in_mem_r_mat, barcodes = barcodes,
               features_df = features_df, n_nonzero = length(in_mem_r_mat@x))
+  if (write_as_h5_to_disk) {
+    # create the directory
+    file_dir <- create_new_directory()
+    h5_fp <- save_random_matrix_as_h5(m = in_mem_r_mat,
+                                     data_dir = file_dir,
+                                     cell_barcodes = barcodes,
+                                     feature_df = features_df)
+    out$h5_fp <- h5_fp
+  }
   if (write_as_mtx_to_disk) {
     # create the directory
     file_dir <- create_new_directory()

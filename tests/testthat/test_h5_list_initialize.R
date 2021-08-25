@@ -3,43 +3,37 @@ n_mat <- 5
 n_row_multi <- 300
 n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
 col_multi_cumsum <- c(0,cumsum(n_col_multi))
-logical_mat_multi <- vector(mode = "logical", length = n_mat)
 # generate the matrices using create_synthetic_data
 r_mats_plus_data_multi <- vector(mode = "list", length = n_mat)
 for (i in seq(1,n_mat)) {
   r_mats_plus_data_multi[[i]] <- create_synthetic_data(n_row = n_row_multi,
-                                             n_col = n_col_multi[i],
-                                             logical_mat = logical_mat_multi[i],
-                                             start_pos = col_multi_cumsum[i])
-  r_mats_plus_data_multi[[i]]$features_df <- r_mats_plus_data_multi[[1]]$features_df
-  r_mats_plus_data_multi[[i]]$features_fp <- r_mats_plus_data_multi[[1]]$features_fp
+                                                       n_col = n_col_multi[i],
+                                                       logical_mat = FALSE,
+                                                       start_pos = col_multi_cumsum[i],
+                                                       write_as_mtx_to_disk = FALSE,
+                                                       write_as_h5_to_disk = TRUE)
 }
-mtx_fp_multi <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
-barcodes_fp_multi <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
-features_fp_multi <- r_mats_plus_data_multi[[1]]$features_fp
+h5_list <- sapply(X = r_mats_plus_data_multi, function(i) i$h5_fp)
 
 # 2.create ondisc matrix
-cov_odm_multi <- create_ondisc_matrix_from_mtx(mtx_fp = mtx_fp_multi,
-                                               barcodes_fp = barcodes_fp_multi,
-                                               features_fp = features_fp_multi,
-                                               odm_fp = create_new_directory())
+cov_odm_multi <- create_ondisc_matrix_from_h5_list(h5_list = h5_list, odm_fp = create_new_directory())
 
 # 3.compare to ground truth
 r_mats_multi <- lapply(r_mats_plus_data_multi, function(l) l$r_mat)
 r_mats_parent <- do.call(cbind, r_mats_multi)
-test_that("Compare ground truth matrix to on_disc_matrix from list of .mtx inputs", {
-    m1 <- r_mats_parent
-    on_disc_mat <- cov_odm_multi@ondisc_matrix
-    m2 <- on_disc_mat[[,1:ncol(on_disc_mat)]]
-    m3 <- on_disc_mat[[1:nrow(on_disc_mat),]]
-    m4 <- on_disc_mat[[1:nrow(on_disc_mat),1:ncol(on_disc_mat)]]
-    expect_true(all(m1 == m2))
-    expect_true(all(m2 == m3))
-    expect_true(all(m3 == m4))
+test_that("Compare ground truth matrix to on_disc_matrix from list of .h5 inputs", {
+  m1 <- r_mats_parent
+  on_disc_mat <- cov_odm_multi@ondisc_matrix
+  m2 <- on_disc_mat[[,1:ncol(on_disc_mat)]]
+  m3 <- on_disc_mat[[1:nrow(on_disc_mat),]]
+  m4 <- on_disc_mat[[1:nrow(on_disc_mat),1:ncol(on_disc_mat)]]
+  expect_true(all(m1 == m2))
+  expect_true(all(m2 == m3))
+  expect_true(all(m3 == m4))
 })
 
 # 4. check the covariates
-test_that("check covariates for list of .mtx inputs", {
+test_that("check covariates for list of .h5 inputs", {
   r_mat <- r_mats_parent
 
   # first, look at cell-wise stats

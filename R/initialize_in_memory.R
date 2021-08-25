@@ -110,10 +110,10 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   }
 
   # initialize the ODM
-  initialize_h5_file_on_disk(h5_fp = odm_fp, mtx_metadata = expression_metadata, odm_id = odm_id)
+  initialize_h5_file_on_disk(odm_fp, mtx_metadata = expression_metadata, odm_id = odm_id)
 
   # Write in memory matrix to the .h5 file on-disk (side-effect)
-  write_matrix_to_h5(h5_fp = odm_fp, expression_metadata = expression_metadata, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix)
+  write_matrix_to_h5(odm_fp, expression_metadata = expression_metadata, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix)
 
   ### STEP3: Prepare output
   odm <- ondisc_matrix(h5_file = odm_fp,
@@ -190,7 +190,7 @@ get_features_metadata_from_table <- function(features_df, bag_of_variables = NUL
 #'
 #' Initialize the on-disk portion on an ondisc_matrix, and write matrix to the h5 file.
 #'
-#' @param h5_fp file path to the .h5 file to be initialized
+#' @param odm_fp file path to the .h5 file to be initialized
 #' @param expression_metadata metadata of the r_matrix
 #' @param features_metadata metadata of the features_df
 #' @param barcodes a character vector giving the cell barcodes.
@@ -200,19 +200,19 @@ get_features_metadata_from_table <- function(features_df, bag_of_variables = NUL
 #'
 #' @return NULL
 #' @noRd
-write_matrix_to_h5 <- function(h5_fp, expression_metadata, csc_r_matrix, csr_r_matrix) {
+write_matrix_to_h5 <- function(odm_fp, expression_metadata, csc_r_matrix, csr_r_matrix) {
   # Write CSC
-  rhdf5::h5write(csc_r_matrix@p, file = h5_fp, name="cell_ptr")
-  rhdf5::h5write(csc_r_matrix@i, file = h5_fp, name="feature_idxs")
+  rhdf5::h5write(csc_r_matrix@p, file = odm_fp, name="cell_ptr")
+  rhdf5::h5write(csc_r_matrix@i, file = odm_fp, name="feature_idxs")
   if (!expression_metadata$is_logical) {
-    rhdf5::h5write(csc_r_matrix@x, file = h5_fp, name="data_csc")
+    rhdf5::h5write(csc_r_matrix@x, file = odm_fp, name="data_csc")
   }
 
   # Write CSR
-  rhdf5::h5write(csr_r_matrix@p, file = h5_fp, name = "feature_ptr")
-  rhdf5::h5write(csr_r_matrix@j, file = h5_fp, name = "cell_idxs")
+  rhdf5::h5write(csr_r_matrix@p, file = odm_fp, name = "feature_ptr")
+  rhdf5::h5write(csr_r_matrix@j, file = odm_fp, name = "cell_idxs")
   if (!expression_metadata$is_logical) {
-    rhdf5::h5write(csr_r_matrix@x, file = h5_fp, name = "data_csr")
+    rhdf5::h5write(csr_r_matrix@x, file = odm_fp, name = "data_csr")
   }
 
   invisible(NULL)

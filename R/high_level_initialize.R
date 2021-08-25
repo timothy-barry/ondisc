@@ -14,6 +14,7 @@
 #' @param n_lines_per_chunk (optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.
 #' @param odm_fp location to write the ondisc matrix to disk
 #' @param metadata_fp location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
+#' @param barcode_suffixes a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.
 #' @param progress (optional; default FALSE) print progress messages?
 #' @return A `covariate_ondisc_matrix`.
 #' @export
@@ -65,7 +66,7 @@
 #' barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
 #' features_fp <- r_mats_plus_data_multi[[1]]$features_fp
 #' odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp)
-create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, progress = TRUE) {
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, barcode_suffixes = NULL, progress = TRUE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates.
   # mtx_metadata stores general information about the .mtx file, and features_metadata stores general information about the .tsv files.
 
@@ -101,7 +102,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   out <- run_core_algo(odm_fp, mtx_metadata, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
 
   # Obtain the string arrays (e.g., feature IDs, feature names, and possibly cell barcodes)
-  string_arrays <- get_string_arrays(barcodes_fp, features_fp, features_metadata)
+  string_arrays <- get_string_arrays(barcodes_fp, features_fp, features_metadata, barcode_suffixes)
 
   # initialize metadata ondisc matrix
   odm <- ondisc_matrix(h5_file = odm_fp,
@@ -132,6 +133,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #'
 #' @param h5_list a list of .h5 files to convert into `ondisc_matrix` format; the .h5 file should have the same features measured on different sets of cells.
 #' @param odm_fp location to write the ondisc matrix to disk
+#' @param metadata_fp location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
+#' @param barcode_suffixes a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.
 #' @param progress progress (optional; default FALSE) print progress messages?
 #'
 #' @return A covariate_ondisc_matrix.
@@ -151,9 +154,9 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' # initialize a directory to store ondisc matrix
 #' storage_dir <- create_new_directory()
 #' # create the ondisc matrix
-#' odm_plus_covariates_list <- create_ondisc_matrix_from_h5(h5_list, storage_dir)
+#' odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, storage_dir)
 #' }
-create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, progress = TRUE) {
+create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, progress = TRUE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates.
   # cells_metadata stores general information about the .h5 file and the cells
   # features_metadata stores general information about the .tsv files.
@@ -169,7 +172,7 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, progress = TRUE) 
   bag_of_variables <- new.env()
 
   # Extract barcodes and features_df, compute feature matadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
-  barcodes_list <- get_h5_barcodes(h5_list)
+  barcodes_list <- get_h5_barcodes(h5_list, barcode_suffixes)
   barcodes <- unlist(barcodes_list)
   features_df <- get_h5_features(h5_list)
   features_metadata <- get_features_metadata_from_table(features_df, bag_of_variables)
@@ -191,4 +194,27 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, progress = TRUE) 
   # Run core algorithm
   out <- run_core_algo(odm_fp, cells_metadata, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
 
+  # Obtain the string arrays (e.g., feature IDs, feature names, and possibly cell barcodes)
+  string_arrays <- list(cell_barcodes = barcodes, feature_ids = features_df$id , feature_names = features_df$name)
+
+  # initialize metadata ondisc matrix
+  odm <- ondisc_matrix(h5_file = odm_fp,
+                       logical_mat = cells_metadata$is_logical,
+                       underlying_dimension = c(cells_metadata$n_features, cells_metadata$n_cells),
+                       feature_ids = string_arrays$feature_ids,
+                       feature_names = string_arrays$feature_names,
+                       cell_barcodes = string_arrays$cell_barcodes,
+                       odm_id = odm_id)
+
+  # initialize the metadata odm
+  metadata_odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
+                                          cell_covariates = out$cell_covariates,
+                                          feature_covariates = out$feature_covariates)
+
+  # save the metadata
+  if (is.null(metadata_fp)) metadata_fp <- paste0(dirname(odm_fp), "/metadata.rds")
+  save_odm(metadata_odm, metadata_fp)
+
+  # return initialized object
+  return(metadata_odm)
 }
