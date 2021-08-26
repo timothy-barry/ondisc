@@ -10,7 +10,8 @@ create_synthetic_data(
   logical_mat,
   start_pos = 0L,
   write_as_mtx_to_disk = TRUE,
-  write_as_h5_to_disk = FALSE
+  write_as_h5_to_disk = FALSE,
+  file_dir = NULL
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ create_synthetic_data(
 \item{write_as_mtx_to_disk}{boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.}
 
 \item{write_as_h5_to_disk}{boolean indicating whether to write the .h5 list of files to disk as side-effect.}
+
+\item{file_dir}{directory in which to write the data to disk}
 }
 \value{
 a list:

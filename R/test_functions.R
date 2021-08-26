@@ -131,6 +131,7 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' @param start_pos position to start numbering the barcodes
 #' @param write_as_mtx_to_disk boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.
 #' @param write_as_h5_to_disk boolean indicating whether to write the .h5 list of files to disk as side-effect.
+#' @param file_dir directory in which to write the data to disk
 #' @return a list:
 #' (i) R matrix
 #' (ii) in-memory cell barcodes
@@ -148,7 +149,7 @@ compare_Mat_on_disc_extract <- function(Mat, on_disc_mat, col_idxs, row_idxs) {
 #' logical_mat <- FALSE
 #' synth_data <- create_synthetic_data(n_row, n_col, logical_mat)
 #' # side-effect: creates .mtx file, barcodes.tsv file, and features.tsv file on disk.
-create_synthetic_data <- function(n_row, n_col, logical_mat, start_pos = 0L, write_as_mtx_to_disk = TRUE, write_as_h5_to_disk = FALSE) {
+create_synthetic_data <- function(n_row, n_col, logical_mat, start_pos = 0L, write_as_mtx_to_disk = TRUE, write_as_h5_to_disk = FALSE, file_dir = NULL) {
   # first, create an in-memory r matrix
   in_mem_r_mat <- create_random_matrix(n_row, n_col, logical_mat)
   # next, create a character vector of barcodes
