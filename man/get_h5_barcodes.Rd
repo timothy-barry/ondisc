@@ -4,10 +4,12 @@
 \alias{get_h5_barcodes}
 \title{Get h5 barcodes}
 \usage{
-get_h5_barcodes(h5_list)
+get_h5_barcodes(h5_list, barcode_suffixes)
 }
 \arguments{
 \item{h5_list}{a vector of paths to the h5 file}
+
+\item{barcode_suffixes}{a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.}
 }
 \value{
 a list of barcodes for each h5 file

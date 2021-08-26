@@ -60,7 +60,6 @@ save_odm <- function(odm, metadata_fp) {
 #' @param odm_fp path to a backing .odm file
 read_odm <- function(odm_fp, metadata_fp = NULL) {
   if (!file.exists(odm_fp)) stop(paste0("File ", odm_fp, " does not exist."))
-  if (!file.exists(metadata_fp)) stop(paste0("File ", metadata_fp, " does not exist."))
   # first, obtain underlying dimension and logical_marix boolean
   underlying_dimension <- read_integer_vector_hdf5(odm_fp, "dimension", 2L)
   logical_mat <- as.logical(read_integer_vector_hdf5(odm_fp, "logical_mat", 1L))

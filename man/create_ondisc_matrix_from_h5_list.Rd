@@ -6,17 +6,20 @@
 \usage{
 create_ondisc_matrix_from_h5_list(
   h5_list,
-  on_disk_dir = NULL,
-  file_name = NULL,
+  odm_fp,
+  metadata_fp = NULL,
+  barcode_suffixes = NULL,
   progress = TRUE
 )
 }
 \arguments{
 \item{h5_list}{a list of .h5 files to convert into \code{ondisc_matrix} format; the .h5 file should have the same features measured on different sets of cells.}
 
-\item{on_disk_dir}{(optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.}
+\item{odm_fp}{location to write the ondisc matrix to disk}
 
-\item{file_name}{(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.}
+\item{metadata_fp}{location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
+
+\item{barcode_suffixes}{a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.}
 
 \item{progress}{progress (optional; default FALSE) print progress messages?}
 }
@@ -35,9 +38,11 @@ f_names <- c("GSM3722728_K562-dCas9-KRAB_5K-sgRNAs_Batch-4_2_filtered_gene_bc_ma
 "GSM3722727_K562-dCas9-KRAB_5K-sgRNAs_Batch-4_1_filtered_gene_bc_matrices_h5.h5",
 "GSM3722729_K562-dCas9-KRAB_5K-sgRNAs_Batch-1_1_filtered_gene_bc_matrices_h5.h5")
 h5_list <- system.file("extdata", f_names, package = "crisprdata")
+tempfile <- create_new_directory()
+odm_fp <- paste0(tempfile, "/expression_odm")
 # initialize a directory to store ondisc matrix
 storage_dir <- create_new_directory()
 # create the ondisc matrix
-odm_plus_covariates_list <- create_ondisc_matrix_from_h5(h5_list, storage_dir)
+odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, storage_dir)
 }
 }

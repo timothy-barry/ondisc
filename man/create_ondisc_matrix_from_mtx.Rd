@@ -11,6 +11,7 @@ create_ondisc_matrix_from_mtx(
   odm_fp,
   metadata_fp = NULL,
   n_lines_per_chunk = 3e+08,
+  barcode_suffixes = NULL,
   progress = TRUE
 )
 }
@@ -26,6 +27,8 @@ create_ondisc_matrix_from_mtx(
 \item{metadata_fp}{location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
 
 \item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
+
+\item{barcode_suffixes}{a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.}
 
 \item{progress}{(optional; default FALSE) print progress messages?}
 }

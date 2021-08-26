@@ -5,11 +5,6 @@
 
 using namespace Rcpp;
 
-#ifdef RCPP_USE_GLOBAL_ROSTREAM
-Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
-Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
-#endif
-
 // inc_mean_count
 void inc_mean_count(NumericVector acc_vect, IntegerVector idxs, IntegerVector umi_counts, double n);
 RcppExport SEXP _ondisc_inc_mean_count(SEXP acc_vectSEXP, SEXP idxsSEXP, SEXP umi_countsSEXP, SEXP nSEXP) {
@@ -168,6 +163,16 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// increment_idxs
+void increment_idxs(IntegerVector idxs);
+RcppExport SEXP _ondisc_increment_idxs(SEXP idxsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type idxs(idxsSEXP);
+    increment_idxs(idxs);
+    return R_NilValue;
+END_RCPP
+}
 // sum_in_place
 void sum_in_place(IntegerVector v1, IntegerVector v2);
 RcppExport SEXP _ondisc_sum_in_place(SEXP v1SEXP, SEXP v2SEXP) {
@@ -193,6 +198,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_read_integer_vector_hdf5", (DL_FUNC) &_ondisc_read_integer_vector_hdf5, 3},
     {"_ondisc_get_mtx_metadata", (DL_FUNC) &_ondisc_get_mtx_metadata, 1},
     {"_ondisc_decrement_idxs", (DL_FUNC) &_ondisc_decrement_idxs, 1},
+    {"_ondisc_increment_idxs", (DL_FUNC) &_ondisc_increment_idxs, 1},
     {"_ondisc_sum_in_place", (DL_FUNC) &_ondisc_sum_in_place, 2},
     {NULL, NULL, 0}
 };

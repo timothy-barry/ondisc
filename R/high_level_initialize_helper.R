@@ -46,6 +46,7 @@ read_given_column_of_tsv <- function(col_idx, n_cols, tsv_file) {
 #'     data points (i.e., fraction of entries that are zero),
 #'     (iv) (TRUE/FALSE) matrix is logical,
 #'     (v) number of rows to skip before reading the data
+#'     (vi) number of data points in each file,
 get_mtx_metadata <- function(mtx_fp) {
   if (length(mtx_fp) == 1) {
     out <- .Call(`_ondisc_get_mtx_metadata`, mtx_fp)
@@ -88,14 +89,21 @@ get_h5_full_name <- function(h5_info, name) {
 #' Get h5 barcodes
 #'
 #' @param h5_list a vector of paths to the h5 file
+#' @param barcode_suffixes a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.
 #'
 #' @return a list of barcodes for each h5 file
-get_h5_barcodes <- function(h5_list) {
+get_h5_barcodes <- function(h5_list, barcode_suffixes) {
+  if (is.null(barcode_suffixes) && length(h5_list) > 1L) {
+    barcode_suffixes <- seq(1,length(h5_list))
+  }
   barcodes_list <- vector(mode = "list", length = length(h5_list))
   for (i in seq(1,length(h5_list))) {
     h5_info <- rhdf5::h5ls(h5_list[i])
     barcodes_name <- get_h5_full_name(h5_info, "barcodes")
     barcodes_list[[i]] <- rhdf5::h5read(h5_list[i], barcodes_name)
+    if (!is.null(barcode_suffixes)) {
+      barcodes_list[[i]] <- paste(barcodes_list[[i]], barcode_suffixes[i], sep = "_")
+    }
   }
   return(barcodes_list)
 }
@@ -121,8 +129,11 @@ get_h5_features <- function(h5_list) {
 #'
 #' @param h5_list a vector of paths to the h5 file
 #'
-#' @return a list containing (i) n_genes, (ii) n_cells, (iii) the number of
-#'     data points (i.e., fraction of entries that are zero)
+#' @return a list containing (i)n_cells, (ii) the number of
+#'     data points (i.e., fraction of entries that are zero),
+#'     (iii) number of data points in each file,
+#'     (iv) (always FALSE) matrix is logical
+#' @noRd
 get_h5_cells_metadata <- function(h5_list) {
   cumulative_n_cells <- 0L
   cumulative_n_data_points <- 0L
@@ -141,6 +152,7 @@ get_h5_cells_metadata <- function(h5_list) {
   out$n_cells <- cumulative_n_cells
   out$n_data_points <- cumulative_n_data_points
   out$n_cells_in_files <- n_cells_in_files
+  out$is_logical <- FALSE
   return(out)
 }
 
@@ -150,13 +162,20 @@ get_h5_cells_metadata <- function(h5_list) {
 #' @param barcodes_fp path to barcodes file(s)
 #' @param features_fp path the features file
 #' @param features_metadata the features_metadata list
+#' @param barcode_suffixes a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.
 #'
 #' @return list containing (i) cell barcodes, (ii) feature IDs, and (iii) feature names (NA_character_ if absent)
-get_string_arrays <- function(barcodes_fp, features_fp, features_metadata) {
+get_string_arrays <- function(barcodes_fp, features_fp, features_metadata, barcode_suffixes) {
+  if (is.null(barcode_suffixes) && length(barcodes_fp) > 1L) {
+    barcode_suffixes <- seq(1,length(barcodes_fp))
+  }
   # barcodes first
   cell_barcodes <- vector(mode = "character")
   for (i in seq(1L, length(barcodes_fp))) {
     single_cell_barcodes <- dplyr::pull(readr::read_tsv(file = barcodes_fp[i], col_names = FALSE, col_types = "c"))
+    if (!is.null(barcode_suffixes)) {
+      single_cell_barcodes <- paste(single_cell_barcodes, barcode_suffixes[i], sep = "_")
+    }
     # concatenate cell_barcodes in each file to a single barcodes vector
     cell_barcodes <- c(cell_barcodes, single_cell_barcodes)
   }
