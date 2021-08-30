@@ -25,6 +25,7 @@ The backing .odm file is a static, read-only file that is never altered or copie
 \code{save_odm} writes a new metadata file to disk (potentially overwriting a previous metadata file of the same name), leaving the backing .odm file unaltered.
 }
 \examples{
+use gene, read first, then subseting, save in another dir
 # initialize a new ondisc matrix, supplying paths for backing .odm file and metadata RDS file
 tempfile <- create_new_directory()
 odm_fp <- paste0(tempfile, "/expression_odm.odm")

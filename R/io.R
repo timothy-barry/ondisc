@@ -12,6 +12,7 @@
 #' @return NULL
 #' @export
 #' @examples
+#' use gene, read first, then subseting, save in another dir
 #' # initialize a new ondisc matrix, supplying paths for backing .odm file and metadata RDS file
 #' tempfile <- create_new_directory()
 #' odm_fp <- paste0(tempfile, "/expression_odm.odm")

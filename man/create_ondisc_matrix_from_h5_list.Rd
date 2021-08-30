@@ -2,7 +2,7 @@
 % Please edit documentation in R/high_level_initialize.R
 \name{create_ondisc_matrix_from_h5_list}
 \alias{create_ondisc_matrix_from_h5_list}
-\title{Create \code{ondisc_matrix} from h5}
+\title{Create \code{ondisc_matrix} from a single .h5 file or a list of .h5 files.}
 \usage{
 create_ondisc_matrix_from_h5_list(
   h5_list,
@@ -13,36 +13,53 @@ create_ondisc_matrix_from_h5_list(
 )
 }
 \arguments{
-\item{h5_list}{a list of .h5 files to convert into \code{ondisc_matrix} format; the .h5 file should have the same features measured on different sets of cells.}
+\item{h5_list}{a single .h5 file or a list of .h5 files to convert into \code{ondisc_matrix} format; the .h5 file should have the same features measured on different sets of cells.}
 
-\item{odm_fp}{location to write the ondisc matrix to disk}
+\item{odm_fp}{location to write the ondisc matrix to disk.}
 
-\item{metadata_fp}{location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
+\item{metadata_fp}{(optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
 
-\item{barcode_suffixes}{a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.}
+\item{barcode_suffixes}{(optional; default NULL) a vector of suffix that appended to each  barcodes in input .h5 file(s). The length should be the same as the length of \code{h5_list}. If NULL, append nothing for a single .h5 input; append file index for a list of .h5 inputs.}
 
-\item{progress}{progress (optional; default FALSE) print progress messages?}
+\item{progress}{progress (optional; default TRUE) print progress messages?}
 }
 \value{
-A covariate_ondisc_matrix.
+A \code{covariate_ondisc_matrix}.
 }
 \description{
-Creates an \code{ondisc_matrix} from a list of .h5 files storing single-cell expression data.
+Creates an \code{ondisc_matrix} from a single .h5 file or a list of .h5 files storing single-cell expression data.
+The .h5 files should fulfill the following format requirements:
+\enumerate{
+\item There is one and only one dataset named "barcodes";
+\item There is one and only one dataset named "data";
+\item There is one and only one dataset named "gene_names";
+\item There is one and only one dataset named "genes";
+\item There is one and only one dataset named "indices";
+\item There is one and only one dataset named "indptr";
+\item There is one and only one dataset named "shape";
+\item They can be in any h5 group;
+\item Each .h5 file can fit in memory.
+}
+}
+\details{
+The function can compute the following cell-specific and feature-specific covariates:
+\itemize{
+\item cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).
+\item feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).
+}
+
+The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 }
 \examples{
-\dontrun{
-# ensure example .h5 data from "crisprdata" package are available
-devtools::install_github("timothy-barry/crisprdata")
-# get file paths to three .h5 files; these files contain different cells measured on the same genes
-f_names <- c("GSM3722728_K562-dCas9-KRAB_5K-sgRNAs_Batch-4_2_filtered_gene_bc_matrices_h5.h5",
-"GSM3722727_K562-dCas9-KRAB_5K-sgRNAs_Batch-4_1_filtered_gene_bc_matrices_h5.h5",
-"GSM3722729_K562-dCas9-KRAB_5K-sgRNAs_Batch-1_1_filtered_gene_bc_matrices_h5.h5")
-h5_list <- system.file("extdata", f_names, package = "crisprdata")
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
 tempfile <- create_new_directory()
 odm_fp <- paste0(tempfile, "/expression_odm")
-# initialize a directory to store ondisc matrix
-storage_dir <- create_new_directory()
+# get file paths to three .h5 files; these files contain different cells measured on the same genes
+h5_list <- system.file("extdata/h5_list", package = "ondiscdata",
+c("batch-1_1.h5", "batch-1_2.h5", "batch_2-1.h5"))
 # create the ondisc matrix
-odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, storage_dir)
-}
+odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
 }

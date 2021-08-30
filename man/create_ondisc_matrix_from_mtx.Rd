@@ -2,7 +2,7 @@
 % Please edit documentation in R/high_level_initialize.R
 \name{create_ondisc_matrix_from_mtx}
 \alias{create_ondisc_matrix_from_mtx}
-\title{Create an \code{ondisc_matrix} from a .mtx file.}
+\title{Create an \code{ondisc_matrix} from a single .mtx file or a list of .mtx files.}
 \usage{
 create_ondisc_matrix_from_mtx(
   mtx_fp,
@@ -16,27 +16,29 @@ create_ondisc_matrix_from_mtx(
 )
 }
 \arguments{
-\item{mtx_fp}{file path to a .mtx file storing the expression data. The .mtx file can represent either an integer matrix or a logical (i.e., binary) matrix. If the .mtx file contains only two columns (after the initial three-column row of metadata), then the .mtx file is assumed to represent a logical matrix.}
+\item{mtx_fp}{file path to .mtx file(s) storing the expression data. The .mtx file can represent either an integer matrix or a logical (i.e., binary) matrix. If the .mtx file contains only two columns (after the initial three-column row of metadata), then the .mtx file is assumed to represent a logical matrix.}
 
 \item{barcodes_fp}{file path to the .tsv file containing the cell barcodes.}
 
 \item{features_fp}{file path to the features.tsv file. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded.}
 
-\item{odm_fp}{location to write the ondisc matrix to disk}
+\item{odm_fp}{location to write the ondisc matrix to disk.}
 
-\item{metadata_fp}{location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
+\item{metadata_fp}{(optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
 
 \item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
 
-\item{barcode_suffixes}{a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.}
+\item{barcode_suffixes}{(optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of \code{barcodes_fp}. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.}
 
-\item{progress}{(optional; default FALSE) print progress messages?}
+\item{progress}{(optional; default TRUE) print progress messages?}
 }
 \value{
 A \code{covariate_ondisc_matrix}.
 }
 \description{
-Initializes an \code{ondisc_matrix} from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an \code{ondisc_matrix} along with cell-specific and feature-specific covariate matrices.
+Initializes an \code{ondisc_matrix} from .mtx file(s), a features.tsv file, and barcode.tsv file(s).
+The number of .mtx files should be the same of the number of the barcodes.tsv files. The list of .mtx files should share the same features.tsv file.
+Returns an \code{ondisc_matrix} along with cell-specific and feature-specific covariate matrices.
 }
 \details{
 The function can compute the following cell-specific and feature-specific covariates:
@@ -48,51 +50,30 @@ The function can compute the following cell-specific and feature-specific covari
 The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 }
 \examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples.
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
 # First example: initialize a `covariate_ondisc_matrix`
 # using simulated expression data; store output in tempdir()
 tempfile <- create_new_directory()
 odm_fp <- paste0(tempfile, "/expression_odm")
-file_locs <- system.file("extdata",package = "ondisc",
-c("gene_expression.mtx", "genes.tsv", "cell_barcodes.tsv"))
+file_locs <- system.file("extdata/mtx", package = "ondiscdata",
+c("matrix.mtx", "features.tsv", "barcodes.tsv"))
 names(file_locs) <- c("expressions", "features", "barcodes")
 expression_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["expressions"]],
 barcodes_fp = file_locs[["barcodes"]],
 features_fp = file_locs[["features"]],
+n_lines_per_chunk = 537000,
 odm_fp = odm_fp)
 
-# Second example: initialize a `covariate_ondisc_matrix` using simulated
-# gRNA perturbation data; store in tempdir()
+# Second example: initialize from a list of .mtx files
 tempfile <- create_new_directory()
 odm_fp <- paste0(tempfile, "/expression_odm")
-file_locs <- system.file("extdata", package = "ondisc",
-c("perturbation.mtx", "guides.tsv", "cell_barcodes.tsv"))
-names(file_locs) <- c("perturbations", "features", "barcodes")
-perturbation_data <- create_ondisc_matrix_from_mtx(mtx_fp = file_locs[["perturbations"]],
-barcodes_fp = file_locs[["barcodes"]],
-features_fp = file_locs[["features"]],
-odm_fp = odm_fp)
-
-
-# Third example: initialize from a list of .mtx files
-tempfile <- create_new_directory()
-odm_fp <- paste0(tempfile, "/expression_odm")
-n_mat <- 5
-n_row_multi <- 300
-n_col_multi <- sample(x = seq(100, 300), size = n_mat, replace = TRUE)
-col_multi_cumsum <- c(0,cumsum(n_col_multi))
-logical_mat_multi <- vector(mode = "logical", length = n_mat)
-#' generate the matrices using create_synthetic_data
-r_mats_plus_data_multi <- vector(mode = "list", length = n_mat)
-set.seed(1)
-for (i in seq(1,n_mat)) {
-  r_mats_plus_data_multi[[i]] <- create_synthetic_data(n_row = n_row_multi,
-                                                       n_col = n_col_multi[i],
-                                                       logical_mat = logical_mat_multi[i])
-  r_mats_plus_data_multi[[i]]$features_df <- r_mats_plus_data_multi[[1]]$features_df
-  r_mats_plus_data_multi[[i]]$features_fp <- r_mats_plus_data_multi[[1]]$features_fp
-}
-mtx_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$matrix_fp)
-barcodes_fp <- sapply(X = r_mats_plus_data_multi, function(i) i$barcodes_fp)
-features_fp <- r_mats_plus_data_multi[[1]]$features_fp
+mtx_fp <- system.file("extdata/mtx_list", package = "ondiscdata",
+c("mtx_dir1/matrix.mtx", "mtx_dir2/matrix.mtx", "mtx_dir3/matrix.mtx"))
+barcodes_fp <- system.file("extdata/mtx_list", package = "ondiscdata",
+c("mtx_dir1/barcodes.tsv", "mtx_dir2/barcodes.tsv", "mtx_dir3/barcodes.tsv"))
+features_fp <- system.file("extdata", "mtx_list/mtx_dir1/features.tsv", package = "ondiscdata")
 odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp)
 }

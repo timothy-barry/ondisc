@@ -5,11 +5,6 @@
 
 using namespace Rcpp;
 
-#ifdef RCPP_USE_GLOBAL_ROSTREAM
-Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
-Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
-#endif
-
 // inc_mean_count
 void inc_mean_count(NumericVector acc_vect, IntegerVector idxs, IntegerVector umi_counts, double n);
 RcppExport SEXP _ondisc_inc_mean_count(SEXP acc_vectSEXP, SEXP idxsSEXP, SEXP umi_countsSEXP, SEXP nSEXP) {

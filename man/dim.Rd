@@ -32,6 +32,8 @@ nrow(x)
 If \code{x} is an \code{ondisc_matrix} or \code{covariate_ondisc_matrix}, length-two integer vector containing
 the dimension of \code{x}; if \code{x} is a \code{multimodal_ondisc_matrix}, a list of integer vectors containing the dimensions
 of the constituent modalities of \code{x}.
+
+example on only \code{covariate_ondisc_matrix}, read from odm/gene,
 }
 \description{
 Return the dimension of an \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.

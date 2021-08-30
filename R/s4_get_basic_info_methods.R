@@ -10,6 +10,8 @@
 #' @return If `x` is an `ondisc_matrix` or `covariate_ondisc_matrix`, length-two integer vector containing
 #' the dimension of `x`; if `x` is a `multimodal_ondisc_matrix`, a list of integer vectors containing the dimensions
 #' of the constituent modalities of `x`.
+#'
+#' example on only `covariate_ondisc_matrix`, read from odm/gene,
 NULL
 
 #' @export
