@@ -42,6 +42,7 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #'
 #' @return initialized `ondisc_matrix` object
 #' @export
+#' Only one example here
 ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlying_dimension = NA_integer_, cell_subset = NA_integer_, feature_subset = NA_integer_, feature_ids = NA_character_, feature_names = NA_character_, cell_barcodes = NA_character_, odm_id = NA_integer_) {
   out <- new("ondisc_matrix")
   out@h5_file <- h5_file

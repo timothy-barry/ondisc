@@ -11,7 +11,20 @@
 #' the dimension of `x`; if `x` is a `multimodal_ondisc_matrix`, a list of integer vectors containing the dimensions
 #' of the constituent modalities of `x`.
 #'
-#' example on only `covariate_ondisc_matrix`, read from odm/gene,
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' # Load odm from package
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' odm_dim <- dim(odm)
+#' odm_row <- nrow(odm)
+#' odm_col <- ncol(odm)
+#'
+#' add multi_model examples
 NULL
 
 #' @export
@@ -89,13 +102,23 @@ setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(ob
 # Head
 ######
 
-#' head
+#' Head
 #'
-#' Print the first few rows and columns of an `ondisc_matrix`.
+#' Print the first few rows and columns of an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #'
 #' @export
-#' @param x an `ondisc_matrix`.
+#' @param x an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @return NULL; called for printing
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' # Load odm from package
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' head(odm)
 setMethod("head", signature = signature("ondisc_matrix"), function(x) {
   x_dim <- dim(x)
   n_row_to_show <- min(5, x_dim[1])
@@ -104,6 +127,7 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
   print(as.matrix(x[[1:n_row_to_show, 1:n_col_to_show]]))
 })
 
+#todo: add `covariate_ondisc_matrix`
 
 # Get feature names, feature ids, and cell barcodes
 ###################################################
@@ -127,6 +151,19 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
 #' @name get-names
 #' @param x an object of class `ondisc_matrix`, `covaraite_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @return A character vector or list of character vectors containing the requested identifiers.
+#'
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' # Load odm from package
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' feature_ids <- get_feature_ids(odm)
+#' feature_names <- get_feature_names(odm)
+#' cell_barcodes <- get_cell_barcodes(odm)
 NULL
 
 #' @export

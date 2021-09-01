@@ -63,3 +63,16 @@ In general, these functions return a character vector containing the requested i
 returns a list containing the feature names and feature IDs, respectively, of the modalities contained
 within the \code{multimodal_ondisc_matrix}.
 }
+\examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
+# Load odm from package
+odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm <- read_odm(odm_fp, metadata_fp)
+feature_ids <- get_feature_ids(odm)
+feature_names <- get_feature_names(odm)
+cell_barcodes <- get_cell_barcodes(odm)
+}

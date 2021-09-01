@@ -32,9 +32,20 @@ nrow(x)
 If \code{x} is an \code{ondisc_matrix} or \code{covariate_ondisc_matrix}, length-two integer vector containing
 the dimension of \code{x}; if \code{x} is a \code{multimodal_ondisc_matrix}, a list of integer vectors containing the dimensions
 of the constituent modalities of \code{x}.
-
-example on only \code{covariate_ondisc_matrix}, read from odm/gene,
 }
 \description{
 Return the dimension of an \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.
+}
+\examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
+# Load odm from package
+odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm <- read_odm(odm_fp, metadata_fp)
+odm_dim <- dim(odm)
+odm_row <- nrow(odm)
+odm_col <- ncol(odm)
 }
