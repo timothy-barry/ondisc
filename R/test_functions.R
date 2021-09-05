@@ -165,7 +165,7 @@ create_synthetic_data <- function(n_row, n_col, logical_mat, start_pos = 0L, wri
               features_df = features_df, n_nonzero = length(in_mem_r_mat@x))
   if (write_as_h5_to_disk) {
     # create the directory
-    file_dir <- create_new_directory()
+    if (is.null(file_dir)) file_dir <- create_new_directory()
     h5_fp <- save_random_matrix_as_h5(m = in_mem_r_mat,
                                      data_dir = file_dir,
                                      cell_barcodes = barcodes,
@@ -174,7 +174,7 @@ create_synthetic_data <- function(n_row, n_col, logical_mat, start_pos = 0L, wri
   }
   if (write_as_mtx_to_disk) {
     # create the directory
-    file_dir <- create_new_directory()
+    if (is.null(file_dir)) file_dir <- create_new_directory()
     fps <- save_random_matrix_as_10x(m = in_mem_r_mat,
                                      data_dir = file_dir,
                                      cell_barcodes = barcodes,

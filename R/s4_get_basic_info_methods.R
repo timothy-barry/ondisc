@@ -102,7 +102,6 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
   print(as.matrix(x[[1:n_row_to_show, 1:n_col_to_show]]))
 })
 
-
 # Get feature names, feature ids, and cell barcodes
 ###################################################
 
@@ -123,7 +122,7 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
 #' within the `multimodal_ondisc_matrix`.
 #'
 #' @name get-names
-#' @param x an object of class `ondisc_matrix`, `covaraite_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' @param x an object of class `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @return A character vector or list of character vectors containing the requested identifiers.
 NULL
 

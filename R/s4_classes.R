@@ -60,9 +60,9 @@ ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlyi
 }
 
 
-###########################
+############################
 # 2. covariate_ondisc_matrix
-###########################
+############################
 
 #' `covariate_ondisc_matrix` class
 #'
@@ -95,6 +95,9 @@ covariate_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_cova
   return(out)
 }
 
+#############################
+# 3. multimodal_ondisc_matrix
+#############################
 
 #' `multimodal_ondisc_matrix` class
 #'
