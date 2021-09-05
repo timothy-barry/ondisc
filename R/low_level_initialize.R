@@ -222,6 +222,8 @@ run_subtask_2a <- function(x, bag_of_variables, acc, terminal_functs_args) {
 #' @return NULL
 #' @noRd
 run_subtask_2b <- function(x, pos, odm_fp, is_logical) {
+  arguments <- arguments_enum()
+  data.table::setorderv(x, c(arguments$cell_idxs, arguments$feature_idxs))
   # Write feature idxs
   write_data_h5(odm_fp, "feature_idxs", x$feature_idxs, pos - 1L)
   if (!is_logical) {
@@ -244,7 +246,7 @@ run_subtask_2b <- function(x, pos, odm_fp, is_logical) {
 #' @noRd
 run_subtask_2c <- function(x, odm_fp, is_logical, row_ptr, n_nonzero_features_per_chunk, chunk_no, n_features) {
   arguments <- arguments_enum()
-  data.table::setorderv(x, arguments$feature_idxs)
+  data.table::setorderv(x, c(arguments$feature_idxs, arguments$cell_idxs))
   n_nonzero_features_chunk <- n_nonzero_features_per_chunk[[chunk_no]]
   in_memory_row_ptr <- c(0L, cumsum(n_nonzero_features_chunk))
   if (!is_logical) {

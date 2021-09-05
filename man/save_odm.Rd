@@ -12,9 +12,9 @@ read_odm(odm_fp, metadata_fp = NULL)
 \arguments{
 \item{odm}{an ondisc_matrix object}
 
-\item{metadata_fp}{path to metadata RDS file}
+\item{metadata_fp}{metadata.rds file}
 
-\item{odm_fp}{path to a backing .odm file}
+\item{odm_fp}{file path to a backing .odm file}
 }
 \description{
 Functions to save and read \code{ondisc_matrix} objects.

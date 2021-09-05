@@ -94,6 +94,7 @@ save_random_matrix_as_h5 <- function(m, data_dir, cell_barcodes, feature_df) {
   return(h5_fp)
 }
 
+
 #' Compare R sparse Matrix object to on_disc object on extract
 #'
 #' Takes a sparse R matrix, on_disc_matrix, vector of column indexes, and vector of row indexes; verifies that the row, column, and row-column subsets match.
