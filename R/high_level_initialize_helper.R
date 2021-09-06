@@ -163,9 +163,6 @@ get_h5_cells_metadata <- function(h5_list) {
 #'
 #' @return list containing (i) cell barcodes, (ii) feature IDs, and (iii) feature names (NA_character_ if absent)
 get_string_arrays <- function(barcodes_fp, features_fp, features_metadata, barcode_suffixes) {
-  if (is.null(barcode_suffixes) && length(barcodes_fp) > 1L) {
-    barcode_suffixes <- seq(1,length(barcodes_fp))
-  }
   # barcodes first
   cell_barcodes <- vector(mode = "character")
   for (i in seq(1L, length(barcodes_fp))) {

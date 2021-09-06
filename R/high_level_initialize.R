@@ -102,7 +102,11 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   out <- run_core_algo(odm_fp, mtx_metadata, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
 
   # Obtain the string arrays (e.g., feature IDs, feature names, and possibly cell barcodes)
+  if (is.null(barcode_suffixes) && length(barcodes_fp) > 1L) {
+    barcode_suffixes <- seq(1,length(barcodes_fp))
+  }
   string_arrays <- get_string_arrays(barcodes_fp, features_fp, features_metadata, barcode_suffixes)
+
 
   # initialize metadata ondisc matrix
   odm <- ondisc_matrix(h5_file = odm_fp,
@@ -115,7 +119,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 
   # initialize the metadata odm
   if (!is.null(barcode_suffixes)) {
-    batch <- rep(x = barcode_suffixes, times = cells_metadata$n_cells_in_files) %>% factor()
+    batch <- rep(x = barcode_suffixes, times = mtx_metadata$n_cells_in_files) %>% factor()
     out$cell_covariates$batch <- batch
   }
   metadata_odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
