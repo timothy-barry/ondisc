@@ -120,7 +120,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   # initialize the metadata odm
   if (!is.null(barcode_suffixes)) {
     batch <- rep(x = barcode_suffixes, times = mtx_metadata$n_cells_in_files) %>% factor()
-    out$cell_covariates$batch <- batch
+    out$cell_covariates$barcode_suffix <- batch
   }
   metadata_odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
                                          cell_covariates = out$cell_covariates,
@@ -218,7 +218,7 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NUL
   # initialize the metadata odm
   if (!is.null(barcode_suffixes)) {
     batch <- rep(x = barcode_suffixes, times = cells_metadata$n_cells_in_files) %>% factor()
-    out$cell_covariates$batch <- batch
+    out$cell_covariates$barcode_suffix <- batch
   }
   metadata_odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
                                           cell_covariates = out$cell_covariates,

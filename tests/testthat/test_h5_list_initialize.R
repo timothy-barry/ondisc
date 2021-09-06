@@ -49,7 +49,7 @@ test_that("check covariates for list of .h5 inputs", {
       mt_genes <- grep(pattern = "^MT-", x = gene_names)
       mt_counts <- r_mat[mt_genes,]
       test <- Matrix::colSums(mt_counts)/Matrix::colSums(r_mat)
-    } else if (curr_col == "batch") {
+    } else if (curr_col == "barcode_suffix") {
       test <- rep(seq(1, length(n_col_multi)), times = n_col_multi) %>% factor()
     }
     expect_equal(test, cell_covariates[,curr_col])
