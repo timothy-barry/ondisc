@@ -177,6 +177,7 @@ setMethod("head", signature = signature("multimodal_ondisc_matrix"), function(x)
   for (i in x@modalities) {head(i)}
 })
 
+
 # Get feature names, feature ids, and cell barcodes
 ###################################################
 
@@ -197,7 +198,7 @@ setMethod("head", signature = signature("multimodal_ondisc_matrix"), function(x)
 #' within the `multimodal_ondisc_matrix`.
 #'
 #' @name get-names
-#' @param x an object of class `ondisc_matrix`, `covaraite_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' @param x an object of class `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @return A character vector or list of character vectors containing the requested identifiers.
 #'
 #' @examples

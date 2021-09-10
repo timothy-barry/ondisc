@@ -79,9 +79,9 @@ ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlyi
 }
 
 
-###########################
+############################
 # 2. covariate_ondisc_matrix
-###########################
+############################
 
 #' `covariate_ondisc_matrix` class
 #'
@@ -123,11 +123,16 @@ covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
 covariate_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_covariates) {
   out <- new("covariate_ondisc_matrix")
   out@ondisc_matrix <- ondisc_matrix
+  row.names(cell_covariates) <- get_cell_barcodes(ondisc_matrix)
+  row.names(feature_covariates) <- get_feature_ids(ondisc_matrix)
   out@cell_covariates <- cell_covariates
   out@feature_covariates <- feature_covariates
   return(out)
 }
 
+#############################
+# 3. multimodal_ondisc_matrix
+#############################
 
 #' `multimodal_ondisc_matrix` class
 #'

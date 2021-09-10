@@ -41,7 +41,7 @@ get_cell_barcodes(x)
 \S4method{get_cell_barcodes}{multimodal_ondisc_matrix}(x)
 }
 \arguments{
-\item{x}{an object of class \code{ondisc_matrix}, \code{covaraite_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.}
+\item{x}{an object of class \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.}
 }
 \value{
 A character vector or list of character vectors containing the requested identifiers.

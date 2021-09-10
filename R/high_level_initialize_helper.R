@@ -93,9 +93,6 @@ get_h5_full_name <- function(h5_info, name) {
 #'
 #' @return a list of barcodes for each h5 file
 get_h5_barcodes <- function(h5_list, barcode_suffixes) {
-  if (is.null(barcode_suffixes) && length(h5_list) > 1L) {
-    barcode_suffixes <- seq(1,length(h5_list))
-  }
   barcodes_list <- vector(mode = "list", length = length(h5_list))
   for (i in seq(1,length(h5_list))) {
     h5_info <- rhdf5::h5ls(h5_list[i])
@@ -166,9 +163,6 @@ get_h5_cells_metadata <- function(h5_list) {
 #'
 #' @return list containing (i) cell barcodes, (ii) feature IDs, and (iii) feature names (NA_character_ if absent)
 get_string_arrays <- function(barcodes_fp, features_fp, features_metadata, barcode_suffixes) {
-  if (is.null(barcode_suffixes) && length(barcodes_fp) > 1L) {
-    barcode_suffixes <- seq(1,length(barcodes_fp))
-  }
   # barcodes first
   cell_barcodes <- vector(mode = "character")
   for (i in seq(1L, length(barcodes_fp))) {

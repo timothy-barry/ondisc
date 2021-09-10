@@ -50,6 +50,7 @@ save_odm <- function(odm, metadata_fp) {
 #' Read ODM
 #' @rdname save_odm
 #' @param odm_fp file path to a backing .odm file
+#' @param metadata_fp metadata.rds file
 #' @export
 read_odm <- function(odm_fp, metadata_fp = NULL) {
   if (!file.exists(odm_fp)) stop(paste0("File ", odm_fp, " does not exist."))

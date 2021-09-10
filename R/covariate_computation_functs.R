@@ -11,7 +11,8 @@ symbols_enum <- function() {
                 "p_mito_cell",
                 "mean_sq_expression_feature",
                 "n_mito_cell",
-                "sd_expression_feature")
+                "sd_expression_feature",
+                "batch")
   list2env(setNames(as.list(symbols), symbols))
 }
 
