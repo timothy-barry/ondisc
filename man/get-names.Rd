@@ -68,6 +68,9 @@ within the \code{multimodal_ondisc_matrix}.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 
+###########################
+# EXAMPLE 1: covariate_ondisc_matrix
+###########################
 # Load odm from package
 odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
@@ -75,4 +78,20 @@ odm <- read_odm(odm_fp, metadata_fp)
 feature_ids <- get_feature_ids(odm)
 feature_names <- get_feature_names(odm)
 cell_barcodes <- get_cell_barcodes(odm)
+
+###########################
+# EXAMPLE 2: multimodal_ondisc_matrix
+###########################
+# Load odm from package
+odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+
+odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+feature_ids <- get_feature_ids(odm_multi)
+feature_names <- get_feature_names(odm_multi)
+cell_barcodes <- get_cell_barcodes(odm_multi)
 }

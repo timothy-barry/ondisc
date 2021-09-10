@@ -16,6 +16,7 @@
 #' @param drop not used
 #' @return An appropriately subset object of the same class as `x`.
 #' @name subset-odm
+#' todo: add example use all 3 types, check the documentations first
 NULL
 
 # 1. subset nothing, odm

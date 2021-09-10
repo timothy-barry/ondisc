@@ -41,8 +41,26 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #' @param odm_id unique (with high probability) integer
 #'
 #' @return initialized `ondisc_matrix` object
-#' @export
-#' Only one example here
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' # Load odm from package
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' odm_subset <- odm[1:10,]
+#'
+#' tempfile <- create_new_directory()
+#' h5_file <- paste0(tempfile, "/expression_odm")
+#' odm_output <- ondisc_matrix(h5_file = h5_file,
+#'                      logical_mat = odm_subset@ondisc_matrix@logical_mat,
+#'                      underlying_dimension = odm_subset@ondisc_matrix@underlying_dimension,
+#'                      feature_ids = odm_subset@ondisc_matrix@feature_ids,
+#'                      feature_names = odm_subset@ondisc_matrix@feature_names,
+#'                      cell_barcodes = odm_subset@ondisc_matrix@cell_barcodes,
+#'                      odm_id = sample(seq(0L, .Machine$integer.max), size = 1))
 ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlying_dimension = NA_integer_, cell_subset = NA_integer_, feature_subset = NA_integer_, feature_ids = NA_character_, feature_names = NA_character_, cell_barcodes = NA_character_, odm_id = NA_integer_) {
   out <- new("ondisc_matrix")
   out@h5_file <- h5_file
@@ -88,6 +106,20 @@ covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
 #'
 #' @return a `covariate_ondisc_matrix`.
 #' @export
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' # Load odm from package
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' odm_subset <- odm[1:10,]
+#'
+#' covariate_odm <- covariate_ondisc_matrix(ondisc_matrix = get_ondisc_matrix(odm_subset),
+#'                                          cell_covariates = get_cell_covariates(odm_subset),
+#'                                          feature_covariates = get_feature_covariates(odm_subset))
 covariate_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_covariates) {
   out <- new("covariate_ondisc_matrix")
   out@ondisc_matrix <- ondisc_matrix
@@ -110,10 +142,24 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #'
 #' Construct a `multimodal_ondisc_matrix` from a list of `covariate_ondisc_matrix` objects.
 #'
-#' @param covariate_ondisc_matrix_list a named list containing `metadata_ondisc_matrices`; the names are taken to be the names of the modalities.
+#' @param covariate_ondisc_matrix_list a named list containing `covariate_ondisc_matrix` objects; the names are taken to be the names of the modalities.
 #'
 #' @return a multimodal_ondisc_matrix
 #' @export
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' # Load odm from package
+#' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+#'
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
 multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
   # check that cell barcodes coincide across modalities
   barcodes_list <- lapply(covariate_ondisc_matrix_list, get_cell_barcodes)

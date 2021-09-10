@@ -8,6 +8,7 @@
 #' @param x an object of class `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @param ... arguments to dplyr::mutate
 #' @return an updated `ondisc` object
+#' todo: add/remove columns
 NULL
 
 # Generic functions
@@ -120,7 +121,7 @@ setMethod("get_feature_covariates", signature("multimodal_ondisc_matrix"), funct
   stop("get_feature_covariates not supported for objects of class multimodal_ondisc_matrix.")
 })
 
-# 3. Get `ondisc_matrix`
+# 4. Get `ondisc_matrix`
 #'
 #' Get the ondisc_matrix stored in a `covariate_ondisc_matrix.`
 #'
