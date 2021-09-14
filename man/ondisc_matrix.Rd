@@ -59,24 +59,3 @@ Constructor function for \code{ondisc_matrix} class.
 It is best to avoid interacting with the slots of an \code{ondisc_matrix} directly. Instead, use the functions
 and operators provided by the package.
 }
-\examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
-# install.packages("devtools")
-# devtools::install_github("Katsevich-Lab/ondiscdata")
-
-# Load odm from package
-odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
-metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
-odm <- read_odm(odm_fp, metadata_fp)
-odm_subset <- odm[1:10,]
-
-tempfile <- create_new_directory()
-h5_file <- paste0(tempfile, "/expression_odm")
-odm_output <- ondisc_matrix(h5_file = h5_file,
-                     logical_mat = odm_subset@ondisc_matrix@logical_mat,
-                     underlying_dimension = odm_subset@ondisc_matrix@underlying_dimension,
-                     feature_ids = odm_subset@ondisc_matrix@feature_ids,
-                     feature_names = odm_subset@ondisc_matrix@feature_names,
-                     cell_barcodes = odm_subset@ondisc_matrix@cell_barcodes,
-                     odm_id = sample(seq(0L, .Machine$integer.max), size = 1))
-}

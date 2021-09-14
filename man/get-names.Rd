@@ -68,9 +68,9 @@ within the \code{multimodal_ondisc_matrix}.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 
-###########################
+####################################
 # EXAMPLE 1: covariate_ondisc_matrix
-###########################
+####################################
 # Load odm from package
 odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
@@ -79,9 +79,9 @@ feature_ids <- get_feature_ids(odm)
 feature_names <- get_feature_names(odm)
 cell_barcodes <- get_cell_barcodes(odm)
 
-###########################
+#####################################
 # EXAMPLE 2: multimodal_ondisc_matrix
-###########################
+#####################################
 # Load odm from package
 odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")

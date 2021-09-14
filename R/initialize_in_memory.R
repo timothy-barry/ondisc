@@ -1,6 +1,6 @@
 #' Create an `ondisc` matrix from an R matrix
 #'
-#' Initializes an `ondisc_matrix` from an R matrix. Returns an `ondisc_matrix` alongside cell-specific and feature-specific covariate matrices (or optionally, a `covariate_ondisc_matrix`).
+#' Initializes a `covariate_ondisc_matrix` object from an R matrix. Returns a `covariate_ondisc_matrix` including an `ondisc_matrix` alongside cell-specific and feature-specific covariate matrices.
 #'
 #' This function computes the following cell-specific and feature-specific covariates:
 #' - cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).

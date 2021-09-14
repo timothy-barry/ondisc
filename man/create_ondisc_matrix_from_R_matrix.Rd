@@ -27,7 +27,7 @@ create_ondisc_matrix_from_R_matrix(
 A \code{covariate_ondisc_matrix} object.
 }
 \description{
-Initializes an \code{ondisc_matrix} from an R matrix. Returns an \code{ondisc_matrix} alongside cell-specific and feature-specific covariate matrices (or optionally, a \code{covariate_ondisc_matrix}).
+Initializes a \code{covariate_ondisc_matrix} object from an R matrix. Returns a \code{covariate_ondisc_matrix} including an \code{ondisc_matrix} alongside cell-specific and feature-specific covariate matrices.
 }
 \details{
 This function computes the following cell-specific and feature-specific covariates:

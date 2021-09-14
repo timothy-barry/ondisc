@@ -173,8 +173,10 @@ setMethod("head", signature = signature("covariate_ondisc_matrix"), function(x) 
 #' @export
 #' @rdname head
 setMethod("head", signature = signature("multimodal_ondisc_matrix"), function(x) {
-  #todo: add modality name
-  for (i in x@modalities) {head(i)}
+  for (i in seq(1, length(x@modalities))) {
+    paste0(i, ". ", crayon::blue(names(x@modalities[i])), " ") %>% cat()
+    head(x@modalities[[i]])
+  }
 })
 
 

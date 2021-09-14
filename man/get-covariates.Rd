@@ -29,11 +29,41 @@ get_feature_covariates(x)
 \S4method{get_feature_covariates}{multimodal_ondisc_matrix}(x)
 }
 \arguments{
-\item{x}{an object of class \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.}
+\item{x}{an object of class \code{covariate_ondisc_matrix} or \code{multimodal_ondisc_matrix}.}
 }
 \value{
 a covariate matrix (in data frame form)
 }
 \description{
-Functions to get cell-specific or feature-specific covariate matrices from \code{ondisc} objects.
+Functions to get cell-specific or feature-specific covariate matrices from  \code{covariate_ondisc_matrix} or \code{multimodal_ondisc_matrix} objects.
+For \code{covariate_ondisc_matrix}, \code{get_cell_covariates} function can be used to get the cell-specific covariate matrix and \code{get_feature_covariates} can be used to get the feature-specific covariate matrix.
+For\code{multimodal_ondisc_matrix}, \code{get_cell_covariates} function can be used to get the \code{global_cell_covariates} but \code{get_feature_covariates} is not supported.
+}
+\examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
+####################################
+# EXAMPLE 1: covariate_ondisc_matrix
+####################################
+odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm <- read_odm(odm_fp, metadata_fp)
+
+cell_covariates <- get_cell_covariates(odm)
+feature_covariates <- get_feature_covariates(odm)
+
+#####################################
+# EXAMPLE 2: multimodal_ondisc_matrix
+#####################################
+odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+
+cell_covariates_multi <- get_cell_covariates(odm_multi)
 }

@@ -41,26 +41,6 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #' @param odm_id unique (with high probability) integer
 #'
 #' @return initialized `ondisc_matrix` object
-#' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
-#'
-#' # Load odm from package
-#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
-#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
-#' odm <- read_odm(odm_fp, metadata_fp)
-#' odm_subset <- odm[1:10,]
-#'
-#' tempfile <- create_new_directory()
-#' h5_file <- paste0(tempfile, "/expression_odm")
-#' odm_output <- ondisc_matrix(h5_file = h5_file,
-#'                      logical_mat = odm_subset@ondisc_matrix@logical_mat,
-#'                      underlying_dimension = odm_subset@ondisc_matrix@underlying_dimension,
-#'                      feature_ids = odm_subset@ondisc_matrix@feature_ids,
-#'                      feature_names = odm_subset@ondisc_matrix@feature_names,
-#'                      cell_barcodes = odm_subset@ondisc_matrix@cell_barcodes,
-#'                      odm_id = sample(seq(0L, .Machine$integer.max), size = 1))
 ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlying_dimension = NA_integer_, cell_subset = NA_integer_, feature_subset = NA_integer_, feature_ids = NA_character_, feature_names = NA_character_, cell_barcodes = NA_character_, odm_id = NA_integer_) {
   out <- new("ondisc_matrix")
   out@h5_file <- h5_file
