@@ -10,6 +10,37 @@
 #' @return If `x` is an `ondisc_matrix` or `covariate_ondisc_matrix`, length-two integer vector containing
 #' the dimension of `x`; if `x` is a `multimodal_ondisc_matrix`, a list of integer vectors containing the dimensions
 #' of the constituent modalities of `x`.
+#'
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' ####################################
+#' # EXAMPLE 1: covariate_ondisc_matrix
+#' ####################################
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' dim(odm)
+#' nrow(odm)
+#' ncol(odm)
+#'
+#' #####################################
+#' # EXAMPLE 2: multimodal_ondisc_matrix
+#' #####################################
+#' # Load odm from package
+#' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+#'
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#' dim(odm_multi)
+#' nrow(odm_multi)
+#' ncol(odm_multi)
 NULL
 
 #' @export
@@ -87,13 +118,44 @@ setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(ob
 # Head
 ######
 
-#' head
+#' Head
 #'
-#' Print the first few rows and columns of an `ondisc_matrix`.
+#' Print the first few rows and columns of an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #'
-#' @export
-#' @param x an `ondisc_matrix`.
+#' @param x an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+#' @name head
 #' @return NULL; called for printing
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' ####################################
+#' # EXAMPLE 1: covariate_ondisc_matrix
+#' ####################################
+#' # Load odm from package
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' head(odm)
+#'
+#' #####################################
+#' # EXAMPLE 2: multimodal_ondisc_matrix
+#' #####################################
+#' # Load odm from package
+#' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+#'
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#' head(odm_multi)
+NULL
+
+#' @export
+#' @rdname head
 setMethod("head", signature = signature("ondisc_matrix"), function(x) {
   x_dim <- dim(x)
   n_row_to_show <- min(5, x_dim[1])
@@ -101,6 +163,22 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
   cat(paste0("Showing ", crayon::blue(n_row_to_show), " of ", crayon::blue(x_dim[1]), " features", if (x_dim[1] == 1) "" else "s" ," and ", crayon::blue(n_col_to_show), " of ", crayon::blue(x_dim[2])," cell", if (n_col_to_show == 1) "" else "s", ":\n"))
   print(as.matrix(x[[1:n_row_to_show, 1:n_col_to_show]]))
 })
+
+#' @export
+#' @rdname head
+setMethod("head", signature = signature("covariate_ondisc_matrix"), function(x) {
+  head(x@ondisc_matrix)
+})
+
+#' @export
+#' @rdname head
+setMethod("head", signature = signature("multimodal_ondisc_matrix"), function(x) {
+  for (i in seq(1, length(x@modalities))) {
+    paste0(i, ". ", crayon::blue(names(x@modalities[i])), " ") %>% cat()
+    head(x@modalities[[i]])
+  }
+})
+
 
 # Get feature names, feature ids, and cell barcodes
 ###################################################
@@ -124,6 +202,38 @@ setMethod("head", signature = signature("ondisc_matrix"), function(x) {
 #' @name get-names
 #' @param x an object of class `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #' @return A character vector or list of character vectors containing the requested identifiers.
+#'
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' ####################################
+#' # EXAMPLE 1: covariate_ondisc_matrix
+#' ####################################
+#' # Load odm from package
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' feature_ids <- get_feature_ids(odm)
+#' feature_names <- get_feature_names(odm)
+#' cell_barcodes <- get_cell_barcodes(odm)
+#'
+#' #####################################
+#' # EXAMPLE 2: multimodal_ondisc_matrix
+#' #####################################
+#' # Load odm from package
+#' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+#'
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#' feature_ids <- get_feature_ids(odm_multi)
+#' feature_names <- get_feature_names(odm_multi)
+#' cell_barcodes <- get_cell_barcodes(odm_multi)
 NULL
 
 #' @export

@@ -29,13 +29,53 @@ mutate_feature_covariates(x, ...)
 \S4method{mutate_feature_covariates}{multimodal_ondisc_matrix}(x, ...)
 }
 \arguments{
-\item{x}{an object of class \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.}
+\item{x}{an object of class \code{covariate_ondisc_matrix} or \code{multimodal_ondisc_matrix}.}
 
 \item{...}{arguments to dplyr::mutate}
 }
 \value{
-an updated \code{ondisc} object
+an updated \code{covariate_ondisc_matrix} or \code{multimodal_ondisc_matrix} object as the same type as the input
 }
 \description{
-Functions to mutate cell-specific or feature-specific covariate matrix. Returns an \code{ondisc} object.
+Functions to mutate cell-specific or feature-specific covariate matrices in \code{covariate_ondisc_matrix} or \code{multimodal_ondisc_matrix} objects.
+For \code{covariate_ondisc_matrix}, \code{mutate_feature_covariates} can be used to modify the feature-specific covariate matrix and \code{mutate_cell_covariates} can be used to modify cell-specific covariate matrix.
+An updated \code{covariate_ondisc_matrix} will be returned.
+}
+\details{
+For \code{multimodal_ondisc_matrix}, \code{mutate_cell_covariates} can be used to modify cell-specific covariate matrix but \code{mutate_feature_covariates} not supported is not supported.
+The modification is made on the \code{global_cell_covariates} but not the cell-specific or feature-specific covariate matrices in each respective modal.
+An updated \code{multimodal_ondisc_matrix} will be returned.
+}
+\examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
+####################################
+# EXAMPLE 1: covariate_ondisc_matrix
+####################################
+odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm <- read_odm(odm_fp, metadata_fp)
+
+# add one column for cell covariate
+odm_p_feature_expressed <- mutate_cell_covariates(odm, p_feature_expressed = n_nonzero/nrow(odm))
+# delete coef_of_variation from feature covariate
+odm_no_coef_of_variation <- mutate_feature_covariates(odm, coef_of_variation = NULL)
+
+#####################################
+# EXAMPLE 2: multimodal_ondisc_matrix
+#####################################
+odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+
+# delete gene_p_mito from cell covariate
+odm_multi_no_gene_p_mito <- mutate_cell_covariates(odm_multi, gene_p_mito = NULL)
+# add one column for cell covariate
+odm_p_feature_expressed <- mutate_cell_covariates(odm_multi, p_feature_expressed = gene_n_nonzero/(nrow(odm)[1]))
 }

@@ -16,6 +16,50 @@
 #' @param drop not used
 #' @return An appropriately subset object of the same class as `x`.
 #' @name subset-odm
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' ####################################
+#' # EXAMPLE 1: covariate_ondisc_matrix
+#' ####################################
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#'
+#' # numeric vector
+#' odm_numeric <- odm[1:10, 1:10]
+#' # logical vector
+#' set.seed(1)
+#' nrow_logical <- sample(x = c(TRUE, FALSE), size = nrow(odm), replace = TRUE)
+#' ncol_logical <- sample(x = c(TRUE, FALSE), size = ncol(odm), replace = TRUE)
+#' odm_logical <- odm[nrow_logical, ncol_logical]
+#' # character vectors for feature IDs and cell barcodes
+#' feature_ids_subset <- get_feature_ids(odm)[1:10]
+#' cell_barcodes_subset <- get_cell_barcodes(odm)[1:10]
+#' odm_char <- odm[feature_ids_subset,cell_barcodes_subset]
+#'
+#' #####################################
+#' # EXAMPLE 2: multimodal_ondisc_matrix
+#' #####################################
+#' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#'
+#' # numeric vector
+#' odm_multi_numeric <- odm_multi[, 1:10]
+#' # logical vector
+#' set.seed(1)
+#' ncol_logical <- sample(x = c(TRUE, FALSE), size = ncol(odm_multi), replace = TRUE)
+#' odm_multi_logical <- odm_multi[, ncol_logical]
+#' # character vectors for cell barcodes
+#' cell_barcodes_subset <- get_cell_barcodes(odm_multi)[1:10]
+#' odm_multi_cell_barcodes <- odm[,cell_barcodes_subset]
 NULL
 
 # 1. subset nothing, odm
@@ -137,6 +181,30 @@ setMethod(f = "[",
 #' @param j a vector (numeric, logical, or character) indicating cells to pull into memory.
 #' @return a matrix (as implemented by the Matrix package).
 #' @name extract-odm
+#' @examples
+#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#'
+#' # pull a single feature
+#' single_feature <- odm[["ENSG00000180098.9",]]
+#' # pull a single cell
+#' single_cell <- odm[[,"GGAGCAAGTACTTAGC_2_2"]]
+#' # numeric vector
+#' mtx_numeric <- odm[[1:10, 1:10]]
+#' # logical vector
+#' set.seed(1)
+#' nrow_logical <- sample(x = c(TRUE, FALSE), size = nrow(odm), replace = TRUE)
+#' ncol_logical <- sample(x = c(TRUE, FALSE), size = ncol(odm), replace = TRUE)
+#' mtx_logical <- odm[[nrow_logical, ncol_logical]]
+#' # character vectors for feature IDs and cell barcodes
+#' feature_ids_subset <- get_feature_ids(odm)[1:10]
+#' cell_barcodes_subset <- get_cell_barcodes(odm)[1:10]
+#' mtx_char <- odm[[feature_ids_subset, cell_barcodes_subset]]
 NULL
 
 # 1. Extract nothing (return error).

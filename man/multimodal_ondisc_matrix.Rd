@@ -9,7 +9,7 @@ multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
 multimodal_ondisc_matrix(covariate_ondisc_matrix_list)
 }
 \arguments{
-\item{covariate_ondisc_matrix_list}{a named list containing \code{metadata_ondisc_matrices}; the names are taken to be the names of the modalities.}
+\item{covariate_ondisc_matrix_list}{a named list containing \code{covariate_ondisc_matrix} objects; the names are taken to be the names of the modalities.}
 }
 \value{
 a multimodal_ondisc_matrix
@@ -27,3 +27,18 @@ Construct a \code{multimodal_ondisc_matrix} from a list of \code{covariate_ondis
 \item{\code{global_cell_covariates}}{a data frame containing the cell-specific covariates pooled across all modalities.}
 }}
 
+\examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
+# Load odm from package
+odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
+odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+
+odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+}

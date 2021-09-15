@@ -51,3 +51,28 @@ One can remember the difference between \code{[} and \code{[[} by recalling R li
 \code{[[} is used to access elements stored \emph{inside} a list. Similarly, \code{[} is used to subset an \code{ondisc_matrix}, and
 \code{[[} is used to access a submatrix usable within R.
 }
+\examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
+odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm <- read_odm(odm_fp, metadata_fp)
+
+# pull a single feature
+single_feature <- odm[["ENSG00000180098.9",]]
+# pull a single cell
+single_cell <- odm[[,"GGAGCAAGTACTTAGC_2_2"]]
+# numeric vector
+mtx_numeric <- odm[[1:10, 1:10]]
+# logical vector
+set.seed(1)
+nrow_logical <- sample(x = c(TRUE, FALSE), size = nrow(odm), replace = TRUE)
+ncol_logical <- sample(x = c(TRUE, FALSE), size = ncol(odm), replace = TRUE)
+mtx_logical <- odm[[nrow_logical, ncol_logical]]
+# character vectors for feature IDs and cell barcodes
+feature_ids_subset <- get_feature_ids(odm)[1:10]
+cell_barcodes_subset <- get_cell_barcodes(odm)[1:10]
+mtx_char <- odm[[feature_ids_subset, cell_barcodes_subset]]
+}

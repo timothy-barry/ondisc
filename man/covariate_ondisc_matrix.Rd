@@ -33,3 +33,18 @@ Construct a \code{covariate_ondisc_matrix} by passing an \code{ondisc_matrix}, a
 \item{\code{feature_covariates}}{a data frame of feature covariates.}
 }}
 
+\examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
+# Load odm from package
+odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+odm <- read_odm(odm_fp, metadata_fp)
+odm_subset <- odm[1:10,]
+
+covariate_odm <- covariate_ondisc_matrix(ondisc_matrix = get_ondisc_matrix(odm_subset),
+                                         cell_covariates = get_cell_covariates(odm_subset),
+                                         feature_covariates = get_feature_covariates(odm_subset))
+}

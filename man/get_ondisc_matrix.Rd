@@ -15,3 +15,14 @@ the \code{ondisc_matrix} stored within the \code{covariate_ondisc_matrix} object
 \description{
 Get the ondisc_matrix stored in a \code{covariate_ondisc_matrix.}
 }
+\examples{
+# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# install.packages("devtools")
+# devtools::install_github("Katsevich-Lab/ondiscdata")
+
+odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+cov_odm <- read_odm(odm_fp, metadata_fp)
+
+odm_mtx <- get_ondisc_matrix(cov_odm)
+}
