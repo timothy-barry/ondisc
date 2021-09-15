@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create ondisc_matrix from h5 — create_ondisc_matrix_from_h5_list • ondisc</title>
+<title>Create ondisc_matrix from a single .h5 file or a list of .h5 files. — create_ondisc_matrix_from_h5_list • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,20 @@
 
 
 
-<meta property="og:title" content="Create ondisc_matrix from h5 — create_ondisc_matrix_from_h5_list" />
-<meta property="og:description" content="Creates an ondisc_matrix from a list of .h5 files storing single-cell expression data." />
+<meta property="og:title" content="Create ondisc_matrix from a single .h5 file or a list of .h5 files. — create_ondisc_matrix_from_h5_list" />
+<meta property="og:description" content="Creates an ondisc_matrix from a single .h5 file or a list of .h5 files storing single-cell expression data.
+The .h5 files should fulfill the following format requirements:
+There is one and only one dataset named &quot;barcodes&quot;;
+There is one and only one dataset named &quot;data&quot;;
+There is one and only one dataset named &quot;gene_names&quot;;
+There is one and only one dataset named &quot;genes&quot;;
+There is one and only one dataset named &quot;indices&quot;;
+There is one and only one dataset named &quot;indptr&quot;;
+There is one and only one dataset named &quot;shape&quot;;
+They can be in any h5 group;
+Each .h5 file can fit in memory.
+
+" />
 
 
 
@@ -81,33 +93,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -124,19 +109,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create <code>ondisc_matrix</code> from h5</h1>
+    <h1>Create <code>ondisc_matrix</code> from a single .h5 file or a list of .h5 files.</h1>
     
     <div class="hidden name"><code>create_ondisc_matrix_from_h5_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates an <code>ondisc_matrix</code> from a list of .h5 files storing single-cell expression data.</p>
+    <p>Creates an <code>ondisc_matrix</code> from a single .h5 file or a list of .h5 files storing single-cell expression data.
+The .h5 files should fulfill the following format requirements:</p><ol>
+<li><p>There is one and only one dataset named "barcodes";</p></li>
+<li><p>There is one and only one dataset named "data";</p></li>
+<li><p>There is one and only one dataset named "gene_names";</p></li>
+<li><p>There is one and only one dataset named "genes";</p></li>
+<li><p>There is one and only one dataset named "indices";</p></li>
+<li><p>There is one and only one dataset named "indptr";</p></li>
+<li><p>There is one and only one dataset named "shape";</p></li>
+<li><p>They can be in any h5 group;</p></li>
+<li><p>Each .h5 file can fit in memory.</p></li>
+</ol>
+
     </div>
 
     <pre class="usage"><span class='fu'>create_ondisc_matrix_from_h5_list</span><span class='op'>(</span>
   <span class='va'>h5_list</span>,
-  on_disk_dir <span class='op'>=</span> <span class='cn'>NULL</span>,
-  file_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>odm_fp</span>,
+  metadata_fp <span class='op'>=</span> <span class='cn'>NULL</span>,
+  barcode_suffixes <span class='op'>=</span> <span class='cn'>NULL</span>,
   progress <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
@@ -145,40 +143,50 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>h5_list</th>
-      <td><p>a list of .h5 files to convert into <code>ondisc_matrix</code> format; the .h5 file should have the same features measured on different sets of cells.</p></td>
+      <td><p>a single .h5 file or a list of .h5 files to convert into <code>ondisc_matrix</code> format; the .h5 file should have the same features measured on different sets of cells.</p></td>
     </tr>
     <tr>
-      <th>on_disk_dir</th>
-      <td><p>(optional) directory in which to store the on-disk portion of the ondisc_matrix. Defaults to the directory in which the .mtx file is located.</p></td>
+      <th>odm_fp</th>
+      <td><p>location to write the ondisc matrix to disk.</p></td>
     </tr>
     <tr>
-      <th>file_name</th>
-      <td><p>(optional) name of the file in which to store the .h5 data on-disk. Defaults to ondisc_matrix_x.h5, where x is a unique integer starting at 1.</p></td>
+      <th>metadata_fp</th>
+      <td><p>(optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.</p></td>
+    </tr>
+    <tr>
+      <th>barcode_suffixes</th>
+      <td><p>(optional; default NULL) a vector of suffix that appended to each  barcodes in input .h5 file(s). The length should be the same as the length of <code>h5_list</code>. If NULL, append nothing for a single .h5 input; append file index for a list of .h5 inputs.</p></td>
     </tr>
     <tr>
       <th>progress</th>
-      <td><p>progress (optional; default FALSE) print progress messages?</p></td>
+      <td><p>progress (optional; default TRUE) print progress messages?</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A covariate_ondisc_matrix.</p>
+    <p>A <code>covariate_ondisc_matrix</code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function can compute the following cell-specific and feature-specific covariates:</p><ul>
+<li><p>cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).</p></li>
+<li><p>feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).</p></li>
+</ul>
+
+<p>The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># ensure example .h5 data from "crisprdata" package are available</span>
-<span class='fu'>devtools</span><span class='fu'>::</span><span class='fu'><a href='https://devtools.r-lib.org//reference/remote-reexports.html'>install_github</a></span><span class='op'>(</span><span class='st'>"timothy-barry/crisprdata"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='co'>#' # Please install the `ondiscdata` package before running the examples.</span>
+<span class='co'># install.packages("devtools")</span>
+<span class='co'># devtools::install_github("Katsevich-Lab/ondiscdata")</span>
+
+<span class='va'>tempfile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>tempfile</span>, <span class='st'>"/expression_odm"</span><span class='op'>)</span>
 <span class='co'># get file paths to three .h5 files; these files contain different cells measured on the same genes</span>
-<span class='va'>f_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"GSM3722728_K562-dCas9-KRAB_5K-sgRNAs_Batch-4_2_filtered_gene_bc_matrices_h5.h5"</span>,
-<span class='st'>"GSM3722727_K562-dCas9-KRAB_5K-sgRNAs_Batch-4_1_filtered_gene_bc_matrices_h5.h5"</span>,
-<span class='st'>"GSM3722729_K562-dCas9-KRAB_5K-sgRNAs_Batch-1_1_filtered_gene_bc_matrices_h5.h5"</span><span class='op'>)</span>
-<span class='va'>h5_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='va'>f_names</span>, package <span class='op'>=</span> <span class='st'>"crisprdata"</span><span class='op'>)</span>
-<span class='co'># initialize a directory to store ondisc matrix</span>
-<span class='va'>storage_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># create the ondisc matrix</span>
-<span class='va'>odm_plus_covariates_list</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_h5</span><span class='op'>(</span><span class='va'>h5_list</span>, <span class='va'>storage_dir</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='va'>h5_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/h5_list"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"batch-1_1.h5"</span>, <span class='st'>"batch-1_2.h5"</span>, <span class='st'>"batch_2-1.h5"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># create the ondisc matrix (commented out because of long (~2 min) running time)</span>
+<span class='co'># odm_plus_covariates_list &lt;- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -191,7 +199,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

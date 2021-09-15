@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mutate covariate matrices. — mutate-covariates • ondisc</title>
+<title>Print first few rows and columns. — head • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Mutate covariate matrices. — mutate-covariates" />
-<meta property="og:description" content="Functions to mutate cell-specific or feature-specific covariate matrices in covariate_ondisc_matrix or multimodal_ondisc_matrix objects.
-For covariate_ondisc_matrix, mutate_feature_covariates can be used to modify the feature-specific covariate matrix and mutate_cell_covariates can be used to modify cell-specific covariate matrix.
-An updated covariate_ondisc_matrix will be returned." />
+<meta property="og:title" content="Print first few rows and columns. — head" />
+<meta property="og:description" content="Print the first few rows and columns of an ondisc_matrix, covariate_ondisc_matrix, or multimodal_ondisc_matrix." />
 
 
 
@@ -99,60 +97,36 @@ An updated covariate_ondisc_matrix will be returned." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Mutate covariate matrices.</h1>
+    <h1>Print first few rows and columns.</h1>
     
-    <div class="hidden name"><code>mutate-covariates.Rd</code></div>
+    <div class="hidden name"><code>head.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Functions to mutate cell-specific or feature-specific covariate matrices in <code>covariate_ondisc_matrix</code> or <code>multimodal_ondisc_matrix</code> objects.
-For <code>covariate_ondisc_matrix</code>, <code>mutate_feature_covariates</code> can be used to modify the feature-specific covariate matrix and <code>mutate_cell_covariates</code> can be used to modify cell-specific covariate matrix.
-An updated <code>covariate_ondisc_matrix</code> will be returned.</p>
+    <p>Print the first few rows and columns of an <code>ondisc_matrix</code>, <code>covariate_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mutate_cell_covariates</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>mutate_feature_covariates</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S4 method for ondisc_matrix</span>
-<span class='fu'>mutate_cell_covariates</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S4 method for ondisc_matrix</span>
-<span class='fu'>mutate_feature_covariates</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='co'># S4 method for ondisc_matrix</span>
+<span class='fu'>head</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S4 method for covariate_ondisc_matrix</span>
-<span class='fu'>mutate_cell_covariates</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S4 method for covariate_ondisc_matrix</span>
-<span class='fu'>mutate_feature_covariates</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>head</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S4 method for multimodal_ondisc_matrix</span>
-<span class='fu'>mutate_cell_covariates</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S4 method for multimodal_ondisc_matrix</span>
-<span class='fu'>mutate_feature_covariates</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>head</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>an object of class <code>covariate_ondisc_matrix</code> or <code>multimodal_ondisc_matrix</code>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>arguments to dplyr::mutate</p></td>
+      <td><p>an <code>ondisc_matrix</code>, <code>covariate_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an updated <code>covariate_ondisc_matrix</code> or <code>multimodal_ondisc_matrix</code> object as the same type as the input</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>For <code>multimodal_ondisc_matrix</code>, <code>mutate_cell_covariates</code> can be used to modify cell-specific covariate matrix but <code>mutate_feature_covariates</code> not supported is not supported.
-The modification is made on the <code>global_cell_covariates</code> but not the cell-specific or feature-specific covariate matrices in each respective modal.
-An updated <code>multimodal_ondisc_matrix</code> will be returned.</p>
+    <p>NULL; called for printing</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Please install the `ondiscdata` package before running the examples.</span>
@@ -162,32 +136,45 @@ An updated <code>multimodal_ondisc_matrix</code> will be returned.</p>
 <span class='co'>####################################</span>
 <span class='co'># EXAMPLE 1: covariate_ondisc_matrix</span>
 <span class='co'>####################################</span>
+<span class='co'># Load odm from package</span>
 <span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
 <span class='va'>metadata_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
 <span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='save_odm.html'>read_odm</a></span><span class='op'>(</span><span class='va'>odm_fp</span>, <span class='va'>metadata_fp</span><span class='op'>)</span>
-
-<span class='co'># add one column for cell covariate</span>
-<span class='va'>odm_p_feature_expressed</span> <span class='op'>&lt;-</span> <span class='fu'>mutate_cell_covariates</span><span class='op'>(</span><span class='va'>odm</span>, p_feature_expressed <span class='op'>=</span> <span class='va'>n_nonzero</span><span class='op'>/</span><span class='fu'><a href='dim.html'>nrow</a></span><span class='op'>(</span><span class='va'>odm</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># delete coef_of_variation from feature covariate</span>
-<span class='va'>odm_no_coef_of_variation</span> <span class='op'>&lt;-</span> <span class='fu'>mutate_feature_covariates</span><span class='op'>(</span><span class='va'>odm</span>, coef_of_variation <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-
+<span class='fu'>head</span><span class='op'>(</span><span class='va'>odm</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Showing <span style='color: #0000BB;'>5</span> of <span style='color: #0000BB;'>58382</span> featuress and <span style='color: #0000BB;'>6</span> of <span style='color: #0000BB;'>2000</span> cells:
+#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]
+#&gt; [1,]    0    0    0    0    0    0
+#&gt; [2,]    0    0    0    0    0    0
+#&gt; [3,]    0    0    0    0    0    0
+#&gt; [4,]    0    0    0    0    0    0
+#&gt; [5,]    0    0    0    0    0    0</div><div class='input'>
 <span class='co'>#####################################</span>
 <span class='co'># EXAMPLE 2: multimodal_ondisc_matrix</span>
 <span class='co'>#####################################</span>
+<span class='co'># Load odm from package</span>
 <span class='va'>odm_gene_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
 <span class='va'>metadata_gene_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
 <span class='va'>odm_gene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='save_odm.html'>read_odm</a></span><span class='op'>(</span><span class='va'>odm_gene_fp</span>, <span class='va'>metadata_gene_fp</span><span class='op'>)</span>
 <span class='va'>odm_gRNA_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gRNA/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
 <span class='va'>metadata_gRNA_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gRNA/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
 <span class='va'>odm_gRNA</span> <span class='op'>&lt;-</span> <span class='fu'><a href='save_odm.html'>read_odm</a></span><span class='op'>(</span><span class='va'>odm_gRNA_fp</span>, <span class='va'>metadata_gRNA_fp</span><span class='op'>)</span>
-<span class='va'>odm_multi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='multimodal_ondisc_matrix.html'>multimodal_ondisc_matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gene <span class='op'>=</span> <span class='va'>odm_gene</span>, gRNA <span class='op'>=</span> <span class='va'>odm_gRNA</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># delete gene_p_mito from cell covariate</span>
-<span class='va'>odm_multi_no_gene_p_mito</span> <span class='op'>&lt;-</span> <span class='fu'>mutate_cell_covariates</span><span class='op'>(</span><span class='va'>odm_multi</span>, gene_p_mito <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-<span class='co'># add one column for cell covariate</span>
-<span class='va'>odm_p_feature_expressed</span> <span class='op'>&lt;-</span> <span class='fu'>mutate_cell_covariates</span><span class='op'>(</span><span class='va'>odm_multi</span>,
-p_feature_expressed <span class='op'>=</span> <span class='va'>gene_n_nonzero</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='dim.html'>nrow</a></span><span class='op'>(</span><span class='va'>odm</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
-</div></pre>
+<span class='va'>odm_multi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='multimodal_ondisc_matrix.html'>multimodal_ondisc_matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gene <span class='op'>=</span> <span class='va'>odm_gene</span>, gRNA <span class='op'>=</span> <span class='va'>odm_gRNA</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>head</span><span class='op'>(</span><span class='va'>odm_multi</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 1. <span style='color: #0000BB;'>gene</span> Showing <span style='color: #0000BB;'>5</span> of <span style='color: #0000BB;'>58382</span> featuress and <span style='color: #0000BB;'>6</span> of <span style='color: #0000BB;'>2000</span> cells:
+#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]
+#&gt; [1,]    0    0    0    0    0    0
+#&gt; [2,]    0    0    0    0    0    0
+#&gt; [3,]    0    0    0    0    0    0
+#&gt; [4,]    0    0    0    0    0    0
+#&gt; [5,]    0    0    0    0    0    0
+#&gt; 2. <span style='color: #0000BB;'>gRNA</span> Showing <span style='color: #0000BB;'>5</span> of <span style='color: #0000BB;'>516</span> featuress and <span style='color: #0000BB;'>6</span> of <span style='color: #0000BB;'>2000</span> cells:
+#&gt;       [,1]  [,2]  [,3]  [,4]  [,5]  [,6]
+#&gt; [1,] FALSE FALSE FALSE FALSE FALSE FALSE
+#&gt; [2,] FALSE FALSE FALSE FALSE FALSE FALSE
+#&gt; [3,] FALSE FALSE FALSE FALSE FALSE FALSE
+#&gt; [4,] FALSE FALSE FALSE FALSE FALSE FALSE
+#&gt; [5,] FALSE FALSE FALSE FALSE FALSE FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

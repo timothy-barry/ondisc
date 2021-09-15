@@ -1,4 +1,4 @@
-#' Create an `ondisc` matrix from an R matrix
+#' Create an `ondisc` matrix from an R matrix.
 #'
 #' Initializes a `covariate_ondisc_matrix` object from an R matrix. Returns a `covariate_ondisc_matrix` including an `ondisc_matrix` alongside cell-specific and feature-specific covariate matrices.
 #'
@@ -16,7 +16,7 @@
 #' @export
 #'
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'

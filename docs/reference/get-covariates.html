@@ -40,7 +40,9 @@
 
 
 <meta property="og:title" content="Get covariate matrices. — get-covariates" />
-<meta property="og:description" content="Functions to get cell-specific or feature-specific covariate matrices from ondisc objects." />
+<meta property="og:description" content="Functions to get cell-specific or feature-specific covariate matrices from  covariate_ondisc_matrix or multimodal_ondisc_matrix objects.
+For covariate_ondisc_matrix, get_cell_covariates function can be used to get the cell-specific covariate matrix and get_feature_covariates can be used to get the feature-specific covariate matrix.
+Formultimodal_ondisc_matrix, get_cell_covariates function can be used to get the global_cell_covariates but get_feature_covariates is not supported." />
 
 
 
@@ -81,33 +83,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -130,7 +105,9 @@
     </div>
 
     <div class="ref-description">
-    <p>Functions to get cell-specific or feature-specific covariate matrices from <code>ondisc</code> objects.</p>
+    <p>Functions to get cell-specific or feature-specific covariate matrices from  <code>covariate_ondisc_matrix</code> or <code>multimodal_ondisc_matrix</code> objects.
+For <code>covariate_ondisc_matrix</code>, <code>get_cell_covariates</code> function can be used to get the cell-specific covariate matrix and <code>get_feature_covariates</code> can be used to get the feature-specific covariate matrix.
+For<code>multimodal_ondisc_matrix</code>, <code>get_cell_covariates</code> function can be used to get the <code>global_cell_covariates</code> but <code>get_feature_covariates</code> is not supported.</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_cell_covariates</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
@@ -160,7 +137,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>an object of class <code>ondisc_matrix</code>, <code>covariate_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p></td>
+      <td><p>an object of class <code>covariate_ondisc_matrix</code> or <code>multimodal_ondisc_matrix</code>.</p></td>
     </tr>
     </table>
 
@@ -168,6 +145,34 @@
 
     <p>a covariate matrix (in data frame form)</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Please install the `ondiscdata` package before running the examples.</span>
+<span class='co'># install.packages("devtools")</span>
+<span class='co'># devtools::install_github("Katsevich-Lab/ondiscdata")</span>
+
+<span class='co'>####################################</span>
+<span class='co'># EXAMPLE 1: covariate_ondisc_matrix</span>
+<span class='co'>####################################</span>
+<span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>metadata_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='save_odm.html'>read_odm</a></span><span class='op'>(</span><span class='va'>odm_fp</span>, <span class='va'>metadata_fp</span><span class='op'>)</span>
+
+<span class='va'>cell_covariates</span> <span class='op'>&lt;-</span> <span class='fu'>get_cell_covariates</span><span class='op'>(</span><span class='va'>odm</span><span class='op'>)</span>
+<span class='va'>feature_covariates</span> <span class='op'>&lt;-</span> <span class='fu'>get_feature_covariates</span><span class='op'>(</span><span class='va'>odm</span><span class='op'>)</span>
+
+<span class='co'>#####################################</span>
+<span class='co'># EXAMPLE 2: multimodal_ondisc_matrix</span>
+<span class='co'>#####################################</span>
+<span class='va'>odm_gene_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>metadata_gene_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>odm_gene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='save_odm.html'>read_odm</a></span><span class='op'>(</span><span class='va'>odm_gene_fp</span>, <span class='va'>metadata_gene_fp</span><span class='op'>)</span>
+<span class='va'>odm_gRNA_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gRNA/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>metadata_gRNA_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gRNA/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>odm_gRNA</span> <span class='op'>&lt;-</span> <span class='fu'><a href='save_odm.html'>read_odm</a></span><span class='op'>(</span><span class='va'>odm_gRNA_fp</span>, <span class='va'>metadata_gRNA_fp</span><span class='op'>)</span>
+<span class='va'>odm_multi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='multimodal_ondisc_matrix.html'>multimodal_ondisc_matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gene <span class='op'>=</span> <span class='va'>odm_gene</span>, gRNA <span class='op'>=</span> <span class='va'>odm_gRNA</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>cell_covariates_multi</span> <span class='op'>&lt;-</span> <span class='fu'>get_cell_covariates</span><span class='op'>(</span><span class='va'>odm_multi</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -179,7 +184,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

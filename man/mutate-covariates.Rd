@@ -47,7 +47,7 @@ The modification is made on the \code{global_cell_covariates} but not the cell-s
 An updated \code{multimodal_ondisc_matrix} will be returned.
 }
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 
@@ -77,5 +77,6 @@ odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
 # delete gene_p_mito from cell covariate
 odm_multi_no_gene_p_mito <- mutate_cell_covariates(odm_multi, gene_p_mito = NULL)
 # add one column for cell covariate
-odm_p_feature_expressed <- mutate_cell_covariates(odm_multi, p_feature_expressed = gene_n_nonzero/(nrow(odm)[1]))
+odm_p_feature_expressed <- mutate_cell_covariates(odm_multi,
+p_feature_expressed = gene_n_nonzero/(nrow(odm)[1]))
 }

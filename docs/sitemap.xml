@@ -52,9 +52,6 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/get_h5_barcodes.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/get_h5_cells_metadata.html</loc>
-  </url>
-  <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/get_h5_features.html</loc>
   </url>
   <url>
@@ -73,7 +70,7 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/get_string_arrays.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/head-ondisc_matrix-method.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/head.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/multimodal_ondisc_matrix.html</loc>
@@ -85,7 +82,7 @@
     <loc>https://timothy-barry.github.io/ondisc//reference/ondisc.html</loc>
   </url>
   <url>
-    <loc>https://timothy-barry.github.io/ondisc//reference/ondisc_matrix-class.html</loc>
+    <loc>https://timothy-barry.github.io/ondisc//reference/ondisc_matrix.html</loc>
   </url>
   <url>
     <loc>https://timothy-barry.github.io/ondisc//reference/read_given_column_of_tsv.html</loc>

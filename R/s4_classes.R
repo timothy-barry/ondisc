@@ -87,7 +87,7 @@ covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
 #' @return a `covariate_ondisc_matrix`.
 #' @export
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -132,7 +132,7 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #' @return a multimodal_ondisc_matrix
 #' @export
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'

@@ -80,33 +80,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -138,7 +111,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-initialize" class="hasAnchor"><a href="#section-initialize" class="anchor"></a>Initialize</h2>
-          <p class="section-desc"><p>Initialize an <code>ondisc_matrix</code>, <code>metadata_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p></p>
+          <p class="section-desc"><p>Initialize an ondisc matrix from an mtx file (or list of mtx files), h5 file (or list of h5 files), or an in-memory R matrix.</p></p>
         </th>
       </tr>
       
@@ -151,31 +124,25 @@
         <td>
           <p><code><a href="create_ondisc_matrix_from_mtx.html">create_ondisc_matrix_from_mtx()</a></code> </p>
         </td>
-        <td><p>Create an <code>ondisc_matrix</code> from a .mtx file.</p></td>
+        <td><p>Create an <code>ondisc_matrix</code> from a single .mtx file or a list of .mtx files.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_ondisc_matrix_from_h5_list.html">create_ondisc_matrix_from_h5_list()</a></code> </p>
+        </td>
+        <td><p>Create <code>ondisc_matrix</code> from a single .h5 file or a list of .h5 files.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="create_ondisc_matrix_from_R_matrix.html">create_ondisc_matrix_from_R_matrix()</a></code> </p>
         </td>
-        <td><p>Create an <code>ondisc</code> matrix from an R matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ondisc_matrix-class.html">ondisc_matrix-class</a></code> </p>
-        </td>
-        <td><p><code>ondisc_matrix</code> class</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="multimodal_ondisc_matrix.html">multimodal_ondisc_matrix()</a></code> <code><a href="multimodal_ondisc_matrix.html">multimodal_ondisc_matrix()</a></code> </p>
-        </td>
-        <td><p><code>multimodal_ondisc_matrix</code> class</p></td>
+        <td><p>Create an <code>ondisc</code> matrix from an R matrix.</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-subset" class="hasAnchor"><a href="#section-subset" class="anchor"></a>Subset</h2>
-          <p class="section-desc"><p>Subset an <code>ondisc_matrix</code> or <code>metadata_ondisc_matrix</code> by feature or cell; subset a <code>multimodal_ondisc_matrix</code> by cell.</p></p>
+          <p class="section-desc"><p>Subset an ondisc matrix.</p></p>
         </th>
       </tr>
       
@@ -193,8 +160,8 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-pull-a-submatrix-into-memory" class="hasAnchor"><a href="#section-pull-a-submatrix-into-memory" class="anchor"></a>Pull a submatrix into memory</h2>
-          <p class="section-desc"><p>Pull a submatrix of an <code>ondisc_matrix</code> into memory.</p></p>
+          <h2 id="section-pull-submatrix-into-memory" class="hasAnchor"><a href="#section-pull-submatrix-into-memory" class="anchor"></a>Pull submatrix into memory</h2>
+          <p class="section-desc"><p>Pull an arbitrary submatrix of an <code>ondisc_matrix</code> into memory.</p></p>
         </th>
       </tr>
       
@@ -212,8 +179,8 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-obtain-basic-information" class="hasAnchor"><a href="#section-obtain-basic-information" class="anchor"></a>Obtain basic information</h2>
-          <p class="section-desc"><p>Obtain basic information from an <code>ondisc_matrix</code>, <code>metadata_ondisc_matrix</code>, or <code>multimodal_ondisc_matrix</code>.</p></p>
+          <h2 id="section-getters" class="hasAnchor"><a href="#section-getters" class="anchor"></a>Getters</h2>
+          <p class="section-desc"><p>Get cell barcodes, feature names, feature IDs, cell covariate matrices, feature covariate matrices, and other data.</p></p>
         </th>
       </tr>
       
@@ -224,21 +191,108 @@
       <tr>
         
         <td>
-          <p><code><a href="dim.html">dim(<i>&lt;ondisc_matrix&gt;</i>)</a></code> <code><a href="dim.html">dim(<i>&lt;covariate_ondisc_matrix&gt;</i>)</a></code> <code><a href="dim.html">dim(<i>&lt;multimodal_ondisc_matrix&gt;</i>)</a></code> <code><a href="dim.html">ncol()</a></code> <code><a href="dim.html">nrow()</a></code> </p>
-        </td>
-        <td><p>Get dimension</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="head-ondisc_matrix-method.html">head(<i>&lt;ondisc_matrix&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>head</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="get-names.html">get_feature_ids()</a></code> <code><a href="get-names.html">get_feature_names()</a></code> <code><a href="get-names.html">get_cell_barcodes()</a></code> </p>
         </td>
-        <td><p>Get cell barcodes, feature names, and feature IDs</p></td>
+        <td><p>Get cell barcodes, feature names, and feature IDs.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get-covariates.html">get_cell_covariates()</a></code> <code><a href="get-covariates.html">get_feature_covariates()</a></code> </p>
+        </td>
+        <td><p>Get covariate matrices.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dim.html">dim(<i>&lt;ondisc_matrix&gt;</i>)</a></code> <code><a href="dim.html">dim(<i>&lt;covariate_ondisc_matrix&gt;</i>)</a></code> <code><a href="dim.html">dim(<i>&lt;multimodal_ondisc_matrix&gt;</i>)</a></code> <code><a href="dim.html">ncol()</a></code> <code><a href="dim.html">nrow()</a></code> </p>
+        </td>
+        <td><p>Get dimension.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="head.html">head(<i>&lt;ondisc_matrix&gt;</i>)</a></code> <code><a href="head.html">head(<i>&lt;covariate_ondisc_matrix&gt;</i>)</a></code> <code><a href="head.html">head(<i>&lt;multimodal_ondisc_matrix&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print first few rows and columns.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_modality.html">get_modality()</a></code> </p>
+        </td>
+        <td><p>Get modality</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_ondisc_matrix.html">get_ondisc_matrix()</a></code> </p>
+        </td>
+        <td><p>Get the ondisc_matrix stored in a <code>covariate_ondisc_matrix.</code></p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-mutate-functions" class="hasAnchor"><a href="#section-mutate-functions" class="anchor"></a>Mutate functions</h2>
+          <p class="section-desc"><p>Mutate the cell- or feature-specific covariate matrix.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="mutate-covariates.html">mutate_cell_covariates()</a></code> <code><a href="mutate-covariates.html">mutate_feature_covariates()</a></code> </p>
+        </td>
+        <td><p>Mutate covariate matrices.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-read-and-write" class="hasAnchor"><a href="#section-read-and-write" class="anchor"></a>Read and write</h2>
+          <p class="section-desc"><p>Read and write ondisc matrix objects</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="save_odm.html">save_odm()</a></code> <code><a href="save_odm.html">read_odm()</a></code> </p>
+        </td>
+        <td><p>Save or read an <code>ondisc_matrix</code></p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-classes" class="hasAnchor"><a href="#section-classes" class="anchor"></a>Classes</h2>
+          <p class="section-desc"><p>The three classes provided by the package are <code>ondisc_matrix</code>, <code>covariate_ondisc_matrix</code>, and <code>multimodal_ondisc_matrix</code></p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="ondisc_matrix.html">ondisc_matrix()</a></code> <code><a href="ondisc_matrix.html">ondisc_matrix()</a></code> </p>
+        </td>
+        <td><p><code>ondisc_matrix</code> class</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="covariate_ondisc_matrix.html">covariate_ondisc_matrix()</a></code> <code><a href="covariate_ondisc_matrix.html">covariate_ondisc_matrix()</a></code> </p>
+        </td>
+        <td><p><code>covariate_ondisc_matrix</code> class</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="multimodal_ondisc_matrix.html">multimodal_ondisc_matrix()</a></code> <code><a href="multimodal_ondisc_matrix.html">multimodal_ondisc_matrix()</a></code> </p>
+        </td>
+        <td><p><code>multimodal_ondisc_matrix</code> class</p></td>
       </tr>
     </tbody>
     </table>
@@ -254,7 +308,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

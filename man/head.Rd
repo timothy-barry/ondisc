@@ -5,7 +5,7 @@
 \alias{head,ondisc_matrix-method}
 \alias{head,covariate_ondisc_matrix-method}
 \alias{head,multimodal_ondisc_matrix-method}
-\title{Head}
+\title{Print first few rows and columns.}
 \usage{
 \S4method{head}{ondisc_matrix}(x)
 
@@ -23,7 +23,7 @@ NULL; called for printing
 Print the first few rows and columns of an \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.
 }
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 

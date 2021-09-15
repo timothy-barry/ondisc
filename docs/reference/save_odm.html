@@ -81,33 +81,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -146,11 +119,11 @@
     </tr>
     <tr>
       <th>metadata_fp</th>
-      <td><p>path to metadata RDS file</p></td>
+      <td><p>metadata.rds file</p></td>
     </tr>
     <tr>
       <th>odm_fp</th>
-      <td><p>path to a backing .odm file</p></td>
+      <td><p>file path to a backing .odm file</p></td>
     </tr>
     </table>
 
@@ -161,30 +134,20 @@
 <code>save_odm</code> writes a new metadata file to disk (potentially overwriting a previous metadata file of the same name), leaving the backing .odm file unaltered.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># initialize a new ondisc matrix, supplying paths for backing .odm file and metadata RDS file</span>
-<span class='va'>tempfile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>tempfile</span>, <span class='st'>"/expression_odm.odm"</span><span class='op'>)</span>
-<span class='va'>metadata_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>tempfile</span>, <span class='st'>"/metadata.rds"</span><span class='op'>)</span>
-<span class='va'>file_locs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,package <span class='op'>=</span> <span class='st'>"ondisc"</span>,
-                        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gene_expression.mtx"</span>, <span class='st'>"genes.tsv"</span>, <span class='st'>"cell_barcodes.tsv"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>file_locs</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"expressions"</span>, <span class='st'>"features"</span>, <span class='st'>"barcodes"</span><span class='op'>)</span>
-<span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_ondisc_matrix_from_mtx.html'>create_ondisc_matrix_from_mtx</a></span><span class='op'>(</span>mtx_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"expressions"</span><span class='op'>]</span><span class='op'>]</span>,
-                                                barcodes_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"barcodes"</span><span class='op'>]</span><span class='op'>]</span>,
-                                                features_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"features"</span><span class='op'>]</span><span class='op'>]</span>,
-                                                odm_fp <span class='op'>=</span> <span class='va'>odm_fp</span>, metadata_fp <span class='op'>=</span> <span class='va'>metadata_fp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; |========                                                                 | 11%|=================                                                        | 23%|==========================                                               | 36%|====================================                                     | 48%|=============================================                            | 61%|======================================================                   | 73%|===============================================================          | 86%|=========================================================================| 98%|=========================================================================| 100%
-#&gt; |========                                                                 | 11%|=================                                                        | 23%|==========================                                               | 36%|====================================                                     | 48%|=============================================                            | 61%|======================================================                   | 73%|===============================================================          | 86%|=========================================================================| 98%|=========================================================================| 100%
-#&gt; Writing CSC data.
-#&gt; Writing CSR data.
-#&gt; </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># Please install the `ondiscdata` package before running the examples.</span>
+<span class='co'># install.packages("devtools")</span>
+<span class='co'># devtools::install_github("Katsevich-Lab/ondiscdata")</span>
+
+<span class='co'># Load odm from package</span>
+<span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>metadata_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'>read_odm</span><span class='op'>(</span><span class='va'>odm_fp</span>, <span class='va'>metadata_fp</span><span class='op'>)</span>
 <span class='co'># assign a new ondisc_matrix by subsetting the original</span>
 <span class='va'>odm_subset</span> <span class='op'>&lt;-</span> <span class='va'>odm</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span>
 <span class='co'># save the subsetted odm, and remove it from memory</span>
+<span class='va'>tempfile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>metadata_subset_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>tempfile</span>, <span class='st'>"/metadata_subset.rds"</span><span class='op'>)</span>
 <span class='fu'>save_odm</span><span class='op'>(</span><span class='va'>odm_subset</span>, <span class='va'>metadata_subset_fp</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>odm_subset</span><span class='op'>)</span>
-<span class='co'># Load the subsetted odm back into memory</span>
-<span class='va'>odm_subset</span> <span class='op'>&lt;-</span> <span class='fu'>read_odm</span><span class='op'>(</span><span class='va'>odm_fp</span>, <span class='va'>metadata_subset_fp</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -197,7 +160,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create an ondisc matrix from an R matrix — create_ondisc_matrix_from_R_matrix • ondisc</title>
+<title>Create an ondisc matrix from an R matrix. — create_ondisc_matrix_from_R_matrix • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Create an ondisc matrix from an R matrix — create_ondisc_matrix_from_R_matrix" />
-<meta property="og:description" content="Initializes an ondisc_matrix from an R matrix. Returns an ondisc_matrix alongside cell-specific and feature-specific covariate matrices (or optionally, a covariate_ondisc_matrix)." />
+<meta property="og:title" content="Create an ondisc matrix from an R matrix. — create_ondisc_matrix_from_R_matrix" />
+<meta property="og:description" content="Initializes a covariate_ondisc_matrix object from an R matrix. Returns a covariate_ondisc_matrix including an ondisc_matrix alongside cell-specific and feature-specific covariate matrices." />
 
 
 
@@ -81,33 +81,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -124,13 +97,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create an <code>ondisc</code> matrix from an R matrix</h1>
+    <h1>Create an <code>ondisc</code> matrix from an R matrix.</h1>
     
     <div class="hidden name"><code>create_ondisc_matrix_from_R_matrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Initializes an <code>ondisc_matrix</code> from an R matrix. Returns an <code>ondisc_matrix</code> alongside cell-specific and feature-specific covariate matrices (or optionally, a <code>covariate_ondisc_matrix</code>).</p>
+    <p>Initializes a <code>covariate_ondisc_matrix</code> object from an R matrix. Returns a <code>covariate_ondisc_matrix</code> including an <code>ondisc_matrix</code> alongside cell-specific and feature-specific covariate matrices.</p>
     </div>
 
     <pre class="usage"><span class='fu'>create_ondisc_matrix_from_R_matrix</span><span class='op'>(</span>
@@ -162,7 +135,7 @@
     </tr>
     <tr>
       <th>metadata_fp</th>
-      <td><p>location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.</p></td>
+      <td><p>(optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.</p></td>
     </tr>
     </table>
 
@@ -178,25 +151,18 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>##################</span>
-<span class='co'># Define variables</span>
-<span class='co'>##################</span>
-<span class='va'>file_locs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,package <span class='op'>=</span> <span class='st'>"ondisc"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"genes.tsv"</span>, <span class='st'>"cell_barcodes.tsv"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>features_df</span> <span class='op'>&lt;-</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, col_types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cc"</span><span class='op'>)</span>,
-col_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"id"</span>, <span class='st'>"name"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>barcodes</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>, col_types <span class='op'>=</span> <span class='st'>"c"</span>, col_names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span>
-<span class='va'>n_col</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>barcodes</span><span class='op'>)</span>
-<span class='va'>n_row</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dim.html'>nrow</a></span><span class='op'>(</span><span class='va'>features_df</span><span class='op'>)</span>
-<span class='va'>r_matrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='va'>n_col</span> <span class='op'>*</span> <span class='va'>n_row</span>, lambda <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>,
-nrow <span class='op'>=</span> <span class='va'>n_row</span>, ncol <span class='op'>=</span> <span class='va'>n_col</span><span class='op'>)</span>
-<span class='va'>r_matrix_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/NegBinomial.html'>rnbinom</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='va'>n_col</span> <span class='op'>*</span> <span class='va'>n_row</span>, size <span class='op'>=</span> <span class='fl'>1</span>, prob <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>,
-nrow <span class='op'>=</span> <span class='va'>n_row</span>, ncol <span class='op'>=</span> <span class='va'>n_col</span><span class='op'>)</span>
-<span class='va'>features_df_2</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>features_df</span>, <span class='va'>id</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='co'># Please install the `ondiscdata` package before running the examples.</span>
+<span class='co'># install.packages("devtools")</span>
+<span class='co'># devtools::install_github("Katsevich-Lab/ondiscdata")</span>
 
 <span class='co'>###########################</span>
 <span class='co'># EXAMPLE 1: integer counts</span>
 <span class='co'>###########################</span>
+<span class='va'>file_locs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/r_matrix/gene"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"matrix.rds"</span>, <span class='st'>"features.rds"</span>, <span class='st'>"barcodes.rds"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>r_matrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>features_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>barcodes</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
 <span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/integer_odm"</span><span class='op'>)</span>
 <span class='va'>odm_integer</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_R_matrix</span><span class='op'>(</span><span class='va'>r_matrix</span>, <span class='va'>barcodes</span>,
 <span class='va'>features_df</span>, <span class='va'>odm_fp</span><span class='op'>)</span>
@@ -204,6 +170,11 @@ nrow <span class='op'>=</span> <span class='va'>n_row</span>, ncol <span class='
 <span class='co'>####################</span>
 <span class='co'># EXAMPLE 2: logical</span>
 <span class='co'>####################</span>
+<span class='va'>file_locs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/r_matrix/gRNA"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"matrix.rds"</span>, <span class='st'>"features.rds"</span>, <span class='st'>"barcodes.rds"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>r_matrix_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>features_df_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>barcodes</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
 <span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/logical_odm"</span><span class='op'>)</span>
 <span class='va'>odm_logical</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_R_matrix</span><span class='op'>(</span><span class='va'>r_matrix_2</span>, <span class='va'>barcodes</span>,
 <span class='va'>features_df_2</span>, <span class='va'>odm_fp</span><span class='op'>)</span>
@@ -219,7 +190,7 @@ nrow <span class='op'>=</span> <span class='va'>n_row</span>, ncol <span class='
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

@@ -52,7 +52,7 @@ One can remember the difference between \code{[} and \code{[[} by recalling R li
 \code{[[} is used to access a submatrix usable within R.
 }
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 

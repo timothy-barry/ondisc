@@ -2,7 +2,7 @@
 % Please edit documentation in R/initialize_in_memory.R
 \name{create_ondisc_matrix_from_R_matrix}
 \alias{create_ondisc_matrix_from_R_matrix}
-\title{Create an \code{ondisc} matrix from an R matrix}
+\title{Create an \code{ondisc} matrix from an R matrix.}
 \usage{
 create_ondisc_matrix_from_R_matrix(
   r_matrix,
@@ -37,7 +37,7 @@ This function computes the following cell-specific and feature-specific covariat
 }
 }
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 

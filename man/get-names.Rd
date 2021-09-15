@@ -14,7 +14,7 @@
 \alias{get_feature_ids,multimodal_ondisc_matrix-method}
 \alias{get_feature_names,multimodal_ondisc_matrix-method}
 \alias{get_cell_barcodes,multimodal_ondisc_matrix-method}
-\title{Get cell barcodes, feature names, and feature IDs}
+\title{Get cell barcodes, feature names, and feature IDs.}
 \usage{
 get_feature_ids(x)
 
@@ -64,7 +64,7 @@ returns a list containing the feature names and feature IDs, respectively, of th
 within the \code{multimodal_ondisc_matrix}.
 }
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 

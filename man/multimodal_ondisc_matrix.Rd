@@ -28,7 +28,7 @@ Construct a \code{multimodal_ondisc_matrix} from a list of \code{covariate_ondis
 }}
 
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 
