@@ -124,6 +124,7 @@ get_modality <- function(multimodal_mat, modality_name) {
   return(multimodal_mat@modalities[[modality_name]])
 }
 
+
 # 3. Get covariate matrices
 #' Get covariate matrices.
 #'
@@ -200,6 +201,7 @@ setMethod("get_cell_covariates", signature("multimodal_ondisc_matrix"), function
 setMethod("get_feature_covariates", signature("multimodal_ondisc_matrix"), function(x) {
   stop("get_feature_covariates not supported for objects of class multimodal_ondisc_matrix.")
 })
+
 
 # 4. Get `ondisc_matrix`
 #'
