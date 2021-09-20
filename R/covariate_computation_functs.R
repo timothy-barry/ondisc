@@ -88,16 +88,15 @@ initialize_grammar <- function() {
 #'
 #' A function that maps the input metadata to the covariates to compute.
 #'
-#' @param mtx_metadata the mtx metadata
-#' @param features_metadata the features.tsv metadata
+#' @param bag_of_variables stores the mtx metadata and features.tsv metadata
 #'
 #' @return a list of two entries: feature_covariates and cell_covariates; each entry lists the covariates to compute
 #' @noRd
-map_inputs_to_covariates <- function(mtx_metadata, features_metadata) {
+map_inputs_to_covariates <- function(bag_of_variables) {
   # Obtain enum
   sym_enum <- symbols_enum()
   # First, get feature covariates
-  feature_covariates <- if (!mtx_metadata$is_logical) {
+  feature_covariates <- if (!bag_of_variables$is_logical) {
     # integer matrix
     c(sym_enum$mean_expression_feature,
       sym_enum$coef_of_variation_feature,
@@ -107,8 +106,8 @@ map_inputs_to_covariates <- function(mtx_metadata, features_metadata) {
     sym_enum$n_nonzero_feature
   }
   # Next, get cell covariates
-  cell_covariates <- if (!mtx_metadata$is_logical) {
-    if (features_metadata$mt_genes_present) {
+  cell_covariates <- if (!bag_of_variables$is_logical) {
+    if (bag_of_variables$mt_genes_present) {
       # integer matrix, mt genes present
       c(sym_enum$n_nonzero_cell,
         sym_enum$n_umis_cell,

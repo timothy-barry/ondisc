@@ -2,17 +2,29 @@
 #'
 #' Gets metadata from a features.tsv file. As a side-effect, if MT genes are present, puts into the bag_of_variables a logical vector indicating the positions of those genes.
 #'
-#' @param features_fp file path to features.tsv file
+#' @param features file path to features.tsv file or a data frame giving the names of the features.
 #' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
+#' @param is_file a boolean variable indicating: TRUE, features is a file path or FALSE, features is a data frame. Defualt TRUE.
 #'
 #' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
-get_features_metadata <- function(features_fp, bag_of_variables) {
-  first_row <- readr::read_tsv(file = features_fp, n_max = 1, col_names = FALSE, col_types = readr::cols())
-  n_cols <- ncol(first_row)
-  feature_names <- ncol(first_row) >= 2
+get_features_metadata <- function(features, bag_of_variables, is_file = TRUE) {
+  if (is_file) {
+    features_fp <- features
+    first_row <- readr::read_tsv(file = features_fp, n_max = 1, col_names = FALSE, col_types = readr::cols())
+    n_cols <- ncol(first_row)
+  } else {
+    features_df <- features
+    n_cols <- ncol(features_df)
+  }
+
+  feature_names <- n_cols >= 2
   mt_genes_present <- FALSE
   if (feature_names) {
-    gene_names <- read_given_column_of_tsv(col_idx = 2, n_cols = n_cols, tsv_file = features_fp)
+    if (is_file) {
+      gene_names <- read_given_column_of_tsv(col_idx = 2, n_cols = n_cols, tsv_file = features_fp)
+    } else {
+      gene_names <- dplyr::pull(features_df, 2)
+    }
     mt_genes <- grepl(pattern = "^MT-", x = gene_names)
     if (any(mt_genes)) {
       mt_genes_present <- TRUE
@@ -158,11 +170,11 @@ get_h5_cells_metadata <- function(h5_list) {
 #'
 #' @param barcodes_fp path to barcodes file(s)
 #' @param features_fp path the features file
-#' @param features_metadata the features_metadata list
+#' @param bag_of_variables stores the features_metadata list
 #' @param barcode_suffixes a vector of suffix that appended to the barcodes to for each input barcode_fp. If NULL, append file index.
 #'
 #' @return list containing (i) cell barcodes, (ii) feature IDs, and (iii) feature names (NA_character_ if absent)
-get_string_arrays <- function(barcodes_fp, features_fp, features_metadata, barcode_suffixes) {
+get_string_arrays <- function(barcodes_fp, features_fp, bag_of_variables, barcode_suffixes) {
   # barcodes first
   cell_barcodes <- vector(mode = "character")
   for (i in seq(1L, length(barcodes_fp))) {
@@ -174,9 +186,9 @@ get_string_arrays <- function(barcodes_fp, features_fp, features_metadata, barco
     cell_barcodes <- c(cell_barcodes, single_cell_barcodes)
   }
   # feature IDs and names next
-  feature_ids <- read_given_column_of_tsv(col_idx = 1, n_cols = features_metadata$n_cols, tsv_file = features_fp)
-  if (features_metadata$feature_names) {
-    feature_names <- read_given_column_of_tsv(col_idx = 2, n_cols = features_metadata$n_cols, tsv_file = features_fp)
+  feature_ids <- read_given_column_of_tsv(col_idx = 1, n_cols = bag_of_variables$n_cols, tsv_file = features_fp)
+  if (bag_of_variables$feature_names) {
+    feature_names <- read_given_column_of_tsv(col_idx = 2, n_cols = bag_of_variables$n_cols, tsv_file = features_fp)
   } else {
     feature_names <- NA_character_
   }

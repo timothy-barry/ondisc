@@ -49,8 +49,8 @@
 #' features_fp <- system.file("extdata", "mtx_list/mtx_dir1/features.tsv", package = "ondiscdata")
 #' odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp)
 create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, barcode_suffixes = NULL, progress = TRUE) {
-  # bag_of_variables is used to store quantities to compute the feature- and cell-covariates.
-  # mtx_metadata stores general information about the .mtx file, and features_metadata stores general information about the .tsv files.
+  # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
+  # general information about the .mtx file, and general information about the .tsv files.
 
   # set the h5 file path
   odm_fp <- append_file_extension(odm_fp, "odm")
@@ -63,37 +63,33 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   bag_of_variables <- new.env()
 
   # Extract .mtx metadata; add mtx fp and n_lines per chunk to list
-  mtx_metadata <- get_mtx_metadata(mtx_fp)
-  mtx_metadata$mtx_fp <- mtx_fp
-  mtx_metadata$n_lines_per_chunk <- n_lines_per_chunk
-  # update the bag of variables with n_cells, n_features, and n_cells_in_files
-  bag_of_variables[[arguments_enum()$n_cells]] <- mtx_metadata$n_cells
-  bag_of_variables[[arguments_enum()$n_features]] <- mtx_metadata$n_features
-  bag_of_variables[[arguments_enum()$n_cells_in_files]] <- mtx_metadata$n_cells_in_files
+  list2env(get_mtx_metadata(mtx_fp), bag_of_variables)
+  bag_of_variables[["mtx_fp"]] <- mtx_fp
+  bag_of_variables[["n_lines_per_chunk"]] <- n_lines_per_chunk
 
   # Extract features.tsv metadata; as a side-effect, if there are MT genes, put the locations of those genes into the bag_of_vars.
-  features_metadata <- get_features_metadata(features_fp, bag_of_variables)
+  list2env(get_features_metadata(features_fp, bag_of_variables), bag_of_variables)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(odm_fp, mtx_metadata, odm_id)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
 
   # Determine which covariates to compute
-  covariates <- map_inputs_to_covariates(mtx_metadata, features_metadata)
+  covariates <- map_inputs_to_covariates(bag_of_variables)
 
   # Run core algorithm
-  out <- run_core_algo(odm_fp, mtx_metadata, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
+  out <- run_core_algo(odm_fp, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
 
   # Obtain the string arrays (e.g., feature IDs, feature names, and possibly cell barcodes)
   if (is.null(barcode_suffixes) && length(barcodes_fp) > 1L) {
     barcode_suffixes <- seq(1,length(barcodes_fp))
   }
-  string_arrays <- get_string_arrays(barcodes_fp, features_fp, features_metadata, barcode_suffixes)
+  string_arrays <- get_string_arrays(barcodes_fp, features_fp, bag_of_variables, barcode_suffixes)
 
 
   # initialize metadata ondisc matrix
   odm <- ondisc_matrix(h5_file = odm_fp,
-                       logical_mat = mtx_metadata$is_logical,
-                       underlying_dimension = c(mtx_metadata$n_features, mtx_metadata$n_cells),
+                       logical_mat = bag_of_variables$is_logical,
+                       underlying_dimension = c(bag_of_variables$n_features, bag_of_variables$n_cells),
                        feature_ids = string_arrays$feature_ids,
                        feature_names = string_arrays$feature_names,
                        cell_barcodes = string_arrays$cell_barcodes,
@@ -101,7 +97,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 
   # initialize the metadata odm
   if (!is.null(barcode_suffixes)) {
-    batch <- rep(x = barcode_suffixes, times = mtx_metadata$n_cells_in_files) %>% factor()
+    batch <- rep(x = barcode_suffixes, times = bag_of_variables$n_cells_in_files) %>% factor()
     out$cell_covariates$barcode_suffix <- batch
   }
   metadata_odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
@@ -160,9 +156,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' # create the ondisc matrix
 #' odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
 create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, progress = TRUE) {
-  # bag_of_variables is used to store quantities to compute the feature- and cell-covariates.
-  # cells_metadata stores general information about the .h5 file and the cells
-  # features_metadata stores general information about the features
+  # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
+  # general information about the .h5 file, the cells and the features
 
   # set the h5 file path
   odm_fp <- append_file_extension(odm_fp, "odm")
@@ -179,32 +174,29 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NUL
   barcodes_list <- get_h5_barcodes(h5_list, barcode_suffixes)
   barcodes <- unlist(barcodes_list)
   features_df <- get_h5_features(h5_list)
-  features_metadata <- get_features_metadata_from_table(features_df, bag_of_variables)
+  list2env(get_features_metadata(features_df, bag_of_variables, FALSE), bag_of_variables)
 
   # Extract cell metadata at the same time
-  cells_metadata <- get_h5_cells_metadata(h5_list)
-  cells_metadata$h5_list <- h5_list
-  cells_metadata$n_features <- nrow(features_df)
-  bag_of_variables[[arguments_enum()$n_cells]] <- cells_metadata$n_cells
-  bag_of_variables[[arguments_enum()$n_features]] <- cells_metadata$n_features
-  bag_of_variables[[arguments_enum()$n_cells_in_files]] <- cells_metadata$n_cells_in_files
+  list2env(get_h5_cells_metadata(h5_list), bag_of_variables)
+  bag_of_variables[["h5_list"]] <- h5_list
+  bag_of_variables[["n_features"]] <- nrow(features_df)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(odm_fp, cells_metadata, odm_id)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
 
   # Determine which covariates to compute
-  covariates <- map_inputs_to_covariates(cells_metadata, features_metadata)
+  covariates <- map_inputs_to_covariates(bag_of_variables)
 
   # Run core algorithm
-  out <- run_core_algo(odm_fp, cells_metadata, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
+  out <- run_core_algo(odm_fp, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
 
   # Obtain the string arrays (e.g., feature IDs, feature names, and possibly cell barcodes)
   string_arrays <- list(cell_barcodes = barcodes, feature_ids = features_df$id , feature_names = features_df$name)
 
   # initialize metadata ondisc matrix
   odm <- ondisc_matrix(h5_file = odm_fp,
-                       logical_mat = cells_metadata$is_logical,
-                       underlying_dimension = c(cells_metadata$n_features, cells_metadata$n_cells),
+                       logical_mat = bag_of_variables$is_logical,
+                       underlying_dimension = c(bag_of_variables$n_features, bag_of_variables$n_cells),
                        feature_ids = string_arrays$feature_ids,
                        feature_names = string_arrays$feature_names,
                        cell_barcodes = string_arrays$cell_barcodes,
@@ -212,7 +204,7 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NUL
 
   # initialize the metadata odm
   if (!is.null(barcode_suffixes)) {
-    batch <- rep(x = barcode_suffixes, times = cells_metadata$n_cells_in_files) %>% factor()
+    batch <- rep(x = barcode_suffixes, times = bag_of_variables$n_cells_in_files) %>% factor()
     out$cell_covariates$barcode_suffix <- batch
   }
   metadata_odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
