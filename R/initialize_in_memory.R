@@ -52,12 +52,15 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   if (file.exists(odm_fp)) stop(paste0("File ", odm_fp, " already exists. Ending function."))
 
   ### STEP1: compute the cell- and feature- specific covariate matrices
+  # Define "bag_of_variables" environment for storing args
+  bag_of_variables <- new.env()
+
   # Extract features and expression metadata
-  features_metadata <- get_features_metadata_from_table(features_df)
-  expression_metadata <- get_expression_metadata_from_r_matrix(r_matrix)
+  list2env(get_features_metadata(features_df, bag_of_variables, FALSE), bag_of_variables)
+  list2env(get_expression_metadata_from_r_matrix(r_matrix), bag_of_variables)
 
   # Determine which covariates to compute
-  covariates <- map_inputs_to_covariates(expression_metadata, features_metadata)
+  covariates <- map_inputs_to_covariates(bag_of_variables)
 
   # Define a list of functions to compute the feature-specific covariates
   feature_specific_func_list <- list(n_nonzero_feature = function(x) as.integer(rowSums(x != 0)),
@@ -108,17 +111,17 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   }
 
   # initialize the ODM
-  initialize_h5_file_on_disk(odm_fp, mtx_metadata = expression_metadata, odm_id = odm_id)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
 
   # Write in memory matrix to the .h5 file on-disk (side-effect)
-  write_matrix_to_h5(odm_fp, expression_metadata = expression_metadata, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix)
+  write_matrix_to_h5(odm_fp, expression_metadata = bag_of_variables, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix)
 
   ### STEP3: Prepare output
   odm <- ondisc_matrix(h5_file = odm_fp,
-                       logical_mat = expression_metadata$is_logical,
-                       underlying_dimension = c(expression_metadata$n_features, expression_metadata$n_cells),
+                       logical_mat = bag_of_variables$is_logical,
+                       underlying_dimension = c(bag_of_variables$n_features, bag_of_variables$n_cells),
                        feature_ids = dplyr::pull(features_df, 1),
-                       feature_names = if (features_metadata$feature_names) dplyr::pull(features_df, 2) else NA_character_,
+                       feature_names = if (bag_of_variables$feature_names) dplyr::pull(features_df, 2) else NA_character_,
                        cell_barcodes = barcodes,
                        odm_id = odm_id)
 
@@ -156,41 +159,13 @@ get_expression_metadata_from_r_matrix <- function(r_matrix) {
               is_logical = is_logical))
 }
 
-
-#' Get metadata for features_df, a data frame giving the names of the features.
-#'
-#' Gets metadata from a features data frame features_df.
-#'
-#' @param features_df a data frame giving the names of the features.
-#' @param bag_of_variables the bag of variables to which to add the mt_genes logical vector (if applicable)
-#'
-#' @return a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)
-get_features_metadata_from_table <- function(features_df, bag_of_variables = NULL) {
-  n_cols <- ncol(features_df)
-  feature_names <- n_cols >= 2
-  mt_genes_present <- FALSE
-  if (feature_names) {
-    # Assume the second column is always feature_name. Or we can extract by the col name
-    gene_names <- dplyr::pull(features_df, 2)
-    mt_genes <- grepl(pattern = "^MT-", x = gene_names)
-    if (any(mt_genes)) {
-      mt_genes_present <- TRUE
-      if (!is.null(bag_of_variables)) {
-        bag_of_variables[[arguments_enum()$mt_gene_bool]] <- mt_genes
-      }
-    }
-  }
-  return(list(feature_names = feature_names, n_cols = n_cols, mt_genes_present = mt_genes_present))
-}
-
-
 #' Initialize h5 file on-disk and write in memory r matrix to the file
 #'
 #' Initialize the on-disk portion on an ondisc_matrix, and write matrix to the h5 file.
 #'
 #' @param odm_fp file path to the .h5 file to be initialized
 #' @param expression_metadata metadata of the r_matrix
-#' @param features_metadata metadata of the features_df
+#' @param bag_of_variables metadata of the features_df
 #' @param barcodes a character vector giving the cell barcodes.
 #' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
 #' @param csc_r_matrix a Matrix csc representation of the r matrix

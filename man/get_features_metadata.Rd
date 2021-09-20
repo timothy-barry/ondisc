@@ -4,12 +4,14 @@
 \alias{get_features_metadata}
 \title{Get metadata for features.tsv file}
 \usage{
-get_features_metadata(features_fp, bag_of_variables)
+get_features_metadata(features, bag_of_variables, is_file = TRUE)
 }
 \arguments{
-\item{features_fp}{file path to features.tsv file}
+\item{features}{file path to features.tsv file or a data frame giving the names of the features.}
 
 \item{bag_of_variables}{the bag of variables to which to add the mt_genes logical vector (if applicable)}
+
+\item{is_file}{a boolean variable indicating: TRUE, features is a file path or FALSE, features is a data frame. Defualt TRUE.}
 }
 \value{
 a list containing elements feature_names (logical), n_cols (integer), and whether MT genes are present (logical)

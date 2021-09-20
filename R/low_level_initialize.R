@@ -3,31 +3,31 @@
 #' Initialize the on-disk portion on an ondisc_matrix.
 #'
 #' @param odm_fp file path to the .h5 file to be initialized
-#' @param mtx_metadata metadata of the .mtx file
+#' @param bag_of_variables metadata of the .mtx file
 #' @param odm_id ODM id
 #' @return NULL
 #' @noRd
-initialize_h5_file_on_disk <- function(odm_fp, mtx_metadata, odm_id) {
+initialize_h5_file_on_disk <- function(odm_fp, bag_of_variables, odm_id) {
   # Create the .h5 file
   status <- rhdf5::h5createFile(odm_fp)
   if (!status) stop(sprintf("Creating %s failed", odm_fp))
   # write the dimension, logical_mat, and odm_id
-  rhdf5::h5write(c(mtx_metadata$n_features, mtx_metadata$n_cells), odm_fp, "dimension")
-  rhdf5::h5write(as.integer(mtx_metadata$is_logical), odm_fp, "logical_mat")
+  rhdf5::h5write(c(bag_of_variables$n_features, bag_of_variables$n_cells), odm_fp, "dimension")
+  rhdf5::h5write(as.integer(bag_of_variables$is_logical), odm_fp, "logical_mat")
   rhdf5::h5write(odm_id, odm_fp, "odm_id")
 
   # Initialize CSC
-  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_ptr", dims = mtx_metadata$n_cells + 1, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_cells, 10))
-  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_idxs", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50))
-  if (!mtx_metadata$is_logical) {
-    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csc", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50))
+  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_ptr", dims = bag_of_variables$n_cells + 1, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_cells, 10))
+  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_idxs", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_data_points - 1, 50))
+  if (!bag_of_variables$is_logical) {
+    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csc", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_data_points - 1, 50))
   }
 
   # Initialize CSR
-  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_ptr", dims = mtx_metadata$n_features + 1, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_features, 10))
-  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_idxs", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50))
-  if (!mtx_metadata$is_logical) {
-    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csr", dims = mtx_metadata$n_data_points, storage.mode = "integer", level = 0L, chunk = min(mtx_metadata$n_data_points - 1, 50))
+  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_ptr", dims = bag_of_variables$n_features + 1, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_features, 10))
+  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_idxs", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_data_points - 1, 50))
+  if (!bag_of_variables$is_logical) {
+    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csr", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_data_points - 1, 50))
   }
 }
 
@@ -64,7 +64,6 @@ get_accumulator_funct_arg_list <- function(terminal_symbol) {
 #'
 #' Runs the first step of the .mtx algo.
 #'
-#' @param file_metadata a list of file metadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param initialize_accumulator initialize accumulator function
 #' @param bag_of_variables the bag of variables
 #' @param file_type can be either "h5_list" or "mtx_fp"
@@ -72,7 +71,7 @@ get_accumulator_funct_arg_list <- function(terminal_symbol) {
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_core_algo_step_1 <- function(file_metadata, initialize_accumulator, bag_of_variables, file_type, progress) {
+run_core_algo_step_1 <- function(initialize_accumulator, bag_of_variables, file_type, progress) {
   symbols <- symbols_enum()
   initializer <- function() initialize_accumulator(terminal_symbol = symbols$n_nonzero_feature, bag_of_variables = bag_of_variables)
   arguments <- arguments_enum()
@@ -88,13 +87,13 @@ run_core_algo_step_1 <- function(file_metadata, initialize_accumulator, bag_of_v
     return(acc)
   }
 
-  mtx_fp <- file_metadata$mtx_fp
+  mtx_fp <- bag_of_variables$mtx_fp
   if (file_type == "h5_list") {
-    return(run_core_algo_step_1_h5_list(file_metadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init))
+    return(run_core_algo_step_1_h5_list(get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init))
   } else if (length(mtx_fp) == 1) {
-    return(run_core_algo_step_1_mtxchunked(file_metadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init))
+    return(run_core_algo_step_1_mtxchunked(get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init))
   } else {
-    return(run_core_algo_step_1_mtxfilelist(file_metadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init))
+    return(run_core_algo_step_1_mtxfilelist(get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init))
   }
 }
 
@@ -102,7 +101,6 @@ run_core_algo_step_1 <- function(file_metadata, initialize_accumulator, bag_of_v
 #'
 #' Runs the first step of the .mtx algo.
 #'
-#' @param file_metadata a list of file metadata that contains (i) h5_list , (ii) is_logical
 #' @param get_accumulated_row_ptr the function to compute accumulated row pointer
 #' @param bag_of_variables the bag of variables
 #' @param arguments arguments
@@ -110,8 +108,8 @@ run_core_algo_step_1 <- function(file_metadata, initialize_accumulator, bag_of_v
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_core_algo_step_1_h5_list <- function(file_metadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init) {
-  h5_list <- file_metadata$h5_list
+run_core_algo_step_1_h5_list <- function(get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init) {
+  h5_list <- bag_of_variables$h5_list
   acc <- acc_init
   for (i in seq(1, length(h5_list))) {
     h5_info <- rhdf5::h5ls(h5_list[i])
@@ -129,7 +127,6 @@ run_core_algo_step_1_h5_list <- function(file_metadata, get_accumulated_row_ptr,
 #'
 #' Runs the first step of the .mtx algo.
 #'
-#' @param file_metadata a list of file metadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param get_accumulated_row_ptr the function to compute accumulated row pointer
 #' @param bag_of_variables the bag of variables
 #' @param arguments arguments
@@ -137,16 +134,16 @@ run_core_algo_step_1_h5_list <- function(file_metadata, get_accumulated_row_ptr,
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_core_algo_step_1_mtxfilelist <- function(file_metadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init) {
-  mtx_fp <- file_metadata$mtx_fp
+run_core_algo_step_1_mtxfilelist <- function(get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init) {
+  mtx_fp <- bag_of_variables$mtx_fp
   acc <- acc_init
   for (i in seq(1, length(mtx_fp))) {
     x <- readr::read_delim(file = mtx_fp[i],
                            delim = " ",
-                           skip = file_metadata$n_rows_to_skip[i],
+                           skip = bag_of_variables$n_rows_to_skip[i],
                            col_names = arguments$feature_idxs,
                            progress = progress,
-                           col_types = if (file_metadata$is_logical) "i_" else "i__")
+                           col_types = if (bag_of_variables$is_logical) "i_" else "i__")
     acc <- get_accumulated_row_ptr(x, 0, acc)
   }
   return(acc)
@@ -157,7 +154,6 @@ run_core_algo_step_1_mtxfilelist <- function(file_metadata, get_accumulated_row_
 #'
 #' Runs the first step of the .mtx algo.
 #'
-#' @param file_metadata a list of file metadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param get_accumulated_row_ptr the function to compute accumulated row pointer
 #' @param bag_of_variables the bag of variables
 #' @param arguments arguments
@@ -165,16 +161,16 @@ run_core_algo_step_1_mtxfilelist <- function(file_metadata, get_accumulated_row_
 #'
 #' @return list containing (i) n_features, and (ii) a list containing n_features an n_features vector for each chunk.
 #' @noRd
-run_core_algo_step_1_mtxchunked <- function(file_metadata, get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init) {
-  mtx_fp <- file_metadata$mtx_fp
+run_core_algo_step_1_mtxchunked <- function(get_accumulated_row_ptr, bag_of_variables, progress, arguments, acc_init) {
+  mtx_fp <- bag_of_variables$mtx_fp
   ret <- readr::read_delim_chunked(file = mtx_fp,
-                            chunk_size = file_metadata$n_lines_per_chunk,
-                            skip = file_metadata$n_rows_to_skip,
+                            chunk_size = bag_of_variables$n_lines_per_chunk,
+                            skip = bag_of_variables$n_rows_to_skip,
                             callback = readr::AccumulateCallback$new(get_accumulated_row_ptr, acc = acc_init),
                             delim = " ",
                             col_names = arguments$feature_idxs,
                             progress = progress,
-                            col_types = if (file_metadata$is_logical) "i_" else "i__")
+                            col_types = if (bag_of_variables$is_logical) "i_" else "i__")
   return(ret)
 }
 
@@ -275,7 +271,6 @@ run_subtask_2c <- function(x, odm_fp, is_logical, row_ptr, n_nonzero_features_pe
 #' This function runs step 2 of the core mtx algorithm. It (a) computes the terminal symbols, (b) writes to the CSC matrix, and (c) sorts the data by feature_idx, then writes to the CSR matrix.
 #'
 #' @param odm_fp full path to the h5 file on-disk
-#' @param file_metadata a list of file metadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param bag_of_variables the bag of variables containing the variables to pass to the accumulator functions
 #' @param initial_accumulators list of starting accumulators
 #' @param terminal_functs_args list of accumulator function names and arguments
@@ -285,8 +280,8 @@ run_subtask_2c <- function(x, odm_fp, is_logical, row_ptr, n_nonzero_features_pe
 #'
 #' @return a list containing the values of the terminals
 #' @noRd
-run_core_algo_step_2 <- function(odm_fp, file_metadata, bag_of_variables, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk, file_type, progress) {
-  mtx_fp <- file_metadata$mtx_fp
+run_core_algo_step_2 <- function(odm_fp, bag_of_variables, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk, file_type, progress) {
+  mtx_fp <- bag_of_variables$mtx_fp
   chunk_no <- 1L
   # Define closure to be called by readr::read_delim_chunked
   closure <- function(x, pos, acc) {
@@ -299,10 +294,10 @@ run_core_algo_step_2 <- function(odm_fp, file_metadata, bag_of_variables, initia
     run_subtask_2a(x, bag_of_variables, acc[[1]], terminal_functs_args)
     # run subtask b
     if (progress) cat("\nWriting CSC data.\n")
-    run_subtask_2b(x, pos, odm_fp, file_metadata$is_logical)
+    run_subtask_2b(x, pos, odm_fp, bag_of_variables$is_logical)
     # run subtask c
     if (progress) cat("Writing CSR data.\n")
-    run_subtask_2c(x, odm_fp, file_metadata$is_logical, acc[[2]], n_nonzero_features_per_chunk, chunk_no, bag_of_variables$n_features)
+    run_subtask_2c(x, odm_fp, bag_of_variables$is_logical, acc[[2]], n_nonzero_features_per_chunk, chunk_no, bag_of_variables$n_features)
     # increment chunk_no in enclosing environment
     chunk_no <<- chunk_no + 1L
     return(acc)
@@ -312,17 +307,16 @@ run_core_algo_step_2 <- function(odm_fp, file_metadata, bag_of_variables, initia
   acc_init <- list(initial_accumulators, row_ptr)
 
   if (file_type == "h5_list") {
-    return(run_core_algo_step_2_h5_list(file_metadata, progress, closure, acc_init, arguments, bag_of_variables))
+    return(run_core_algo_step_2_h5_list(progress, closure, acc_init, arguments, bag_of_variables))
   } else if (length(mtx_fp) == 1) {
-    return(run_core_algo_step_2_mtxchunked(file_metadata, progress, closure, acc_init, arguments))
+    return(run_core_algo_step_2_mtxchunked(progress, closure, acc_init, arguments, bag_of_variables))
   } else {
-    return(run_core_algo_step_2_mtxfilelist(file_metadata, progress, closure, acc_init, arguments, bag_of_variables))
+    return(run_core_algo_step_2_mtxfilelist(progress, closure, acc_init, arguments, bag_of_variables))
   }
 }
 
 #' Run h5_list algo step 2
 #'
-#' @param file_metadata a list of file metadata that contains (i) h5_list , (ii) is_logical
 #' @param progress progress
 #' @param closure closure function to calculate the terminals and write to the h5 file
 #' @param acc_init empty accumulator
@@ -331,8 +325,8 @@ run_core_algo_step_2 <- function(odm_fp, file_metadata, bag_of_variables, initia
 #'
 #' @return list containing the values of the terminals
 #' @noRd
-run_core_algo_step_2_h5_list <- function(file_metadata, progress, closure, acc_init, arguments, bag_of_variables) {
-  h5_list <- file_metadata$h5_list
+run_core_algo_step_2_h5_list <- function(progress, closure, acc_init, arguments, bag_of_variables) {
+  h5_list <- bag_of_variables$h5_list
   acc <- acc_init
   cell_idx <- as.integer(c(0, cumsum(bag_of_variables$n_cells_in_files)))
   pos <- 1L
@@ -359,29 +353,6 @@ run_core_algo_step_2_h5_list <- function(file_metadata, progress, closure, acc_i
 
 #' Run mtx algo step 2 in: chunk mode on one large .mtx file
 #'
-#' @param file_metadata a list of file metadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
-#' @param progress progress
-#' @param closure closure function to calculate the terminals and write to the h5 file
-#' @param acc_init empty accumulator
-#' @param arguments arguments
-#'
-#' @return list containing the values of the terminals
-#' @noRd
-run_core_algo_step_2_mtxchunked <- function(file_metadata, progress, closure, acc_init, arguments) {
-  terminals <- readr::read_delim_chunked(file = file_metadata$mtx_fp,
-                                         chunk_size = file_metadata$n_lines_per_chunk,
-                                         skip = file_metadata$n_rows_to_skip,
-                                         callback = readr::AccumulateCallback$new(closure, acc = acc_init),
-                                         delim = " ",
-                                         col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (file_metadata$is_logical) NULL else arguments$umi_counts),
-                                         progress = progress,
-                                         col_types = if (file_metadata$is_logical) "ii" else "iii")
-  return(terminals)
-}
-
-#' Run mtx algo step 2 in list of .mtx files mode
-#'
-#' @param file_metadata a list of file metadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param progress progress
 #' @param closure closure function to calculate the terminals and write to the h5 file
 #' @param acc_init empty accumulator
@@ -390,18 +361,40 @@ run_core_algo_step_2_mtxchunked <- function(file_metadata, progress, closure, ac
 #'
 #' @return list containing the values of the terminals
 #' @noRd
-run_core_algo_step_2_mtxfilelist <- function(file_metadata, progress, closure, acc_init, arguments, bag_of_variables) {
+run_core_algo_step_2_mtxchunked <- function(progress, closure, acc_init, arguments, bag_of_variables) {
+  terminals <- readr::read_delim_chunked(file = bag_of_variables$mtx_fp,
+                                         chunk_size = bag_of_variables$n_lines_per_chunk,
+                                         skip = bag_of_variables$n_rows_to_skip,
+                                         callback = readr::AccumulateCallback$new(closure, acc = acc_init),
+                                         delim = " ",
+                                         col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (bag_of_variables$is_logical) NULL else arguments$umi_counts),
+                                         progress = progress,
+                                         col_types = if (bag_of_variables$is_logical) "ii" else "iii")
+  return(terminals)
+}
+
+#' Run mtx algo step 2 in list of .mtx files mode
+#'
+#' @param progress progress
+#' @param closure closure function to calculate the terminals and write to the h5 file
+#' @param acc_init empty accumulator
+#' @param arguments arguments
+#' @param bag_of_variables the bag of variables containing the variables to pass to the accumulator functions
+#'
+#' @return list containing the values of the terminals
+#' @noRd
+run_core_algo_step_2_mtxfilelist <- function(progress, closure, acc_init, arguments, bag_of_variables) {
   acc <- acc_init
-  mtx_fp <- file_metadata$mtx_fp
+  mtx_fp <- bag_of_variables$mtx_fp
   cell_idx <- as.integer(c(0, cumsum(bag_of_variables$n_cells_in_files)))
   pos <- 1L
   for (i in seq(1, length(mtx_fp))) {
     x <- readr::read_delim(file = mtx_fp[i],
                            delim = " ",
-                           skip = file_metadata$n_rows_to_skip[i],
-                           col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (file_metadata$is_logical) NULL else arguments$umi_counts),
+                           skip = bag_of_variables$n_rows_to_skip[i],
+                           col_names = c(arguments$feature_idxs, arguments$cell_idxs, if (bag_of_variables$is_logical) NULL else arguments$umi_counts),
                            progress = progress,
-                           col_types = if (file_metadata$is_logical) "ii" else "iii")
+                           col_types = if (bag_of_variables$is_logical) "ii" else "iii")
     #increase col_idx
     x$cell_idxs = x$cell_idxs + cell_idx[i]
     acc <- closure(x, pos, acc)
@@ -417,23 +410,22 @@ run_core_algo_step_2_mtxfilelist <- function(file_metadata, progress, closure, a
 #' (ii) write CSC matrix, write CSR matrix, compute covariate matrices
 #'
 #' @param odm_fp location to write the ondisc matrix to disk
-#' @param file_metadata a list of file metadata that contains (i) mtx_fp , (ii) is_logical , (iii) n_lines_per_chunk, and (iv) n_rows_to_skip
 #' @param covariates a list of two elements: the feature covariates and the cell covariates
 #' @param bag_of_variables environment containing named variables
 #' @param progress progress
 #' @noRd
-run_core_algo <- function(odm_fp, file_metadata, covariates, bag_of_variables, progress) {
+run_core_algo <- function(odm_fp, covariates, bag_of_variables, progress) {
   grammar <- initialize_grammar()
   symbols <- symbols_enum()
 
-  if (is.null(file_metadata$mtx_fp)){
+  if (is.null(bag_of_variables$mtx_fp)){
     file_type <- "h5_list"
   } else {
     file_type <- "mtx_fp"
   }
 
   # Run step 1 of core algorithm
-  row_ptrs <- run_core_algo_step_1(file_metadata, initialize_accumulator, bag_of_variables, file_type, progress)
+  row_ptrs <- run_core_algo_step_1(initialize_accumulator, bag_of_variables, file_type, progress)
 
   # Compute row pointer and write to disk.
   row_ptr <- c(0L, cumsum(row_ptrs[[1]]))
@@ -451,7 +443,7 @@ run_core_algo <- function(odm_fp, file_metadata, covariates, bag_of_variables, p
   terminal_functs_args <- lapply(terminal_symbols, get_accumulator_funct_arg_list)
 
   # Run step 2 of core algorithm
-  terminal_values_and_row_ptr <- run_core_algo_step_2(odm_fp, file_metadata, bag_of_variables, initial_accumulators,
+  terminal_values_and_row_ptr <- run_core_algo_step_2(odm_fp, bag_of_variables, initial_accumulators,
                                                      terminal_functs_args, row_ptr, row_ptrs[[2]], file_type, progress)
   # Compute and write column pointer to CSC matrix
   terminal_values <- terminal_values_and_row_ptr[[1]]
