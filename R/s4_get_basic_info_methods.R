@@ -1,7 +1,7 @@
 # Dimension
 ###########
 
-#' Get dimension
+#' Get dimension.
 #'
 #' Return the dimension of an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #'
@@ -12,7 +12,7 @@
 #' of the constituent modalities of `x`.
 #'
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -118,7 +118,7 @@ setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(ob
 # Head
 ######
 
-#' Head
+#' Print first few rows and columns.
 #'
 #' Print the first few rows and columns of an `ondisc_matrix`, `covariate_ondisc_matrix`, or `multimodal_ondisc_matrix`.
 #'
@@ -126,7 +126,7 @@ setMethod("show", signature = signature("multimodal_ondisc_matrix"), function(ob
 #' @name head
 #' @return NULL; called for printing
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -183,7 +183,7 @@ setMethod("head", signature = signature("multimodal_ondisc_matrix"), function(x)
 # Get feature names, feature ids, and cell barcodes
 ###################################################
 
-#' Get cell barcodes, feature names, and feature IDs
+#' Get cell barcodes, feature names, and feature IDs.
 #'
 #' Obtain cell barcodes, feature names, and feature IDs of an `ondisc_matrix`, `covariate_ondisc_matrix`,
 #' or `multimodal_ondisc_matrix`.
@@ -204,7 +204,7 @@ setMethod("head", signature = signature("multimodal_ondisc_matrix"), function(x)
 #' @return A character vector or list of character vectors containing the requested identifiers.
 #'
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'

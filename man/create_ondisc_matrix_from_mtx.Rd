@@ -50,7 +50,7 @@ The function can compute the following cell-specific and feature-specific covari
 The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 }
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples.
+# # Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 

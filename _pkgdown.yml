@@ -12,40 +12,59 @@ navbar:
   left:
   - text: Function reference
     href: reference/index.html
-  - text: Tutorials
-    menu:
-    - text: "Tutorial 1"
-      href: articles/tutorial_odm_class.html
-    - text: "Tutorial 2"
-      href: articles/tutorial_other_classes.html
-  - text: ondisc in action
-    menu:
-    - text: "Setting up a single-cell CRISPR screen"
-      href: articles/setting_up_a_crispr_screen.html
+  #- text: Tutorials
+  #  menu:
+  #  - text: "Tutorial 1"
+  #    href: articles/tutorial_odm_class.html
+  #  - text: "Tutorial 2"
+  #    href: articles/tutorial_other_classes.html
+  #  - text: ondisc in action
+  #  menu:
+  #  - text: "Setting up a single-cell CRISPR screen"
+  #    href: articles/setting_up_a_crispr_screen.html
 
 reference:
 - title: Initialize
-  desc: Initialize an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+  desc: Initialize an ondisc matrix from an mtx file (or list of mtx files), h5 file (or list of h5 files), or an in-memory R matrix.
   contents:
   - create_ondisc_matrix_from_mtx
+  - create_ondisc_matrix_from_h5_list
   - create_ondisc_matrix_from_R_matrix
-  - ondisc_matrix
-  - metadata_ondisc_matrix
-  - multimodal_ondisc_matrix
 
 - title: Subset
-  desc: Subset an `ondisc_matrix` or `metadata_ondisc_matrix` by feature or cell; subset a `multimodal_ondisc_matrix` by cell.
+  desc: Subset an ondisc matrix.
   contents:
   - subset-odm
 
-- title: Pull a submatrix into memory
-  desc: Pull a submatrix of an `ondisc_matrix` into memory.
+- title: Pull submatrix into memory
+  desc: Pull an arbitrary submatrix of an `ondisc_matrix` into memory.
   contents:
   - extract-odm
 
-- title: Obtain basic information
-  desc: Obtain basic information from an `ondisc_matrix`, `metadata_ondisc_matrix`, or `multimodal_ondisc_matrix`.
+- title: Getters
+  desc: Get cell barcodes, feature names, feature IDs, cell covariate matrices, feature covariate matrices, and other data.
   contents:
+  - get-names
+  - get-covariates
   - dim
   - head,ondisc_matrix-method
-  - get-names
+  - get_modality
+  - get_ondisc_matrix
+
+- title: Mutate functions
+  desc: Mutate the cell- or feature-specific covariate matrix.
+  contents:
+  - mutate-covariates
+
+- title: Read and write
+  desc: Read and write ondisc matrix objects
+  contents:
+  - read_odm
+  - save_odm
+
+- title: Classes
+  desc: The three classes provided by the package are `ondisc_matrix`, `covariate_ondisc_matrix`, and `multimodal_ondisc_matrix`
+  contents:
+  - ondisc_matrix
+  - covariate_ondisc_matrix
+  - multimodal_ondisc_matrix

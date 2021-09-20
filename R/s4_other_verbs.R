@@ -15,7 +15,7 @@
 #' @param ... arguments to dplyr::mutate
 #' @return an updated `covariate_ondisc_matrix` or `multimodal_ondisc_matrix` object as the same type as the input
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -45,7 +45,8 @@
 #' # delete gene_p_mito from cell covariate
 #' odm_multi_no_gene_p_mito <- mutate_cell_covariates(odm_multi, gene_p_mito = NULL)
 #' # add one column for cell covariate
-#' odm_p_feature_expressed <- mutate_cell_covariates(odm_multi, p_feature_expressed = gene_n_nonzero/(nrow(odm)[1]))
+#' odm_p_feature_expressed <- mutate_cell_covariates(odm_multi,
+#' p_feature_expressed = gene_n_nonzero/(nrow(odm)[1]))
 NULL
 
 # Generic functions
@@ -107,7 +108,7 @@ setMethod("mutate_feature_covariates", signature("multimodal_ondisc_matrix"), fu
 #' @return the requested modality
 #' @export
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -136,7 +137,7 @@ get_modality <- function(multimodal_mat, modality_name) {
 #' @param x an object of class `covariate_ondisc_matrix` or `multimodal_ondisc_matrix`.
 #' @return a covariate matrix (in data frame form)
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -212,7 +213,7 @@ setMethod("get_feature_covariates", signature("multimodal_ondisc_matrix"), funct
 #' @return the `ondisc_matrix` stored within the `covariate_ondisc_matrix` object
 #' @export
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'

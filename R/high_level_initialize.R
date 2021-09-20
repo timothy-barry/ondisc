@@ -22,7 +22,7 @@
 #' @export
 #'
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples.
+#' # # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -144,7 +144,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' @export
 #'
 #' @examples
-#' #' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' #' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -153,8 +153,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' # get file paths to three .h5 files; these files contain different cells measured on the same genes
 #' h5_list <- system.file("extdata/h5_list", package = "ondiscdata",
 #' c("batch-1_1.h5", "batch-1_2.h5", "batch_2-1.h5"))
-#' # create the ondisc matrix
-#' odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
+#' # create the ondisc matrix (commented out because of long (~2 min) running time)
+#' # odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
 create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, progress = TRUE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
   # general information about the .h5 file, the cells and the features

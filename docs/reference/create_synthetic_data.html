@@ -81,33 +81,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -133,7 +106,15 @@
     <p>Creates synthetic data for testing purposes. Optionally writes the data to disk.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_synthetic_data</span><span class='op'>(</span><span class='va'>n_row</span>, <span class='va'>n_col</span>, <span class='va'>logical_mat</span>, write_as_mtx_to_disk <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>create_synthetic_data</span><span class='op'>(</span>
+  <span class='va'>n_row</span>,
+  <span class='va'>n_col</span>,
+  <span class='va'>logical_mat</span>,
+  start_pos <span class='op'>=</span> <span class='fl'>0L</span>,
+  write_as_mtx_to_disk <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  write_as_h5_to_disk <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  file_dir <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,8 +132,20 @@
       <td><p>boolean indicating whether a given dataset is logical (TRUE) or integer (FALSE).</p></td>
     </tr>
     <tr>
+      <th>start_pos</th>
+      <td><p>position to start numbering the barcodes</p></td>
+    </tr>
+    <tr>
       <th>write_as_mtx_to_disk</th>
       <td><p>boolean indicating whether to write the mtx file, barcodes file, and features file to disk as side-effect.</p></td>
+    </tr>
+    <tr>
+      <th>write_as_h5_to_disk</th>
+      <td><p>boolean indicating whether to write the .h5 list of files to disk as side-effect.</p></td>
+    </tr>
+    <tr>
+      <th>file_dir</th>
+      <td><p>directory in which to write the data to disk</p></td>
     </tr>
     </table>
 
@@ -165,7 +158,8 @@
 (iv) number of nonzero entries in expression matrix
 (v) file path to the .mtx file
 (vi) file path to the barcodes.tsv file
-(vii) file path to the features.tsv file</p>
+(vii) file path to the features.tsv file
+(viii) OR a file path to the .h5 file</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>n_row</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
@@ -185,7 +179,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create an ondisc_matrix from a .mtx file. — create_ondisc_matrix_from_mtx • ondisc</title>
+<title>Create an ondisc_matrix from a single .mtx file or a list of .mtx files. — create_ondisc_matrix_from_mtx • ondisc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Create an ondisc_matrix from a .mtx file. — create_ondisc_matrix_from_mtx" />
-<meta property="og:description" content="Initializes an ondisc_matrix from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an ondisc_matrix along with cell-specific and feature-specific covariate matrices." />
+<meta property="og:title" content="Create an ondisc_matrix from a single .mtx file or a list of .mtx files. — create_ondisc_matrix_from_mtx" />
+<meta property="og:description" content="Initializes an ondisc_matrix from .mtx file(s), a features.tsv file, and barcode.tsv file(s).
+The number of .mtx files should be the same of the number of the barcodes.tsv files. The list of .mtx files should share the same features.tsv file.
+Returns an ondisc_matrix along with cell-specific and feature-specific covariate matrices." />
 
 
 
@@ -81,33 +83,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -124,13 +99,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create an <code>ondisc_matrix</code> from a .mtx file.</h1>
+    <h1>Create an <code>ondisc_matrix</code> from a single .mtx file or a list of .mtx files.</h1>
     
     <div class="hidden name"><code>create_ondisc_matrix_from_mtx.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Initializes an <code>ondisc_matrix</code> from a .mtx file, a features.tsv file, and a barcodes.tsv file. Returns an <code>ondisc_matrix</code> along with cell-specific and feature-specific covariate matrices.</p>
+    <p>Initializes an <code>ondisc_matrix</code> from .mtx file(s), a features.tsv file, and barcode.tsv file(s).
+The number of .mtx files should be the same of the number of the barcodes.tsv files. The list of .mtx files should share the same features.tsv file.
+Returns an <code>ondisc_matrix</code> along with cell-specific and feature-specific covariate matrices.</p>
     </div>
 
     <pre class="usage"><span class='fu'>create_ondisc_matrix_from_mtx</span><span class='op'>(</span>
@@ -140,6 +117,7 @@
   <span class='va'>odm_fp</span>,
   metadata_fp <span class='op'>=</span> <span class='cn'>NULL</span>,
   n_lines_per_chunk <span class='op'>=</span> <span class='fl'>3e+08</span>,
+  barcode_suffixes <span class='op'>=</span> <span class='cn'>NULL</span>,
   progress <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
@@ -148,7 +126,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>mtx_fp</th>
-      <td><p>file path to a .mtx file storing the expression data. The .mtx file can represent either an integer matrix or a logical (i.e., binary) matrix. If the .mtx file contains only two columns (after the initial three-column row of metadata), then the .mtx file is assumed to represent a logical matrix.</p></td>
+      <td><p>file path to .mtx file(s) storing the expression data. The .mtx file can represent either an integer matrix or a logical (i.e., binary) matrix. If the .mtx file contains only two columns (after the initial three-column row of metadata), then the .mtx file is assumed to represent a logical matrix.</p></td>
     </tr>
     <tr>
       <th>barcodes_fp</th>
@@ -160,19 +138,23 @@
     </tr>
     <tr>
       <th>odm_fp</th>
-      <td><p>location to write the ondisc matrix to disk</p></td>
+      <td><p>location to write the ondisc matrix to disk.</p></td>
     </tr>
     <tr>
       <th>metadata_fp</th>
-      <td><p>location to write the me metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.</p></td>
+      <td><p>(optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.</p></td>
     </tr>
     <tr>
       <th>n_lines_per_chunk</th>
       <td><p>(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.</p></td>
     </tr>
     <tr>
+      <th>barcode_suffixes</th>
+      <td><p>(optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of <code>barcodes_fp</code>. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.</p></td>
+    </tr>
+    <tr>
       <th>progress</th>
-      <td><p>(optional; default FALSE) print progress messages?</p></td>
+      <td><p>(optional; default TRUE) print progress messages?</p></td>
     </tr>
     </table>
 
@@ -189,71 +171,50 @@
 <p>The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># First example: initialize a `covariate_ondisc_matrix`</span>
+    <pre class="examples"><div class='input'><span class='co'># # Please install the `ondiscdata` package before running the examples.</span>
+<span class='co'># install.packages("devtools")</span>
+<span class='co'># devtools::install_github("Katsevich-Lab/ondiscdata")</span>
+
+<span class='co'># First example: initialize a `covariate_ondisc_matrix`</span>
 <span class='co'># using simulated expression data; store output in tempdir()</span>
 <span class='va'>tempfile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>tempfile</span>, <span class='st'>"/expression_odm"</span><span class='op'>)</span>
-<span class='va'>file_locs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,package <span class='op'>=</span> <span class='st'>"ondisc"</span>,
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gene_expression.mtx"</span>, <span class='st'>"genes.tsv"</span>, <span class='st'>"cell_barcodes.tsv"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>file_locs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/mtx"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"matrix.mtx"</span>, <span class='st'>"features.tsv"</span>, <span class='st'>"barcodes.tsv"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>file_locs</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"expressions"</span>, <span class='st'>"features"</span>, <span class='st'>"barcodes"</span><span class='op'>)</span>
 <span class='va'>expression_data</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_mtx</span><span class='op'>(</span>mtx_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"expressions"</span><span class='op'>]</span><span class='op'>]</span>,
 barcodes_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"barcodes"</span><span class='op'>]</span><span class='op'>]</span>,
 features_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"features"</span><span class='op'>]</span><span class='op'>]</span>,
-odm_fp <span class='op'>=</span> <span class='va'>odm_fp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; |========                                                                 | 11%|=================                                                        | 23%|==========================                                               | 36%|====================================                                     | 48%|=============================================                            | 61%|======================================================                   | 73%|===============================================================          | 86%|=========================================================================| 98%|=========================================================================| 100%
-#&gt; Writing CSC data.
-#&gt; Writing CSR data.
-#&gt; </div><div class='input'>
-<span class='co'># Second example: initialize a `covariate_ondisc_matrix` using simulated</span>
-<span class='co'># gRNA perturbation data; store in tempdir()</span>
-<span class='va'>tempfile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>tempfile</span>, <span class='st'>"/expression_odm"</span><span class='op'>)</span>
-<span class='va'>file_locs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, package <span class='op'>=</span> <span class='st'>"ondisc"</span>,
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"perturbation.mtx"</span>, <span class='st'>"guides.tsv"</span>, <span class='st'>"cell_barcodes.tsv"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>file_locs</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"perturbations"</span>, <span class='st'>"features"</span>, <span class='st'>"barcodes"</span><span class='op'>)</span>
-<span class='va'>perturbation_data</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_mtx</span><span class='op'>(</span>mtx_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"perturbations"</span><span class='op'>]</span><span class='op'>]</span>,
-barcodes_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"barcodes"</span><span class='op'>]</span><span class='op'>]</span>,
-features_fp <span class='op'>=</span> <span class='va'>file_locs</span><span class='op'>[[</span><span class='st'>"features"</span><span class='op'>]</span><span class='op'>]</span>,
+n_lines_per_chunk <span class='op'>=</span> <span class='fl'>537000</span>,
 odm_fp <span class='op'>=</span> <span class='va'>odm_fp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; Writing CSC data.
+#&gt; Writing CSR data.
+#&gt; 
+#&gt; Writing CSC data.
+#&gt; Writing CSR data.
+#&gt; 
+#&gt; Writing CSC data.
+#&gt; Writing CSR data.
+#&gt; 
+#&gt; Writing CSC data.
 #&gt; Writing CSR data.</div><div class='input'>
-
-<span class='co'># Third example: initialize from a list of .mtx files</span>
+<span class='co'># Second example: initialize from a list of .mtx files</span>
 <span class='va'>tempfile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_new_directory.html'>create_new_directory</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>odm_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>tempfile</span>, <span class='st'>"/expression_odm"</span><span class='op'>)</span>
-<span class='va'>n_mat</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
-<span class='va'>n_row_multi</span> <span class='op'>&lt;-</span> <span class='fl'>300</span>
-<span class='va'>n_col_multi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>300</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='va'>n_mat</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>col_multi_cumsum</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>n_col_multi</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>logical_mat_multi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>vector</a></span><span class='op'>(</span>mode <span class='op'>=</span> <span class='st'>"logical"</span>, length <span class='op'>=</span> <span class='va'>n_mat</span><span class='op'>)</span>
-<span class='co'>#' generate the matrices using create_synthetic_data</span>
-<span class='va'>r_mats_plus_data_multi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>vector</a></span><span class='op'>(</span>mode <span class='op'>=</span> <span class='st'>"list"</span>, length <span class='op'>=</span> <span class='va'>n_mat</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='va'>n_mat</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>r_mats_plus_data_multi</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_synthetic_data.html'>create_synthetic_data</a></span><span class='op'>(</span>n_row <span class='op'>=</span> <span class='va'>n_row_multi</span>,
-                                                       n_col <span class='op'>=</span> <span class='va'>n_col_multi</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span>,
-                                                       logical_mat <span class='op'>=</span> <span class='va'>logical_mat_multi</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>)</span>
-  <span class='va'>r_mats_plus_data_multi</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>features_df</span> <span class='op'>&lt;-</span> <span class='va'>r_mats_plus_data_multi</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>features_df</span>
-  <span class='va'>r_mats_plus_data_multi</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>features_fp</span> <span class='op'>&lt;-</span> <span class='va'>r_mats_plus_data_multi</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>features_fp</span>
-<span class='op'>}</span>
-<span class='va'>mtx_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span>X <span class='op'>=</span> <span class='va'>r_mats_plus_data_multi</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>i</span><span class='op'>)</span> <span class='va'>i</span><span class='op'>$</span><span class='va'>matrix_fp</span><span class='op'>)</span>
-<span class='va'>barcodes_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span>X <span class='op'>=</span> <span class='va'>r_mats_plus_data_multi</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>i</span><span class='op'>)</span> <span class='va'>i</span><span class='op'>$</span><span class='va'>barcodes_fp</span><span class='op'>)</span>
-<span class='va'>features_fp</span> <span class='op'>&lt;-</span> <span class='va'>r_mats_plus_data_multi</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>features_fp</span>
+<span class='va'>mtx_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/mtx_list"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mtx_dir1/matrix.mtx"</span>, <span class='st'>"mtx_dir2/matrix.mtx"</span>, <span class='st'>"mtx_dir3/matrix.mtx"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>barcodes_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/mtx_list"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mtx_dir1/barcodes.tsv"</span>, <span class='st'>"mtx_dir2/barcodes.tsv"</span>, <span class='st'>"mtx_dir3/barcodes.tsv"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>features_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"mtx_list/mtx_dir1/features.tsv"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
 <span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'>create_ondisc_matrix_from_mtx</span><span class='op'>(</span><span class='va'>mtx_fp</span>, <span class='va'>barcodes_fp</span>, <span class='va'>features_fp</span>, <span class='va'>odm_fp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; indexing matrix.mtx [=======================================] 1.99GB/s, eta:  0s                                                                                indexing matrix.mtx [=======================================] 2.00GB/s, eta:  0s                                                                                indexing matrix.mtx [=======================================] 4.53GB/s, eta:  0s                                                                                indexing matrix.mtx [=======================================] 2.04GB/s, eta:  0s                                                                                indexing matrix.mtx [=======================================] 2.34GB/s, eta:  0s                                                                                indexing matrix.mtx [=======================================] 2.93GB/s, eta:  0s                                                                                
+</div><div class='output co'>#&gt; indexing matrix.mtx [===========--------------------------] 147.58GB/s, eta:  0sindexing matrix.mtx [=====================================] 336.32MB/s, eta:  0s                                                                                indexing matrix.mtx [====---------------------------------] 157.74GB/s, eta:  0sindexing matrix.mtx [=====================================] 269.11MB/s, eta:  0s                                                                                indexing matrix.mtx [======-------------------------------] 229.98GB/s, eta:  0sindexing matrix.mtx [=====================================] 283.15MB/s, eta:  0s                                                                                indexing matrix.mtx [========-----------------------------] 202.64GB/s, eta:  0sindexing matrix.mtx [=====================================] 317.58MB/s, eta:  0s                                                                                
 #&gt; Writing CSC data.
 #&gt; Writing CSR data.
-#&gt; indexing matrix.mtx [=======================================] 2.28GB/s, eta:  0s                                                                                
+#&gt; indexing matrix.mtx [====---------------------------------] 145.12GB/s, eta:  0sindexing matrix.mtx [=====================================] 276.65MB/s, eta:  0s                                                                                
 #&gt; Writing CSC data.
 #&gt; Writing CSR data.
-#&gt; indexing matrix.mtx [=======================================] 3.56GB/s, eta:  0s                                                                                
-#&gt; Writing CSC data.
-#&gt; Writing CSR data.
-#&gt; indexing matrix.mtx [=======================================] 1.85GB/s, eta:  0s                                                                                
-#&gt; Writing CSC data.
-#&gt; Writing CSR data.
-#&gt; indexing matrix.mtx [=======================================] 2.74GB/s, eta:  0s                                                                                
+#&gt; indexing matrix.mtx [======-------------------------------] 178.11GB/s, eta:  0sindexing matrix.mtx [=====================================] 279.05MB/s, eta:  0s                                                                                
 #&gt; Writing CSC data.
 #&gt; Writing CSR data.</div></pre>
   </div>
@@ -267,7 +228,7 @@ odm_fp <span class='op'>=</span> <span class='va'>odm_fp</span><span class='op'>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

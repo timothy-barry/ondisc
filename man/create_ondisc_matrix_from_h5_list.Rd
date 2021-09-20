@@ -51,7 +51,7 @@ The function can compute the following cell-specific and feature-specific covari
 The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 }
 \examples{
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 
@@ -60,6 +60,6 @@ odm_fp <- paste0(tempfile, "/expression_odm")
 # get file paths to three .h5 files; these files contain different cells measured on the same genes
 h5_list <- system.file("extdata/h5_list", package = "ondiscdata",
 c("batch-1_1.h5", "batch-1_2.h5", "batch_2-1.h5"))
-# create the ondisc matrix
-odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
+# create the ondisc matrix (commented out because of long (~2 min) running time)
+# odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
 }

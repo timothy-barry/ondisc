@@ -40,7 +40,7 @@ For \code{covariate_ondisc_matrix}, \code{get_cell_covariates} function can be u
 For\code{multimodal_ondisc_matrix}, \code{get_cell_covariates} function can be used to get the \code{global_cell_covariates} but \code{get_feature_covariates} is not supported.
 }
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 

@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="ondisc_matrix class — ondisc_matrix" />
 <meta property="og:description" content="An ondisc_matrix represents a feature-by-cell expression matrix stored on-disk.
-Construct an ondisc_matrix from an initialized .h5 file." />
+Constructor function for ondisc_matrix class." />
 
 
 
@@ -73,7 +73,7 @@ Construct an ondisc_matrix from an initialized .h5 file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ondisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
       </span>
     </div>
 
@@ -81,33 +81,6 @@ Construct an ondisc_matrix from an initialized .h5 file." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../reference/index.html">Function reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -132,55 +105,82 @@ Construct an ondisc_matrix from an initialized .h5 file." />
 
     <div class="ref-description">
     <p>An <code>ondisc_matrix</code> represents a feature-by-cell expression matrix stored on-disk.</p>
-<p>Construct an <code>ondisc_matrix</code> from an initialized .h5 file.</p>
+<p>Constructor function for <code>ondisc_matrix</code> class.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ondisc_matrix</span><span class='op'>(</span><span class='va'>h5_file</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>ondisc_matrix</span><span class='op'>(</span>
+  h5_file <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  logical_mat <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  underlying_dimension <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  cell_subset <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  feature_subset <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  feature_ids <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  feature_names <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  cell_barcodes <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  odm_id <span class='op'>=</span> <span class='cn'>NA_integer_</span>
+<span class='op'>)</span>
 
-<span class='fu'>ondisc_matrix</span><span class='op'>(</span><span class='va'>h5_file</span><span class='op'>)</span></pre>
+<span class='fu'>ondisc_matrix</span><span class='op'>(</span>
+  h5_file <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  logical_mat <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  underlying_dimension <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  cell_subset <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  feature_subset <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  feature_ids <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  feature_names <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  cell_barcodes <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  odm_id <span class='op'>=</span> <span class='cn'>NA_integer_</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>h5_file</th>
-      <td><p>a .h5 file storing the on-disk portion of an initialized <code>ondisc_matrix</code> object.</p></td>
+      <td><p>location of backing .odm file on disk.</p></td>
+    </tr>
+    <tr>
+      <th>logical_mat</th>
+      <td><p>boolean indicating whether matrix is logical</p></td>
+    </tr>
+    <tr>
+      <th>underlying_dimension</th>
+      <td><p>dimension of underlying expression matrix</p></td>
+    </tr>
+    <tr>
+      <th>cell_subset</th>
+      <td><p>integer vector indicating cells in use</p></td>
+    </tr>
+    <tr>
+      <th>feature_subset</th>
+      <td><p>integet vector indicating features in use</p></td>
+    </tr>
+    <tr>
+      <th>feature_ids</th>
+      <td><p>character vector of feature IDs</p></td>
+    </tr>
+    <tr>
+      <th>feature_names</th>
+      <td><p>character vector of feature names</p></td>
+    </tr>
+    <tr>
+      <th>cell_barcodes</th>
+      <td><p>character vector of cell barcodes</p></td>
+    </tr>
+    <tr>
+      <th>odm_id</th>
+      <td><p>unique (with high probability) integer</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an initialized <code>ondisc_matrix</code> object.</p>
+    <p>initialized <code>ondisc_matrix</code> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>It is best to avoid interacting with the slots of an <code>ondisc_matrix</code> directly. Instead, use the functions
 and operators provided by the package.</p>
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    
-
-<dl>
-<dt><code>h5_file</code></dt><dd><p>path to an initialized .h5 file stored on-disk.</p></dd>
-
-<dt><code>logical_mat</code></dt><dd><p>logical value indicating whether the matrix is logical.</p></dd>
-
-<dt><code>cell_subset</code></dt><dd><p>integer vector recording the cells currently in use.</p></dd>
-
-<dt><code>feature_subset</code></dt><dd><p>integer vector recording the features currently in use.</p></dd>
-
-<dt><code>underlying_dimension</code></dt><dd><p>the dimension of the (unsubset) expression matrix.</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># NOTE: You must create the HDF5 file "expressions.h5" to run this example.</span>
-<span class='co'># Navigate to the help file of "create_ondisc_matrix_from_mtx"</span>
-<span class='co'># (via ?create_ondisc_matrix_from_mtx), and execute the code in the first code block.</span>
-<span class='va'>h5_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"/expressions.h5"</span><span class='op'>)</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span><span class='op'>(</span><span class='va'>h5_fp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>odm</span> <span class='op'>&lt;-</span> <span class='fu'>ondisc_matrix</span><span class='op'>(</span>h5_file <span class='op'>=</span> <span class='va'>h5_fp</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -192,7 +192,7 @@ and operators provided by the package.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://timothy-barry.github.io/'>Tim Barry</a>.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

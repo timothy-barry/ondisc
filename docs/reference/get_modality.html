@@ -81,33 +81,6 @@
         <li>
   <a href="../reference/index.html">Function reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Tutorials
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/tutorial_odm_class.html">Tutorial 1</a>
-    </li>
-    <li>
-      <a href="../articles/tutorial_other_classes.html">Tutorial 2</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    ondisc in action
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/setting_up_a_crispr_screen.html">Setting up a single-cell CRISPR screen</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -152,6 +125,21 @@
 
     <p>the requested modality</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Please install the `ondiscdata` package before running the examples.</span>
+<span class='co'># install.packages("devtools")</span>
+<span class='co'># devtools::install_github("Katsevich-Lab/ondiscdata")</span>
+
+<span class='va'>odm_gene_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>metadata_gene_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gene/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>odm_gene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='save_odm.html'>read_odm</a></span><span class='op'>(</span><span class='va'>odm_gene_fp</span>, <span class='va'>metadata_gene_fp</span><span class='op'>)</span>
+<span class='va'>odm_gRNA_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gRNA/matrix.odm"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>metadata_gRNA_fp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"odm/gRNA/metadata.rds"</span>, package <span class='op'>=</span> <span class='st'>"ondiscdata"</span><span class='op'>)</span>
+<span class='va'>odm_gRNA</span> <span class='op'>&lt;-</span> <span class='fu'><a href='save_odm.html'>read_odm</a></span><span class='op'>(</span><span class='va'>odm_gRNA_fp</span>, <span class='va'>metadata_gRNA_fp</span><span class='op'>)</span>
+
+<span class='va'>odm_multi</span> <span class='op'>&lt;-</span> <span class='fu'><a href='multimodal_ondisc_matrix.html'>multimodal_ondisc_matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gene <span class='op'>=</span> <span class='va'>odm_gene</span>, gRNA <span class='op'>=</span> <span class='va'>odm_gRNA</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>odm_gene</span> <span class='op'>&lt;-</span> <span class='fu'>get_modality</span><span class='op'>(</span><span class='va'>odm_multi</span>, <span class='st'>"gene"</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -163,7 +151,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Tim Barry.</p>
+  <p>Developed by Tim Barry, Songcheng Dai.</p>
 </div>
 
 <div class="pkgdown">

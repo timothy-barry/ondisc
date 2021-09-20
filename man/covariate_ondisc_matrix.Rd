@@ -34,7 +34,7 @@ Construct a \code{covariate_ondisc_matrix} by passing an \code{ondisc_matrix}, a
 }}
 
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 

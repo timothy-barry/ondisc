@@ -17,7 +17,7 @@
 #' @return An appropriately subset object of the same class as `x`.
 #' @name subset-odm
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -182,7 +182,7 @@ setMethod(f = "[",
 #' @return a matrix (as implemented by the Matrix package).
 #' @name extract-odm
 #' @examples
-#' # Use `ondiscdata` package for the examlpes, please install the package before running the examples
+#' # Please install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'

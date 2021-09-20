@@ -9,7 +9,7 @@
 \alias{nrow}
 \alias{ncol,multimodal_ondisc_matrix-method}
 \alias{nrow,multimodal_ondisc_matrix-method}
-\title{Get dimension}
+\title{Get dimension.}
 \usage{
 \S4method{dim}{ondisc_matrix}(x)
 
@@ -37,7 +37,7 @@ of the constituent modalities of \code{x}.
 Return the dimension of an \code{ondisc_matrix}, \code{covariate_ondisc_matrix}, or \code{multimodal_ondisc_matrix}.
 }
 \examples{
-# Use `ondiscdata` package for the examlpes, please install the package before running the examples
+# Please install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 
