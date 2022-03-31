@@ -18,8 +18,7 @@ differential expression analyses.
 
 **NOTE**: The package currently is undergoing considerable API changes.
 Use with caution. We anticipate that an updated, stable version of the
-package (along with detailed documentation) will be available in
-September, 2021.
+package (along with detailed documentation) will be available in May 2022.
 
 <!-- Single-cell datasets are growing in size, posing challenges as well as opportunities to biology researchers. `ondisc` (short for "on-disk single cell") is an R package that enables users to easily and efficiently analyze large-scale single-cell data. `ondisc` makes computing on large-scale single-cell data **FUN**:
 
@@ -31,11 +30,6 @@ Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/t
 
 ## Installation
 
-You can install the package from CRAN with:
-
-``` r
-install.packages("ondisc")
-```
 
 You can install the development version from Github with:
 
