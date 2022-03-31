@@ -15,7 +15,7 @@
 #' @param ... arguments to dplyr::mutate
 #' @return an updated `covariate_ondisc_matrix` or `multimodal_ondisc_matrix` object as the same type as the input
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
+#' # Install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -108,7 +108,7 @@ setMethod("mutate_feature_covariates", signature("multimodal_ondisc_matrix"), fu
 #' @return the requested modality
 #' @export
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
+#' # Install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -137,7 +137,7 @@ get_modality <- function(multimodal_mat, modality_name) {
 #' @param x an object of class `covariate_ondisc_matrix` or `multimodal_ondisc_matrix`.
 #' @return a covariate matrix (in data frame form)
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
+#' # Install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -213,7 +213,7 @@ setMethod("get_feature_covariates", signature("multimodal_ondisc_matrix"), funct
 #' @return the `ondisc_matrix` stored within the `covariate_ondisc_matrix` object
 #' @export
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
+#' # Install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
