@@ -105,6 +105,24 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
                                          repr = "R",
                                          index1 = FALSE,
                                          x = r_matrix@x)
+  } else if (is(r_matrix, "dgRMatrix")) { # CSR format
+    r_matrix_t <- Matrix::t(r_matrix)
+    csc_r_matrix <- Matrix::sparseMatrix(i = r_matrix_t@j,
+                                         p = r_matrix_t@p,
+                                         dims = r_matrix@Dim,
+                                         repr = "C",
+                                         index1 = FALSE,
+                                         x = r_matrix_t@x)
+    csr_r_matrix <- r_matrix
+  } else if (is(r_matrix, "dgCMatrix")) { # CSC format
+    csc_r_matrix <- r_matrix
+    r_matrix_t <- Matrix::t(r_matrix)
+    csr_r_matrix <- Matrix::sparseMatrix(j = r_matrix_t@i,
+                                         p = r_matrix_t@p,
+                                         dims = r_matri@Dim,
+                                         repr = "R",
+                                         index1 = FALSE,
+                                         x = r_matrix_t@x)
   } else { # dense case
     csc_r_matrix <- as(r_matrix, "dgCMatrix")
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
