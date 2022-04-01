@@ -47,7 +47,7 @@ The modification is made on the \code{global_cell_covariates} but not the cell-s
 An updated \code{multimodal_ondisc_matrix} will be returned.
 }
 \examples{
-# Please install the `ondiscdata` package before running the examples.
+# Install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 

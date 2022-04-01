@@ -16,7 +16,9 @@
 #' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
 #' cov_odm <- read_odm(odm_fp, metadata_fp)
+#' # first, subset to examine highly expressed features only
 #' cov_odm_highly_exp <- cov_odm[get_highly_expressed_features(cov_odm),]
+#' # now, extract the highly variable features
 #' highly_variable_features <- get_highly_variable_features(cov_odm_highly_exp)
 get_highly_variable_features <- function(covariate_odm, n_features = 250) {
   covariate_odm %>%
@@ -56,6 +58,26 @@ get_highly_expressed_features <- function(covariate_odm, frac_expressed = 0.05) 
 }
 
 
+#' Get cells with moderate sequencing depth
+#'
+#' Obtains the cells with a library size greater than `lower_percentile` and less than `upper_percentile`.
+#'
+#' @param covariate_odm a `covariate_ondisc_matrix` object
+#' @param lower_percentile lower library size percentile
+#' @param upper_percentile upper library size percentile
+#'
+#' @return a vector of cell barcodes
+#' @export
+#'
+#' @examples
+#' # Install the `ondiscdata` package before running the examples.
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' cov_odm <- read_odm(odm_fp, metadata_fp)
+#' cells_to_keep <- get_cells_with_moderate_seq_depth(cov_odm)
 get_cells_with_moderate_seq_depth <- function(covariate_odm, lower_percentile = 0.03, upper_percentile = 0.97) {
   lib_sizes <- covariate_odm %>%
     get_cell_covariates() %>%
@@ -70,6 +92,25 @@ get_cells_with_moderate_seq_depth <- function(covariate_odm, lower_percentile = 
 }
 
 
+#' Get cells with low proportion mitochondrial reads
+#'
+#' Obtains the cells with proportion mitochondrial reads below a given threshold.
+#'
+#' @param covariate_odm a `covariate_ondisc_matrix` object
+#' @param p_mito_thresh proportion mitochondrial reads threshold
+#'
+#' @return a vector of cell barcodes
+#' @export
+#'
+#' @examples
+#' # Install the `ondiscdata` package before running the examples.
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' cov_odm <- read_odm(odm_fp, metadata_fp)
+#' cells_to_keep <- get_cells_with_low_p_mito(cov_odm)
 get_cells_with_low_p_mito <- function(covariate_odm, p_mito_thresh = 0.1) {
   covariate_odm %>% get_cell_covariates() %>%
     dplyr::filter(p_mito <= p_mito_thresh) %>%

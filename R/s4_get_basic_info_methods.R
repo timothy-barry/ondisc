@@ -94,7 +94,7 @@ setMethod("show", signature = signature("ondisc_matrix"), function(object) {
 setMethod("show", signature = signature("covariate_ondisc_matrix"), function(object) {
   cell_covariates <- colnames(object@cell_covariates)
   feature_covariates <- colnames(object@feature_covariates)
-  cat("A covariate_ondisc_matrix with the following components:\n")
+  cat(paste0("A ", if (object@post_load_function_present) crayon::blue("normalized ") else "", "covariate_ondisc_matrix with the following components:\n"))
   cat("\t"); show(object@ondisc_matrix)
   paste0("\tA cell covariate matrix with columns ", paste(crayon::blue(cell_covariates), collapse = ", "), ".\n") %>% cat()
   paste0("\tA feature covariate matrix with columns ", paste(crayon::blue(feature_covariates), collapse = ", "), ".\n") %>% cat()

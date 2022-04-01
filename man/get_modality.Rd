@@ -18,7 +18,7 @@ the requested modality
 Obtains a given modality from a multimodal_ondisc_matrix object by name.
 }
 \examples{
-# Please install the `ondiscdata` package before running the examples.
+# Install the `ondiscdata` package before running the examples.
 # install.packages("devtools")
 # devtools::install_github("Katsevich-Lab/ondiscdata")
 
