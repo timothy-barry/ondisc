@@ -12,11 +12,6 @@ internal_normalize_by_lib_size <- function(out, x, ...) {
   args <- list(...)
   # if cells were subsetted, then subset the cell libs
   cell_lib_sizes <- if ("j" %in% names(args)) x@cell_covariates$n_umis[args$j] else x@cell_covariates$n_umis
-  # apply standard formula
-  #if (nrow(out) == 1) {
-  #  new_out <- log(1 + out/cell_lib_sizes * scale_factor)
-  #} else {
-  #}
   Matrix::t(log(1 + (Matrix::t(out)/cell_lib_sizes * scale_factor)))
 }
 
@@ -33,9 +28,10 @@ internal_normalize_by_lib_size <- function(out, x, ...) {
 normalize_by_regression <- function(covariate_odm, covariates = c("p_mito", "lg_n_nonzero"), offset = "lg_n_umis") {
   EXPRESSION_CUTOFF <- 10
   if (covariate_odm@post_load_function_present) stop("Data already normalized.")
-  covariate_matrix <- get_cell_covariates(covariate_odm)
+  if (covariate_odm@ondisc_matrix@logical_mat) stop("`covariate_odm` is logical; `normalize_by_regression` works only on integer data.")
 
   # verify that the covariates and offset are in fact columns of the cell covariate matrix
+  covariate_matrix <- get_cell_covariates(covariate_odm)
   if (!all(c(covariates, offset) %in% colnames(covariate_matrix))) {
     stop("Ensure that `covariates` and `offset` are columns of the cell covariate matrix of `covariate_odm` (obtainable via `get_cell_covariates(covariate_odm)` and modifiable via `mutate_cell_covariates(covariate_odm)`).")
   }
@@ -59,7 +55,7 @@ normalize_by_regression <- function(covariate_odm, covariates = c("p_mito", "lg_
   covariate_odm@feature_covariates <- dplyr::mutate(covariate_odm@feature_covariates, fitted_coefs_df)
   covariate_odm@misc <- list(offset = offset, covariates = covariates)
 
-  # finally, update fields of
+  # finally, update fields of covariate_odm
   covariate_odm@post_load_function_present <- TRUE
   covariate_odm@post_load_function <- compute_pearson_residuals
   return(covariate_odm)

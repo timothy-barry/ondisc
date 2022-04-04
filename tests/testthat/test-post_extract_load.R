@@ -40,3 +40,19 @@ test_that("normalize by regression", {
   }
   expect_true(TRUE)
 })
+
+
+test_that("normalize by lib size", {
+  for (i in seq(1, n_datasets)) {
+    cov_odm <- cov_odms[[i]]
+    scale_factor <- 10000
+    good_cells <- cov_odm %>% get_cell_covariates() %>%
+      dplyr::filter(n_nonzero > 0) %>% row.names()
+    cov_odm <- cov_odm[,good_cells]
+    cov_odm_norm <- normalize_by_lib_size(cov_odm, scale_factor)
+    my_feats <- sample(x = get_feature_ids(cov_odm_norm), size = sample(seq(1, 10)))
+    compare1 <- cov_odm_norm[[my_feats,]]
+    compare2 <- Matrix::t(log(1 + (Matrix::t(cov_odm[[my_feats,]])/cov_odm@cell_covariates$n_umis * scale_factor)))
+    expect_true(all(abs(compare1 - compare2) < 1e-4))
+  }
+})
