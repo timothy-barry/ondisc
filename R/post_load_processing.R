@@ -29,6 +29,7 @@ internal_normalize_by_lib_size <- function(out, x, ...) {
 # # add log-transformed n_umis, n_nonero
 # covariate_odm <- covariate_odm %>% mutate_cell_covariates(lg_n_umis = log(n_umis), lg_n_nonzero = log(n_nonzero))
 # covariate_odm_norm <- normalize_by_regression(covariate_odm)
+# covariate_odm_norm <- normalize_by_regression(covariate_odm, covariates = NULL)
 normalize_by_regression <- function(covariate_odm, covariates = c("p_mito", "lg_n_nonzero"), offset = "lg_n_umis") {
   EXPRESSION_CUTOFF <- 10
   if (covariate_odm@post_load_function_present) stop("Data already normalized.")
@@ -42,7 +43,7 @@ normalize_by_regression <- function(covariate_odm, covariates = c("p_mito", "lg_
   # Carry out the Poisson regressions, saving the fitted coefficients
   feature_ids <- get_feature_ids(covariate_odm)
   my_form <- paste0("feature_exp ~ ", paste0(covariates, collapse = " + "), " + offset(", offset, ")")
-  fitted_coefs <- lapply(X = feature_ids, function(feature_id) {
+  fitted_coefs <- lapply(X = feature_ids, function(feature_id) { # PARALLELIZE?
     feature_exp <- as.numeric(covariate_odm[[feature_id,]])
     if (sum(feature_exp) <= EXPRESSION_CUTOFF) stop(paste0("The feature ", feature_id, " is too lowly expressed to normalize via regression; remove this feature from the `covariate_odm` and try again."))
     fit <- stats::glm(formula = my_form, family = stats::poisson(),
@@ -72,19 +73,20 @@ compute_pearson_residuals <- function(out, x, ...) {
   # compute the fitted values (apply over the rows of feature covariates)
   offset <- x@misc$offset
   covariates <- x@misc$covariates
-  covariates_matrix <- as.matrix(cell_covariates[,covariates])
-  coefs_matrix <- as.matrix(feature_covariates[,paste0(".fit_", covariates)])
   intercept_numeric <- feature_covariates[, ".intercept",]
   offset_numeric <- cell_covariates[[offset]]
 
-  # compute Pearson residuals
-  #if (nrow(out) == 1) {
-  #  mu_hat <- exp(intercept_numeric + as.numeric(covariates_matrix %*%  t(coefs_matrix)) + offset_numeric)
-  #  ret <- (out - mu_hat)/sqrt(mu_hat)
-  #} else {
-  #}
-
-  mu_hat <- exp(intercept_numeric + t(covariates_matrix %*% t(coefs_matrix) + offset_numeric))
+  # compute the fitted values (based on whether covariates are present)
+  if (!is.null(covariates)) {
+    covariates_matrix <- as.matrix(cell_covariates[,covariates])
+    coefs_matrix <- as.matrix(feature_covariates[,paste0(".fit_", covariates)])
+    mu_hat <- exp(intercept_numeric + t(covariates_matrix %*% t(coefs_matrix) + offset_numeric))
+  } else {
+    n_row <- nrow(out)
+    n_col <- ncol(out)
+    offset_m <- matrix(data = offset_numeric, nrow = n_row, ncol = n_col, byrow = TRUE)
+    mu_hat <- exp(intercept_numeric + offset_m)
+  }
   ret <- (out - mu_hat)/sqrt(mu_hat)
   return(ret)
 }
