@@ -2,21 +2,22 @@ normalize_by_lib_size <- function(covariate_odm, scale_factor = 10000) {
   if (covariate_odm@post_load_function_present) stop("Data already normalized.")
   covariate_odm@post_load_function_present <- TRUE
   covariate_odm@post_load_function <- internal_normalize_by_lib_size
+  covariate_odm@misc <- list(scale_factor = scale_factor)
   return(covariate_odm)
 }
 
 
 internal_normalize_by_lib_size <- function(out, x, ...) {
+  scale_factor <- x@misc$scale_factor
   args <- list(...)
   # if cells were subsetted, then subset the cell libs
   cell_lib_sizes <- if ("j" %in% names(args)) x@cell_covariates$n_umis[args$j] else x@cell_covariates$n_umis
   # apply standard formula
-  if (nrow(out) == 1) {
-    new_out <- log(1 + out/cell_lib_sizes * scale_factor)
-  } else {
-    new_out <- Matrix::t(log(1 + (Matrix::t(out)/cell_lib_sizes * scale_factor)))
-  }
-  new_out
+  #if (nrow(out) == 1) {
+  #  new_out <- log(1 + out/cell_lib_sizes * scale_factor)
+  #} else {
+  #}
+  Matrix::t(log(1 + (Matrix::t(out)/cell_lib_sizes * scale_factor)))
 }
 
 
@@ -27,6 +28,7 @@ internal_normalize_by_lib_size <- function(out, x, ...) {
 # covariate_odm <- odm[my_feats,]
 # # add log-transformed n_umis, n_nonero
 # covariate_odm <- covariate_odm %>% mutate_cell_covariates(lg_n_umis = log(n_umis), lg_n_nonzero = log(n_nonzero))
+# covariate_odm_norm <- normalize_by_regression(covariate_odm)
 normalize_by_regression <- function(covariate_odm, covariates = c("p_mito", "lg_n_nonzero"), offset = "lg_n_umis") {
   EXPRESSION_CUTOFF <- 10
   if (covariate_odm@post_load_function_present) stop("Data already normalized.")
@@ -64,25 +66,25 @@ normalize_by_regression <- function(covariate_odm, covariates = c("p_mito", "lg_
 
 
 compute_pearson_residuals <- function(out, x, ...) {
+  args <- list(...)
   cell_covariates <- if ("j" %in% names(args)) x@cell_covariates[args$j,] else x@cell_covariates
   feature_covariates <- if ("i" %in% names(args)) x@feature_covariates[args$i,] else x@feature_covariates
   # compute the fitted values (apply over the rows of feature covariates)
   offset <- x@misc$offset
   covariates <- x@misc$covariates
-  covariates_matrix <- cell_covariates %>%
-    dplyr::select(covariates) %>%
-    as.matrix()
-  coefs_matrix <- feature_covariates %>%
-    dplyr::select(paste0(".fit_", covariates)) %>%
-    as.matrix()
-  intercept_numeric <- feature_covariates %>% dplyr::pull(.intercept)
+  covariates_matrix <- as.matrix(cell_covariates[,covariates])
+  coefs_matrix <- as.matrix(feature_covariates[,paste0(".fit_", covariates)])
+  intercept_numeric <- feature_covariates[, ".intercept",]
   offset_numeric <- cell_covariates[[offset]]
 
-  # compute Pearson residuals (case of nrow(out) == 1 first)
-  if (nrow(out) == 1) {
-    curr_coefs <- t(coefs_matrix[1,,drop=FALSE])
-    mu_hat <- exp(intercept_numeric[1] + as.numeric(covariates_matrix %*% curr_coefs) + offset_numeric)
-    ret <- (out - mu_hat)/sqrt(mu_hat)
-  }
+  # compute Pearson residuals
+  #if (nrow(out) == 1) {
+  #  mu_hat <- exp(intercept_numeric + as.numeric(covariates_matrix %*%  t(coefs_matrix)) + offset_numeric)
+  #  ret <- (out - mu_hat)/sqrt(mu_hat)
+  #} else {
+  #}
+
+  mu_hat <- exp(intercept_numeric + t(covariates_matrix %*% t(coefs_matrix) + offset_numeric))
+  ret <- (out - mu_hat)/sqrt(mu_hat)
   return(ret)
 }
