@@ -16,15 +16,29 @@ internal_normalize_by_lib_size <- function(out, x, ...) {
 }
 
 
-# odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
-# metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
-# odm <- read_odm(odm_fp, metadata_fp)
-# my_feats <- sample(get_highly_expressed_features(odm, 0.3), 100)
-# covariate_odm <- odm[my_feats,]
-# # add log-transformed n_umis, n_nonero
-# covariate_odm <- covariate_odm %>% mutate_cell_covariates(lg_n_umis = log(n_umis), lg_n_nonzero = log(n_nonzero))
-# covariate_odm_norm <- normalize_by_regression(covariate_odm)
-# covariate_odm_norm <- normalize_by_regression(covariate_odm, covariates = NULL)
+#' Normalize by regression
+#'
+#' @param covariate_odm a `covariate_odm` object
+#' @param covariates a character vector listing the covariates within the cell covariate matrix to regress on
+#' @param offset a character vector giving the variable within the cell covariate matrix to use as an offset
+#'
+#' @return a normalized `covariate_odm` object
+#' @export
+#'
+#' @examples
+#' library(magrittr)
+#' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' my_feats <- sample(get_highly_expressed_features(odm, 0.3), 100)
+#' covariate_odm <- odm[my_feats,]
+#' # add log-transformed n_umis, n_nonero
+#' covariate_odm <- covariate_odm %>% mutate_cell_covariates(lg_n_umis = log(n_umis),
+#' lg_n_nonzero = log(n_nonzero))
+#' # regress on the default covariates, i.e. p_mito and lg_n_nonzero
+#' covariate_odm_norm <- normalize_by_regression(covariate_odm)
+#' # regress only on the default offset, lg_n_umis
+#' covariate_odm_norm <- normalize_by_regression(covariate_odm, covariates = NULL)
 normalize_by_regression <- function(covariate_odm, covariates = c("p_mito", "lg_n_nonzero"), offset = "lg_n_umis") {
   EXPRESSION_CUTOFF <- 10
   if (covariate_odm@post_load_function_present) stop("Data already normalized.")
