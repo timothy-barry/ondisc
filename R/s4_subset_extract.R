@@ -240,32 +240,48 @@ setMethod(f = "[[",
 #' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "ANY"),
-          definition = function(x, i, j)
-          x@ondisc_matrix[[i, j]]
+          definition = function(x, i, j) {
+            out <- x@ondisc_matrix[[i, j]]
+            if (x@post_load_function_present) {
+              out <- x@post_load_function(out, x, i = i, j = j)
+            }
+            out
+          }
 )
 
 #' @export
 #' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "ANY"),
-          definition = function(x, i, j)
-            x@ondisc_matrix[[, j]]
+          definition = function(x, i, j) {
+            out <- x@ondisc_matrix[[, j]]
+            if (x@post_load_function_present) {
+              out <- x@post_load_function(out, x, j = j)
+            }
+            out
+          }
 )
 
 #' @export
 #' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "covariate_ondisc_matrix", i = "ANY", j = "missing"),
-          definition = function(x, i, j)
-            x@ondisc_matrix[[i, ]]
+          definition = function(x, i, j) {
+            out <- x@ondisc_matrix[[i, ]]
+            if (x@post_load_function_present) {
+              out <- x@post_load_function(out, x, i = i)
+            }
+            out
+          }
 )
 
 #' @export
 #' @rdname extract-odm
 setMethod(f = "[[",
           signature = signature(x = "covariate_ondisc_matrix", i = "missing", j = "missing"),
-          definition = function(x, i, j)
+          definition = function(x, i, j) {
             x@ondisc_matrix[[, ]]
+          }
 )
 
 

@@ -73,7 +73,10 @@ ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlyi
 covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
                           slots = list(ondisc_matrix = "ondisc_matrix",
                                        cell_covariates = "data.frame",
-                                       feature_covariates = "data.frame"))
+                                       feature_covariates = "data.frame",
+                                       post_load_function_present = "logical",
+                                       post_load_function = "function",
+                                       misc = "character"))
 
 
 #' `covariate_ondisc_matrix` constructor
@@ -87,7 +90,7 @@ covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
 #' @return a `covariate_ondisc_matrix`.
 #' @export
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
+#' # Install the `ondiscdata` package before running the examples.
 #' # install.packages("devtools")
 #' # devtools::install_github("Katsevich-Lab/ondiscdata")
 #'
@@ -107,6 +110,7 @@ covariate_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_cova
   row.names(feature_covariates) <- get_feature_ids(ondisc_matrix)
   out@cell_covariates <- cell_covariates
   out@feature_covariates <- feature_covariates
+  out@post_load_function_present <- FALSE
   return(out)
 }
 
