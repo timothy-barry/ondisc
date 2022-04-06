@@ -119,19 +119,22 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
     r_matrix_t <- Matrix::t(r_matrix)
     csr_r_matrix <- Matrix::sparseMatrix(j = r_matrix_t@i,
                                          p = r_matrix_t@p,
-                                         dims = r_matri@Dim,
+                                         dims = r_matrix@Dim,
                                          repr = "R",
                                          index1 = FALSE,
                                          x = r_matrix_t@x)
-  } else { # dense case
+  } else if (is(r_matrix, "matrix")){ # dense case
     csc_r_matrix <- as(r_matrix, "dgCMatrix")
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
+  } else { #invalid input
+    stop("Input matrix must be a class of matrix, dgTMatrix, dgCMatrix, or dgRMatrix.")
   }
 
   # initialize the ODM
   initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
 
   # Write in memory matrix to the .h5 file on-disk (side-effect)
+  # todo: gene only access
   write_matrix_to_h5(odm_fp, expression_metadata = bag_of_variables, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix)
 
   ### STEP3: Prepare output

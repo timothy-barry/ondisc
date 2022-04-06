@@ -1,7 +1,19 @@
 # Initialize metadata odms from in-memory R objects in different directories
 cov_odms_from_memory <- lapply(r_mats_plus_metadata, function(l) {
   file_dir <- create_new_directory()
-  metadata_odm <- create_ondisc_matrix_from_R_matrix(r_matrix = as.matrix(l$r_mat),
+  # randomly choose the class of matrix
+  r_matrix <- as.matrix(l$r_mat)
+  random_num <- runif(1, 0.0, 4.0)
+  print(random_num)
+  if (random_num <= 1) {
+    r_matrix <- as(r_matrix, "dgTMatrix")
+  } else if (random_num <= 2) {
+    r_matrix <- as(r_matrix, "dgRMatrix")
+  } else if (random_num <= 3) {
+    r_matrix <- as(r_matrix, "dgCMatrix")
+  }
+
+  metadata_odm <- create_ondisc_matrix_from_R_matrix(r_matrix = r_matrix,
                                                      barcodes = l$barcodes,
                                                      features_df = l$features_df,
                                                      odm_fp = file_dir)
