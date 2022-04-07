@@ -9,7 +9,8 @@ create_ondisc_matrix_from_R_matrix(
   barcodes,
   features_df,
   odm_fp,
-  metadata_fp = NULL
+  metadata_fp = NULL,
+  gene_access_only = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ create_ondisc_matrix_from_R_matrix(
 \item{odm_fp}{location to write the backing .odm file.}
 
 \item{metadata_fp}{(optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
+
+\item{gene_access_only}{a boolean value, TRUE if only allow gene-wise access; FALSE if allow both gene-wise and cell-wise access}
 }
 \value{
 A \code{covariate_ondisc_matrix} object.
