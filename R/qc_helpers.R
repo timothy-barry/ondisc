@@ -23,7 +23,7 @@
 get_highly_variable_features <- function(covariate_odm, n_features = 250) {
   covariate_odm %>%
     get_feature_covariates() %>%
-    dplyr::arrange(desc(coef_of_variation)) %>%
+    dplyr::arrange(dplyr::desc(coef_of_variation)) %>%
     dplyr::slice(seq(1, n_features)) %>%
     row.names()
 }

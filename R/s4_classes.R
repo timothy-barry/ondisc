@@ -76,7 +76,7 @@ covariate_ondisc_matrix <- setClass("covariate_ondisc_matrix",
                                        feature_covariates = "data.frame",
                                        post_load_function_present = "logical",
                                        post_load_function = "function",
-                                       misc = "character"))
+                                       misc = "list"))
 
 
 #' `covariate_ondisc_matrix` constructor
@@ -113,6 +113,7 @@ covariate_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_cova
   out@post_load_function_present <- FALSE
   return(out)
 }
+
 
 #############################
 # 3. multimodal_ondisc_matrix
