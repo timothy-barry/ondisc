@@ -11,6 +11,7 @@
 #' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
 #' @param odm_fp location to write the backing .odm file.
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
+#' @param gene_access_only a boolean value, TRUE if only allow gene-wise access; FALSE if allow both gene-wise and cell-wise access
 #'
 #' @return A `covariate_ondisc_matrix` object.
 #' @export
@@ -43,7 +44,7 @@
 #' odm_fp <- paste0(create_new_directory(), "/logical_odm")
 #' odm_logical <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
 #' features_df_2, odm_fp)
-create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, odm_fp, metadata_fp = NULL) {
+create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, odm_fp, metadata_fp = NULL, gene_access_only = FALSE) {
   # generate random ODM ID
   odm_id <- sample(seq(0L, .Machine$integer.max), size = 1)
 
@@ -134,8 +135,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
 
   # Write in memory matrix to the .h5 file on-disk (side-effect)
-  # todo: gene only access
-  write_matrix_to_h5(odm_fp, expression_metadata = bag_of_variables, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix)
+  write_matrix_to_h5(odm_fp, expression_metadata = bag_of_variables, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix, gene_access_only = gene_access_only)
 
   ### STEP3: Prepare output
   odm <- ondisc_matrix(h5_file = odm_fp,
@@ -191,18 +191,21 @@ get_expression_metadata_from_r_matrix <- function(r_matrix) {
 #' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
 #' @param csc_r_matrix a Matrix csc representation of the r matrix
 #' @param csr_r_matrix a Matrix csr representation of the r matrix
+#' @param gene_access_only a boolean value, TRUE if only allow gene-wise access; FALSE if allow both gene-wise and cell-wise access
 #'
 #' @return NULL
 #' @noRd
-write_matrix_to_h5 <- function(odm_fp, expression_metadata, csc_r_matrix, csr_r_matrix) {
-  # Write CSC
-  rhdf5::h5write(csc_r_matrix@p, file = odm_fp, name="cell_ptr")
-  rhdf5::h5write(csc_r_matrix@i, file = odm_fp, name="feature_idxs")
-  if (!expression_metadata$is_logical) {
-    rhdf5::h5write(csc_r_matrix@x, file = odm_fp, name="data_csc")
+write_matrix_to_h5 <- function(odm_fp, expression_metadata, csc_r_matrix, csr_r_matrix, gene_access_only) {
+  # Write CSC, cell-wise access
+  if (!gene_access_only) {
+    rhdf5::h5write(csc_r_matrix@p, file = odm_fp, name="cell_ptr")
+    rhdf5::h5write(csc_r_matrix@i, file = odm_fp, name="feature_idxs")
+    if (!expression_metadata$is_logical) {
+      rhdf5::h5write(csc_r_matrix@x, file = odm_fp, name="data_csc")
+    }
   }
 
-  # Write CSR
+  # Write CSR, gene-wise access
   rhdf5::h5write(csr_r_matrix@p, file = odm_fp, name = "feature_ptr")
   rhdf5::h5write(csr_r_matrix@j, file = odm_fp, name = "cell_idxs")
   if (!expression_metadata$is_logical) {
