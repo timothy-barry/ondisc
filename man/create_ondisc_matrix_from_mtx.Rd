@@ -12,6 +12,7 @@ create_ondisc_matrix_from_mtx(
   metadata_fp = NULL,
   n_lines_per_chunk = 3e+08,
   barcode_suffixes = NULL,
+  comp_level = 0L,
   progress = TRUE
 )
 }

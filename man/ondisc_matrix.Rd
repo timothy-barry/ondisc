@@ -13,7 +13,8 @@ ondisc_matrix(
   feature_ids = NA_character_,
   feature_names = NA_character_,
   cell_barcodes = NA_character_,
-  odm_id = NA_integer_
+  odm_id = NA_integer_,
+  feature_access_only = FALSE
 )
 
 ondisc_matrix(
@@ -25,7 +26,8 @@ ondisc_matrix(
   feature_ids = NA_character_,
   feature_names = NA_character_,
   cell_barcodes = NA_character_,
-  odm_id = NA_integer_
+  odm_id = NA_integer_,
+  feature_access_only = FALSE
 )
 }
 \arguments{

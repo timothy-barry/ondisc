@@ -48,7 +48,7 @@
 #' c("mtx_dir1/barcodes.tsv", "mtx_dir2/barcodes.tsv", "mtx_dir3/barcodes.tsv"))
 #' features_fp <- system.file("extdata", "mtx_list/mtx_dir1/features.tsv", package = "ondiscdata")
 #' odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp)
-create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, barcode_suffixes = NULL, progress = TRUE) {
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, barcode_suffixes = NULL, comp_level = 0L, progress = TRUE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
   # general information about the .mtx file, and general information about the .tsv files.
 
@@ -71,7 +71,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   list2env(get_features_metadata(features_fp, bag_of_variables), bag_of_variables)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id, comp_level)
 
   # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(bag_of_variables)
@@ -155,7 +155,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' c("batch-1_1.h5", "batch-1_2.h5", "batch_2-1.h5"))
 #' # create the ondisc matrix (commented out because of long (~2 min) running time)
 #' # odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
-create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, progress = TRUE) {
+create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, comp_level = 0L, progress = TRUE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
   # general information about the .h5 file, the cells and the features
 
@@ -182,7 +182,7 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NUL
   bag_of_variables[["n_features"]] <- nrow(features_df)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id, comp_level)
 
   # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(bag_of_variables)

@@ -9,6 +9,7 @@ create_ondisc_matrix_from_h5_list(
   odm_fp,
   metadata_fp = NULL,
   barcode_suffixes = NULL,
+  comp_level = 0L,
   progress = TRUE
 )
 }

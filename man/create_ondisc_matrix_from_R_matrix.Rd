@@ -10,7 +10,7 @@ create_ondisc_matrix_from_R_matrix(
   features_df,
   odm_fp,
   metadata_fp = NULL,
-  gene_access_only = FALSE
+  feature_access_only = FALSE
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ create_ondisc_matrix_from_R_matrix(
 
 \item{metadata_fp}{(optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
 
-\item{gene_access_only}{a boolean value, TRUE if only allow gene-wise access; FALSE if allow both gene-wise and cell-wise access}
+\item{feature_access_only}{boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells}
 }
 \value{
 A \code{covariate_ondisc_matrix} object.

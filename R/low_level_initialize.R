@@ -7,7 +7,7 @@
 #' @param odm_id ODM id
 #' @return NULL
 #' @noRd
-initialize_h5_file_on_disk <- function(odm_fp, bag_of_variables, odm_id) {
+initialize_h5_file_on_disk <- function(odm_fp, bag_of_variables, odm_id, comp_level = 0L) {
   # Create the .h5 file
   status <- rhdf5::h5createFile(odm_fp)
   if (!status) stop(sprintf("Creating %s failed", odm_fp))
@@ -17,17 +17,17 @@ initialize_h5_file_on_disk <- function(odm_fp, bag_of_variables, odm_id) {
   rhdf5::h5write(odm_id, odm_fp, "odm_id")
 
   # Initialize CSC
-  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_ptr", dims = bag_of_variables$n_cells + 1, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_cells, 10))
-  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_idxs", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_data_points - 1, 50))
+  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_ptr", dims = bag_of_variables$n_cells + 1, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_cells, 10))
+  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_idxs", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_data_points - 1, 50))
   if (!bag_of_variables$is_logical) {
-    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csc", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_data_points - 1, 50))
+    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csc", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_data_points - 1, 50))
   }
 
   # Initialize CSR
-  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_ptr", dims = bag_of_variables$n_features + 1, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_features, 10))
-  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_idxs", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_data_points - 1, 50))
+  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_ptr", dims = bag_of_variables$n_features + 1, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_features, 10))
+  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_idxs", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_data_points - 1, 50))
   if (!bag_of_variables$is_logical) {
-    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csr", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = 0L, chunk = min(bag_of_variables$n_data_points - 1, 50))
+    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csr", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_data_points - 1, 50))
   }
 }
 

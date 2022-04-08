@@ -23,7 +23,8 @@ ondisc_matrix <- setClass("ondisc_matrix",
                                         feature_ids = "character",
                                         feature_names = "character",
                                         cell_barcodes = "character",
-                                        odm_id = "integer"))
+                                        odm_id = "integer",
+                                        feature_access_only = "logical"))
 
 
 #' Instantiate an `ondisc_matrix` object
@@ -41,7 +42,7 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #' @param odm_id unique (with high probability) integer
 #'
 #' @return initialized `ondisc_matrix` object
-ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlying_dimension = NA_integer_, cell_subset = NA_integer_, feature_subset = NA_integer_, feature_ids = NA_character_, feature_names = NA_character_, cell_barcodes = NA_character_, odm_id = NA_integer_) {
+ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlying_dimension = NA_integer_, cell_subset = NA_integer_, feature_subset = NA_integer_, feature_ids = NA_character_, feature_names = NA_character_, cell_barcodes = NA_character_, odm_id = NA_integer_, feature_access_only = FALSE) {
   out <- new("ondisc_matrix")
   out@h5_file <- h5_file
   out@logical_mat <- logical_mat
@@ -52,6 +53,8 @@ ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlyi
   out@feature_names <- feature_names
   out@cell_barcodes <- cell_barcodes
   out@odm_id <- odm_id
+  out@feature_access_only <- feature_access_only
+
   check_dup <- function(v) any(duplicated(v))
   if (check_dup(cell_barcodes)) warning("Cell barcodes contain duplicates.")
   if (check_dup(feature_ids)) warning("Feature IDs contain duplicates.")
