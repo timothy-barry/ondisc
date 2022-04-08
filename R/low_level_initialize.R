@@ -5,9 +5,11 @@
 #' @param odm_fp file path to the .h5 file to be initialized
 #' @param bag_of_variables metadata of the .mtx file
 #' @param odm_id ODM id
+#' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
+#'
 #' @return NULL
 #' @noRd
-initialize_h5_file_on_disk <- function(odm_fp, bag_of_variables, odm_id, comp_level = 0L) {
+initialize_h5_file_on_disk <- function(odm_fp, bag_of_variables, odm_id, comp_level = 0L, feature_access_only = FALSE) {
   # Create the .h5 file
   status <- rhdf5::h5createFile(odm_fp)
   if (!status) stop(sprintf("Creating %s failed", odm_fp))
@@ -17,10 +19,12 @@ initialize_h5_file_on_disk <- function(odm_fp, bag_of_variables, odm_id, comp_le
   rhdf5::h5write(odm_id, odm_fp, "odm_id")
 
   # Initialize CSC
-  rhdf5::h5createDataset(file = odm_fp, dataset = "cell_ptr", dims = bag_of_variables$n_cells + 1, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_cells, 10))
-  rhdf5::h5createDataset(file = odm_fp, dataset = "feature_idxs", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_data_points - 1, 50))
-  if (!bag_of_variables$is_logical) {
-    rhdf5::h5createDataset(file = odm_fp, dataset = "data_csc", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_data_points - 1, 50))
+  if (!feature_access_only) {
+    rhdf5::h5createDataset(file = odm_fp, dataset = "cell_ptr", dims = bag_of_variables$n_cells + 1, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_cells, 10))
+    rhdf5::h5createDataset(file = odm_fp, dataset = "feature_idxs", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_data_points - 1, 50))
+    if (!bag_of_variables$is_logical) {
+      rhdf5::h5createDataset(file = odm_fp, dataset = "data_csc", dims = bag_of_variables$n_data_points, storage.mode = "integer", level = comp_level, chunk = min(bag_of_variables$n_data_points - 1, 50))
+    }
   }
 
   # Initialize CSR
@@ -277,10 +281,11 @@ run_subtask_2c <- function(x, odm_fp, is_logical, row_ptr, n_nonzero_features_pe
 #' @param row_ptr the starting row pointer
 #' @param n_nonzero_features_per_chunk initial vector for n_nonzero_features_per_chunk
 #' @param file_type can be either "h5_list" or "mtx_fp"
+#' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
 #'
 #' @return a list containing the values of the terminals
 #' @noRd
-run_core_algo_step_2 <- function(odm_fp, bag_of_variables, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk, file_type, progress) {
+run_core_algo_step_2 <- function(odm_fp, bag_of_variables, initial_accumulators, terminal_functs_args, row_ptr, n_nonzero_features_per_chunk, file_type, progress, feature_access_only = FALSE) {
   mtx_fp <- bag_of_variables$mtx_fp
   chunk_no <- 1L
   # Define closure to be called by readr::read_delim_chunked
@@ -293,8 +298,10 @@ run_core_algo_step_2 <- function(odm_fp, bag_of_variables, initial_accumulators,
     # run subtask a
     run_subtask_2a(x, bag_of_variables, acc[[1]], terminal_functs_args)
     # run subtask b
-    if (progress) cat("\nWriting CSC data.\n")
-    run_subtask_2b(x, pos, odm_fp, bag_of_variables$is_logical)
+    if (!feature_access_only) {
+      if (progress) cat("\nWriting CSC data.\n")
+      run_subtask_2b(x, pos, odm_fp, bag_of_variables$is_logical)
+    }
     # run subtask c
     if (progress) cat("Writing CSR data.\n")
     run_subtask_2c(x, odm_fp, bag_of_variables$is_logical, acc[[2]], n_nonzero_features_per_chunk, chunk_no, bag_of_variables$n_features)
@@ -413,8 +420,10 @@ run_core_algo_step_2_mtxfilelist <- function(progress, closure, acc_init, argume
 #' @param covariates a list of two elements: the feature covariates and the cell covariates
 #' @param bag_of_variables environment containing named variables
 #' @param progress progress
+#' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
+#'
 #' @noRd
-run_core_algo <- function(odm_fp, covariates, bag_of_variables, progress) {
+run_core_algo <- function(odm_fp, covariates, bag_of_variables, progress, feature_access_only = FALSE) {
   grammar <- initialize_grammar()
   symbols <- symbols_enum()
 
@@ -444,14 +453,17 @@ run_core_algo <- function(odm_fp, covariates, bag_of_variables, progress) {
 
   # Run step 2 of core algorithm
   terminal_values_and_row_ptr <- run_core_algo_step_2(odm_fp, bag_of_variables, initial_accumulators,
-                                                     terminal_functs_args, row_ptr, row_ptrs[[2]], file_type, progress)
+                                                     terminal_functs_args, row_ptr, row_ptrs[[2]], file_type,
+                                                     progress, feature_access_only = feature_access_only)
   # Compute and write column pointer to CSC matrix
   terminal_values <- terminal_values_and_row_ptr[[1]]
   n_nonzero_cell <- terminal_values[[which(terminal_symbols == symbols$n_nonzero_cell)]]
-  cell_ptr <- c(0, cumsum(n_nonzero_cell))
-  rhdf5::h5write(cell_ptr, odm_fp, "cell_ptr")
+  if(!feature_access_only) {
+    cell_ptr <- c(0, cumsum(n_nonzero_cell))
+    rhdf5::h5write(cell_ptr, odm_fp, "cell_ptr")
+  }
 
-  # compute the covariate matrices
+  # Compute the covariate matrices
   for (i in 1:length(terminal_symbols)) grammar[[terminal_symbols[i]]]$value <- terminal_values[[i]]
   grammar[[symbols$n_nonzero_feature]]$value <- row_ptrs[[1]]
   cov_mats <- lapply(covariates, function(covariate_vect) {

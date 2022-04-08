@@ -48,6 +48,8 @@ ondisc_matrix(
 \item{cell_barcodes}{character vector of cell barcodes}
 
 \item{odm_id}{unique (with high probability) integer}
+
+\item{feature_access_only}{boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells}
 }
 \value{
 initialized \code{ondisc_matrix} object

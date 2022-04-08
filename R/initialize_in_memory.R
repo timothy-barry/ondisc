@@ -132,7 +132,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   }
 
   # initialize the ODM
-  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id, feature_access_only = feature_access_only)
 
   # Write in memory matrix to the .h5 file on-disk (side-effect)
   write_matrix_to_h5(odm_fp, expression_metadata = bag_of_variables, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix, feature_access_only = feature_access_only)

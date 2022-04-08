@@ -10,7 +10,8 @@ create_ondisc_matrix_from_h5_list(
   metadata_fp = NULL,
   barcode_suffixes = NULL,
   comp_level = 0L,
-  progress = TRUE
+  progress = TRUE,
+  feature_access_only = FALSE
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ create_ondisc_matrix_from_h5_list(
 \item{barcode_suffixes}{(optional; default NULL) a vector of suffix that appended to each  barcodes in input .h5 file(s). The length should be the same as the length of \code{h5_list}. If NULL, append nothing for a single .h5 input; append file index for a list of .h5 inputs.}
 
 \item{progress}{progress (optional; default TRUE) print progress messages?}
+
+\item{feature_access_only}{boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells}
 }
 \value{
 A \code{covariate_ondisc_matrix}.
@@ -62,5 +65,5 @@ odm_fp <- paste0(tempfile, "/expression_odm")
 h5_list <- system.file("extdata/h5_list", package = "ondiscdata",
 c("batch-1_1.h5", "batch-1_2.h5", "batch_2-1.h5"))
 # create the ondisc matrix (commented out because of long (~2 min) running time)
-# odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
+odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
 }

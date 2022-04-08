@@ -40,6 +40,7 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #' @param feature_names character vector of feature names
 #' @param cell_barcodes character vector of cell barcodes
 #' @param odm_id unique (with high probability) integer
+#' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
 #'
 #' @return initialized `ondisc_matrix` object
 ondisc_matrix <- function(h5_file = NA_character_, logical_mat = FALSE, underlying_dimension = NA_integer_, cell_subset = NA_integer_, feature_subset = NA_integer_, feature_ids = NA_character_, feature_names = NA_character_, cell_barcodes = NA_character_, odm_id = NA_integer_, feature_access_only = FALSE) {

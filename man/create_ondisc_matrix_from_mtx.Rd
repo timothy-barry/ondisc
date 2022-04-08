@@ -13,7 +13,8 @@ create_ondisc_matrix_from_mtx(
   n_lines_per_chunk = 3e+08,
   barcode_suffixes = NULL,
   comp_level = 0L,
-  progress = TRUE
+  progress = TRUE,
+  feature_access_only = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ create_ondisc_matrix_from_mtx(
 \item{barcode_suffixes}{(optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of \code{barcodes_fp}. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.}
 
 \item{progress}{(optional; default TRUE) print progress messages?}
+
+\item{feature_access_only}{boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells}
 }
 \value{
 A \code{covariate_ondisc_matrix}.

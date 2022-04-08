@@ -18,6 +18,8 @@
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #' @param barcode_suffixes (optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of `barcodes_fp`. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.
 #' @param progress (optional; default TRUE) print progress messages?
+#' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
+#'
 #' @return A `covariate_ondisc_matrix`.
 #' @export
 #'
@@ -48,7 +50,7 @@
 #' c("mtx_dir1/barcodes.tsv", "mtx_dir2/barcodes.tsv", "mtx_dir3/barcodes.tsv"))
 #' features_fp <- system.file("extdata", "mtx_list/mtx_dir1/features.tsv", package = "ondiscdata")
 #' odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp)
-create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, barcode_suffixes = NULL, comp_level = 0L, progress = TRUE) {
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, barcode_suffixes = NULL, comp_level = 0L, progress = TRUE, feature_access_only = FALSE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
   # general information about the .mtx file, and general information about the .tsv files.
 
@@ -71,13 +73,13 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
   list2env(get_features_metadata(features_fp, bag_of_variables), bag_of_variables)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id, comp_level)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id, comp_level, feature_access_only = feature_access_only)
 
   # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(bag_of_variables)
 
   # Run core algorithm
-  out <- run_core_algo(odm_fp, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
+  out <- run_core_algo(odm_fp, covariates, bag_of_variables, progress, feature_access_only = feature_access_only) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
 
   # Obtain the string arrays (e.g., feature IDs, feature names, and possibly cell barcodes)
   if (is.null(barcode_suffixes) && length(barcodes_fp) > 1L) {
@@ -93,7 +95,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
                        feature_ids = string_arrays$feature_ids,
                        feature_names = string_arrays$feature_names,
                        cell_barcodes = string_arrays$cell_barcodes,
-                       odm_id = odm_id)
+                       odm_id = odm_id,
+                       feature_access_only = feature_access_only)
 
   # initialize the metadata odm
   if (!is.null(barcode_suffixes)) {
@@ -139,6 +142,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #' @param barcode_suffixes (optional; default NULL) a vector of suffix that appended to each  barcodes in input .h5 file(s). The length should be the same as the length of `h5_list`. If NULL, append nothing for a single .h5 input; append file index for a list of .h5 inputs.
 #' @param progress progress (optional; default TRUE) print progress messages?
+#' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
 #'
 #' @return A `covariate_ondisc_matrix`.
 #' @export
@@ -154,8 +158,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' h5_list <- system.file("extdata/h5_list", package = "ondiscdata",
 #' c("batch-1_1.h5", "batch-1_2.h5", "batch_2-1.h5"))
 #' # create the ondisc matrix (commented out because of long (~2 min) running time)
-#' # odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
-create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, comp_level = 0L, progress = TRUE) {
+#' odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
+create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, comp_level = 0L, progress = TRUE, feature_access_only = FALSE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
   # general information about the .h5 file, the cells and the features
 
@@ -182,13 +186,13 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NUL
   bag_of_variables[["n_features"]] <- nrow(features_df)
 
   # Initialize the .h5 file on-disk (side-effect)
-  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id, comp_level)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id, comp_level, feature_access_only = feature_access_only)
 
   # Determine which covariates to compute
   covariates <- map_inputs_to_covariates(bag_of_variables)
 
   # Run core algorithm
-  out <- run_core_algo(odm_fp, covariates, bag_of_variables, progress) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
+  out <- run_core_algo(odm_fp, covariates, bag_of_variables, progress, feature_access_only = feature_access_only) # returns list of 2 covariate matrices (one for cells and one for features); side-effect is to store all information from user input into h5_fp
 
   # Obtain the string arrays (e.g., feature IDs, feature names, and possibly cell barcodes)
   string_arrays <- list(cell_barcodes = barcodes, feature_ids = features_df$id , feature_names = features_df$name)
@@ -200,7 +204,8 @@ create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NUL
                        feature_ids = string_arrays$feature_ids,
                        feature_names = string_arrays$feature_names,
                        cell_barcodes = string_arrays$cell_barcodes,
-                       odm_id = odm_id)
+                       odm_id = odm_id,
+                       feature_access_only = feature_access_only)
 
   # initialize the metadata odm
   if (!is.null(barcode_suffixes)) {
