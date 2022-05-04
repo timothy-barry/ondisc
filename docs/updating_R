@@ -1,0 +1,5 @@
+After updating R, run
+
+`devtools::clean_dll()`
+
+to enable devtools::load_all(), devtools::document(), etc.
