@@ -23,6 +23,8 @@ create_ondisc_matrix_from_h5_list(
 
 \item{barcode_suffixes}{(optional; default NULL) a vector of suffix that appended to each  barcodes in input .h5 file(s). The length should be the same as the length of \code{h5_list}. If NULL, append nothing for a single .h5 input; append file index for a list of .h5 inputs.}
 
+\item{comp_level}{The compression level used. An integer value between 0 (no compression) and 9 (highest and slowest compression).}
+
 \item{progress}{progress (optional; default TRUE) print progress messages?}
 
 \item{feature_access_only}{boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells}

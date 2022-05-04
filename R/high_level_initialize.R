@@ -17,6 +17,7 @@
 #' @param odm_fp location to write the ondisc matrix to disk.
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #' @param barcode_suffixes (optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of `barcodes_fp`. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.
+#' @param comp_level The compression level used. An integer value between 0 (no compression) and 9 (highest and slowest compression).
 #' @param progress (optional; default TRUE) print progress messages?
 #' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
 #'
@@ -141,6 +142,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' @param odm_fp location to write the ondisc matrix to disk.
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #' @param barcode_suffixes (optional; default NULL) a vector of suffix that appended to each  barcodes in input .h5 file(s). The length should be the same as the length of `h5_list`. If NULL, append nothing for a single .h5 input; append file index for a list of .h5 inputs.
+#' @param comp_level The compression level used. An integer value between 0 (no compression) and 9 (highest and slowest compression).
 #' @param progress progress (optional; default TRUE) print progress messages?
 #' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
 #'
