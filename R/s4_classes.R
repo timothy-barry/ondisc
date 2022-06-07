@@ -39,6 +39,7 @@ ondisc_matrix <- setClass("ondisc_matrix",
 #' @param feature_ids character vector of feature IDs
 #' @param feature_names character vector of feature names
 #' @param cell_barcodes character vector of cell barcodes
+#' @param feature_access_only logical indicating whether the matrix should provide access to features only (TRUE) or to both features and cells (FALSE)
 #' @param odm_id unique (with high probability) integer
 #'
 #' @return initialized `ondisc_matrix` object

@@ -31,6 +31,8 @@ create_ondisc_matrix_from_mtx(
 
 \item{barcode_suffixes}{(optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of \code{barcodes_fp}. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.}
 
+\item{comp_level}{amount of compression to apply (not yet implemented)}
+
 \item{progress}{(optional; default TRUE) print progress messages?}
 }
 \value{

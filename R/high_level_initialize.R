@@ -18,6 +18,7 @@
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #' @param barcode_suffixes (optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of `barcodes_fp`. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.
 #' @param progress (optional; default TRUE) print progress messages?
+#' @param comp_level amount of compression to apply (not yet implemented)
 #' @return A `covariate_ondisc_matrix`.
 #' @export
 #'
@@ -139,6 +140,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
 #' @param barcode_suffixes (optional; default NULL) a vector of suffix that appended to each  barcodes in input .h5 file(s). The length should be the same as the length of `h5_list`. If NULL, append nothing for a single .h5 input; append file index for a list of .h5 inputs.
 #' @param progress progress (optional; default TRUE) print progress messages?
+#' @param comp_level amount of compression to apply (not yet implemented)
 #'
 #' @return A `covariate_ondisc_matrix`.
 #' @export
