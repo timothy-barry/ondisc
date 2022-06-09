@@ -2,11 +2,14 @@ test_that("save and read odm", {
   cov_odm_1 <- cov_odms[[1]]
   cov_odm_sub <- cov_odm_1[get_random_subset(nrow(cov_odm_1)),
                            get_random_subset(ncol(cov_odm_1))]
+  my_message <- "hello from mars!"
+  cov_odm_sub@misc$form <- my_message
   metadata_fp <- paste0(create_new_directory(), "/metadata.rds")
   save_odm(odm = cov_odm_sub, metadata_fp = metadata_fp)
   loaded_cov_odm_sub <- read_odm(odm_fp = cov_odm_sub@ondisc_matrix@h5_file,
                                  metadata_fp = metadata_fp)
-  expect_true(identical(loaded_cov_odm_sub, cov_odm_sub))
+  expect_equal(loaded_cov_odm_sub@misc$form, my_message)
+  expect_identical(loaded_cov_odm_sub, cov_odm_sub)
   expect_equal(loaded_cov_odm_sub[[1:nrow(loaded_cov_odm_sub)]],
               cov_odm_sub[[1:nrow(cov_odm_sub)]])
 

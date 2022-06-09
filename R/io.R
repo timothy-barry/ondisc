@@ -30,11 +30,14 @@ save_odm <- function(odm, metadata_fp) {
   if (is(odm, "multimodal_ondisc_matrix")) stop("Save function not yet implemented for multimodal_ondisc_matrix class.")
 
   metadata <- list()
-  # if is covariate_ondisc_matrix, save cell-specific and feature-specific covariates, and update odm to the ondisc matrix contained therein.
+  # if is covariate_ondisc_matrix, save cell-specific and feature-specific covariates, as well as misc list and post load function info, and update odm to the ondisc matrix contained therein.
   if (is(odm, "covariate_ondisc_matrix")) {
-    metadata$cell_covariates <- odm@cell_covariates
-    metadata$feature_covariates <- odm@feature_covariates
+    metadata[["is_covariate_odm"]] <- TRUE
+    fields_cov <- c("cell_covariates", "feature_covariates", "misc", "post_load_function", "post_load_function_present")
+    for (field in fields_cov) metadata[[field]] <- slot(odm, field)
     odm <- odm@ondisc_matrix
+  } else {
+    metadata[["is_covariate_odm"]] <- FALSE
   }
 
   # save aux info
@@ -54,7 +57,7 @@ save_odm <- function(odm, metadata_fp) {
 #' @export
 read_odm <- function(odm_fp, metadata_fp = NULL) {
   if (!file.exists(odm_fp)) stop(paste0("File ", odm_fp, " does not exist."))
-  # first, obtain underlying dimension and logical_marix boolean
+  # first, obtain underlying dimension and logical_matrix boolean
   underlying_dimension <- read_integer_vector_hdf5(odm_fp, "dimension", 2L)
   logical_mat <- as.logical(read_integer_vector_hdf5(odm_fp, "logical_mat", 1L))
   odm_id_backing <- read_integer_vector_hdf5(odm_fp, "odm_id", 1L)
@@ -71,11 +74,11 @@ read_odm <- function(odm_fp, metadata_fp = NULL) {
     }
     fields <- c("cell_subset", "feature_subset", "feature_ids", "feature_names", "cell_barcodes")
     for (field in fields) slot(odm, field) <- metadata[[field]]
-    # if cell covariates and feature covariates are available, initialize the covariate_ondisc_matrix
-    if ("cell_covariates" %in% names(metadata) && "feature_covariates" %in% names(metadata)) {
-      odm <- covariate_ondisc_matrix(ondisc_matrix = odm,
-                                    cell_covariates = metadata$cell_covariates,
-                                    feature_covariates = metadata$feature_covariates)
+    # if covariate_ondisc_matrix, initialize that
+    if (metadata[["is_covariate_odm"]]) {
+      odm <- covariate_ondisc_matrix(ondisc_matrix = odm, cell_covariates = metadata[["cell_covariates"]], feature_covariates = metadata[["feature_covariates"]])
+      fields_cov <- c("misc", "post_load_function", "post_load_function_present")
+      for (field in fields_cov) slot(odm, field) <- metadata[[field]]
     }
   }
   return(odm)
