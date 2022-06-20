@@ -12,9 +12,12 @@ read_odm(odm_fp, metadata_fp = NULL)
 \arguments{
 \item{odm}{an ondisc_matrix object}
 
-\item{metadata_fp}{metadata.rds file}
+\item{metadata_fp}{path to metadata RDS file}
 
 \item{odm_fp}{file path to a backing .odm file}
+}
+\value{
+NULL for \code{save_odm}; a loaded \code{ondisc} object for \code{read_odm}
 }
 \description{
 Functions to save and read \code{ondisc_matrix} objects.
@@ -39,4 +42,6 @@ odm_subset <- odm[1:10,]
 tempfile <- create_new_directory()
 metadata_subset_fp <- paste0(tempfile, "/metadata_subset.rds")
 save_odm(odm_subset, metadata_subset_fp)
+# finally, load the subsetted odm
+odm_subset <- read_odm(odm_fp, metadata_subset_fp)
 }

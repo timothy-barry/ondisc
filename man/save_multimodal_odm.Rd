@@ -2,17 +2,30 @@
 % Please edit documentation in R/io.R
 \name{save_multimodal_odm}
 \alias{save_multimodal_odm}
-\title{Save a multimodal \code{ondisc_matrix}}
+\alias{read_multimodal_odm}
+\title{Save or read a \code{multimodal_ondisc_matrix}}
 \usage{
 save_multimodal_odm(multimodal_odm, multimodal_metadata_fp)
+
+read_multimodal_odm(odm_fps, multimodal_metadata_fp)
 }
 \arguments{
 \item{multimodal_odm}{a \code{multimodal_ondisc_matrix} object}
 
-\item{multimodal_metadata_fp}{path to multimodal metadata RDS file}
+\item{multimodal_metadata_fp}{path to a multimodal metadata RDS file}
+
+\item{odm_fps}{vector of file paths to backing .odm files}
+}
+\value{
+NULL for \code{save_multimodal_odm}; a loaded \code{multimodal_ondisc_matrix} for \code{read_multimodal_odm}
 }
 \description{
-Save a multimodal \code{ondisc_matrix}
+Functions to save and read \code{multimodal_ondisc_matrix} objects.
+}
+\details{
+A \code{multimodal_ondisc_matrix} is associated with two or more backing .odm files. These files are static, read-only files that are never altered or copied.
+\code{read_multimodal_odm} constructs a \code{multimodal_ondisc_matrix} from a given set of backing .odm files and a multimodal metadata RDS file.
+\code{save_multimodal_odm} writes a new metadata file to disk (potentially overwriting a previous metadata file of the same name), leaving the backing .odm files unaltered.
 }
 \examples{
 # Please install the `ondiscdata` package before running the examples.
@@ -25,6 +38,15 @@ odm_gene <- read_odm(gene_odm_fp, system.file("extdata", "odm/gene/metadata.rds"
 gRNA_odm_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
 odm_gRNA <- read_odm(gRNA_odm_fp, system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata"))
 multimodal_odm <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+
+# subset the multimodal ODM by cell
+multimodal_odm_sub <- multimodal_odm[,1:10]
+
+# save the subsetted multimodal ODM
 multimodal_metadata_fp <- paste0(create_new_directory(), "/multimodal_metadata.rds")
-save_multimodal_odm(multimodal_odm, multimodal_metadata_fp)
+save_multimodal_odm(multimodal_odm_sub, multimodal_metadata_fp)
+
+# delete and then read the subsetted multimodal odm
+rm(multimodal_odm_sub)
+multimodal_odm_sub <- read_multimodal_odm(c(gene_odm_fp, gRNA_odm_fp), multimodal_metadata_fp)
 }

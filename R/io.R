@@ -9,7 +9,7 @@
 #' @param odm an ondisc_matrix object
 #' @param metadata_fp path to metadata RDS file
 #'
-#' @return NULL
+#' @return NULL for `save_odm`; a loaded `ondisc` object for `read_odm`
 #' @export
 #' @examples
 #' # Please install the `ondiscdata` package before running the examples.
@@ -26,6 +26,8 @@
 #' tempfile <- create_new_directory()
 #' metadata_subset_fp <- paste0(tempfile, "/metadata_subset.rds")
 #' save_odm(odm_subset, metadata_subset_fp)
+#' # finally, load the subsetted odm
+#' odm_subset <- read_odm(odm_fp, metadata_subset_fp)
 save_odm <- function(odm, metadata_fp) {
   if (is(odm, "multimodal_ondisc_matrix")) stop("Save function not yet implemented for multimodal_ondisc_matrix class.")
   # get list representation
@@ -58,7 +60,6 @@ convert_odm_metadata_to_list <- function(odm) {
 #' Read ODM
 #' @rdname save_odm
 #' @param odm_fp file path to a backing .odm file
-#' @param metadata_fp metadata.rds file
 #' @export
 read_odm <- function(odm_fp, metadata_fp = NULL) {
   if (!file.exists(odm_fp)) stop(paste0("File ", odm_fp, " does not exist."))
@@ -95,12 +96,18 @@ read_odm_given_metadata_obj <- function(odm_fp, metadata) {
 }
 
 
-#' Save a multimodal `ondisc_matrix`
+#' Save or read a `multimodal_ondisc_matrix`
+#'
+#' Functions to save and read `multimodal_ondisc_matrix` objects.
+#'
+#' A `multimodal_ondisc_matrix` is associated with two or more backing .odm files. These files are static, read-only files that are never altered or copied.
+#' `read_multimodal_odm` constructs a `multimodal_ondisc_matrix` from a given set of backing .odm files and a multimodal metadata RDS file.
+#' `save_multimodal_odm` writes a new metadata file to disk (potentially overwriting a previous metadata file of the same name), leaving the backing .odm files unaltered.
 #'
 #' @param multimodal_odm a `multimodal_ondisc_matrix` object
-#' @param multimodal_metadata_fp path to multimodal metadata RDS file
+#' @param multimodal_metadata_fp path to a multimodal metadata RDS file
 #'
-#' @return NULL
+#' @return NULL for `save_multimodal_odm`; a loaded `multimodal_ondisc_matrix` for `read_multimodal_odm`
 #' @export
 #'
 #' @examples
@@ -114,8 +121,17 @@ read_odm_given_metadata_obj <- function(odm_fp, metadata) {
 #' gRNA_odm_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
 #' odm_gRNA <- read_odm(gRNA_odm_fp, system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata"))
 #' multimodal_odm <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#'
+#' # subset the multimodal ODM by cell
+#' multimodal_odm_sub <- multimodal_odm[,1:10]
+#'
+#' # save the subsetted multimodal ODM
 #' multimodal_metadata_fp <- paste0(create_new_directory(), "/multimodal_metadata.rds")
-#' save_multimodal_odm(multimodal_odm, multimodal_metadata_fp)
+#' save_multimodal_odm(multimodal_odm_sub, multimodal_metadata_fp)
+#'
+#' # delete and then read the subsetted multimodal odm
+#' rm(multimodal_odm_sub)
+#' multimodal_odm_sub <- read_multimodal_odm(c(gene_odm_fp, gRNA_odm_fp), multimodal_metadata_fp)
 save_multimodal_odm <- function(multimodal_odm, multimodal_metadata_fp) {
   # convert the individual modalities to list form
   modality_lists <- lapply(X = multimodal_odm@modalities, FUN = function(modality) {
@@ -130,8 +146,10 @@ save_multimodal_odm <- function(multimodal_odm, multimodal_metadata_fp) {
 }
 
 
-# odm_fps <- c(gene_odm_fp, gRNA_odm_fp)
-# multimodal_metadata_fp
+#' Read multimodal ODM
+#' @rdname save_multimodal_odm
+#' @param odm_fps vector of file paths to backing .odm files
+#' @export
 read_multimodal_odm <- function(odm_fps, multimodal_metadata_fp) {
   # Load the metadata
   metadata_list <- readRDS(multimodal_metadata_fp)
@@ -141,7 +159,7 @@ read_multimodal_odm <- function(odm_fps, multimodal_metadata_fp) {
   backing_ids <- sapply(X = odm_fps, FUN = function(odm_fp) {
     read_integer_vector_hdf5(odm_fp, "odm_id", 1L)
   }) |> sort()
-  memory_ids <- sapply(X = metadata$modality_lists, FUN = function(modality) {
+  memory_ids <- sapply(X = metadata_list$modality_lists, FUN = function(modality) {
     modality$odm_id
   }) |> sort()
   # obtain the ordered odm_fps and modality names
@@ -154,7 +172,7 @@ read_multimodal_odm <- function(odm_fps, multimodal_metadata_fp) {
   }) |> setNames(modality_names_ordered)
   # finally, create the multimodal ondisc matrix
   out <- new(Class = "multimodal_ondisc_matrix")
-  out@modalities <- covariate_ondisc_matrix_list
+  out@modalities <- modality_list
   out@global_cell_covariates <- global_cell_covariates
   return(out)
 }

@@ -74,3 +74,23 @@ test_that("covariate matrices", {
 test_that("get modality", {
   expect_identical(get_modality(multimodal_mat, "modality_1"), multimodal_mat@modalities$modality_1)
 })
+
+
+test_that("multimodal save and load", {
+  multimodal_metadata_fp <- paste0(create_new_directory(), "/multimodal_metadata.rds")
+  backing_file_1 <- metadata_odms$modality_1@ondisc_matrix@h5_file
+  backing_file_2 <- metadata_odms$modality_2@ondisc_matrix@h5_file
+  save_multimodal_odm(multimodal_odm = multimodal_mat, multimodal_metadata_fp = multimodal_metadata_fp)
+  # load the multimodal matrix
+  multimodal_loaded <- read_multimodal_odm(odm_fps = c(backing_file_1, backing_file_2),
+                                           multimodal_metadata_fp = multimodal_metadata_fp)
+  expect_identical(multimodal_loaded@modalities$modality_2, multimodal_mat@modalities$modality_2)
+  expect_identical(multimodal_loaded@modalities$modality_1, multimodal_mat@modalities$modality_1)
+  expect_identical(multimodal_loaded@global_cell_covariates, multimodal_mat@global_cell_covariates)
+  # load the multimodal matrix in reverse order
+  multimodal_loaded <- read_multimodal_odm(odm_fps = c(backing_file_2, backing_file_1),
+                                           multimodal_metadata_fp = multimodal_metadata_fp)
+  expect_identical(multimodal_loaded@modalities$modality_2, multimodal_mat@modalities$modality_2)
+  expect_identical(multimodal_loaded@modalities$modality_1, multimodal_mat@modalities$modality_1)
+  expect_identical(multimodal_loaded@global_cell_covariates, multimodal_mat@global_cell_covariates)
+})
