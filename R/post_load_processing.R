@@ -1,5 +1,5 @@
 normalize_by_lib_size <- function(covariate_odm, scale_factor = 10000) {
-  if (covariate_odm@post_load_function_present) stop("Data already normalized.")
+  if (covariate_odm@post_load_function_present) stop("Data already transformed.")
   covariate_odm@post_load_function_present <- TRUE
   covariate_odm@post_load_function <- internal_normalize_by_lib_size
   covariate_odm@misc <- list(scale_factor = scale_factor)
@@ -41,7 +41,7 @@ internal_normalize_by_lib_size <- function(out, x, ...) {
 #' covariate_odm_norm <- normalize_by_regression(covariate_odm, covariates = NULL)
 normalize_by_regression <- function(covariate_odm, covariates = c("p_mito", "lg_n_nonzero"), offset = "lg_n_umis") {
   EXPRESSION_CUTOFF <- 10
-  if (covariate_odm@post_load_function_present) stop("Data already normalized.")
+  if (covariate_odm@post_load_function_present) stop("Data already transformed.")
   if (covariate_odm@ondisc_matrix@logical_mat) stop("`covariate_odm` is logical; `normalize_by_regression` works only on integer data.")
 
   # verify that the covariates and offset are in fact columns of the cell covariate matrix

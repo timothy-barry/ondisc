@@ -54,3 +54,53 @@ convert_assign_list_to_sparse_odm <- function(cell_barcodes, gRNA_ids, gRNA_assi
   }
   return(ret)
 }
+
+
+
+#' Load thresholded and grouped gRNA
+#'
+#' Loads data from a covariate ondisc matrix into memory by thresholding and grouping gRNAs.
+#'
+#' @param covariate_odm a gRNA-by-cell covariate ondisc matrix. The matrix can be either an integer-valued expression matrix or a logical matrix of gRNA-to-cell assignments
+#' @param gRNA_group the gRNA group (or vector of gRNA groups) to load
+#' @param threshold the threshold to use for assigning gRNAs to cells (ignored if `covariate_odm` is a logical matrix)
+#' @param gRNA_group_name the name of the column of the feature covariate matrix containing the gRNA group information
+#'
+#' @return a matrix of grouped gRNA-to-cell assignments
+#' @export
+#'
+#' @examples
+#' # Please install the `ondiscdata` package before running the examples.
+#' # install.packages("devtools")
+#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#'
+#' # EXAMPLE 1: an integer-valued matrix of gRNA expressions
+#' odm_fp <- system.file("extdata", "odm/gRNA_expression/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gRNA_expression/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' indics <- load_thresholded_and_grouped_gRNA(odm, "gRNA_group_5")
+#' indics <- load_thresholded_and_grouped_gRNA(odm, c("gRNA_group_1", "gRNA_group_11"))
+#'
+#' # EXAMPLE 2: a logical matrix of gRNA indicators
+#' odm_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
+#' metadata_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
+#' odm <- read_odm(odm_fp, metadata_fp)
+#' # append gRNA group information -- three gRNAs/group
+#' odm <- odm |>
+#' mutate_feature_covariates(gRNA_group = rep(paste0("gRNA_group_", seq(1, nrow(odm)/3)), each = 3))
+#' indics <- load_thresholded_and_grouped_gRNA(covariate_odm, c("gRNA_group_21", "gRNA_group_6"))
+#' # alter gRNA group information -- one gRNA/group
+#' odm <- odm |>
+#' mutate_feature_covariates(gRNA_group = paste0("gRNA_group_", seq(1, nrow(odm))))
+#' indics <- load_thresholded_and_grouped_gRNA(odm, "gRNA_group_2")
+load_thresholded_and_grouped_gRNA <- function(covariate_odm, gRNA_group, threshold = 3, gRNA_group_name = "gRNA_group") {
+  gRNA_group_vect <- get_feature_covariates(covariate_odm)[[gRNA_group_name]]
+  out <- t(sapply(X = gRNA_group, FUN = function(curr_gRNA_group) {
+    m <- covariate_odm[[which(curr_gRNA_group == gRNA_group_vect),]]
+    # first, perform threshold
+    m_thresh <- if (!covariate_odm@ondisc_matrix@logical_mat) m >= threshold else m
+    # next, if applicable, perform the grouping
+    if (nrow(m_thresh) >= 2) Matrix::colSums(m_thresh) >= 1 else as.matrix(m_thresh)
+  }))
+  return(out)
+}

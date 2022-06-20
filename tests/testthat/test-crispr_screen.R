@@ -14,8 +14,8 @@ test_that("convert assign list to sparse odm", {
   if (file.exists(odm_fp)) file.remove(odm_fp)
   if (file.exists(metadata_fp)) file.remove(metadata_fp)
   odm <- convert_assign_list_to_sparse_odm(cell_barcodes, gRNA_ids, gRNA_assignment_list, odm_fp, metadata_fp, features_metadata_df)
-  for (cell_barcode in cell_barcodes) {
-    for (gRNA_id in gRNA_ids) {
+  for (cell_barcode in sample(cell_barcodes, 4)) {
+    for (gRNA_id in sample(gRNA_ids, 4)) {
       expect_equal(gRNA_id %in% gRNA_assignment_list[[cell_barcode]],
                    as.logical(odm[[gRNA_id, cell_barcode]]))
     }

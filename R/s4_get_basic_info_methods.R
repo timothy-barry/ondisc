@@ -86,7 +86,7 @@ NULL
 #' @export
 setMethod("show", signature = signature("ondisc_matrix"), function(object) {
   x_dim <- dim(object)
-  cat(paste0("An ondisc_matrix with ", crayon::blue(x_dim[1]), " feature", if (x_dim[1] == 1) "" else "s" ," and ", crayon::blue(x_dim[2]), " cell", if (x_dim[2] == 1) "" else "s", ".\n"))
+  cat(paste0("A", if (object@logical_mat) crayon::blue(" logical ") else paste0("n ", crayon::blue("integer-valued ") ), "ondisc_matrix with ", crayon::blue(x_dim[1]), " feature", if (x_dim[1] == 1) "" else "s" ," and ", crayon::blue(x_dim[2]), " cell", if (x_dim[2] == 1) "" else "s", ".\n"))
 })
 
 #' @rdname show
