@@ -24,7 +24,7 @@ load_thresholded_and_grouped_gRNA(
 a matrix of grouped gRNA-to-cell assignments
 }
 \description{
-Loads data from a covariate ondisc matrix into memory by thresholding and grouping gRNAs.
+Loads data from an ondisc matrix into memory after thresholding and grouping gRNAs.
 }
 \examples{
 # Please install the `ondiscdata` package before running the examples.
@@ -45,7 +45,7 @@ odm <- read_odm(odm_fp, metadata_fp)
 # append gRNA group information -- three gRNAs/group
 odm <- odm |>
 mutate_feature_covariates(gRNA_group = rep(paste0("gRNA_group_", seq(1, nrow(odm)/3)), each = 3))
-indics <- load_thresholded_and_grouped_gRNA(covariate_odm, c("gRNA_group_21", "gRNA_group_6"))
+indics <- load_thresholded_and_grouped_gRNA(odm, c("gRNA_group_21", "gRNA_group_6"))
 # alter gRNA group information -- one gRNA/group
 odm <- odm |>
 mutate_feature_covariates(gRNA_group = paste0("gRNA_group_", seq(1, nrow(odm))))

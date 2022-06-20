@@ -34,9 +34,12 @@ A \code{multimodal_ondisc_matrix} is associated with two or more backing .odm fi
 
 # Initialize a multimodal ODM
 gene_odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
-odm_gene <- read_odm(gene_odm_fp, system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata"))
-gRNA_odm_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
-odm_gRNA <- read_odm(gRNA_odm_fp, system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata"))
+odm_gene <- read_odm(gene_odm_fp,
+system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata"))
+gRNA_odm_fp <- system.file("extdata",
+"odm/gRNA/matrix.odm", package = "ondiscdata")
+odm_gRNA <- read_odm(gRNA_odm_fp,
+system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata"))
 multimodal_odm <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
 
 # subset the multimodal ODM by cell

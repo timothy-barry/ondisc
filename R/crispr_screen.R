@@ -59,7 +59,7 @@ convert_assign_list_to_sparse_odm <- function(cell_barcodes, gRNA_ids, gRNA_assi
 
 #' Load thresholded and grouped gRNA
 #'
-#' Loads data from a covariate ondisc matrix into memory by thresholding and grouping gRNAs.
+#' Loads data from an ondisc matrix into memory after thresholding and grouping gRNAs.
 #'
 #' @param covariate_odm a gRNA-by-cell covariate ondisc matrix. The matrix can be either an integer-valued expression matrix or a logical matrix of gRNA-to-cell assignments
 #' @param gRNA_group the gRNA group (or vector of gRNA groups) to load
@@ -88,7 +88,7 @@ convert_assign_list_to_sparse_odm <- function(cell_barcodes, gRNA_ids, gRNA_assi
 #' # append gRNA group information -- three gRNAs/group
 #' odm <- odm |>
 #' mutate_feature_covariates(gRNA_group = rep(paste0("gRNA_group_", seq(1, nrow(odm)/3)), each = 3))
-#' indics <- load_thresholded_and_grouped_gRNA(covariate_odm, c("gRNA_group_21", "gRNA_group_6"))
+#' indics <- load_thresholded_and_grouped_gRNA(odm, c("gRNA_group_21", "gRNA_group_6"))
 #' # alter gRNA group information -- one gRNA/group
 #' odm <- odm |>
 #' mutate_feature_covariates(gRNA_group = paste0("gRNA_group_", seq(1, nrow(odm))))
