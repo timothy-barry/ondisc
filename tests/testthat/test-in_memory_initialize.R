@@ -2,9 +2,13 @@
 cov_odms_from_memory <- lapply(r_mats_plus_metadata, function(l) {
   file_dir <- create_new_directory()
   # randomly choose the class of matrix
-  r_matrix <- as.matrix(l$r_mat)
-  matrix_class <- sample(c("dgTMatrix", "dgRMatrix", "dgCMatrix", "matrix"), 1)
-  r_matrix <- as(r_matrix, matrix_class)
+if (is.logical(r_matrix@x)) {
+    r_matrix <- as(r_matrix, "lgTMatrix")
+  } else {
+    r_matrix <- as.matrix(l$r_mat)
+    matrix_class <- sample(c("dgTMatrix", "dgRMatrix", "dgCMatrix", "matrix"), 1)
+    r_matrix <- as(r_matrix, matrix_class)
+  }
 
   metadata_odm <- create_ondisc_matrix_from_R_matrix(r_matrix = r_matrix,
                                                      barcodes = l$barcodes,
@@ -74,3 +78,4 @@ for (i in seq(1, n_datasets)) {
   }
 }
 })
+

@@ -6,7 +6,7 @@
 #' - cell-specific: (i) total number of features expressed in cell (n_nonzero_cell), (ii) total UMI count (n_umis_cell), and (iii) percentage of UMIs that map to mitochondrial genes (p_mito_cell).
 #' - feature-specific: (i) total number of cells in which feature is expressed (n_nonzero_feature), (ii) mean expression of feature across cells (mean_expression_feature), (iii) coefficient of variation of feature expression across cells (coef_of_variation_feature).
 #'
-#' @param r_matrix an R matrix. The matrix can be represented as a standard (dense) R matrix or a sparse matrix of class "dgTMatrix". Integer and logical (i.e., boolean) matrices are allowed.
+#' @param r_matrix an R matrix. The matrix can be represented as (i) a standard (dense) R matrix (integer or logical), (ii) a sparse integer matrix of class "dgTMatrix," "dgRMatrix," or "dgCMatrix", or (iii) a sparse logical matrix of class "lgTMatrix."
 #' @param barcodes a character vector giving the cell barcodes.
 #' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
 #' @param odm_fp location to write the backing .odm file.
@@ -127,7 +127,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   } else if (is(r_matrix, "matrix")) { # dense case
     csc_r_matrix <- as(r_matrix, "dgCMatrix")
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
-  } else if (is(r_matrix, "lgTMatrix")) { # lgTMatrix
+  } else if (is(r_matrix, "lgTMatrix", "")) { # sparse matrix
     # remove all false entries
     true_posits <- r_matrix@x
     r_matrix@i <- r_matrix@i[true_posits]

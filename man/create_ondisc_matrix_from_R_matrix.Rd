@@ -14,7 +14,7 @@ create_ondisc_matrix_from_R_matrix(
 )
 }
 \arguments{
-\item{r_matrix}{an R matrix. The matrix can be represented as a standard (dense) R matrix or a sparse matrix of class "dgTMatrix". Integer and logical (i.e., boolean) matrices are allowed.}
+\item{r_matrix}{an R matrix. The matrix can be represented as (i) a standard (dense) R matrix (integer or logical), (ii) a sparse integer matrix of class "dgTMatrix," "dgRMatrix," or "dgCMatrix", or (iii) a sparse logical matrix of class "lgTMatrix."}
 
 \item{barcodes}{a character vector giving the cell barcodes.}
 
