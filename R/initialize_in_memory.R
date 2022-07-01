@@ -84,7 +84,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
                                     gene_names <- dplyr::pull(features_df, 2)
                                     mt_gene_index <- grep(pattern = "^MT-", x = gene_names)
                                     n_mito_cell = colSums(r_matrix[mt_gene_index,])
-                                    return (n_mito_cell/ colSums(x))
+                                    return (n_mito_cell/colSums(x))
                                   })
   cell_covariates <- sapply(X = cell_specific_func_list[covariates$cell_covariates], FUN = function(f) f(r_matrix))
   cell_covariates <- as.data.frame(cell_covariates)
@@ -127,8 +127,27 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   } else if (is(r_matrix, "matrix")) { # dense case
     csc_r_matrix <- as(r_matrix, "dgCMatrix")
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
+  } else if (is(r_matrix, "lgTMatrix")) { # lgTMatrix
+    # remove all false entries
+    true_posits <- r_matrix@x
+    r_matrix@i <- r_matrix@i[true_posits]
+    r_matrix@j <- r_matrix@j[true_posits]
+    r_matrix@x <- r_matrix@x[true_posits]
+    # convert to csc and csr formats
+    csc_r_matrix <- Matrix::sparseMatrix(i = r_matrix@i,
+                                         j = r_matrix@j,
+                                         dims = r_matrix@Dim,
+                                         repr = "C",
+                                         index1 = FALSE,
+                                         x = r_matrix@x)
+    csr_r_matrix <- Matrix::sparseMatrix(i = r_matrix@i,
+                                         j = r_matrix@j,
+                                         dims = r_matrix@Dim,
+                                         repr = "R",
+                                         index1 = FALSE,
+                                         x = r_matrix@x)
   } else { #invalid input
-    stop("Input matrix must be a class of matrix, dgTMatrix, dgCMatrix, or dgRMatrix.")
+    stop("Input matrix must be of class matrix, dgTMatrix, dgCMatrix, dgRMatrix, or lgTMatrix.")
   }
 
   # initialize the ODM
@@ -161,7 +180,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
 }
 
 
-#' Get metadata for r_matrix,an R matrix. The matrix can be either integer or logical..
+#' Get metadata for r_matrix,an R matrix. The matrix can be either integer or logical.
 #'
 #' @param r_matrix an R matrix. The matrix can be either integer or logical
 #'
@@ -170,7 +189,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
 get_expression_metadata_from_r_matrix <- function(r_matrix) {
   n_features <- nrow(r_matrix)
   n_cells <- ncol(r_matrix)
-  if (is.logical(r_matrix)) {
+  if (is.logical(r_matrix) || is(r_matrix, "lgTMatrix")) {
     is_logical <- TRUE
     n_data_points <- sum(r_matrix)
   } else {
