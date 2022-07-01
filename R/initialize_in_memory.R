@@ -127,7 +127,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   } else if (is(r_matrix, "matrix")) { # dense case
     csc_r_matrix <- as(r_matrix, "dgCMatrix")
     csr_r_matrix <- as(r_matrix, "dgRMatrix")
-  } else if (is(r_matrix, "lgTMatrix", "")) { # sparse matrix
+  } else if (is(r_matrix, "lgTMatrix")) { # sparse matrix
     # remove all false entries
     true_posits <- r_matrix@x
     r_matrix@i <- r_matrix@i[true_posits]

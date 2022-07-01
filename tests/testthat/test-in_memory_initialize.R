@@ -2,7 +2,8 @@
 cov_odms_from_memory <- lapply(r_mats_plus_metadata, function(l) {
   file_dir <- create_new_directory()
   # randomly choose the class of matrix
-if (is.logical(r_matrix@x)) {
+  r_matrix <- as.matrix(l$r_mat)
+  if (is.logical(r_matrix) || (!is.matrix(r_matrix) && is.logical(r_matrix@x))) {
     r_matrix <- as(r_matrix, "lgTMatrix")
   } else {
     r_matrix <- as.matrix(l$r_mat)
