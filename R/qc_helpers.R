@@ -49,7 +49,7 @@ get_highly_variable_features <- function(covariate_odm, n_features = 250) {
 #' cov_odm <- read_odm(odm_fp, metadata_fp)
 #' highly_expressed_features <- get_highly_expressed_features(cov_odm)
 get_highly_expressed_features <- function(covariate_odm, frac_expressed = 0.05) {
-  n_cells <- covariate_odm@ondisc_matrix@underlying_dimension[2]
+  n_cells <- ncol(covariate_odm)
   covariate_odm %>%
     get_feature_covariates() %>%
     dplyr::mutate(p_exp = n_nonzero/n_cells) %>%
