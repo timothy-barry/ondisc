@@ -159,15 +159,14 @@ read_multimodal_odm <- function(odm_fps, multimodal_metadata_fp) {
   # get the global covariate matrix
   global_cell_covariates <- metadata_list$global_cell_covariates
   # determine the order in which to initialize the odms
-  backing_ids <- sapply(X = odm_fps, FUN = function(odm_fp) {
-    read_integer_vector_hdf5(odm_fp, "odm_id", 1L)
-  }) |> sort()
-  memory_ids <- sapply(X = metadata_list$modality_lists, FUN = function(modality) {
-    modality$odm_id
-  }) |> sort()
-  # obtain the ordered odm_fps and modality names
-  odm_fps_ordered <- names(backing_ids)
-  modality_names_ordered <- names(memory_ids)
+  backing_ids <- sapply(X = odm_fps, FUN = function(odm_fp) read_integer_vector_hdf5(odm_fp, "odm_id", 1L))
+  memory_ids <- sapply(X = metadata_list$modality_lists, FUN = function(modality) modality$odm_id)
+  # compute the ID intersection
+  intersected_ids <- intersect(backing_ids, memory_ids)
+  if (length(intersected_ids) == 0) stop("Backing .odm files do not match multimodal_metadata.rds file.")
+  odm_fps_ordered <- names(backing_ids)[match(x = intersected_ids, table = backing_ids)]
+  modality_names_ordered <- names(memory_ids)[match(x = intersected_ids, table = memory_ids)]
+
   # load the modalities
   modality_list <- lapply(X = seq(1, length(odm_fps_ordered)), FUN = function(i) {
     read_odm_given_metadata_obj(odm_fps_ordered[i],
