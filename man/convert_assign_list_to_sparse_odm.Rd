@@ -2,12 +2,12 @@
 % Please edit documentation in R/crispr_screen.R
 \name{convert_assign_list_to_sparse_odm}
 \alias{convert_assign_list_to_sparse_odm}
-\title{Convert a list of cell-to-gRNA assignments to sparse ODM matrix format}
+\title{Convert a list of cell-to-grna assignments to sparse ODM matrix format}
 \usage{
 convert_assign_list_to_sparse_odm(
   cell_barcodes,
-  gRNA_ids,
-  gRNA_assignment_list,
+  grna_ids,
+  grna_assignment_list,
   odm_fp,
   metadata_fp,
   features_metadata_df = NULL
@@ -16,9 +16,9 @@ convert_assign_list_to_sparse_odm(
 \arguments{
 \item{cell_barcodes}{a vector of cell barcodes}
 
-\item{gRNA_ids}{a vector of gRNA IDs}
+\item{grna_ids}{a vector of grna IDs}
 
-\item{gRNA_assignment_list}{a list giving the cell-to-gRNA assignments. The \code{i}th entry of the list should be a character vector giving the gRNAs present in cell \code{i}. If no gRNAs are present in cell \code{i}, then an empty string ("") should be supplied.}
+\item{grna_assignment_list}{a list giving the cell-to-grna assignments. The \code{i}th entry of the list should be a character vector giving the grnas present in cell \code{i}. If no grnas are present in cell \code{i}, then an empty string ("") should be supplied.}
 
 \item{odm_fp}{file path to the backing .odm file to write}
 
@@ -27,25 +27,25 @@ convert_assign_list_to_sparse_odm(
 \item{features_metadata_df}{(optional) a data frame to concatenate to the \code{feature_covariate_matrix} of the created ODM.}
 }
 \value{
-a logical ODM representing the cell-to-gRNA assignments. As a side-effect, writes the created ODM to disk
+a logical ODM representing the cell-to-grna assignments. As a side-effect, writes the created ODM to disk
 }
 \description{
-Convert a list of cell-to-gRNA assignments to sparse ODM matrix format
+Convert a list of cell-to-grna assignments to sparse ODM matrix format
 }
 \examples{
 set.seed(5)
 n_cells <- 50
-n_gRNAs <- 30
+n_grnas <- 30
 cell_barcodes <- paste0("cell_", seq(1, n_cells))
-gRNA_ids <- paste0("gRNA_", seq(1, n_gRNAs))
-gRNA_assignment_list <- replicate(n_cells,
-sample(x = gRNA_ids, size = sample(x = seq(0, 3), size = 1), replace = FALSE),
+grna_ids <- paste0("grna_", seq(1, n_grnas))
+grna_assignment_list <- replicate(n_cells,
+sample(x = grna_ids, size = sample(x = seq(0, 3), size = 1), replace = FALSE),
 FALSE) |> lapply(FUN = function(x) if (length(x) == 0) "" else x)
 features_metadata_df <- data.frame(target_type = sample(x = c("gene", "non-targeting"),
-size = n_gRNAs, replace = TRUE),
-target = paste0("target", seq(1, n_gRNAs)))
+size = n_grnas, replace = TRUE),
+target = paste0("target", seq(1, n_grnas)))
 odm_fp <- paste0(tempdir(), "/matrix.odm")
 metadata_fp <- paste0(tempdir(), "/metadata.rds")
-odm <- convert_assign_list_to_sparse_odm(cell_barcodes, gRNA_ids, gRNA_assignment_list,
+odm <- convert_assign_list_to_sparse_odm(cell_barcodes, grna_ids, grna_assignment_list,
 odm_fp, metadata_fp, features_metadata_df)
 }

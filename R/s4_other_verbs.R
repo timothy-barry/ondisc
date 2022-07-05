@@ -37,10 +37,10 @@
 #' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
 #' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
-#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
-#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
-#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
-#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#' odm_grna_fp <- system.file("extdata", "odm/grna/matrix.odm", package = "ondiscdata")
+#' metadata_grna_fp <- system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata")
+#' odm_grna <- read_odm(odm_grna_fp, metadata_grna_fp)
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, grna = odm_grna))
 #'
 #' # delete gene_p_mito from cell covariate
 #' odm_multi_no_gene_p_mito <- mutate_cell_covariates(odm_multi, gene_p_mito = NULL)
@@ -115,11 +115,11 @@ setMethod("mutate_feature_covariates", signature("multimodal_ondisc_matrix"), fu
 #' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
 #' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
-#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
-#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
-#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+#' odm_grna_fp <- system.file("extdata", "odm/grna/matrix.odm", package = "ondiscdata")
+#' metadata_grna_fp <- system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata")
+#' odm_grna <- read_odm(odm_grna_fp, metadata_grna_fp)
 #'
-#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, grna = odm_grna))
 #' odm_gene <- get_modality(odm_multi, "gene")
 get_modality <- function(multimodal_mat, modality_name) {
   return(multimodal_mat@modalities[[modality_name]])
@@ -157,10 +157,10 @@ get_modality <- function(multimodal_mat, modality_name) {
 #' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
 #' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
-#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
-#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
-#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
-#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#' odm_grna_fp <- system.file("extdata", "odm/grna/matrix.odm", package = "ondiscdata")
+#' metadata_grna_fp <- system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata")
+#' odm_grna <- read_odm(odm_grna_fp, metadata_grna_fp)
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, grna = odm_grna))
 #'
 #' cell_covariates_multi <- get_cell_covariates(odm_multi)
 NULL

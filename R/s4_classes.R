@@ -149,11 +149,11 @@ multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(mo
 #' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
 #' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
-#' odm_gRNA_fp <- system.file("extdata", "odm/gRNA/matrix.odm", package = "ondiscdata")
-#' metadata_gRNA_fp <- system.file("extdata", "odm/gRNA/metadata.rds", package = "ondiscdata")
-#' odm_gRNA <- read_odm(odm_gRNA_fp, metadata_gRNA_fp)
+#' odm_grna_fp <- system.file("extdata", "odm/grna/matrix.odm", package = "ondiscdata")
+#' metadata_grna_fp <- system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata")
+#' odm_grna <- read_odm(odm_grna_fp, metadata_grna_fp)
 #'
-#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, gRNA = odm_gRNA))
+#' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, grna = odm_grna))
 multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
   # check that cell barcodes coincide across modalities
   barcodes_list <- lapply(covariate_ondisc_matrix_list, get_cell_barcodes)

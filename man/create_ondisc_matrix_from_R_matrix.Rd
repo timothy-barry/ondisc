@@ -59,7 +59,7 @@ features_df, odm_fp)
 ####################
 # EXAMPLE 2: logical
 ####################
-file_locs <- system.file("extdata/r_matrix/gRNA", package = "ondiscdata",
+file_locs <- system.file("extdata/r_matrix/grna", package = "ondiscdata",
 c("matrix.rds", "features.rds", "barcodes.rds"))
 r_matrix_2 <- readRDS(file = file_locs[1])
 features_df_2 <- readRDS(file = file_locs[2])
