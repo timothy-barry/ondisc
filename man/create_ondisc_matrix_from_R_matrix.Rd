@@ -9,6 +9,7 @@ create_ondisc_matrix_from_R_matrix(
   barcodes,
   features_df,
   odm_fp,
+  comp_level = 4L,
   metadata_fp = NULL,
   feature_access_only = FALSE
 )
@@ -21,6 +22,8 @@ create_ondisc_matrix_from_R_matrix(
 \item{features_df}{a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.}
 
 \item{odm_fp}{location to write the backing .odm file.}
+
+\item{comp_level}{(optional; default 4) the amount of data compression to apply (on a 0-7 scale)}
 
 \item{metadata_fp}{(optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.}
 

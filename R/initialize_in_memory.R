@@ -11,6 +11,7 @@
 #' @param features_df a data frame giving the names of the features. The first column (required) contains the feature IDs (e.g., ENSG00000186092), and the second column (optional) contains the human-readable feature names (e.g., OR4F5). Subsequent columns are discarded. Gene names starting with "MT-" are assumed to be mitochondrial genes and will be used to compute the p_mito covariate.
 #' @param odm_fp location to write the backing .odm file.
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
+#' @param comp_level (optional; default 4) the amount of data compression to apply (on a 0-7 scale)
 #' @param feature_access_only boolean value; if TRUE, fast acess to features; if FALSE (default), fast access to features AND cells
 #'
 #' @return A `covariate_ondisc_matrix` object.
@@ -44,7 +45,7 @@
 #' odm_fp <- paste0(create_new_directory(), "/logical_odm")
 #' odm_logical <- create_ondisc_matrix_from_R_matrix(r_matrix_2, barcodes,
 #' features_df_2, odm_fp)
-create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, odm_fp, metadata_fp = NULL, feature_access_only = FALSE) {
+create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, odm_fp, comp_level = 4L, metadata_fp = NULL, feature_access_only = FALSE) {
   # generate random ODM ID
   odm_id <- sample(seq(0L, .Machine$integer.max), size = 1)
 
@@ -151,7 +152,7 @@ create_ondisc_matrix_from_R_matrix <- function(r_matrix, barcodes, features_df, 
   }
 
   # initialize the ODM
-  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id)
+  initialize_h5_file_on_disk(odm_fp, bag_of_variables, odm_id, comp_level)
 
   # Write in memory matrix to the .h5 file on-disk (side-effect)
   write_matrix_to_h5(odm_fp, expression_metadata = bag_of_variables, csc_r_matrix = csc_r_matrix, csr_r_matrix = csr_r_matrix, feature_access_only = feature_access_only)
