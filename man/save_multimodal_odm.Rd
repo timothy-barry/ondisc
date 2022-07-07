@@ -28,18 +28,17 @@ A \code{multimodal_ondisc_matrix} is associated with two or more backing .odm fi
 \code{save_multimodal_odm} writes a new metadata file to disk (potentially overwriting a previous metadata file of the same name), leaving the backing .odm files unaltered.
 }
 \examples{
-# Please install the `ondiscdata` package before running the examples.
-# install.packages("devtools")
-# devtools::install_github("Katsevich-Lab/ondiscdata")
+# Install the `ondiscdata` package to run the examples.
+# devtools::install_github("timothy-barry/ondiscdata")
 
 # Initialize a multimodal ODM
 gene_odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 odm_gene <- read_odm(gene_odm_fp,
 system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata"))
 grna_odm_fp <- system.file("extdata",
-"odm/grna/matrix.odm", package = "ondiscdata")
+"odm/grna_assignment/matrix.odm", package = "ondiscdata")
 odm_grna <- read_odm(grna_odm_fp,
-system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata"))
+system.file("extdata", "odm/grna_assignment/metadata.rds", package = "ondiscdata"))
 multimodal_odm <- multimodal_ondisc_matrix(list(gene = odm_gene, grna = odm_grna))
 
 # subset the multimodal ODM by cell

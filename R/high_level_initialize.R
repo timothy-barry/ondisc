@@ -16,18 +16,17 @@
 #' @param n_lines_per_chunk (optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.
 #' @param odm_fp location to write the ondisc matrix to disk.
 #' @param metadata_fp (optional; default NULL) location to write the metadata .RDS file. By default, a file called "metadata.rds" stored in the same directory as the backing .odm file.
-#' @param barcode_suffixes (optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of `barcodes_fp`. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.
+#' @param barcode_suffixes (optional; default NULL) a vector of suffixes to append to each barcode in barcodes_fp. The length should be the same as the length of `barcodes_fp`. If NULL, append nothing.
 #' @param progress (optional; default TRUE) print progress messages?
-#' @param comp_level amount of compression to apply (not yet implemented)
+#' @param comp_level (optional; default 4) the amount of data compression to apply (on a 0-7 scale)
 #' @return A `covariate_ondisc_matrix`.
 #' @export
 #'
 #' @examples
-#' # # Please install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
-#' # First example: initialize a `covariate_ondisc_matrix`
+#' # First example: initialize an `ondisc_matrix`
 #' # using simulated expression data; store output in tempdir()
 #' tempfile <- create_new_directory()
 #' odm_fp <- paste0(tempfile, "/expression_odm")
@@ -49,7 +48,7 @@
 #' c("mtx_dir1/barcodes.tsv", "mtx_dir2/barcodes.tsv", "mtx_dir3/barcodes.tsv"))
 #' features_fp <- system.file("extdata", "mtx_list/mtx_dir1/features.tsv", package = "ondiscdata")
 #' odm <- create_ondisc_matrix_from_mtx(mtx_fp, barcodes_fp, features_fp, odm_fp)
-create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, barcode_suffixes = NULL, comp_level = 0L, progress = TRUE) {
+create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_fp, metadata_fp = NULL, n_lines_per_chunk = 3e+08, barcode_suffixes = NULL, comp_level = 4L, progress = TRUE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
   # general information about the .mtx file, and general information about the .tsv files.
 
@@ -146,9 +145,8 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' @export
 #'
 #' @examples
-#' #' # Please install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' tempfile <- create_new_directory()
 #' odm_fp <- paste0(tempfile, "/expression_odm")
@@ -157,7 +155,7 @@ create_ondisc_matrix_from_mtx <- function(mtx_fp, barcodes_fp, features_fp, odm_
 #' c("batch-1_1.h5", "batch-1_2.h5", "batch_2-1.h5"))
 #' # create the ondisc matrix (commented out because of long (~2 min) running time)
 #' # odm_plus_covariates_list <- create_ondisc_matrix_from_h5_list(h5_list, odm_fp)
-create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, comp_level = 0L, progress = TRUE) {
+create_ondisc_matrix_from_h5_list <- function(h5_list, odm_fp, metadata_fp = NULL, barcode_suffixes = NULL, comp_level = 4L, progress = TRUE) {
   # bag_of_variables is used to store quantities to compute the feature- and cell-covariates,
   # general information about the .h5 file, the cells and the features
 

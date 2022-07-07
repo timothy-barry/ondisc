@@ -12,9 +12,8 @@
 #' @return NULL for `save_odm`; a loaded `ondisc` object for `read_odm`
 #' @export
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' # Load odm from package
 #' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
@@ -111,18 +110,17 @@ read_odm_given_metadata_obj <- function(odm_fp, metadata) {
 #' @export
 #'
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' # Initialize a multimodal ODM
 #' gene_odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' odm_gene <- read_odm(gene_odm_fp,
 #' system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata"))
 #' grna_odm_fp <- system.file("extdata",
-#' "odm/grna/matrix.odm", package = "ondiscdata")
+#' "odm/grna_assignment/matrix.odm", package = "ondiscdata")
 #' odm_grna <- read_odm(grna_odm_fp,
-#' system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata"))
+#' system.file("extdata", "odm/grna_assignment/metadata.rds", package = "ondiscdata"))
 #' multimodal_odm <- multimodal_ondisc_matrix(list(gene = odm_gene, grna = odm_grna))
 #'
 #' # subset the multimodal ODM by cell

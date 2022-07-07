@@ -9,9 +9,8 @@
 #' @export
 #'
 #' @examples
-#' # Install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
@@ -40,9 +39,8 @@ get_highly_variable_features <- function(covariate_odm, n_features = 250) {
 #' @export
 #'
 #' @examples
-#' # Install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
@@ -70,9 +68,8 @@ get_highly_expressed_features <- function(covariate_odm, frac_expressed = 0.05) 
 #' @export
 #'
 #' @examples
-#' # Install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
@@ -103,9 +100,8 @@ get_cells_with_moderate_seq_depth <- function(covariate_odm, lower_percentile = 
 #' @export
 #'
 #' @examples
-#' # Install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")

@@ -18,9 +18,8 @@ the top \code{n_features} most variable features
 Obtains the most variable features from a \code{covariate_ondisc_matrix}, as measured by coefficient of variation.
 }
 \examples{
-# Install the `ondiscdata` package before running the examples.
-# install.packages("devtools")
-# devtools::install_github("Katsevich-Lab/ondiscdata")
+# Install the `ondiscdata` package to run the examples.
+# devtools::install_github("timothy-barry/ondiscdata")
 
 odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")

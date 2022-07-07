@@ -18,9 +18,8 @@
 #' @export
 #'
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' ###########################
 #' # EXAMPLE 1: integer counts
@@ -37,7 +36,7 @@
 #' ####################
 #' # EXAMPLE 2: logical
 #' ####################
-#' file_locs <- system.file("extdata/r_matrix/grna", package = "ondiscdata",
+#' file_locs <- system.file("extdata/r_matrix/grna_assignment", package = "ondiscdata",
 #' c("matrix.rds", "features.rds", "barcodes.rds"))
 #' r_matrix_2 <- readRDS(file = file_locs[1])
 #' features_df_2 <- readRDS(file = file_locs[2])

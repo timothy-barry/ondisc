@@ -12,7 +12,7 @@ create_ondisc_matrix_from_mtx(
   metadata_fp = NULL,
   n_lines_per_chunk = 3e+08,
   barcode_suffixes = NULL,
-  comp_level = 0L,
+  comp_level = 4L,
   progress = TRUE
 )
 }
@@ -29,9 +29,9 @@ create_ondisc_matrix_from_mtx(
 
 \item{n_lines_per_chunk}{(optional) number of lines in .mtx file to process per chunk. Defaults to 3e+08.}
 
-\item{barcode_suffixes}{(optional; default NULL) a vector of suffix that appended to each barcodes in barcodes_fp. The length should be the same as the length of \code{barcodes_fp}. If NULL, append nothing for a single .mtx input; append file index for a list of .mtx inputs.}
+\item{barcode_suffixes}{(optional; default NULL) a vector of suffixes to append to each barcode in barcodes_fp. The length should be the same as the length of \code{barcodes_fp}. If NULL, append nothing.}
 
-\item{comp_level}{amount of compression to apply (not yet implemented)}
+\item{comp_level}{(optional; default 4) the amount of data compression to apply (on a 0-7 scale)}
 
 \item{progress}{(optional; default TRUE) print progress messages?}
 }
@@ -53,11 +53,10 @@ The function can compute the following cell-specific and feature-specific covari
 The function decides which covariates to compute given the input; in general, the function computes the maximum set of covariates possible.
 }
 \examples{
-# # Please install the `ondiscdata` package before running the examples.
-# install.packages("devtools")
-# devtools::install_github("Katsevich-Lab/ondiscdata")
+# Install the `ondiscdata` package to run the examples.
+# devtools::install_github("timothy-barry/ondiscdata")
 
-# First example: initialize a `covariate_ondisc_matrix`
+# First example: initialize an `ondisc_matrix`
 # using simulated expression data; store output in tempdir()
 tempfile <- create_new_directory()
 odm_fp <- paste0(tempfile, "/expression_odm")

@@ -27,27 +27,21 @@ a matrix of grouped grna-to-cell assignments
 Loads data from an ondisc matrix into memory after thresholding and grouping grnas.
 }
 \examples{
-# Please install the `ondiscdata` package before running the examples.
-# install.packages("devtools")
-# devtools::install_github("Katsevich-Lab/ondiscdata")
+# Install the `ondiscdata` package to run the examples.
+# devtools::install_github("timothy-barry/ondiscdata")
 
 # EXAMPLE 1: an integer-valued matrix of grna expressions
 odm_fp <- system.file("extdata", "odm/grna_expression/matrix.odm", package = "ondiscdata")
-metadata_fp <- system.file("extdata", "odm/grna_expression/metadata.rds", package = "ondiscdata")
+metadata_fp <- system.file("extdata",
+"odm/grna_expression/metadata.rds", package = "ondiscdata")
 odm <- read_odm(odm_fp, metadata_fp)
-indics <- load_thresholded_and_grouped_grna(odm, "grna_group_5")
-indics <- load_thresholded_and_grouped_grna(odm, c("grna_group_1", "grna_group_11"))
+grps_to_extract <- odm |> get_feature_covariates() |> dplyr::pull(grna_group) |> sample(2)
+indics <- load_thresholded_and_grouped_grna(odm, grps_to_extract)
 
 # EXAMPLE 2: a logical matrix of grna indicators
-odm_fp <- system.file("extdata", "odm/grna/matrix.odm", package = "ondiscdata")
-metadata_fp <- system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata")
+odm_fp <- system.file("extdata", "odm/grna_assignment/matrix.odm", package = "ondiscdata")
+metadata_fp <- system.file("extdata",
+"odm/grna_assignment/metadata.rds", package = "ondiscdata")
 odm <- read_odm(odm_fp, metadata_fp)
-# append grna group information -- three grnas/group
-odm <- odm |>
-mutate_feature_covariates(grna_group = rep(paste0("grna_group_", seq(1, nrow(odm)/3)), each = 3))
-indics <- load_thresholded_and_grouped_grna(odm, c("grna_group_21", "grna_group_6"))
-# alter grna group information -- one grna/group
-odm <- odm |>
-mutate_feature_covariates(grna_group = paste0("grna_group_", seq(1, nrow(odm))))
-indics <- load_thresholded_and_grouped_grna(odm, "grna_group_2")
+indics <- load_thresholded_and_grouped_grna(odm, grps_to_extract)
 }

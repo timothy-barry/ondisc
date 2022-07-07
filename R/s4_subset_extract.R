@@ -17,9 +17,8 @@
 #' @return An appropriately subset object of the same class as `x`.
 #' @name subset-odm
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' ####################################
 #' # EXAMPLE 1: covariate_ondisc_matrix
@@ -46,8 +45,10 @@
 #' odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
 #' odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
-#' odm_grna_fp <- system.file("extdata", "odm/grna/matrix.odm", package = "ondiscdata")
-#' metadata_grna_fp <- system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata")
+#' odm_grna_fp <- system.file("extdata",
+#' "odm/grna_assignment/matrix.odm", package = "ondiscdata")
+#' metadata_grna_fp <- system.file("extdata",
+#' "odm/grna_assignment/metadata.rds", package = "ondiscdata")
 #' odm_grna <- read_odm(odm_grna_fp, metadata_grna_fp)
 #' odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, grna = odm_grna))
 #'
@@ -182,18 +183,19 @@ setMethod(f = "[",
 #' @return a matrix (as implemented by the Matrix package).
 #' @name extract-odm
 #' @examples
-#' # Please install the `ondiscdata` package before running the examples.
-#' # install.packages("devtools")
-#' # devtools::install_github("Katsevich-Lab/ondiscdata")
+#' # Install the `ondiscdata` package to run the examples.
+#' # devtools::install_github("timothy-barry/ondiscdata")
 #'
 #' odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 #' metadata_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
 #' odm <- read_odm(odm_fp, metadata_fp)
 #'
 #' # pull a single feature
-#' single_feature <- odm[["ENSG00000180098.9",]]
+#' gene_id <- sample(get_feature_ids(odm), 1)
+#' single_feature <- odm[[gene_id,]]
 #' # pull a single cell
-#' single_cell <- odm[[,"GGAGCAAGTACTTAGC_2_2"]]
+#' cell_barcode <- sample(get_cell_barcodes(odm), 1)
+#' single_cell <- odm[[,cell_barcode]]
 #' # numeric vector
 #' mtx_numeric <- odm[[1:10, 1:10]]
 #' # logical vector

@@ -40,9 +40,8 @@ For \code{covariate_ondisc_matrix}, \code{get_cell_covariates} function can be u
 For\code{multimodal_ondisc_matrix}, \code{get_cell_covariates} function can be used to get the \code{global_cell_covariates} but \code{get_feature_covariates} is not supported.
 }
 \examples{
-# Install the `ondiscdata` package before running the examples.
-# install.packages("devtools")
-# devtools::install_github("Katsevich-Lab/ondiscdata")
+# Install the `ondiscdata` package to run the examples.
+# devtools::install_github("timothy-barry/ondiscdata")
 
 ####################################
 # EXAMPLE 1: covariate_ondisc_matrix
@@ -60,8 +59,10 @@ feature_covariates <- get_feature_covariates(odm)
 odm_gene_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
 metadata_gene_fp <- system.file("extdata", "odm/gene/metadata.rds", package = "ondiscdata")
 odm_gene <- read_odm(odm_gene_fp, metadata_gene_fp)
-odm_grna_fp <- system.file("extdata", "odm/grna/matrix.odm", package = "ondiscdata")
-metadata_grna_fp <- system.file("extdata", "odm/grna/metadata.rds", package = "ondiscdata")
+odm_grna_fp <- system.file("extdata",
+"odm/grna_assignment/matrix.odm", package = "ondiscdata")
+metadata_grna_fp <- system.file("extdata",
+"odm/grna_assignment/metadata.rds", package = "ondiscdata")
 odm_grna <- read_odm(odm_grna_fp, metadata_grna_fp)
 odm_multi <- multimodal_ondisc_matrix(list(gene = odm_gene, grna = odm_grna))
 

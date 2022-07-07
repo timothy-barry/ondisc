@@ -28,9 +28,8 @@ The backing .odm file is a static, read-only file that is never altered or copie
 \code{save_odm} writes a new metadata file to disk (potentially overwriting a previous metadata file of the same name), leaving the backing .odm file unaltered.
 }
 \examples{
-# Please install the `ondiscdata` package before running the examples.
-# install.packages("devtools")
-# devtools::install_github("Katsevich-Lab/ondiscdata")
+# Install the `ondiscdata` package to run the examples.
+# devtools::install_github("timothy-barry/ondiscdata")
 
 # Load odm from package
 odm_fp <- system.file("extdata", "odm/gene/matrix.odm", package = "ondiscdata")
