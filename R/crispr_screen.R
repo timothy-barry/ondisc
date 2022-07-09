@@ -56,7 +56,6 @@ convert_assign_list_to_sparse_odm <- function(cell_barcodes, grna_ids, grna_assi
 }
 
 
-
 #' Load thresholded and grouped grna
 #'
 #' Loads data from an ondisc matrix into memory after thresholding and grouping grnas.
@@ -97,4 +96,34 @@ load_thresholded_and_grouped_grna <- function(covariate_odm, grna_group, thresho
     if (nrow(m_thresh) >= 2) Matrix::colSums(m_thresh) >= 1 else as.matrix(m_thresh)
   }))
   return(out)
+}
+
+
+#' Thin multimodal ODM
+#'
+#' "Thins" a multimodal ODM representing a single-cell CRISPR screen experiment by removing superflous and duplicate information.
+#'
+#' @param multimodal_odm a multimodal ondisc matrix
+#' @param grna_modality_name the name of the grna modality
+#' @param gene_modality_name the name of the gene modality
+#'
+#' @return a "thinned" multimodal ondisc matrix
+thin_multimodal_odm <- function(multimodal_odm, grna_modality_name, gene_modality_name) {
+  row.names(multimodal_odm@global_cell_covariates) <- NULL
+
+  # clear out (i) cell covariates df, (ii) misc list, (iii) feature names, (iv) cell barcodes
+  for (modality in c(grna_modality_name, gene_modality_name)) {
+    multimodal_odm@modalities[[modality]]@cell_covariates <- data.frame()
+    multimodal_odm@modalities[[modality]]@misc <- list()
+    multimodal_odm@modalities[[modality]]@ondisc_matrix@feature_names <- ""
+    multimodal_odm@modalities[[modality]]@ondisc_matrix@cell_barcodes <- ""
+  }
+
+  # clear out feature df of gene modality
+  multimodal_odm@modalities[[gene_modality_name]]@feature_covariates <- data.frame()
+  # clear out columns of feature df of grna modality that are not "target" or "grna_group"
+  multimodal_odm@modalities[[grna_modality_name]]@feature_covariates <-
+    multimodal_odm@modalities[[grna_modality_name]]@feature_covariates |> dplyr::select(target, grna_group)
+
+  return(multimodal_odm)
 }
