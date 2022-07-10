@@ -17,7 +17,7 @@ test_that("save and read odm", {
   save_odm(odm = odm_1, metadata_fp = metadata_fp)
   odm_loaded <- read_odm(odm_fp = odm_1@h5_file)
   expect_equal(odm_1[[1:nrow(odm_1)]],
-              odm_loaded[[1:nrow(odm_loaded),]])
+               odm_loaded[[1:nrow(odm_loaded),]])
 })
 
 
@@ -28,4 +28,7 @@ test_that("wrong metadata file", {
   save_odm(cov_odm_1, metadata_fp_1)
   expect_error(read_odm(odm_fp = cov_odm_2@ondisc_matrix@h5_file,
            metadata_fp = metadata_fp_1))
+  save_odm(cov_odm_1@ondisc_matrix, metadata_fp_1)
+  expect_error(read_odm(odm_fp = cov_odm_2@ondisc_matrix@h5_file,
+                        metadata_fp = metadata_fp_1))
 })
