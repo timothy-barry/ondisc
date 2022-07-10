@@ -1,4 +1,4 @@
-utils::globalVariables(c("gene_idx", "expression", ".", "cells_metadata", "p_mito", "n_umis", "n_nonzero", "p_exp", "coef_of_variation", ".intercept", "in_range"))
+utils::globalVariables(c("gene_idx", "expression", ".", "cells_metadata", "p_mito", "n_umis", "n_nonzero", "p_exp", "coef_of_variation", ".intercept", "in_range", "target", "grna_group"))
 
 #' ondisc: A package for out-of-memory computing on single-cell data
 #'

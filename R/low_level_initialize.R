@@ -444,7 +444,7 @@ run_core_algo <- function(odm_fp, covariates, bag_of_variables, progress) {
 
   # Run step 2 of core algorithm
   terminal_values_and_row_ptr <- run_core_algo_step_2(odm_fp, bag_of_variables, initial_accumulators,
-                                                     terminal_functs_args, row_ptr, row_ptrs[[2]], file_type, progress)
+                                                      terminal_functs_args, row_ptr, row_ptrs[[2]], file_type, progress)
   # Compute and write column pointer to CSC matrix
   terminal_values <- terminal_values_and_row_ptr[[1]]
   n_nonzero_cell <- terminal_values[[which(terminal_symbols == symbols$n_nonzero_cell)]]

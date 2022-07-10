@@ -293,8 +293,6 @@ setMethod(f = "[[",
 setMethod(f = "[[",
           signature = signature(x = "multimodal_ondisc_matrix"),
           definition = function(x, i, j) stop(
-            "You cannot use the [[,]] operator on this object because it is a multimodal_ondisc_matrix,
-            not an ondisc_matrix. To access an ondisc_matrix stored within this object, (i) access the
-            `modalities` field using @, (ii) select a modality using $, and (iii) access the `ondisc_matrix`
-            field using @."
+            "You cannot use the [[,]] operator on this object because it is a multimodal_ondisc_matrix.
+             To access a modality, use the `get_modality` function."
           ))
