@@ -79,7 +79,6 @@ run_core_algo_step_1 <- function(initialize_accumulator, bag_of_variables, file_
 
   # the function used to compute the accumulated row pointer
   get_accumulated_row_ptr <- function(x, pos, acc) {
-    gc()
     decrement_idxs(x$feature_idxs)
     n_nonzero_features_chunk <- initializer()
     inc_n_entries(n_nonzero_features_chunk, x$feature_idxs)
@@ -286,7 +285,6 @@ run_core_algo_step_2 <- function(odm_fp, bag_of_variables, initial_accumulators,
   chunk_no <- 1L
   # Define closure to be called by readr::read_delim_chunked
   closure <- function(x, pos, acc) {
-    gc()
     # example chunk: x <- read.table(file = mtx_fp, header = FALSE, sep = " ", col.names = c("feature_idxs", "cell_idxs", if (is_logical) NULL else "umi_counts"), skip = n_rows_to_skip, colClasses = rep("integer", if (is_logical) 2 else 3), nrows = n_lines_per_chunk); pos <- 1
     data.table::setDT(x)
     decrement_idxs(x$feature_idxs)
