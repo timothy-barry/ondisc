@@ -108,7 +108,7 @@ load_thresholded_and_grouped_grna <- function(covariate_odm, grna_group, thresho
 #' @param gene_modality_name the name of the gene modality
 #'
 #' @return a "thinned" multimodal ondisc matrix
-thin_multimodal_odm <- function(multimodal_odm, grna_modality_name, gene_modality_name, grna_group_column_name) {
+thin_multimodal_odm <- function(multimodal_odm, grna_modality_name, gene_modality_name, grna_group_column_name = "grna_group") {
   row.names(multimodal_odm@global_cell_covariates) <- NULL
 
   multimodal_odm@modalities <- multimodal_odm@modalities[c(grna_modality_name, gene_modality_name)]
