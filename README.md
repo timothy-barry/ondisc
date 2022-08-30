@@ -5,20 +5,22 @@
 
 <!-- badges: start -->
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ondisc)](https://cran.r-project.org/package=ondisc)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ondisc)](https://cran.r-project.org/package=ondisc)
 [![Codecov test
 coverage](https://codecov.io/gh/Timothy-Barry/ondisc/branch/main/graph/badge.svg)](https://codecov.io/gh/Timothy-Barry/ondisc?branch=main)
 <!-- badges: end -->
 
 Single-cell datasets are growing in size, posing challenges as well as
 opportunities to biology researchers. `ondisc` (short for “on-disk
-single cell”) is an R package that facilitates computing on large-scale single-cell data. `ondisc` is
+single cell”) is an R package that empowers users to easily and
+efficiently compute on large-scale single-cell data. `ondisc` is
 especially well-suited to fixed memory and distributed CRISPR screen and
 differential expression analyses.
 
 **NOTE**: The package currently is undergoing considerable API changes.
 Use with caution. We anticipate that an updated, stable version of the
-package (along with detailed documentation) will be available in May 2022.
+package (along with detailed documentation) will be available at the end
+of 2022.
 
 <!-- Single-cell datasets are growing in size, posing challenges as well as opportunities to biology researchers. `ondisc` (short for "on-disk single cell") is an R package that enables users to easily and efficiently analyze large-scale single-cell data. `ondisc` makes computing on large-scale single-cell data **FUN**:
 
@@ -30,6 +32,11 @@ Take a look at the [tutorials](https://timothy-barry.github.io/ondisc/articles/t
 
 ## Installation
 
+You can install the package from CRAN with:
+
+``` r
+install.packages("ondisc")
+```
 
 You can install the development version from Github with:
 
