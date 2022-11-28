@@ -125,7 +125,7 @@ thin_multimodal_odm <- function(multimodal_odm, grna_modality_name, gene_modalit
   multimodal_odm@modalities[[gene_modality_name]]@feature_covariates <- data.frame()
   # clear out columns of feature df of grna modality that are not "grna_group"
   multimodal_odm@modalities[[grna_modality_name]]@feature_covariates <-
-    multimodal_odm@modalities[[grna_modality_name]]@feature_covariates |> dplyr::select(grna_group_column_name)
+    multimodal_odm@modalities[[grna_modality_name]]@feature_covariates |> dplyr::select(!!grna_group_column_name)
 
   return(multimodal_odm)
 }
