@@ -170,5 +170,6 @@ multimodal_ondisc_matrix <- function(covariate_ondisc_matrix_list) {
   modality_names <- names(covariate_ondisc_matrix_list)
   global_df <- combine_multimodal_dataframes(df_list, modality_names)
   out@global_cell_covariates <- global_df
+  out@global_misc <- list()
   return(out)
 }
