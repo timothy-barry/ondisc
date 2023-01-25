@@ -129,7 +129,8 @@ covariate_ondisc_matrix <- function(ondisc_matrix, cell_covariates, feature_cova
 #' @slot modalities a list containing `covariate_ondisc_matrix` objects representing different modalities.
 #' @slot global_cell_covariates a data frame containing the cell-specific covariates pooled across all modalities.
 multimodal_ondisc_matrix <- setClass("multimodal_ondisc_matrix", slots = list(modalities = "list",
-                                                          global_cell_covariates = "data.frame"))
+                                                                              global_cell_covariates = "data.frame",
+                                                                              global_misc = "list"))
 
 #' `multimodal_ondisc_matrix` constructor
 #'
