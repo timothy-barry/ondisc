@@ -153,5 +153,7 @@ read_multimodal_odm <- function(odm_fps, multimodal_metadata_fp) {
   for (i in seq(1, length(odm_fps_ordered))) {
     mm_odm@modalities[[modality_names_ordered[i]]]@ondisc_matrix@h5_file <- odm_fps_ordered[i]
   }
+  # remove the modalities for which a backing .odm file has not been supplied
+  mm_odm@modalities <- mm_odm@modalities[modality_names_ordered]
   return(mm_odm)
 }
