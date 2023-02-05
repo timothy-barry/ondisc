@@ -108,12 +108,12 @@ load_thresholded_and_grouped_grna <- function(covariate_odm, grna_group, thresho
 #' @param gene_modality_name the name of the gene modality
 #'
 #' @return a "thinned" multimodal ondisc matrix
-thin_multimodal_odm <- function(multimodal_odm, grna_modality_name, gene_modality_name, grna_group_column_name = "grna_group") {
+thin_multimodal_odm <- function(multimodal_odm, grna_modality_name = "grna", response_modality_name = "response", grna_group_column_name = "grna_group") {
   row.names(multimodal_odm@global_cell_covariates) <- NULL
 
-  multimodal_odm@modalities <- multimodal_odm@modalities[c(grna_modality_name, gene_modality_name)]
+  multimodal_odm@modalities <- multimodal_odm@modalities[c(grna_modality_name, response_modality_name)]
   # clear out (i) cell covariates df, (ii) misc list, (iii) feature names, (iv) cell barcodes
-  for (modality in c(grna_modality_name, gene_modality_name)) {
+  for (modality in c(grna_modality_name, response_modality_name)) {
     modality_dim <- dim(multimodal_odm@modalities[[modality]])
     multimodal_odm@modalities[[modality]]@cell_covariates <- as.data.frame(matrix(nrow = modality_dim[2], ncol = 0))
     multimodal_odm@modalities[[modality]]@misc <- list()
@@ -121,8 +121,8 @@ thin_multimodal_odm <- function(multimodal_odm, grna_modality_name, gene_modalit
     multimodal_odm@modalities[[modality]]@ondisc_matrix@cell_barcodes <- ""
   }
 
-  # clear out feature df of gene modality
-  multimodal_odm@modalities[[gene_modality_name]]@feature_covariates <- data.frame()
+  # clear out feature df of response modality
+  multimodal_odm@modalities[[response_modality_name]]@feature_covariates <- data.frame()
   # clear out columns of feature df of grna modality that are not "grna_group"
   multimodal_odm@modalities[[grna_modality_name]]@feature_covariates <-
     multimodal_odm@modalities[[grna_modality_name]]@feature_covariates |> dplyr::select(!!grna_group_column_name)
