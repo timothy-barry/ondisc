@@ -228,7 +228,6 @@ get_ondisc_matrix <- function(covariate_odm) {
   return(covariate_odm@ondisc_matrix)
 }
 
-
 ####################################################
 # ADD: select/extract cells, select/extract features
 ####################################################
