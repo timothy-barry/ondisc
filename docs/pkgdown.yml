@@ -1,9 +1,0 @@
-pandoc: 2.19.2
-pkgdown: 2.0.5
-pkgdown_sha: ~
-articles: {}
-last_built: 2023-01-11T03:18Z
-urls:
-  reference: https://timothy-barry.github.io/ondisc/reference
-  article: https://timothy-barry.github.io/ondisc/articles
-

@@ -1,8 +1,8 @@
 .Rproj.user
 .Rhistory
-.RData
-Meta
-inst/extdata/example.h5
-inst/doc
-doc
+.Rdata
+.httr-oauth
 .DS_Store
+.quarto
+src/*.o
+src/ondiscLite.so
