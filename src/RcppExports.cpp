@@ -46,12 +46,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // compute_cellwise_covariates
-void compute_cellwise_covariates(IntegerVector n_umis, IntegerVector n_nonzero_features, NumericVector p_mito, IntegerVector feature_w_max_expression, NumericVector frac_umis_max_feature, IntegerVector feature_idx, IntegerVector j, IntegerVector x, IntegerVector mt_feature_idxs, int start_idx, int end_idx, int feature_offset, int cell_offset, int n_cells, bool compute_n_umis, bool compute_n_nonzero_features, bool compute_p_mito, bool compute_feature_w_max_expression, bool compute_frac_umis_max_feature);
-RcppExport SEXP _ondisc_compute_cellwise_covariates(SEXP n_umisSEXP, SEXP n_nonzero_featuresSEXP, SEXP p_mitoSEXP, SEXP feature_w_max_expressionSEXP, SEXP frac_umis_max_featureSEXP, SEXP feature_idxSEXP, SEXP jSEXP, SEXP xSEXP, SEXP mt_feature_idxsSEXP, SEXP start_idxSEXP, SEXP end_idxSEXP, SEXP feature_offsetSEXP, SEXP cell_offsetSEXP, SEXP n_cellsSEXP, SEXP compute_n_umisSEXP, SEXP compute_n_nonzero_featuresSEXP, SEXP compute_p_mitoSEXP, SEXP compute_feature_w_max_expressionSEXP, SEXP compute_frac_umis_max_featureSEXP) {
+void compute_cellwise_covariates(IntegerVector n_umis, IntegerVector n_nonzero, NumericVector p_mito, IntegerVector feature_w_max_expression, NumericVector frac_umis_max_feature, IntegerVector feature_idx, IntegerVector j, IntegerVector x, IntegerVector mt_feature_idxs, int start_idx, int end_idx, int feature_offset, int cell_offset, int n_cells, bool compute_n_umis, bool compute_n_nonzero, bool compute_p_mito, bool compute_feature_w_max_expression, bool compute_frac_umis_max_feature);
+RcppExport SEXP _ondisc_compute_cellwise_covariates(SEXP n_umisSEXP, SEXP n_nonzeroSEXP, SEXP p_mitoSEXP, SEXP feature_w_max_expressionSEXP, SEXP frac_umis_max_featureSEXP, SEXP feature_idxSEXP, SEXP jSEXP, SEXP xSEXP, SEXP mt_feature_idxsSEXP, SEXP start_idxSEXP, SEXP end_idxSEXP, SEXP feature_offsetSEXP, SEXP cell_offsetSEXP, SEXP n_cellsSEXP, SEXP compute_n_umisSEXP, SEXP compute_n_nonzeroSEXP, SEXP compute_p_mitoSEXP, SEXP compute_feature_w_max_expressionSEXP, SEXP compute_frac_umis_max_featureSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type n_umis(n_umisSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type n_nonzero_features(n_nonzero_featuresSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type n_nonzero(n_nonzeroSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type p_mito(p_mitoSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type feature_w_max_expression(feature_w_max_expressionSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type frac_umis_max_feature(frac_umis_max_featureSEXP);
@@ -65,11 +65,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type cell_offset(cell_offsetSEXP);
     Rcpp::traits::input_parameter< int >::type n_cells(n_cellsSEXP);
     Rcpp::traits::input_parameter< bool >::type compute_n_umis(compute_n_umisSEXP);
-    Rcpp::traits::input_parameter< bool >::type compute_n_nonzero_features(compute_n_nonzero_featuresSEXP);
+    Rcpp::traits::input_parameter< bool >::type compute_n_nonzero(compute_n_nonzeroSEXP);
     Rcpp::traits::input_parameter< bool >::type compute_p_mito(compute_p_mitoSEXP);
     Rcpp::traits::input_parameter< bool >::type compute_feature_w_max_expression(compute_feature_w_max_expressionSEXP);
     Rcpp::traits::input_parameter< bool >::type compute_frac_umis_max_feature(compute_frac_umis_max_featureSEXP);
-    compute_cellwise_covariates(n_umis, n_nonzero_features, p_mito, feature_w_max_expression, frac_umis_max_feature, feature_idx, j, x, mt_feature_idxs, start_idx, end_idx, feature_offset, cell_offset, n_cells, compute_n_umis, compute_n_nonzero_features, compute_p_mito, compute_feature_w_max_expression, compute_frac_umis_max_feature);
+    compute_cellwise_covariates(n_umis, n_nonzero, p_mito, feature_w_max_expression, frac_umis_max_feature, feature_idx, j, x, mt_feature_idxs, start_idx, end_idx, feature_offset, cell_offset, n_cells, compute_n_umis, compute_n_nonzero, compute_p_mito, compute_feature_w_max_expression, compute_frac_umis_max_feature);
     return R_NilValue;
 END_RCPP
 }

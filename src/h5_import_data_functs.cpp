@@ -29,12 +29,12 @@ void add_value_to_vector(IntegerVector v, int to_add) {
 
 
 // [[Rcpp::export]]
-void compute_cellwise_covariates(IntegerVector n_umis, IntegerVector n_nonzero_features,
+void compute_cellwise_covariates(IntegerVector n_umis, IntegerVector n_nonzero,
                                  NumericVector p_mito, IntegerVector feature_w_max_expression,
                                  NumericVector frac_umis_max_feature, IntegerVector feature_idx,
                                  IntegerVector j, IntegerVector x, IntegerVector mt_feature_idxs,
                                  int start_idx, int end_idx, int feature_offset, int cell_offset, int n_cells,
-                                 bool compute_n_umis, bool compute_n_nonzero_features, bool compute_p_mito,
+                                 bool compute_n_umis, bool compute_n_nonzero, bool compute_p_mito,
                                  bool compute_feature_w_max_expression, bool compute_frac_umis_max_feature) {
   int curr_feature_idx, curr_cell_idx, curr_x;
   bool mt_feature;
@@ -46,7 +46,7 @@ void compute_cellwise_covariates(IntegerVector n_umis, IntegerVector n_nonzero_f
     curr_cell_idx = j[i];
     curr_x = x[i];
     // n nonzero features
-    if (compute_n_nonzero_features) n_nonzero_features[curr_cell_idx] ++;
+    if (compute_n_nonzero) n_nonzero[curr_cell_idx] ++;
     // n UMIs
     if (compute_n_umis) n_umis[curr_cell_idx] += curr_x;
     // max UMI count

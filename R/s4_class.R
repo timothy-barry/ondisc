@@ -1,4 +1,5 @@
 # odm class
+#' @export
 setClass("odm",
          slots = list(h5_file = "character",
                       dimension = "integer",
@@ -85,20 +86,15 @@ setMethod(f = "show", signature = "odm", definition = function(object) {
 })
 
 
-#' Get feature IDs
+#' dimnames
 #'
-#' Returns the feature IDs of an ODM.
+#' Returns the dimnames of an `odm`.
 #'
-#' @param odm an object of class `odm`
+#' @param x an object of class `odm`
 #'
-#' @return a character vector containing the feature IDs
+#' @return the dimnames of the `odm`
 #' @export
-get_feature_ids <- function(odm) {
-  if (!methods::is(odm, "odm")) {
-    stop("`odm` must be an object of class `odm`.")
-  }
-  odm@feature_ids
-}
+setMethod(f = "dimnames", signature = "odm", definition = function(x) list(x@feature_ids, NULL))
 
 
 #' dim

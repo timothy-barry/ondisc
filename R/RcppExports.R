@@ -13,8 +13,8 @@ add_value_to_vector <- function(v, to_add) {
     invisible(.Call(`_ondisc_add_value_to_vector`, v, to_add))
 }
 
-compute_cellwise_covariates <- function(n_umis, n_nonzero_features, p_mito, feature_w_max_expression, frac_umis_max_feature, feature_idx, j, x, mt_feature_idxs, start_idx, end_idx, feature_offset, cell_offset, n_cells, compute_n_umis, compute_n_nonzero_features, compute_p_mito, compute_feature_w_max_expression, compute_frac_umis_max_feature) {
-    invisible(.Call(`_ondisc_compute_cellwise_covariates`, n_umis, n_nonzero_features, p_mito, feature_w_max_expression, frac_umis_max_feature, feature_idx, j, x, mt_feature_idxs, start_idx, end_idx, feature_offset, cell_offset, n_cells, compute_n_umis, compute_n_nonzero_features, compute_p_mito, compute_feature_w_max_expression, compute_frac_umis_max_feature))
+compute_cellwise_covariates <- function(n_umis, n_nonzero, p_mito, feature_w_max_expression, frac_umis_max_feature, feature_idx, j, x, mt_feature_idxs, start_idx, end_idx, feature_offset, cell_offset, n_cells, compute_n_umis, compute_n_nonzero, compute_p_mito, compute_feature_w_max_expression, compute_frac_umis_max_feature) {
+    invisible(.Call(`_ondisc_compute_cellwise_covariates`, n_umis, n_nonzero, p_mito, feature_w_max_expression, frac_umis_max_feature, feature_idx, j, x, mt_feature_idxs, start_idx, end_idx, feature_offset, cell_offset, n_cells, compute_n_umis, compute_n_nonzero, compute_p_mito, compute_feature_w_max_expression, compute_frac_umis_max_feature))
 }
 
 write_to_csr <- function(file_name_in, start_idx, end_idx, feature_offset, cell_offset, n_features, f_row_ptr, feature_idx, m_j, m_x) {

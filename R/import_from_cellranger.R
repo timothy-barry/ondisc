@@ -107,7 +107,8 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
   # 10. save the covariates
   dt <- preprare_output_covariate_dt(cellwise_covariates = cellwise_covariates,
                                      new_modality_names = new_modality_names,
-                                     n_cells_per_batch = round_1_out$n_cells_per_batch)
+                                     n_cells_per_batch = round_1_out$n_cells_per_batch,
+                                     modality_feature_ids = modality_feature_ids)
   saveRDS(dt, file = paste0(directory_to_write, "/cellwise_covariates.rds"))
 
   # 11. return the odms and cell covariates

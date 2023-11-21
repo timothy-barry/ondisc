@@ -14,9 +14,9 @@ get_mtx_metadata <- function(mtx_file, n_cells_col_id = 2L) {
 
 
 initialize_cellwise_covariates <- function(modality_names, n_cells) {
-  possible_covariates <- c("n_umis", "n_nonzero_features", "p_mito", "feature_w_max_expression", "frac_umis_max_feature")
-  covariates_to_compute <- list("Gene Expression" = c("n_umis", "n_nonzero_features", "p_mito"),
-                                "CRISPR Guide Capture" = c("n_umis", "n_nonzero_features", "feature_w_max_expression", "frac_umis_max_feature"))
+  possible_covariates <- c("n_umis", "n_nonzero", "p_mito", "feature_w_max_expression", "frac_umis_max_feature")
+  covariates_to_compute <- list("Gene Expression" = c("n_umis", "n_nonzero", "p_mito"),
+                                "CRISPR Guide Capture" = c("n_umis", "n_nonzero", "feature_w_max_expression", "frac_umis_max_feature"))
   out <- lapply(modality_names, function(modality_name) {
     # evaluate the boolean vector for the modality
     bool_vect <- if (modality_name %in% names(covariates_to_compute)) {
@@ -27,7 +27,7 @@ initialize_cellwise_covariates <- function(modality_names, n_cells) {
     }
     covariate_list <- list(
       n_umis = integer(length = if (bool_vect[["n_umis"]]) n_cells else 0L),
-      n_nonzero_features = integer(length = if (bool_vect[["n_nonzero_features"]]) n_cells else 0L),
+      n_nonzero_features = integer(length = if (bool_vect[["n_nonzero"]]) n_cells else 0L),
       p_mito = numeric(length = if (bool_vect[["p_mito"]]) n_cells else 0L),
       feature_w_max_expression = integer(length = if (bool_vect[["feature_w_max_expression"]]) n_cells else 0L),
       frac_umis_max_feature = numeric(length = if (bool_vect[["frac_umis_max_feature"]]) n_cells else 0L)
@@ -39,14 +39,20 @@ initialize_cellwise_covariates <- function(modality_names, n_cells) {
 }
 
 
-preprare_output_covariate_dt <- function(cellwise_covariates, new_modality_names, n_cells_per_batch) {
+preprare_output_covariate_dt <- function(cellwise_covariates, new_modality_names, n_cells_per_batch, modality_feature_ids) {
   names(cellwise_covariates) <- new_modality_names
   l <- list()
-  for (modality_name in new_modality_names) {
+  for (i in seq_along(new_modality_names)) {
+    modality_name <- new_modality_names[i]
     computed_feats <- cellwise_covariates[[modality_name]]$bool_vect
     for (feat in names(computed_feats)) {
       if (computed_feats[[feat]]) {
-        l[[paste0(feat, "_", modality_name)]] <- cellwise_covariates[[modality_name]]$covariate_list[[feat]]
+        v <- cellwise_covariates[[modality_name]]$covariate_list[[feat]]
+        if (feat == "feature_w_max_expression") {
+          feature_ids <- modality_feature_ids[[i]]
+          v <- feature_ids[v + 1L]
+        }
+        l[[paste0(feat, "_", modality_name)]] <- v
       }
     }
   }
@@ -157,7 +163,7 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
       end_idx <- modality_start_idx_mtx_list[[i]][k + 1]
       feature_offset <- modality_start_idx_features[[k]]
       compute_cellwise_covariates(n_umis = cellwise_covariates[[k]]$covariate_list$n_umis,
-                                  n_nonzero_features = cellwise_covariates[[k]]$covariate_list$n_nonzero_features,
+                                  n_nonzero = cellwise_covariates[[k]]$covariate_list$n_nonzero,
                                   p_mito = cellwise_covariates[[k]]$covariate_list$p_mito,
                                   feature_w_max_expression = cellwise_covariates[[k]]$covariate_list$feature_w_max_expression,
                                   frac_umis_max_feature = cellwise_covariates[[k]]$covariate_list$frac_umis_max_feature,
@@ -171,7 +177,7 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
                                   cell_offset = n_cum_cells,
                                   n_cells = n_cells,
                                   compute_n_umis = cellwise_covariates[[k]]$bool_vect[["n_umis"]],
-                                  compute_n_nonzero_features = cellwise_covariates[[k]]$bool_vect[["n_nonzero_features"]],
+                                  compute_n_nonzero = cellwise_covariates[[k]]$bool_vect[["n_nonzero"]],
                                   compute_p_mito = cellwise_covariates[[k]]$bool_vect[["p_mito"]],
                                   compute_feature_w_max_expression = cellwise_covariates[[k]]$bool_vect[["feature_w_max_expression"]],
                                   compute_frac_umis_max_feature = cellwise_covariates[[k]]$bool_vect[["frac_umis_max_feature"]])
