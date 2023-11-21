@@ -21,13 +21,13 @@ setClass("odm",
 initialize_odm_from_backing_file <- function(odm_file) {
   # 0. checks on odm_file
   if (grepl(pattern = "~", fixed = TRUE, x = odm_file)) {
-    stop("`odm_file` cannot contain the home symbol (`~`). Specify a fully qualified file path.")
+    stop(paste0(odm_file, " cannot contain the home symbol (`~`). Specify a fully qualified file path."))
   }
   if (!file.exists(odm_file)) {
-    stop("`odm_file` does not exist.")
+    stop(paste0(odm_file, " does not exist."))
   }
   if (!(methods::is(odm_file, "character") && length(odm_file) == 1)) {
-    stop("`odm_file` must be a single string.")
+    stop(paste0(odm_file, " must be a single string."))
   }
 
   # initialize the odm
