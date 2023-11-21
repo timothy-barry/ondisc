@@ -63,13 +63,14 @@ preprare_output_covariate_dt <- function(cellwise_covariates, new_modality_names
 
 
 initialize_odms <- function(modality_names, file_names_in, n_nonzero_features_vector_list,
-                            modality_feature_ids, n_cells, chunk_size, compression_level) {
+                            modality_feature_ids, n_cells, integer_id, chunk_size, compression_level) {
   row_ptr_list <- lapply(seq_along(modality_names), function(k) {
     file_name_in <- file_names_in[k]
     create_odm(file_name_in = file_name_in,
                n_nonzero_features = n_nonzero_features_vector_list[[k]],
                feature_ids = modality_feature_ids[[k]],
                n_cells = n_cells,
+               integer_id = integer_id,
                chunk_size = chunk_size,
                compression_level = compression_level)
     read_row_ptr(file_name_in, length(n_nonzero_features_vector_list[[k]]))

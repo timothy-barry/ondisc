@@ -7,6 +7,7 @@
 create_odm_from_cellranger(
   directories_to_load,
   directory_to_write,
+  write_cellwise_covariates = TRUE,
   chunk_size = 1000L,
   compression_level = 3L
 )
@@ -15,6 +16,8 @@ create_odm_from_cellranger(
 \item{directories_to_load}{directories containing the expression data}
 
 \item{directory_to_write}{directory in which to write the initialized \code{.odm} files and \code{cellwise_covariates.rds} file}
+
+\item{write_cellwise_covariates}{boolean indicating whether to write the cellwise covariates to disk in \code{.rds} format}
 
 \item{chunk_size}{chunk size to use in the backing HDF5 file}
 
@@ -30,7 +33,7 @@ Create ODM from cellranger
 \dontrun{
 base_dir <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
 directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
-directory_to_write <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/odm_files"
+directory_to_write <- "/Users/timbarry/research_offsite/external/replogle-2022/processed/rd7_small/"
 output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
 }
 }

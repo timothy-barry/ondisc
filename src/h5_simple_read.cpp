@@ -8,15 +8,16 @@ using namespace Rcpp;
 //' @title Read the dimension of the ODM into memory
 //' @param file_name_in path to the odm file
 // [[Rcpp::export]]
-IntegerVector read_dimension(const std::string& file_name_in) {
+IntegerVector read_integer_vector(const std::string& file_name_in, const std::string& dataset_name, int length) {
    // set name
    const H5std_string file_name(&file_name_in[0]);
    // open file
    H5File file(file_name, H5F_ACC_RDONLY);
    // open dataset
-   DataSet dataset = file.openDataSet("dimension");
+   const H5std_string dataset_name_h5(&dataset_name[0]);
+   DataSet dataset = file.openDataSet(dataset_name_h5);
    // define out buffer
-   IntegerVector buffer(2);
+   IntegerVector buffer(length);
    // read data from disk into output buffer
    dataset.read(&buffer[0], PredType::NATIVE_INT);
    // close files and datasets

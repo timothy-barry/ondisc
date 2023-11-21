@@ -2,6 +2,7 @@
 #'
 #' @param directories_to_load directories containing the expression data
 #' @param directory_to_write directory in which to write the initialized `.odm` files and `cellwise_covariates.rds` file
+#' @param write_cellwise_covariates boolean indicating whether to write the cellwise covariates to disk in `.rds` format
 #' @param chunk_size chunk size to use in the backing HDF5 file
 #' @param compression_level compression level to use in the backing HDF5 file
 #'
@@ -12,10 +13,10 @@
 #' \dontrun{
 #' base_dir <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
 #' directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
-#' directory_to_write <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/odm_files"
+#' directory_to_write <- "/Users/timbarry/research_offsite/external/replogle-2022/processed/rd7_small/"
 #' output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
 #' }
-create_odm_from_cellranger <- function(directories_to_load, directory_to_write, chunk_size = 1000L, compression_level = 3L) {
+create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE, chunk_size = 1000L, compression_level = 3L) {
   # 1. check that directories exist
   for (curr_directory in directories_to_load) {
     if (!dir.exists(curr_directory)) stop(paste0("The directory ", curr_directory, " does not exist."))
@@ -84,12 +85,16 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
     paste0(directory_to_write, "/", new_modality_name, ".odm")
   })
 
+  # 9.75 sample integer id
+  integer_id <- sample(x = seq(0L, .Machine$integer.max), size = 1L)
+
   # 10. initialize odms
   row_ptr_list <- initialize_odms(modality_names = modality_names,
                                   file_names_in = file_names_in,
                                   n_nonzero_features_vector_list = round_1_out$n_nonzero_features_vector_list,
                                   modality_feature_ids = modality_feature_ids,
                                   n_cells = round_1_out$n_cells,
+                                  integer_id = integer_id,
                                   chunk_size = chunk_size,
                                   compression_level = compression_level)
 
@@ -109,7 +114,7 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
                                      new_modality_names = new_modality_names,
                                      n_cells_per_batch = round_1_out$n_cells_per_batch,
                                      modality_feature_ids = modality_feature_ids)
-  saveRDS(dt, file = paste0(directory_to_write, "/cellwise_covariates.rds"))
+  if (write_cellwise_covariates) saveRDS(dt, file = paste0(directory_to_write, "/cellwise_covariates.rds"))
 
   # 11. return the odms and cell covariates
   l <- lapply(seq_along(modality_names), function(i) {

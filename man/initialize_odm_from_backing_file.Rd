@@ -18,7 +18,3 @@ Initializes an object of class \code{odm} from a backing .odm file.
 \note{
 The file path \code{odm_file} should be the fully qualified file path to the backing .odm file. In particular, \code{odm_file} should not contain the home directory symbol (\code{~}) or current directory symbol (\code{.}).
 }
-\examples{
-odm_file <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/odm_files/gene.odm"
-odm <- initialize_odm_from_backing_file(odm_file)
-}

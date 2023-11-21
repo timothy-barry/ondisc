@@ -4,7 +4,8 @@ setClass("odm",
          slots = list(h5_file = "character",
                       dimension = "integer",
                       feature_ids = "character",
-                      ptr = "externalptr"))
+                      ptr = "externalptr",
+                      integer_id = "integer"))
 
 
 #' Initialize an ondisc matrix
@@ -17,9 +18,6 @@ setClass("odm",
 #'
 #' @return an object of class `odm`
 #' @export
-#' @examples
-#' odm_file <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/odm_files/gene.odm"
-#' odm <- initialize_odm_from_backing_file(odm_file)
 initialize_odm_from_backing_file <- function(odm_file) {
   # 0. checks on odm_file
   if (grepl(pattern = "~", fixed = TRUE, x = odm_file)) {
@@ -35,11 +33,13 @@ initialize_odm_from_backing_file <- function(odm_file) {
   # initialize the odm
   out <- methods::new("odm")
   h5_file <- odm_file
-  dimension <- read_dimension(h5_file)
+  dimension <- read_integer_vector(h5_file, "dimension", 2L)
+  integer_id <- read_integer_vector(h5_file, "integer_id", 1L)
   feature_ids <- read_feature_ids(h5_file, dimension[1])
   ptr <- read_row_ptr(h5_file, dimension[1])
   out@h5_file <- h5_file
   out@dimension <- dimension
+  out@integer_id <- integer_id
   out@feature_ids <- feature_ids
   out@ptr <- ptr
   return(out)

@@ -27,7 +27,7 @@ void free_c_string_array(char** c_str_array, int size) {
 
 // [[Rcpp::export]]
 void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_features, StringVector feature_ids,
-                int n_cells, int chunk_size, int compression_level) {
+                int n_cells, int integer_id, int chunk_size, int compression_level) {
   // 0. define a few variables
   hsize_t n_features_ull = (hsize_t) n_nonzero_features.size(), chunk_size_ull = (hsize_t) chunk_size;
   int n_features_int = n_nonzero_features.size();
@@ -112,6 +112,19 @@ void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_feature
   free_c_string_array(c_str_array, feature_ids.size());
   // close dataset, dataspace, and datatype
   feature_ids_dataset.close(); feature_ids_dataspace.close(); feature_ids_datatype.close();
+
+  /***************
+   * f. integer ID
+   ***************/
+  const H5std_string integer_id_name("integer_id");
+  hsize_t integer_id_dim[1] = {1};
+  DataSpace integer_id_dataspace(1, integer_id_dim);
+  DataSet integer_id_dataset = file.createDataSet(integer_id_name, PredType::NATIVE_INT, integer_id_dataspace);
+  // write the integer_id
+  std::vector<int> integer_id_vect {integer_id};
+  integer_id_dataset.write(&integer_id_vect[0], PredType::NATIVE_INT);
+  // close dataset and dataspace
+  integer_id_dataset.close(); integer_id_dataspace.close();
 
   // close file
   file.close();

@@ -93,17 +93,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // create_odm
-void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_features, StringVector feature_ids, int n_cells, int chunk_size, int compression_level);
-RcppExport SEXP _ondisc_create_odm(SEXP file_name_inSEXP, SEXP n_nonzero_featuresSEXP, SEXP feature_idsSEXP, SEXP n_cellsSEXP, SEXP chunk_sizeSEXP, SEXP compression_levelSEXP) {
+void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_features, StringVector feature_ids, int n_cells, int integer_id, int chunk_size, int compression_level);
+RcppExport SEXP _ondisc_create_odm(SEXP file_name_inSEXP, SEXP n_nonzero_featuresSEXP, SEXP feature_idsSEXP, SEXP n_cellsSEXP, SEXP integer_idSEXP, SEXP chunk_sizeSEXP, SEXP compression_levelSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type n_nonzero_features(n_nonzero_featuresSEXP);
     Rcpp::traits::input_parameter< StringVector >::type feature_ids(feature_idsSEXP);
     Rcpp::traits::input_parameter< int >::type n_cells(n_cellsSEXP);
+    Rcpp::traits::input_parameter< int >::type integer_id(integer_idSEXP);
     Rcpp::traits::input_parameter< int >::type chunk_size(chunk_sizeSEXP);
     Rcpp::traits::input_parameter< int >::type compression_level(compression_levelSEXP);
-    create_odm(file_name_in, n_nonzero_features, feature_ids, n_cells, chunk_size, compression_level);
+    create_odm(file_name_in, n_nonzero_features, feature_ids, n_cells, integer_id, chunk_size, compression_level);
     return R_NilValue;
 END_RCPP
 }
@@ -121,14 +122,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// read_dimension
-IntegerVector read_dimension(const std::string& file_name_in);
-RcppExport SEXP _ondisc_read_dimension(SEXP file_name_inSEXP) {
+// read_integer_vector
+IntegerVector read_integer_vector(const std::string& file_name_in, const std::string& dataset_name, int length);
+RcppExport SEXP _ondisc_read_integer_vector(SEXP file_name_inSEXP, SEXP dataset_nameSEXP, SEXP lengthSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_dimension(file_name_in));
+    Rcpp::traits::input_parameter< const std::string& >::type dataset_name(dataset_nameSEXP);
+    Rcpp::traits::input_parameter< int >::type length(lengthSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_integer_vector(file_name_in, dataset_name, length));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -184,9 +187,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_add_value_to_vector", (DL_FUNC) &_ondisc_add_value_to_vector, 2},
     {"_ondisc_compute_cellwise_covariates", (DL_FUNC) &_ondisc_compute_cellwise_covariates, 19},
     {"_ondisc_write_to_csr", (DL_FUNC) &_ondisc_write_to_csr, 10},
-    {"_ondisc_create_odm", (DL_FUNC) &_ondisc_create_odm, 6},
+    {"_ondisc_create_odm", (DL_FUNC) &_ondisc_create_odm, 7},
     {"_ondisc_load_row_cpp", (DL_FUNC) &_ondisc_load_row_cpp, 4},
-    {"_ondisc_read_dimension", (DL_FUNC) &_ondisc_read_dimension, 1},
+    {"_ondisc_read_integer_vector", (DL_FUNC) &_ondisc_read_integer_vector, 3},
     {"_ondisc_read_feature_ids", (DL_FUNC) &_ondisc_read_feature_ids, 2},
     {"_ondisc_read_row_ptr", (DL_FUNC) &_ondisc_read_row_ptr, 2},
     {"_ondisc_init_ull_vect", (DL_FUNC) &_ondisc_init_ull_vect, 1},
