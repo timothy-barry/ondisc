@@ -54,7 +54,7 @@ test_that("import data from cellranger", {
       # 1. check dimension
       expect_equal(dim(mem_matrix), odm@dimension)
       # 2. check feature ids
-      expect_equal(rownames(mem_matrix), get_feature_ids(odm))
+      expect_equal(rownames(mem_matrix), rownames(odm))
       # 3. check index into randomly selected rows by integer
       sample_idxs <- c(1L, sample(x = seq(1L, n_row), size = min(30, n_row), replace = FALSE), n_row)
       for (sample_idx in sample_idxs) {
@@ -75,25 +75,25 @@ test_that("import data from cellranger", {
     # i. batch
     expect_equal(as.character(cellwise_covariates$batch), as.character(mem_batch))
     # ii. n umis gene
-    n_umis_gene_mem <- Matrix::colSums(mem_gene_matrix)
-    n_umis_gene_disk <- cellwise_covariates$n_umis_gene
-    expect_equal(as.integer(n_umis_gene_disk), as.integer(n_umis_gene_mem))
+    gene_n_umis_mem <- Matrix::colSums(mem_gene_matrix)
+    gene_n_umis_disk <- cellwise_covariates$gene_n_umis
+    expect_equal(as.integer(gene_n_umis_disk), as.integer(gene_n_umis_mem))
     # iii. n nonzero gene
-    n_nonzero_gene_mem <- Matrix::colSums(mem_gene_matrix >= 1)
-    n_nonzero_gene_disk <- cellwise_covariates$n_nonzero_features_gene
-    expect_equal(n_nonzero_gene_mem, n_nonzero_gene_disk)
+    gene_n_nonzero_mem <- Matrix::colSums(mem_gene_matrix >= 1)
+    gene_n_nonzero_disk <- cellwise_covariates$gene_n_nonzero
+    expect_equal(gene_n_nonzero_mem, gene_n_nonzero_disk)
     # iv. n umis gRNA
-    n_umis_grna_mem <- Matrix::colSums(mem_grna_matrix)
-    n_umis_grna_disk <- cellwise_covariates$n_umis_grna
-    expect_equal(as.integer(n_umis_grna_mem), as.integer(n_umis_grna_disk))
+    grna_n_umis_mem <- Matrix::colSums(mem_grna_matrix)
+    grna_n_umis_disk <- cellwise_covariates$grna_n_umis
+    expect_equal(as.integer(grna_n_umis_mem), as.integer(grna_n_umis_disk))
     # v. n nonzero grna
-    n_nonzero_grna_mem <- Matrix::colSums(mem_grna_matrix >= 1)
-    n_nonzero_grna_disk <- cellwise_covariates$n_nonzero_features_grna
-    expect_equal(n_nonzero_grna_mem, n_nonzero_grna_disk)
+    grna_n_nonzero_mem <- Matrix::colSums(mem_grna_matrix >= 1)
+    grna_n_nonzero_disk <- cellwise_covariates$grna_n_nonzero
+    expect_equal(grna_n_nonzero_mem, grna_n_nonzero_disk)
     # vi. p_mito_gene
     n_umis_mito_mem <- Matrix::colSums(mem_gene_matrix[grep(pattern = "^MT-", x = gene_names),])
-    p_mito_mem <- ifelse(n_umis_gene_mem == 0, 0, n_umis_mito_mem/n_umis_gene_mem)
-    p_mito_disk <- cellwise_covariates$p_mito_gene
+    p_mito_mem <- ifelse(gene_n_umis_mem == 0, 0, n_umis_mito_mem/gene_n_umis_mem)
+    p_mito_disk <- cellwise_covariates$gene_p_mito
     expect_equal(p_mito_disk, p_mito_mem)
     # vii. feature_w_max_expression_grna
     grna_max_feature_res <- apply(mem_grna_matrix, 2, FUN = function(col) {
@@ -101,12 +101,12 @@ test_that("import data from cellranger", {
       max_feature_umi_count <- col[max_feature]
       c(max_feature = max_feature - 1L, max_feature_umi_count = max_feature_umi_count)
     })
-    grna_max_feature_mem <- grna_max_feature_res[1,]
-    grna_max_feature_disk <- cellwise_covariates$feature_w_max_expression_grna
+    grna_max_feature_mem <- paste0("grna_", grna_max_feature_res[1,] + 1L)
+    grna_max_feature_disk <-  cellwise_covariates$grna_feature_w_max_expression
     expect_equal(grna_max_feature_mem, grna_max_feature_disk)
     # viii. frac max feature grna
-    grna_frac_max_feature_mem <- ifelse(n_umis_grna_mem == 0, 1, grna_max_feature_res[2,] / n_umis_grna_mem)
-    grna_frac_max_feature_disk <- cellwise_covariates$frac_umis_max_feature_grna
+    grna_frac_max_feature_mem <- ifelse(grna_n_umis_mem == 0, 1, grna_max_feature_res[2,] / grna_n_umis_mem)
+    grna_frac_max_feature_disk <- cellwise_covariates$grna_frac_umis_max_feature
     expect_equal(grna_frac_max_feature_mem, grna_frac_max_feature_disk)
   }
 })

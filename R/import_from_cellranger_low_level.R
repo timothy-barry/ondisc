@@ -27,7 +27,7 @@ initialize_cellwise_covariates <- function(modality_names, n_cells) {
     }
     covariate_list <- list(
       n_umis = integer(length = if (bool_vect[["n_umis"]]) n_cells else 0L),
-      n_nonzero_features = integer(length = if (bool_vect[["n_nonzero"]]) n_cells else 0L),
+      n_nonzero = integer(length = if (bool_vect[["n_nonzero"]]) n_cells else 0L),
       p_mito = numeric(length = if (bool_vect[["p_mito"]]) n_cells else 0L),
       feature_w_max_expression = integer(length = if (bool_vect[["feature_w_max_expression"]]) n_cells else 0L),
       frac_umis_max_feature = numeric(length = if (bool_vect[["frac_umis_max_feature"]]) n_cells else 0L)
@@ -52,7 +52,7 @@ preprare_output_covariate_dt <- function(cellwise_covariates, new_modality_names
           feature_ids <- modality_feature_ids[[i]]
           v <- feature_ids[v + 1L]
         }
-        l[[paste0(feat, "_", modality_name)]] <- v
+        l[[paste0(modality_name, "_", feat)]] <- v
       }
     }
   }
