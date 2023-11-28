@@ -3,9 +3,12 @@
 using namespace H5;
 using namespace Rcpp;
 
+// sparse vector structure
+struct sparse_vector {
+  std::vector<int> x, j;
+};
 
-// [[Rcpp::export]]
-IntegerVector load_row_cpp(const std::string& file_name_in, SEXP f_row_ptr, int row_idx, int n_cells) {
+sparse_vector load_sparse_row_low_level(const std::string& file_name_in, SEXP f_row_ptr, int row_idx) {
   // 1. dereference f_row_ptr; determine the number of entries
   Rcpp::XPtr<std::vector<unsigned long long>> f_ptr(f_row_ptr);
   hsize_t start_pos = (*f_ptr)[row_idx];
@@ -41,6 +44,17 @@ IntegerVector load_row_cpp(const std::string& file_name_in, SEXP f_row_ptr, int 
   f_j_dataset.close(); f_j_dataspace.close();
   f_x_dataset.close(); f_x_dataspace.close();
   file.close(); m_space.close();
+
+  // 9. return sparse vector
+  sparse_vector out = {m_x, m_j};
+  return out;
+}
+
+
+// [[Rcpp::export]]
+IntegerVector load_row_cpp(const std::string& file_name_in, SEXP f_row_ptr, int row_idx, int n_cells) {
+  sparse_vector v = load_sparse_row_low_level(file_name_in, f_row_ptr, row_idx);
+  std::vector<int> m_j = v.j, m_x = v.x;
 
   // 9. initialize the output vector
   IntegerVector out(n_cells, 0);
