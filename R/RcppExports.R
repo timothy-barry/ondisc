@@ -29,6 +29,10 @@ load_row_cpp <- function(file_name_in, f_row_ptr, row_idx, n_cells) {
     .Call(`_ondisc_load_row_cpp`, file_name_in, f_row_ptr, row_idx, n_cells)
 }
 
+threshold_count_matrix_cpp <- function(file_name_in, f_row_ptr, row_idx, threshold) {
+    .Call(`_ondisc_threshold_count_matrix_cpp`, file_name_in, f_row_ptr, row_idx, threshold)
+}
+
 #' @title Read the dimension of the ODM into memory
 #' @param file_name_in path to the odm file
 read_integer_vector <- function(file_name_in, dataset_name, length) {

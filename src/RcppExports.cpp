@@ -122,6 +122,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// threshold_count_matrix_cpp
+IntegerVector threshold_count_matrix_cpp(const std::string& file_name_in, SEXP f_row_ptr, int row_idx, int threshold);
+RcppExport SEXP _ondisc_threshold_count_matrix_cpp(SEXP file_name_inSEXP, SEXP f_row_ptrSEXP, SEXP row_idxSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type f_row_ptr(f_row_ptrSEXP);
+    Rcpp::traits::input_parameter< int >::type row_idx(row_idxSEXP);
+    Rcpp::traits::input_parameter< int >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(threshold_count_matrix_cpp(file_name_in, f_row_ptr, row_idx, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // read_integer_vector
 IntegerVector read_integer_vector(const std::string& file_name_in, const std::string& dataset_name, int length);
 RcppExport SEXP _ondisc_read_integer_vector(SEXP file_name_inSEXP, SEXP dataset_nameSEXP, SEXP lengthSEXP) {
@@ -189,6 +203,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_write_to_csr", (DL_FUNC) &_ondisc_write_to_csr, 10},
     {"_ondisc_create_odm", (DL_FUNC) &_ondisc_create_odm, 7},
     {"_ondisc_load_row_cpp", (DL_FUNC) &_ondisc_load_row_cpp, 4},
+    {"_ondisc_threshold_count_matrix_cpp", (DL_FUNC) &_ondisc_threshold_count_matrix_cpp, 4},
     {"_ondisc_read_integer_vector", (DL_FUNC) &_ondisc_read_integer_vector, 3},
     {"_ondisc_read_feature_ids", (DL_FUNC) &_ondisc_read_feature_ids, 2},
     {"_ondisc_read_row_ptr", (DL_FUNC) &_ondisc_read_row_ptr, 2},
