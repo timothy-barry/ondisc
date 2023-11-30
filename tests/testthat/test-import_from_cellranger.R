@@ -110,3 +110,4 @@ test_that("import data from cellranger", {
     expect_equal(grna_frac_max_feature_mem, grna_frac_max_feature_disk)
   }
 })
+

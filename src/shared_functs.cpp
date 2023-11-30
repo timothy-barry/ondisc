@@ -20,7 +20,7 @@ struct sparse_vector {
 };
 
 // load sparse row low level
-sparse_vector load_sparse_row_low_level(const std::string& file_name_in, SEXP f_row_ptr, int row_idx) {
+sparse_vector load_sparse_row_low_level(const std::string& file_name_in, SEXP f_row_ptr, int row_idx, bool load_x) {
   // 1. dereference f_row_ptr; determine the number of entries
   Rcpp::XPtr<std::vector<unsigned long long>> f_ptr(f_row_ptr);
   hsize_t start_pos = (*f_ptr)[row_idx];
@@ -30,34 +30,40 @@ sparse_vector load_sparse_row_low_level(const std::string& file_name_in, SEXP f_
   const H5std_string file_name(&file_name_in[0]);
   H5File file(file_name, H5F_ACC_RDONLY);
 
-  // 3. open the x and j datasets
-  DataSet f_x_dataset = file.openDataSet("x");
+  // open dataset
   DataSet f_j_dataset = file.openDataSet("j");
-
-  // 4. initialize the dataspace for x and j
-  DataSpace f_x_dataspace = f_x_dataset.getSpace();
+  // initialize dataspace
   DataSpace f_j_dataspace = f_j_dataset.getSpace();
-
-  // 4. allocate the output m_x and m_j vectors
-  std::vector<int> m_x(n_entries), m_j(n_entries);
-
-  // 5. initialize the dataspace for m_x and m_j
+  // allocate output
+  std::vector<int> m_j(n_entries);
+  // initialize the dataspace for m_x and m_j
   DataSpace m_space(1, &n_entries);
-
-  // 6. set the hyperslab for f_x and f_j
-  f_x_dataspace.selectHyperslab(H5S_SELECT_SET, &n_entries, &start_pos);
+  // set hyperslab
   f_j_dataspace.selectHyperslab(H5S_SELECT_SET, &n_entries, &start_pos);
-
-  // 7. read data
-  f_x_dataset.read(&m_x[0], H5::PredType::NATIVE_INT, m_space, f_x_dataspace);
+  // read data
   f_j_dataset.read(&m_j[0], H5::PredType::NATIVE_INT, m_space, f_j_dataspace);
-
-  // 8. close resources
+  // close resources
   f_j_dataset.close(); f_j_dataspace.close();
-  f_x_dataset.close(); f_x_dataspace.close();
+
+  std::vector<int> m_x;
+  if (load_x) {
+    // open dataset
+    DataSet f_x_dataset = file.openDataSet("x");
+    // initialize the dataspace
+    DataSpace f_x_dataspace = f_x_dataset.getSpace();
+    // allocate output
+    m_x = std::vector<int>(n_entries);
+    // set hyperslab
+    f_x_dataspace.selectHyperslab(H5S_SELECT_SET, &n_entries, &start_pos);
+    // read data
+    f_x_dataset.read(&m_x[0], H5::PredType::NATIVE_INT, m_space, f_x_dataspace);
+    // close resources
+    f_x_dataset.close(); f_x_dataspace.close();
+  }
+  // close shared resources
   file.close(); m_space.close();
 
-  // 9. return sparse vector
+  // 9. return sparse vector struct
   sparse_vector out = {m_x, m_j};
   return out;
 }

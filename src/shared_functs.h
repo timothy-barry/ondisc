@@ -15,5 +15,5 @@ struct sparse_vector {
 
 #ifndef LOAD_SPARSE_ROW_LOW_LEVEL
 #define LOAD_SPARSE_ROW_LOW_LEVEL
-sparse_vector load_sparse_row_low_level(const std::string& file_name_in, SEXP f_row_ptr, int row_idx);
+sparse_vector load_sparse_row_low_level(const std::string& file_name_in, SEXP f_row_ptr, int row_idx, bool load_x);
 #endif

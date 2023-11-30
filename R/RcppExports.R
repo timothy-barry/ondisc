@@ -29,10 +29,6 @@ load_row_cpp <- function(file_name_in, f_row_ptr, row_idx, n_cells) {
     .Call(`_ondisc_load_row_cpp`, file_name_in, f_row_ptr, row_idx, n_cells)
 }
 
-threshold_count_matrix_cpp <- function(file_name_in, f_row_ptr, row_idx, threshold) {
-    .Call(`_ondisc_threshold_count_matrix_cpp`, file_name_in, f_row_ptr, row_idx, threshold)
-}
-
 #' @title Read the dimension of the ODM into memory
 #' @param file_name_in path to the odm file
 read_integer_vector <- function(file_name_in, dataset_name, length) {
@@ -51,6 +47,14 @@ read_feature_ids <- function(file_name_in, n_features) {
 #' @param n_features the number of features in the dataset
 read_row_ptr <- function(file_name_in, n_features) {
     .Call(`_ondisc_read_row_ptr`, file_name_in, n_features)
+}
+
+threshold_count_matrix_cpp <- function(file_name_in, f_row_ptr, row_idx, threshold) {
+    .Call(`_ondisc_threshold_count_matrix_cpp`, file_name_in, f_row_ptr, row_idx, threshold)
+}
+
+compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc <- function(file_name_in, f_row_ptr, n_genes, n_cells_orig, n_cells_sub, grna_group_idxs, indiv_nt_grna_idxs, all_nt_idxs, to_analyze_response_idxs, to_analyze_grna_idxs, control_group_complement, cells_in_use) {
+    .Call(`_ondisc_compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc`, file_name_in, f_row_ptr, n_genes, n_cells_orig, n_cells_sub, grna_group_idxs, indiv_nt_grna_idxs, all_nt_idxs, to_analyze_response_idxs, to_analyze_grna_idxs, control_group_complement, cells_in_use)
 }
 
 init_ull_vect <- function(size) {
