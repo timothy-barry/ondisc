@@ -91,3 +91,36 @@ List compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc(const std::string& file_nam
   return List::create(Named("n_nonzero_mat") = M, Named("n_nonzero_tot") = n_nonzero_tot,
                       Named("n_nonzero_trt") = n_nonzero_trt, Named("n_nonzero_cntrl") = n_nonzero_cntrl);
 }
+
+
+// [[Rcpp::export]]
+IntegerMatrix compute_n_trt_cells_matrix_ondisc(const std::string& file_name_in, SEXP f_row_ptr, int n_cells_orig,
+                                                int n_cells_sub, int n_genes, List nt_grna_group_idxs, IntegerVector cells_in_use) {
+  // define objects
+  int n_nonzero;
+  IntegerVector curr_idxs;
+  IntegerMatrix M(nt_grna_group_idxs.size(), n_genes);
+  std::vector<bool> y_sub(n_cells_sub), y_orig(n_cells_orig);
+  std::vector<int> cells_in_use_zero_idx(n_cells_sub);
+  for (int i = 0; i < cells_in_use_zero_idx.size(); i ++) cells_in_use_zero_idx[i] = cells_in_use[i] - 1;
+
+  // decrement nt_grna_group_idxs
+  for (int i = 0; i < nt_grna_group_idxs.size(); i ++) {
+    curr_idxs = nt_grna_group_idxs[i];
+    for (int k = 0; k < curr_idxs.size(); k ++) curr_idxs[k] --;
+  }
+
+  // iterate over genes
+  for (int row_idx = 0; row_idx < n_genes; row_idx ++) {
+    // load nonzero positions into the boolean vector y_sub
+    load_nonzero_posits_odm(file_name_in, f_row_ptr, row_idx, y_orig, y_sub, cells_in_use_zero_idx);
+    // iterate over nt grna groups
+    for (int grna_idx = 0; grna_idx < nt_grna_group_idxs.size(); grna_idx ++) {
+      n_nonzero = 0;
+      curr_idxs = nt_grna_group_idxs[grna_idx];
+      for (int k = 0; k < curr_idxs.size(); k ++) if (y_sub[curr_idxs[k]]) n_nonzero ++;
+      M(grna_idx, row_idx) = n_nonzero;
+    }
+  }
+  return M;
+}

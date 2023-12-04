@@ -195,6 +195,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// compute_n_trt_cells_matrix_ondisc
+IntegerMatrix compute_n_trt_cells_matrix_ondisc(const std::string& file_name_in, SEXP f_row_ptr, int n_cells_orig, int n_cells_sub, int n_genes, List nt_grna_group_idxs, IntegerVector cells_in_use);
+RcppExport SEXP _ondisc_compute_n_trt_cells_matrix_ondisc(SEXP file_name_inSEXP, SEXP f_row_ptrSEXP, SEXP n_cells_origSEXP, SEXP n_cells_subSEXP, SEXP n_genesSEXP, SEXP nt_grna_group_idxsSEXP, SEXP cells_in_useSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type f_row_ptr(f_row_ptrSEXP);
+    Rcpp::traits::input_parameter< int >::type n_cells_orig(n_cells_origSEXP);
+    Rcpp::traits::input_parameter< int >::type n_cells_sub(n_cells_subSEXP);
+    Rcpp::traits::input_parameter< int >::type n_genes(n_genesSEXP);
+    Rcpp::traits::input_parameter< List >::type nt_grna_group_idxs(nt_grna_group_idxsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type cells_in_use(cells_in_useSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_n_trt_cells_matrix_ondisc(file_name_in, f_row_ptr, n_cells_orig, n_cells_sub, n_genes, nt_grna_group_idxs, cells_in_use));
+    return rcpp_result_gen;
+END_RCPP
+}
 // init_ull_vect
 SEXP init_ull_vect(int size);
 RcppExport SEXP _ondisc_init_ull_vect(SEXP sizeSEXP) {
@@ -230,6 +247,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_read_row_ptr", (DL_FUNC) &_ondisc_read_row_ptr, 2},
     {"_ondisc_threshold_count_matrix_cpp", (DL_FUNC) &_ondisc_threshold_count_matrix_cpp, 4},
     {"_ondisc_compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc", (DL_FUNC) &_ondisc_compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc, 12},
+    {"_ondisc_compute_n_trt_cells_matrix_ondisc", (DL_FUNC) &_ondisc_compute_n_trt_cells_matrix_ondisc, 7},
     {"_ondisc_init_ull_vect", (DL_FUNC) &_ondisc_init_ull_vect, 1},
     {"_ondisc_print_ull_vect", (DL_FUNC) &_ondisc_print_ull_vect, 1},
     {NULL, NULL, 0}
