@@ -17,6 +17,11 @@
 #' output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
 #' }
 create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE, chunk_size = 1000L, compression_level = 3L) {
+  # 0. check that directory to write is valid
+  if (is.null(directory_to_write)) {
+    stop("`directory_to_write` cannot be `NULL`.")
+  }
+
   # 1. check that directories exist
   for (curr_directory in directories_to_load) {
     if (!dir.exists(curr_directory)) stop(paste0("The directory ", curr_directory, " does not exist."))
@@ -66,7 +71,7 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
   # 7. determine idxs of MT- features
   mt_feature_idxs <- lapply(seq_along(modality_names), function(k) {
     curr_modality_features <- feature_names[seq(modality_start_idx_features[k], modality_start_idx_features[k + 1L] - 1L) + 1L]
-    grep(pattern = "^MT-", x = curr_modality_features) - 1L - modality_start_idx_features[k]
+    grep(pattern = "^MT-", x = curr_modality_features, ignore.case = TRUE) - 1L - modality_start_idx_features[k]
   }) |> stats::setNames(modality_names)
 
   # 8. round 1
