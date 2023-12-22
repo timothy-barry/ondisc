@@ -6,7 +6,7 @@
 #' @param chunk_size chunk size to use in the backing HDF5 file
 #' @param compression_level compression level to use in the backing HDF5 file
 #'
-#' @return a covariate_ondisc_matrix representing the data
+#' @return an representing the data
 #' @export
 #'
 #' @examples

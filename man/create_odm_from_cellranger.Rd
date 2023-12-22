@@ -24,7 +24,7 @@ create_odm_from_cellranger(
 \item{compression_level}{compression level to use in the backing HDF5 file}
 }
 \value{
-a covariate_ondisc_matrix representing the data
+an representing the data
 }
 \description{
 Create ODM from cellranger
