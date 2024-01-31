@@ -6,3 +6,7 @@ update_modality_names <- function(modality_names) {
   })
   return(new_modality_names)
 }
+
+expand_tilde <- function(fp) {
+  gsub(pattern = "~", fixed = TRUE, replacement = path.expand("~"), x = fp)
+}

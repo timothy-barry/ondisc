@@ -20,9 +20,7 @@ setClass("odm",
 #' @export
 initialize_odm_from_backing_file <- function(odm_file) {
   # 0. checks on odm_file
-  if (grepl(pattern = "~", fixed = TRUE, x = odm_file)) {
-    stop(paste0(odm_file, " cannot contain the home symbol (`~`). Specify a fully qualified file path."))
-  }
+  odm_file <- expand_tilde(odm_file)
   if (!file.exists(odm_file)) {
     stop(paste0(odm_file, " does not exist."))
   }

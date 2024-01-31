@@ -18,11 +18,9 @@
 #' }
 create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE, chunk_size = 1000L, compression_level = 3L) {
   # 0. check that directory to write is valid; create it if it does not yet exist
+  directory_to_write <- expand_tilde(directory_to_write)
   if (is.null(directory_to_write)) {
     stop("`directory_to_write` cannot be `NULL`.")
-  }
-  if (grepl(pattern = "~", fixed = TRUE, x = directory_to_write)) {
-    stop(paste0(directory_to_write, " cannot contain the home symbol (`~`). Specify a fully qualified file path."))
   }
   if (!dir.exists(directory_to_write)) dir.create(path = directory_to_write, recursive = TRUE)
 
