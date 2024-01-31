@@ -17,10 +17,12 @@
 #' output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
 #' }
 create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE, chunk_size = 1000L, compression_level = 3L) {
-  # 0. check that directory to write is valid
+  # 0. check that directory to write is valid; create it if it does not yet exist
   if (is.null(directory_to_write)) {
     stop("`directory_to_write` cannot be `NULL`.")
   }
+  if (!dir.exists(directory_to_write)) dir.create(path = directory_to_write, recursive = TRUE)
+
 
   # 1. check that directories exist
   for (curr_directory in directories_to_load) {
