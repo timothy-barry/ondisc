@@ -13,15 +13,16 @@
 #' \dontrun{
 #' base_dir <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
 #' directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
-#' directory_to_write <- "/Users/timbarry/research_offsite/external/replogle-2022/processed/rd7_small/"
+#' grna_table <- readRDS("/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/grna_table.rds")
+#' directory_to_write <- tempdir()
 #' output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
 #' }
-create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE, chunk_size = 1000L, compression_level = 3L) {
+create_odm_from_cellranger <- function(directories_to_load, directory_to_write, grna_table = NULL,
+                                       write_cellwise_covariates = TRUE, chunk_size = 1000L,
+                                       compression_level = 3L) {
   # 0. check that directory to write is valid; create it if it does not yet exist
   directory_to_write <- expand_tilde(directory_to_write)
-  if (is.null(directory_to_write)) {
-    stop("`directory_to_write` cannot be `NULL`.")
-  }
+  if (is.null(directory_to_write)) stop("`directory_to_write` cannot be `NULL`.")
   if (!dir.exists(directory_to_write)) dir.create(path = directory_to_write, recursive = TRUE)
 
   # 1. check that directories exist
