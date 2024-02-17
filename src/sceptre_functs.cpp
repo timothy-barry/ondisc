@@ -124,3 +124,51 @@ IntegerMatrix compute_n_trt_cells_matrix_ondisc(const std::string& file_name_in,
   }
   return M;
 }
+
+
+// [[Rcpp::export]]
+List compute_n_ok_pairs_ondisc(const std::string& file_name_in, SEXP f_row_ptr, int n_genes, int n_cells_orig,
+                               int n_cells_sub, List grna_group_idxs, IntegerVector all_nt_idxs,
+                               IntegerVector to_analyze_response_idxs, IntegerVector to_analyze_grna_idxs,
+                               bool control_group_complement, IntegerVector cells_in_use, IntegerVector unique_response_idxs) {
+  // 0. initialize variables and objects
+  int n_pairs = to_analyze_response_idxs.size(), pair_pointer = 0, curr_n_nonzero_cntrl = 0, curr_n_nonzero_trt = 0, row_idx = 0, n_nonzero_tot = 0;
+  IntegerVector curr_idxs, n_nonzero_trt(n_pairs), n_nonzero_cntrl(n_pairs);
+  std::vector<bool> y_sub(n_cells_sub), y_orig(n_cells_orig);
+  std::vector<int> cells_in_use_zero_idx(n_cells_sub);
+  for (int i = 0; i < cells_in_use_zero_idx.size(); i ++) cells_in_use_zero_idx[i] = cells_in_use[i] - 1;
+
+  // 1. iterate over unique genes
+  for (int i = 0; i < unique_response_idxs.size(); i++) {
+    row_idx = unique_response_idxs[i] - 1;
+    // load nonzero positions into the boolean vector y_sub
+    load_nonzero_posits_odm(file_name_in, f_row_ptr, row_idx, y_orig, y_sub, cells_in_use_zero_idx);
+
+    // update n_nonzero_tot for this gene
+    n_nonzero_tot = 0;
+    if (!control_group_complement) {
+      for (int k = 0; k < all_nt_idxs.size(); k ++) if (y_sub[all_nt_idxs[k] - 1]) n_nonzero_tot ++;
+    } else {
+      for (int k = 0; k < y_sub.size(); k++) if (y_sub[k]) n_nonzero_tot ++;
+    }
+
+    // iterate through the discovery pairs containing this gene
+    while (to_analyze_response_idxs[pair_pointer] - 1 == row_idx) {
+      curr_idxs = grna_group_idxs[to_analyze_grna_idxs[pair_pointer] - 1];
+      curr_n_nonzero_trt = 0;
+      // first, get n nonzero trt
+      for (int k = 0; k < curr_idxs.size(); k ++) if (y_sub[curr_idxs[k] - 1]) curr_n_nonzero_trt ++;
+      // second, get n nonzero cntrl
+      if (!control_group_complement) { // NT cells
+        curr_n_nonzero_cntrl = n_nonzero_tot;
+      } else { // complement set
+        curr_n_nonzero_cntrl = n_nonzero_tot - curr_n_nonzero_trt;
+      }
+      n_nonzero_trt[pair_pointer] = curr_n_nonzero_trt;
+      n_nonzero_cntrl[pair_pointer] = curr_n_nonzero_cntrl;
+      pair_pointer ++;
+    }
+  }
+
+  return List::create(Named("n_nonzero_trt") = n_nonzero_trt, Named("n_nonzero_cntrl") = n_nonzero_cntrl);
+}

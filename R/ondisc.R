@@ -3,5 +3,5 @@ utils::globalVariables("feature_idx")
 #' @importFrom Rcpp sourceCpp
 #' @importFrom data.table setkey
 #' @import Rhdf5lib
-#' @docType package
+#' @docType _PACKAGE
 NULL

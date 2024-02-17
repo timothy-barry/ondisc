@@ -61,6 +61,10 @@ compute_n_trt_cells_matrix_ondisc <- function(file_name_in, f_row_ptr, n_cells_o
     .Call(`_ondisc_compute_n_trt_cells_matrix_ondisc`, file_name_in, f_row_ptr, n_cells_orig, n_cells_sub, n_genes, nt_grna_group_idxs, cells_in_use)
 }
 
+compute_n_ok_pairs_ondisc <- function(file_name_in, f_row_ptr, n_genes, n_cells_orig, n_cells_sub, grna_group_idxs, all_nt_idxs, to_analyze_response_idxs, to_analyze_grna_idxs, control_group_complement, cells_in_use, unique_response_idxs) {
+    .Call(`_ondisc_compute_n_ok_pairs_ondisc`, file_name_in, f_row_ptr, n_genes, n_cells_orig, n_cells_sub, grna_group_idxs, all_nt_idxs, to_analyze_response_idxs, to_analyze_grna_idxs, control_group_complement, cells_in_use, unique_response_idxs)
+}
+
 init_ull_vect <- function(size) {
     .Call(`_ondisc_init_ull_vect`, size)
 }
