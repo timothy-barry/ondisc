@@ -25,6 +25,10 @@ create_odm <- function(file_name_in, n_nonzero_features, feature_ids, n_cells, i
     invisible(.Call(`_ondisc_create_odm`, file_name_in, n_nonzero_features, feature_ids, n_cells, integer_id, chunk_size, compression_level))
 }
 
+create_odm_r_matrix_cpp <- function(file_name_in, feature_ids, n_features, n_cells, integer_id, chunk_size, compression_level, j, x, p) {
+    invisible(.Call(`_ondisc_create_odm_r_matrix_cpp`, file_name_in, feature_ids, n_features, n_cells, integer_id, chunk_size, compression_level, j, x, p))
+}
+
 load_row_cpp <- function(file_name_in, f_row_ptr, row_idx, n_cells) {
     .Call(`_ondisc_load_row_cpp`, file_name_in, f_row_ptr, row_idx, n_cells)
 }

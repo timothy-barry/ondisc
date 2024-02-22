@@ -27,8 +27,9 @@ void free_c_string_array(char** c_str_array, int size) {
 
 void create_odm_helper(const std::string& file_name_in, StringVector feature_ids,
                        const std::vector<unsigned long long>& row_ptr, unsigned long long n_data_points,
-                       int n_cells, int n_features, int integer_id, int chunk_size, int compression_level) {
-  hsize_t chunk_size_ull = (hsize_t) chunk_size;
+                       int n_cells, int n_features, int integer_id, int chunk_size, int compression_level,
+                       const std::vector<int>& j, bool write_j, const std::vector<int>& x, bool write_x) {
+  hsize_t chunk_size_ull = static_cast<unsigned long long>(chunk_size);
   const H5std_string file_name(&file_name_in[0]);
   H5File file(file_name, H5F_ACC_TRUNC);
 
@@ -54,6 +55,7 @@ void create_odm_helper(const std::string& file_name_in, StringVector feature_ids
   j_prop.setChunk(1, &chunk_size_ull);
   j_prop.setDeflate(compression_level);
   DataSet j_dataset = file.createDataSet(j_name, PredType::NATIVE_INT, j_dataspace, j_prop);
+  if (write_j) j_dataset.write(&j[0], PredType::NATIVE_INT);
   // close dataset and dataspace
   j_dataset.close(); j_dataspace.close(), j_prop.close();
 
@@ -67,6 +69,7 @@ void create_odm_helper(const std::string& file_name_in, StringVector feature_ids
   x_prop.setChunk(1, &chunk_size_ull);
   x_prop.setDeflate(compression_level);
   DataSet x_dataset = file.createDataSet(x_name, PredType::NATIVE_INT, x_dataspace, x_prop);
+  if (write_x) x_dataset.write(&x[0], PredType::NATIVE_INT);
   // close dataset and dataspace
   x_dataset.close(); x_dataspace.close(), x_prop.close();
 
@@ -87,7 +90,7 @@ void create_odm_helper(const std::string& file_name_in, StringVector feature_ids
    * e. feature IDs
    ****************/
   const H5std_string feature_ids_name("feature_ids");
-  hsize_t feature_ids_dim[1] = {(hsize_t) n_features};
+  hsize_t feature_ids_dim[1] = {static_cast<unsigned long long>(n_features)};
   DataSpace feature_ids_dataspace(1, feature_ids_dim);
   StrType feature_ids_datatype(PredType::C_S1, H5T_VARIABLE);
   DataSet feature_ids_dataset = file.createDataSet(feature_ids_name, feature_ids_datatype, feature_ids_dataspace);
@@ -133,7 +136,28 @@ void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_feature
     return;
   }
 
-  // call the create_odm_helper
+  // 3. create empty x, j
+  std::vector<int> x, j;
+
+  // call create_odm_helper
   create_odm_helper(file_name_in, feature_ids, row_ptr, n_data_points, n_cells,
-                    n_features, integer_id, chunk_size, compression_level);
+                    n_features, integer_id, chunk_size, compression_level,
+                    j, false, x, false);
+}
+
+
+// [[Rcpp::export]]
+void create_odm_r_matrix_cpp(const std::string& file_name_in, StringVector feature_ids,
+                             int n_features, int n_cells, int integer_id, int chunk_size,
+                             int compression_level, const std::vector<int>& j, const std::vector<int>& x,
+                             const std::vector<int>& p) {
+  // create ull row_ptr
+  std::vector<unsigned long long> row_ptr(p.size());
+  for (int i = 0; i < p.size(); i ++) row_ptr[i] = static_cast<unsigned long long>(p[i]);
+  hsize_t n_data_points = static_cast<unsigned long long>(j.size());
+
+  // call create_odm_helper
+  create_odm_helper(file_name_in, feature_ids, row_ptr, n_data_points, n_cells,
+                    n_features, integer_id, chunk_size, compression_level,
+                    j, true, x, true);
 }

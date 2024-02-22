@@ -108,6 +108,25 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// create_odm_r_matrix_cpp
+void create_odm_r_matrix_cpp(const std::string& file_name_in, StringVector feature_ids, int n_features, int n_cells, int integer_id, int chunk_size, int compression_level, const std::vector<int>& j, const std::vector<int>& x, const std::vector<int>& p);
+RcppExport SEXP _ondisc_create_odm_r_matrix_cpp(SEXP file_name_inSEXP, SEXP feature_idsSEXP, SEXP n_featuresSEXP, SEXP n_cellsSEXP, SEXP integer_idSEXP, SEXP chunk_sizeSEXP, SEXP compression_levelSEXP, SEXP jSEXP, SEXP xSEXP, SEXP pSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_name_in(file_name_inSEXP);
+    Rcpp::traits::input_parameter< StringVector >::type feature_ids(feature_idsSEXP);
+    Rcpp::traits::input_parameter< int >::type n_features(n_featuresSEXP);
+    Rcpp::traits::input_parameter< int >::type n_cells(n_cellsSEXP);
+    Rcpp::traits::input_parameter< int >::type integer_id(integer_idSEXP);
+    Rcpp::traits::input_parameter< int >::type chunk_size(chunk_sizeSEXP);
+    Rcpp::traits::input_parameter< int >::type compression_level(compression_levelSEXP);
+    Rcpp::traits::input_parameter< const std::vector<int>& >::type j(jSEXP);
+    Rcpp::traits::input_parameter< const std::vector<int>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const std::vector<int>& >::type p(pSEXP);
+    create_odm_r_matrix_cpp(file_name_in, feature_ids, n_features, n_cells, integer_id, chunk_size, compression_level, j, x, p);
+    return R_NilValue;
+END_RCPP
+}
 // load_row_cpp
 IntegerVector load_row_cpp(const std::string& file_name_in, SEXP f_row_ptr, int row_idx, int n_cells);
 RcppExport SEXP _ondisc_load_row_cpp(SEXP file_name_inSEXP, SEXP f_row_ptrSEXP, SEXP row_idxSEXP, SEXP n_cellsSEXP) {
@@ -263,6 +282,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_compute_cellwise_covariates", (DL_FUNC) &_ondisc_compute_cellwise_covariates, 19},
     {"_ondisc_write_to_csr", (DL_FUNC) &_ondisc_write_to_csr, 10},
     {"_ondisc_create_odm", (DL_FUNC) &_ondisc_create_odm, 7},
+    {"_ondisc_create_odm_r_matrix_cpp", (DL_FUNC) &_ondisc_create_odm_r_matrix_cpp, 10},
     {"_ondisc_load_row_cpp", (DL_FUNC) &_ondisc_load_row_cpp, 4},
     {"_ondisc_read_integer_vector", (DL_FUNC) &_ondisc_read_integer_vector, 3},
     {"_ondisc_read_feature_ids", (DL_FUNC) &_ondisc_read_feature_ids, 2},
