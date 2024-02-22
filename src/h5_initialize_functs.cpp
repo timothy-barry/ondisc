@@ -25,28 +25,13 @@ void free_c_string_array(char** c_str_array, int size) {
 }
 
 
-// [[Rcpp::export]]
-void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_features, StringVector feature_ids,
-                int n_cells, int integer_id, int chunk_size, int compression_level) {
-  // 0. define a few variables
-  hsize_t n_features_ull = (hsize_t) n_nonzero_features.size(), chunk_size_ull = (hsize_t) chunk_size;
-  int n_features_int = n_nonzero_features.size();
-
-  // 1. compute the row pointer
-  std::vector<unsigned long long> row_ptr = compute_row_ptr(n_nonzero_features);
-  unsigned long long n_data_points = row_ptr[row_ptr.size() - 1];
-
-  // 2. verify that n_data_points is less than h_size_t
-  if (n_data_points > static_cast<unsigned long long>(std::numeric_limits<hsize_t>::max())) {
-    Rcout << "The number of nonzero entries in the matrix exceeds the maximum integer size that HDF5 can handle; returning.";
-    return;
-  }
-
-  // 3. create file
+void create_odm_helper(const std::string& file_name_in, StringVector feature_ids,
+                       const std::vector<unsigned long long>& row_ptr, unsigned long long n_data_points,
+                       int n_cells, int n_features, int integer_id, int chunk_size, int compression_level) {
+  hsize_t chunk_size_ull = (hsize_t) chunk_size;
   const H5std_string file_name(&file_name_in[0]);
   H5File file(file_name, H5F_ACC_TRUNC);
 
-  // 4. initialize the fields of the odm
   /****************
    * a. row pointer
    ****************/
@@ -93,7 +78,7 @@ void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_feature
   DataSpace dimension_dataspace(1, dimension_dim);
   DataSet dimension_dataset = file.createDataSet(dimension_name, PredType::NATIVE_INT, dimension_dataspace);
   // write the dimension
-  std::vector<int> dimension {n_features_int, n_cells};
+  std::vector<int> dimension {n_features, n_cells};
   dimension_dataset.write(&dimension[0], PredType::NATIVE_INT);
   // close dataset and dataspace
   dimension_dataset.close(); dimension_dataspace.close();
@@ -102,7 +87,7 @@ void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_feature
    * e. feature IDs
    ****************/
   const H5std_string feature_ids_name("feature_ids");
-  hsize_t feature_ids_dim[1] = {n_features_ull};
+  hsize_t feature_ids_dim[1] = {(hsize_t) n_features};
   DataSpace feature_ids_dataspace(1, feature_ids_dim);
   StrType feature_ids_datatype(PredType::C_S1, H5T_VARIABLE);
   DataSet feature_ids_dataset = file.createDataSet(feature_ids_name, feature_ids_datatype, feature_ids_dataspace);
@@ -129,4 +114,26 @@ void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_feature
   // close file
   file.close();
   return;
+}
+
+
+// [[Rcpp::export]]
+void create_odm(const std::string& file_name_in, IntegerVector n_nonzero_features, StringVector feature_ids,
+                int n_cells, int integer_id, int chunk_size, int compression_level) {
+  // 0. get n_features
+  int n_features = n_nonzero_features.size();
+
+  // 1. compute the row pointer
+  std::vector<unsigned long long> row_ptr = compute_row_ptr(n_nonzero_features);
+  unsigned long long n_data_points = row_ptr[row_ptr.size() - 1];
+
+  // 2. verify that n_data_points is less than h_size_t
+  if (n_data_points > static_cast<unsigned long long>(std::numeric_limits<hsize_t>::max())) {
+    Rcout << "The number of nonzero entries in the matrix exceeds the maximum integer size that HDF5 can handle; returning.";
+    return;
+  }
+
+  // call the create_odm_helper
+  create_odm_helper(file_name_in, feature_ids, row_ptr, n_data_points, n_cells,
+                    n_features, integer_id, chunk_size, compression_level);
 }

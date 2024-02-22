@@ -13,7 +13,7 @@
 #' \dontrun{
 #' base_dir <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
 #' directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
-#' directory_to_write <- "/Users/timbarry/research_offsite/external/replogle-2022/processed/rd7_small/"
+#' directory_to_write <- tempdir()
 #' output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
 #' }
 create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE, chunk_size = 1000L, compression_level = 3L) {
