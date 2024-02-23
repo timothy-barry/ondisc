@@ -6,12 +6,12 @@
 #' @param chunk_size chunk size to use in the backing HDF5 file
 #' @param compression_level compression level to use in the backing HDF5 file
 #'
-#' @return an representing the data
+#' @return list containing the odm object(s) and cellwise covariates
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' base_dir <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
+#' base_dir <- "/Users/tib163/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
 #' directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
 #' directory_to_write <- tempdir()
 #' output <- create_odm_from_cellranger(directories_to_load, directory_to_write)

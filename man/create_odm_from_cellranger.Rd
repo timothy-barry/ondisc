@@ -24,14 +24,14 @@ create_odm_from_cellranger(
 \item{compression_level}{compression level to use in the backing HDF5 file}
 }
 \value{
-an representing the data
+list containing the odm object(s) and cellwise covariates
 }
 \description{
 Create ODM from cellranger
 }
 \examples{
 \dontrun{
-base_dir <- "/Users/timbarry/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
+base_dir <- "/Users/tib163/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
 directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
 directory_to_write <- tempdir()
 output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
