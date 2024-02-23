@@ -7,7 +7,7 @@ create_new_directory <- function() {
 }
 
 # 2. create a random matrix
-create_random_matrix <- function(n_row, n_col, p_zero = 0.9, p_set_col_zero = 0.05, p_set_row_zero = 0.05, matrix_values = seq(1L, 10L)) {
+create_random_matrix <- function(n_row, n_col, p_zero = 0.9, p_set_col_zero = 0.05, p_set_row_zero = 0.05, matrix_values = seq(1L, 10L), column_access = TRUE) {
   # sample binary matrix
   r <- matrix(data = stats::rbinom(n = n_row * n_col, size = 1, prob = 1 - p_zero), nrow = n_row, ncol = n_col)
   # randomly set some rows or columns to all zero
@@ -18,7 +18,7 @@ create_random_matrix <- function(n_row, n_col, p_zero = 0.9, p_set_col_zero = 0.
   m <- sample(x = matrix_values, size = sum(r), replace = TRUE)
   r[r == 1] <- m
   # convert the matrix to sparse format and return
-  out <- Matrix::Matrix(r, sparse = TRUE)
+  out <- if (column_access) Matrix::Matrix(r, sparse = TRUE) else as(r, "RsparseMatrix")
   return(out)
 }
 
