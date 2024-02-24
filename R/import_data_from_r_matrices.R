@@ -23,6 +23,9 @@ create_odm_from_r_matrix <- function(mat, file_to_write, chunk_size = 1000L, com
   # 0. check that the class is correct
   if (!is(mat, "dgRMatrix")) stop("`mat` must be an object of class `dgRMatrix`.")
   file_to_write <- expand_tilde(file_to_write)
+  if (is.null(directory_to_write)) {
+    stop("`directory_to_write` cannot be `NULL`.")
+  }
 
   # initialize odm
   create_odm_r_matrix_cpp(file_name_in = file_to_write,
