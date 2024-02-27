@@ -106,20 +106,23 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
                             col.names = c("feature_idx"),
                             colClasses = c("integer", "NULL", "NULL"),
                             showProgress = FALSE, nThread = 1)
-    decrement_vector(dt$feature_idx) # decrement
+    decrement_vector(dt$feature_idx) # decrement feature idx
     data.table::setkey(dt, feature_idx) # radix sort on feature_idx
 
-    # 3. determine the start idx of the different modalities
-    modality_start_mtx <- sapply(seq_along(modality_names), function(k) {
+    # 3. determine the start idx of the different modalities; convert into a list
+    modality_start_mtx <- c(sapply(seq_along(modality_names), function(k) {
       modality_start_idx <- modality_start_idx_features[[k]]
       dt[list(modality_start_idx), which = TRUE, mult = "first", roll = -Inf] - 1L # binary search for start idxs
-    })
-    modality_start_idx_mtx_list[[i]] <- modality_start_mtx <- c(modality_start_mtx, nrow(dt))
+    }), nrow(dt))
+    modality_start_mtx <- sapply(seq_along(modality_names), function(k) {
+      c(modality_start_mtx[k], modality_start_mtx[k + 1L] - 1L)
+    }, simplify = FALSE) |> stats::setNames(modality_names)
+    modality_start_idx_mtx_list[[i]] <- modality_start_mtx
 
     # 4. update n_nonzero_features_vector for each modality
     for (k in seq_along(modality_names)) {
-      start_idx <- modality_start_mtx[k]
-      end_idx <- modality_start_mtx[k + 1]
+      start_idx <- modality_start_mtx[[k]][1]
+      end_idx <- modality_start_mtx[[k]][2]
       update_n_features_vector(feature_idx = dt$feature_idx,
                                n_nonzero_features_vector = n_nonzero_features_vector_list[[k]],
                                offset = modality_start_idx_features[[k]],
@@ -160,8 +163,8 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
     # 3. compute the cell-wise covariates for each modality
     cat("Computing cellwise covariates. ")
     for (k in seq_along(modality_names)) {
-      start_idx <- modality_start_idx_mtx_list[[i]][k]
-      end_idx <- modality_start_idx_mtx_list[[i]][k + 1]
+      start_idx <- modality_start_idx_mtx_list[[i]][[k]][1]
+      end_idx <- modality_start_idx_mtx_list[[i]][[k]][2]
       feature_offset <- modality_start_idx_features[[k]]
       compute_cellwise_covariates(n_umis = cellwise_covariates[[k]]$covariate_list$n_umis,
                                   n_nonzero = cellwise_covariates[[k]]$covariate_list$n_nonzero,
@@ -187,8 +190,8 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
     # 4. Write the data to disk in CSR format
     cat("Writing to disk.\n")
     for (k in seq_along(modality_names)) {
-      start_idx <- modality_start_idx_mtx_list[[i]][k]
-      end_idx <- modality_start_idx_mtx_list[[i]][k + 1]
+      start_idx <- modality_start_idx_mtx_list[[i]][[k]][1]
+      end_idx <- modality_start_idx_mtx_list[[i]][[k]][2]
       feature_offset <- modality_start_idx_features[[k]]
       file_name_in <- file_names_in[k]
       write_to_csr(file_name_in = file_name_in,

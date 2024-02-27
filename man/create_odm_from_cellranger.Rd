@@ -34,6 +34,7 @@ Create ODM from cellranger
 base_dir <- "/Users/tib163/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
 directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
 directory_to_write <- tempdir()
+grna_target_data_frame <- readRDS("/Users/tib163/research_offsite/external/replogle-2022/raw/rd7/grna_table.rds")
 output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
 }
 }

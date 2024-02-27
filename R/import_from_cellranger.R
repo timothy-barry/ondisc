@@ -14,6 +14,7 @@
 #' base_dir <- "/Users/tib163/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
 #' directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
 #' directory_to_write <- tempdir()
+#' grna_target_data_frame <- readRDS("/Users/tib163/research_offsite/external/replogle-2022/raw/rd7/grna_table.rds")
 #' output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
 #' }
 create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE, chunk_size = 1000L, compression_level = 3L) {
@@ -85,17 +86,17 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
   cellwise_covariates <- initialize_cellwise_covariates(modality_names = modality_names,
                                                         n_cells = round_1_out$n_cells)
 
-  # 9.5 obtain file paths to odms
+  # 10 obtain file paths to odms
   new_modality_names <- update_modality_names(modality_names)
   file_names_in <- sapply(new_modality_names, function(new_modality_name) {
     if (!dir.exists(directory_to_write)) dir.create(directory_to_write, recursive = TRUE)
     paste0(directory_to_write, "/", new_modality_name, ".odm")
   })
 
-  # 9.75 sample integer id
+  # 11 sample integer id
   integer_id <- sample(x = seq(0L, .Machine$integer.max), size = 1L)
 
-  # 10. initialize odms
+  # 12. initialize odms
   row_ptr_list <- initialize_odms(modality_names = modality_names,
                                   file_names_in = file_names_in,
                                   n_nonzero_features_vector_list = round_1_out$n_nonzero_features_vector_list,
@@ -105,7 +106,7 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
                                   chunk_size = chunk_size,
                                   compression_level = compression_level)
 
-  # 11. round 2
+  # 13. round 2
   process_input_files_round_2(matrix_fps = matrix_fps,
                               file_names_in = file_names_in,
                               modality_names = modality_names,
@@ -116,14 +117,14 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
                               cellwise_covariates = cellwise_covariates)
   gc() |> invisible()
 
-  # 10. save the covariates
+  # 14. save the covariates
   dt <- preprare_output_covariate_dt(cellwise_covariates = cellwise_covariates,
                                      new_modality_names = new_modality_names,
                                      n_cells_per_batch = round_1_out$n_cells_per_batch,
                                      modality_feature_ids = modality_feature_ids)
   if (write_cellwise_covariates) saveRDS(dt, file = paste0(directory_to_write, "/cellwise_covariates.rds"))
 
-  # 11. return the odms and cell covariates
+  # 15. return the odms and cell covariates
   l <- lapply(seq_along(modality_names), function(i) {
     initialize_odm_from_backing_file(file_names_in[i])
   }) |> stats::setNames(new_modality_names)

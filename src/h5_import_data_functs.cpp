@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 void update_n_features_vector(IntegerVector feature_idx, IntegerVector n_nonzero_features_vector, int offset, int start_idx, int end_idx) {
-  for (int i = start_idx; i < end_idx; i++) {
+  for (int i = start_idx; i <= end_idx; i++) {
     n_nonzero_features_vector[feature_idx[i] - offset] ++;
   }
   return;
@@ -41,7 +41,7 @@ void compute_cellwise_covariates(IntegerVector n_umis, IntegerVector n_nonzero,
   std::vector<int> max_umi_count(compute_feature_w_max_expression ? n_cells : 0, 0);
   std::vector<int> n_mito_umis(compute_p_mito ? n_cells : 0, 0);
   // iterate through the entries of the mtx matrix
-  for (int i = start_idx; i < end_idx; i ++) {
+  for (int i = start_idx; i <= end_idx; i ++) {
     curr_feature_idx = feature_idx[i] - feature_offset;
     curr_cell_idx = j[i];
     curr_x = x[i];
