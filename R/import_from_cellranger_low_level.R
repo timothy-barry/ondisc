@@ -79,18 +79,20 @@ initialize_odms <- function(modality_names, file_names_in, n_nonzero_features_ve
 }
 
 
-process_input_files_round_1 <- function(matrix_fps, modality_names, modality_start_idx_features) {
+process_input_files_round_1 <- function(matrix_fps, modality_names, modality_start_idx_features,
+                                        feature_idx_to_vector_idx_map, n_features_per_modality) {
   # 0. initialize the outputs:
   # a. modality_start_idx_mtx_list
   # b. n_nonzero_features_vector_list
   # c. n_cells
   # d. n_cells_per_batch
-  n_features_per_modality <- diff(modality_start_idx_features)
+  # e. collapse_grna_counts
   modality_start_idx_mtx_list <- vector(mode = "list", length = length(matrix_fps))
   n_nonzero_features_vector_list <- lapply(seq_along(modality_names), function(k) {
     integer(length = n_features_per_modality[k])
   }) |> stats::setNames(modality_names)
   n_cells_per_batch <- integer(length = length(matrix_fps))
+  collapse_grna_counts <- !is.null(feature_idx_to_vector_idx_map)
 
   cat("Round 1/2 processing of the input files.\n")
   for (i in seq_along(matrix_fps)) {
@@ -101,10 +103,12 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
     n_cells_per_batch[i] <- mtx_metadata$n_cells
 
     # 2. load the feature idxs, decrement, and sort
+    my_col_names <- if (collapse_grna_counts) c("feature_idx", "j") else "feature_idx"
+    my_col_classes <- if (collapse_grna_counts) c("integer", "integer", "NULL") else c("integer", "NULL", "NULL")
     dt <- data.table::fread(file = matrix_fp,
                             skip = mtx_metadata$n_to_skip,
-                            col.names = c("feature_idx"),
-                            colClasses = c("integer", "NULL", "NULL"),
+                            col.names = my_col_names,
+                            colClasses = my_col_classes,
                             showProgress = FALSE, nThread = 1)
     decrement_vector(dt$feature_idx) # decrement feature idx
     data.table::setkey(dt, feature_idx) # radix sort on feature_idx
@@ -119,7 +123,15 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
     }, simplify = FALSE) |> stats::setNames(modality_names)
     modality_start_idx_mtx_list[[i]] <- modality_start_mtx
 
-    # 4. update n_nonzero_features_vector for each modality
+    # 4. (possibly) collapse grna counts
+    if (collapse_grna_counts) {
+      modality_start_mtx <- collapse_grna_counts(dt = dt,
+                                                 feature_idx_to_vector_idx_map = feature_idx_to_vector_idx_map,
+                                                 modality_start_mtx = modality_start_mtx,
+                                                 round_1 = TRUE)
+    }
+
+    # 5. update n_nonzero_features_vector for each modality
     for (k in seq_along(modality_names)) {
       start_idx <- modality_start_mtx[[k]][1]
       end_idx <- modality_start_mtx[[k]][2]
@@ -141,7 +153,7 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
 
 process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_names, modality_start_idx_features,
                                         row_ptr_list, modality_start_idx_mtx_list, mt_feature_idxs,
-                                        cellwise_covariates) {
+                                        cellwise_covariates, feature_idx_to_vector_idx_map) {
   cat("Round 2/2 processing of the input files.\n")
   n_cum_cells <- 0L
   n_features <- diff(modality_start_idx_features) |> stats::setNames(modality_names)
@@ -160,11 +172,20 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
     add_value_to_vector(dt$j, n_cum_cells - 1L)
     data.table::setorderv(dt, cols = c("feature_idx", "j")) # radix sort on feature_idx, cell_idx
 
-    # 3. compute the cell-wise covariates for each modality
+    # 3. collapse grna counts
+    modality_start_mtx <- modality_start_idx_mtx_list[[i]]
+    if (!is.null(feature_idx_to_vector_idx_map)) {
+      modality_start_mtx <- collapse_grna_counts(dt = dt,
+                                                 feature_idx_to_vector_idx_map = feature_idx_to_vector_idx_map,
+                                                 modality_start_mtx = modality_start_mtx,
+                                                 round_1 = FALSE)
+    }
+
+    # 4. compute the cell-wise covariates for each modality
     cat("Computing cellwise covariates. ")
     for (k in seq_along(modality_names)) {
-      start_idx <- modality_start_idx_mtx_list[[i]][[k]][1]
-      end_idx <- modality_start_idx_mtx_list[[i]][[k]][2]
+      start_idx <- modality_start_mtx[[k]][1]
+      end_idx <- modality_start_mtx[[k]][2]
       feature_offset <- modality_start_idx_features[[k]]
       compute_cellwise_covariates(n_umis = cellwise_covariates[[k]]$covariate_list$n_umis,
                                   n_nonzero = cellwise_covariates[[k]]$covariate_list$n_nonzero,
@@ -187,11 +208,11 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
                                   compute_frac_umis_max_feature = cellwise_covariates[[k]]$bool_vect[["frac_umis_max_feature"]])
     }
 
-    # 4. Write the data to disk in CSR format
+    # 5. Write the data to disk in CSR format
     cat("Writing to disk.\n")
     for (k in seq_along(modality_names)) {
-      start_idx <- modality_start_idx_mtx_list[[i]][[k]][1]
-      end_idx <- modality_start_idx_mtx_list[[i]][[k]][2]
+      start_idx <- modality_start_mtx[[k]][1]
+      end_idx <- modality_start_mtx[[k]][2]
       feature_offset <- modality_start_idx_features[[k]]
       file_name_in <- file_names_in[k]
       write_to_csr(file_name_in = file_name_in,
@@ -206,7 +227,7 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
                    m_x = dt$x)
     }
 
-    # increment n_cum_cells
+    # 6. increment n_cum_cells
     n_cum_cells <- n_cum_cells + n_cells
     rm(dt); gc() |> invisible()
   }

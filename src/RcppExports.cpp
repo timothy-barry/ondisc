@@ -274,6 +274,18 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// update_dt_column
+void update_dt_column(IntegerVector col, IntegerVector overwrite_vector, int start);
+RcppExport SEXP _ondisc_update_dt_column(SEXP colSEXP, SEXP overwrite_vectorSEXP, SEXP startSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type col(colSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type overwrite_vector(overwrite_vectorSEXP);
+    Rcpp::traits::input_parameter< int >::type start(startSEXP);
+    update_dt_column(col, overwrite_vector, start);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_update_n_features_vector", (DL_FUNC) &_ondisc_update_n_features_vector, 5},
@@ -293,6 +305,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_compute_n_ok_pairs_ondisc", (DL_FUNC) &_ondisc_compute_n_ok_pairs_ondisc, 12},
     {"_ondisc_init_ull_vect", (DL_FUNC) &_ondisc_init_ull_vect, 1},
     {"_ondisc_print_ull_vect", (DL_FUNC) &_ondisc_print_ull_vect, 1},
+    {"_ondisc_update_dt_column", (DL_FUNC) &_ondisc_update_dt_column, 3},
     {NULL, NULL, 0}
 };
 

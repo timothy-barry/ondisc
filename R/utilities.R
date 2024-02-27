@@ -11,40 +11,54 @@ expand_tilde <- function(fp) {
   gsub(pattern = "~", fixed = TRUE, replacement = path.expand("~"), x = fp)
 }
 
-collapse_grna_matrix <- function(dt_sub, grna_ids, grna_target_data_frame) {
-  # dt_sub <- dt[seq(modality_start_mtx[[2]] + 1, modality_start_mtx[[3]]),]
-  # grna_ids <- modality_feature_ids$`CRISPR Guide Capture`
-  # modality_start_idx_features
 
-  # current id-to-idx map
-  curr_id_to_idx_map <- data.frame(grna_id =  modality_feature_ids[["CRISPR Guide Capture"]],
-                                   feature_idx = seq(modality_start_idx_features[[2]], modality_start_idx_features[[3]] - 1L))
-  # id to vector map
-  id_to_vector_map <- grna_target_data_frame |> dplyr::select(grna_id, vector_id)
-  # vector to new idx map
+generate_grna_idx_to_vector_idx_map <- function(grna_target_data_frame, modality_start_idx_features, ordered_grna_ids) {
+  grna_target_data_frame <- grna_target_data_frame |> dplyr::select(grna_id, vector_id)
   unique_vectors <- unique(grna_target_data_frame$vector_id)
-  vector_to_new_id_map <- data.frame(vector_id = unique(grna_target_data_frame$vector_id),
-                                     new_idx = seq(from = modality_start_idx_features[[2]], length.out = length(unique_vectors)))
-  # id-to-idx-to-vector map
-  map <- dplyr::left_join(x = dplyr::left_join(x = id_to_vector_map,
-                                               y = curr_id_to_idx_map,
-                                               by = "grna_id"),
-                          y = vector_to_new_id_map, by = "vector_id") |>
-    dplyr::select(feature_idx, new_idx)
+  vector_to_vector_idx <- data.frame(vector_id = unique_vectors,
+                                     vector_idx = seq(from = modality_start_idx_features[["CRISPR Guide Capture"]],
+                                                      length.out = length(unique_vectors)))
+  grna_to_grna_idx <- data.frame(grna_id = ordered_grna_ids,
+                                 feature_idx = seq(modality_start_idx_features[["CRISPR Guide Capture"]],
+                                                   length.out = length(ordered_grna_ids)))
+  grna_idx_to_vector_idx <- dplyr::left_join(x = dplyr::left_join(x = grna_to_grna_idx,
+                                                                  y = grna_target_data_frame,
+                                                                  by = "grna_id"),
+                                             y = vector_to_vector_idx, by = "vector_id") |>
+    dplyr::select(feature_idx, vector_idx)
+  return(grna_idx_to_vector_idx)
+}
 
-  # create dt_sub_new, the collapsed version of dt_sub
-  dt_sub_new <- dplyr::left_join(dt_sub, map, by = "feature_idx") |>
-    dplyr::select(-feature_idx) |>
-    dplyr::rename(feature_idx = new_idx) |>
-    dplyr::relocate(feature_idx, j, x)
-  data.table::setorderv(dt_sub_new, cols = c("feature_idx", "j"))
-  dt_sub_new_summarized <- dplyr::group_by(dt_sub_new, feature_idx, j) |>
-    dplyr::summarize(x = if (length(x) == 1) x else sum(x), .groups = "drop")
 
-  # overwrite the relevant section of dt (write in C++!!!)
-  dt[seq(modality_start_mtx[[2]] + 1, modality_start_mtx[[3]]),] <- dt_sub_new
-
-  # update other stuff; modality end must be updated
-  #
-
+collapse_grna_counts <- function(dt, feature_idx_to_vector_idx_map, modality_start_mtx, round_1) {
+  # extract portion of data table corresponding to grna
+  start <- modality_start_mtx[["CRISPR Guide Capture"]][1]
+  end <- modality_start_mtx[["CRISPR Guide Capture"]][2]
+  dt_sub <- dt[seq(start, end) + 1L,]
+  # map grna id to vector id
+  dt_sub_updated <- dplyr::left_join(dt_sub, feature_idx_to_vector_idx_map, by = "feature_idx") |>
+    dplyr::select(feature_idx = vector_idx, j, if (!round_1) "x" else NULL)
+  # sort on feature_idx and j
+  data.table::setorderv(dt_sub_updated, c("feature_idx", "j"))
+  if (round_1) {
+    # if round 1, collapse feature_idx
+    collapsed_dt_sub <- dt_sub_updated |>
+      dplyr::group_by(feature_idx) |>
+      dplyr::summarize(unique_count = length(unique(j)))
+    feature_idx_new <- rep(collapsed_dt_sub$feature_idx, times = collapsed_dt_sub$unique_count)
+    update_dt_column(dt$feature_idx, overwrite_vector = feature_idx_new, start = start)
+  } else {
+    # if round 2, collapse j, x
+    collapsed_dt_sub <- dt_sub_updated |>
+      dplyr::group_by(feature_idx, j) |>
+      dplyr::summarize(s = if (dplyr::n() == 1) x else sum(x), .groups = "drop")
+    feature_idx_new <- collapsed_dt_sub$feature_idx
+    update_dt_column(dt$feature_idx, overwrite_vector = feature_idx_new, start = start)
+    update_dt_column(dt$j, overwrite_vector = collapsed_dt_sub$j, start = start)
+    update_dt_column(dt$x, overwrite_vector = collapsed_dt_sub$s, start = start)
+  }
+  # return updated modality_start_mtx
+  new_end <- start + length(feature_idx_new) - 1L
+  modality_start_mtx[["CRISPR Guide Capture"]] <- c(start, new_end)
+  return(modality_start_mtx)
 }

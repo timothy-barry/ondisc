@@ -77,3 +77,7 @@ print_ull_vect <- function(ull_vect) {
     invisible(.Call(`_ondisc_print_ull_vect`, ull_vect))
 }
 
+update_dt_column <- function(col, overwrite_vector, start) {
+    invisible(.Call(`_ondisc_update_dt_column`, col, overwrite_vector, start))
+}
+
