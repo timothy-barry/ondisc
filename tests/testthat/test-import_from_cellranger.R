@@ -63,10 +63,12 @@ test_that("import data from cellranger", {
     if (i %in% trials_w_vector) {
       odms <- create_odm_from_cellranger(directories_to_load = directories_to_load,
                                          directory_to_write = test_data_list[[i]]$base_directory,
-                                         grna_target_data_frame = test_data_list[[i]]$grna_target_data_frame)
+                                         grna_target_data_frame = test_data_list[[i]]$grna_target_data_frame,
+                                         chunk_size = 10L)
     } else {
       odms <- create_odm_from_cellranger(directories_to_load = directories_to_load,
-                                         directory_to_write = test_data_list[[i]]$base_directory)
+                                         directory_to_write = test_data_list[[i]]$base_directory,
+                                         chunk_size = 10L)
     }
     # loop over the moalities, testing dimension and load functionality
     for (modality in c("gene", "grna")) {
