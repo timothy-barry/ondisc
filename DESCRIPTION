@@ -3,15 +3,20 @@ Title: Algorithms and data structures for large single-cell expression matrices
 Version: 0.1.0
 Authors@R: 
     c(person(given = "Timothy",
-           family = "Barry",
-           role = c("aut", "cre"),
-           email = "tbarry@hsph.harvard.edu",
-           comment=c(ORCID="0000-0002-4356-627X")),
-           person(given = "Eugene",
-           family = "Katsevich",
-           role = c("aut", "ths"),
-           email = "ekatsevi@wharton.upenn.edu")
-           )
+            family = "Barry",
+            role = c("aut", "cre"),
+            email = "tbarry@hsph.harvard.edu",
+            comment=c(ORCID="0000-0002-4356-627X")),
+      person(given = "Songcheng",
+             family = "Dai",
+             role = "ctb"),
+      person(given = "Yixuan",
+             family = "Qiu",
+             role = "ctb"),
+      person(given = "Eugene",
+            family = "Katsevich",
+            role = c("aut", "ths"),
+            email = "ekatsevi@wharton.upenn.edu"))
 Description: Single-cell datasets are growing in size, posing challenges as well as opportunities to genomics researchers. `ondisc` is an R package for computing on large-scale single-cell data. `ondisc` enables the analysis of data out-of-core on a laptop or distributed across multiple nodes on a computing cluster. In both settings `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` is oriented toward single-cell differential expression, single-cell co-expresssion, and single-cell CRISPR screen analyses.
 License: MIT + file LICENSE
 Encoding: UTF-8
