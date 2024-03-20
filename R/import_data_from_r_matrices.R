@@ -7,9 +7,11 @@
 #' @param integer_id ID used to identify the `.odm` file
 #'
 #' @return an odm object representing the data
-#' @export
+#' @noRd
 #'
 #' @examples
+#' \dontrun{
+#' library(Matrix)
 #' set.seed(4)
 #' n_row <- 500
 #' n_col <- 800
@@ -19,9 +21,10 @@
 #' rownames(m) <- paste0("gene_", seq(1L, n_row))
 #' mat <- as(m, "RsparseMatrix")
 #' odm <- create_odm_from_r_matrix(mat, paste0(tempdir(), "gene.odm"))
+#' }
 create_odm_from_r_matrix <- function(mat, file_to_write, chunk_size = 1000L, compression_level = 3L, integer_id = 0L) {
   # 0. check that the class is correct
-  if (!is(mat, "dgRMatrix")) stop("`mat` must be an object of class `dgRMatrix`.")
+  if (!methods::is(mat, "dgRMatrix")) stop("`mat` must be an object of class `dgRMatrix`.")
   file_to_write <- expand_tilde(file_to_write)
 
   # initialize odm

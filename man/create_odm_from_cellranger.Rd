@@ -9,7 +9,8 @@ create_odm_from_cellranger(
   directory_to_write,
   write_cellwise_covariates = TRUE,
   chunk_size = 1000L,
-  compression_level = 3L
+  compression_level = 3L,
+  grna_target_data_frame = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ create_odm_from_cellranger(
 \item{chunk_size}{chunk size to use in the backing HDF5 file}
 
 \item{compression_level}{compression level to use in the backing HDF5 file}
+
+\item{grna_target_data_frame}{(optional) a data frame mapping each gRNA ID to its target. Relevant only if a CRISPR modality is present within the data. (See note.)}
 }
 \value{
 list containing the odm object(s) and cellwise covariates
@@ -30,11 +33,14 @@ list containing the odm object(s) and cellwise covariates
 Create ODM from cellranger
 }
 \examples{
-\dontrun{
-base_dir <- "/Users/tib163/research_offsite/external/replogle-2022/raw/rd7/rpe1_other"
-directories_to_load <- list.files(base_dir, full.names = TRUE)[1:3]
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
 directory_to_write <- tempdir()
-grna_target_data_frame <- readRDS("/Users/tib163/research_offsite/external/replogle-2022/raw/rd7/grna_table.rds")
-output <- create_odm_from_cellranger(directories_to_load, directory_to_write)
-}
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
 }

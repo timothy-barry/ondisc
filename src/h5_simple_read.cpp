@@ -5,10 +5,10 @@ using namespace H5;
 using namespace Rcpp;
 
 
-
-
 //' @title Read the dimension of the ODM into memory
 //' @param file_name_in path to the odm file
+//' @param dataset_name name of the dataset within the file
+//' @param length dimension of the integer vector to read
 // [[Rcpp::export]]
 IntegerVector read_integer_vector(const std::string& file_name_in, const std::string& dataset_name, int length) {
    // set name

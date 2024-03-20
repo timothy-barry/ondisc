@@ -35,6 +35,8 @@ load_row_cpp <- function(file_name_in, f_row_ptr, row_idx, n_cells) {
 
 #' @title Read the dimension of the ODM into memory
 #' @param file_name_in path to the odm file
+#' @param dataset_name name of the dataset within the file
+#' @param length dimension of the integer vector to read
 read_integer_vector <- function(file_name_in, dataset_name, length) {
     .Call(`_ondisc_read_integer_vector`, file_name_in, dataset_name, length)
 }

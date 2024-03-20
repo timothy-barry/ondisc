@@ -8,6 +8,10 @@ read_integer_vector(file_name_in, dataset_name, length)
 }
 \arguments{
 \item{file_name_in}{path to the odm file}
+
+\item{dataset_name}{name of the dataset within the file}
+
+\item{length}{dimension of the integer vector to read}
 }
 \description{
 Read the dimension of the ODM into memory

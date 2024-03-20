@@ -1,27 +1,36 @@
 Package: ondisc
-Title: Algorithms for large, sparse, single-cell expression matrices
-Version: 0.0.1
+Title: Algorithms and data structures for large single-cell expression matrices
+Version: 0.1.0
 Authors@R: 
-    person("Timothy", "Barry", , "tbarry2@andrew.cmu.edu", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: `ondisc` implements space- and time-optimal algorithms for manipulating and querying large, sparse, single-cell expression matrices. `ondisc` facilitates out-of-core and distributed analysis of single-cell data, with a special focus on single-cell CRISPR screens.
-License: GPL (>= 3)
+    c(person(given = "Timothy",
+           family = "Barry",
+           role = c("aut", "cre"),
+           email = "tbarry@hsph.harvard.edu",
+           comment=c(ORCID="0000-0002-4356-627X")),
+           person(given = "Eugene",
+           family = "Katsevich",
+           role = c("aut", "ths"),
+           email = "ekatsevi@wharton.upenn.edu")
+           )
+Description: Single-cell datasets are growing in size, posing challenges as well as opportunities to genomics researchers. `ondisc` is an R package for computing on large-scale single-cell data. `ondisc` enables the analysis of data out-of-core on a laptop or distributed across multiple nodes on a computing cluster. In both settings `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` is oriented toward single-cell differential expression, single-cell co-expresssion, and single-cell CRISPR screen analyses.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-LinkingTo:
-    Rcpp,
-    Rhdf5lib
+LinkingTo: Rcpp, Rhdf5lib
+biocViews: SingleCell, DataImport
 RoxygenNote: 7.3.1
 Imports: 
     crayon,
     data.table,
     methods,
     Rcpp,
-    Rhdf5lib
+    Rhdf5lib,
+    dplyr
 SystemRequirements: GNU make
 Suggests: 
     Matrix,
     R.utils,
     readr,
+    sceptredata,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

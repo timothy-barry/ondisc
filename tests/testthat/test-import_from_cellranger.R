@@ -152,7 +152,7 @@ test_that("import data from cellranger", {
 })
 
 
-test_that("import data from cellranger", {
+test_that("import data from r matrix", {
   ########################
   # define test parameters
   ########################

@@ -1,5 +1,4 @@
 # odm class
-#' @export
 setClass("odm",
          slots = list(h5_file = "character",
                       dimension = "integer",

@@ -1,0 +1,36 @@
+url: https://katsevich-lab.github.io/sceptre/
+template:
+  assets: .r_examples/r_examples
+  bootstrap: 5
+
+home:
+  links:
+    - text: Report a bug
+      href: https://github.com/timothy-barry/ondisc/issues
+  sidebar:
+    structure: [license, citation, authors, custom, dev]
+    components:
+      custom:
+        title: Funders
+        text: |
+          [Analytics at Wharton](https://analytics.wharton.upenn.edu/)
+
+          [National Science Foundation](https://www.nsf.gov/)
+
+          [National Institutes of Health](https://www.nih.gov)
+
+authors:
+  sidebar:
+    roles: [aut, ctb, ths]
+
+navbar:
+  left:
+  - icon: fa-play
+    text: Get started
+    href: articles/ondisc.html
+  - icon: fa-code
+    text: Functions
+    href: reference/index.html
+  - icon: fa-history
+    text: Changelog
+    href: news/index.html
