@@ -9,6 +9,7 @@ using namespace Rcpp;
 //' @param file_name_in path to the odm file
 //' @param dataset_name name of the dataset within the file
 //' @param length dimension of the integer vector to read
+//' @noRd
 // [[Rcpp::export]]
 IntegerVector read_integer_vector(const std::string& file_name_in, const std::string& dataset_name, int length) {
    // set name
@@ -32,6 +33,7 @@ IntegerVector read_integer_vector(const std::string& file_name_in, const std::st
 //' @title Read the feature IDs of an ODM into memory
 //' @param file_name_in path to the odm file
 //' @param n_features the number of features in the dataset
+//' @noRd
 // [[Rcpp::export]]
 StringVector read_feature_ids(const std::string& file_name_in, int n_features) {
   // set names
@@ -63,6 +65,7 @@ StringVector read_feature_ids(const std::string& file_name_in, int n_features) {
 //' @title Read the row pointer into memory
 //' @param file_name_in path to the odm file
 //' @param n_features the number of features in the dataset
+//' @noRd
 // [[Rcpp::export]]
 SEXP read_row_ptr(const std::string& file_name_in, int n_features) {
   // set name

@@ -23,6 +23,22 @@ authors:
   sidebar:
     roles: [aut, ctb, ths]
 
+reference:
+- title: "General package information"
+  contents:
+  - ondisc-package
+
+- title: "Initialization functions"
+  contents:
+  - create_odm_from_cellranger
+  - initialize_odm_from_backing_file
+
+- title: "Information extraction functions"
+  contents:
+  - dim,odm-method
+  - dimnames,odm-method
+  - "[,odm,ANY,missing,missing-method"
+
 navbar:
   left:
   - icon: fa-play

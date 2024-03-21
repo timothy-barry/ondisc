@@ -37,6 +37,7 @@ load_row_cpp <- function(file_name_in, f_row_ptr, row_idx, n_cells) {
 #' @param file_name_in path to the odm file
 #' @param dataset_name name of the dataset within the file
 #' @param length dimension of the integer vector to read
+#' @noRd
 read_integer_vector <- function(file_name_in, dataset_name, length) {
     .Call(`_ondisc_read_integer_vector`, file_name_in, dataset_name, length)
 }
@@ -44,6 +45,7 @@ read_integer_vector <- function(file_name_in, dataset_name, length) {
 #' @title Read the feature IDs of an ODM into memory
 #' @param file_name_in path to the odm file
 #' @param n_features the number of features in the dataset
+#' @noRd
 read_feature_ids <- function(file_name_in, n_features) {
     .Call(`_ondisc_read_feature_ids`, file_name_in, n_features)
 }
@@ -51,6 +53,7 @@ read_feature_ids <- function(file_name_in, n_features) {
 #' @title Read the row pointer into memory
 #' @param file_name_in path to the odm file
 #' @param n_features the number of features in the dataset
+#' @noRd
 read_row_ptr <- function(file_name_in, n_features) {
     .Call(`_ondisc_read_row_ptr`, file_name_in, n_features)
 }

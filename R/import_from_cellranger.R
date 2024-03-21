@@ -1,13 +1,17 @@
-#' Create ODM from cellranger
+#' Create ODM from Cell Ranger
 #'
-#' @param directories_to_load directories containing the expression data
-#' @param directory_to_write directory in which to write the initialized `.odm` files and `cellwise_covariates.rds` file
-#' @param write_cellwise_covariates boolean indicating whether to write the cellwise covariates to disk in `.rds` format
-#' @param chunk_size chunk size to use in the backing HDF5 file
-#' @param compression_level compression level to use in the backing HDF5 file
-#' @param grna_target_data_frame (optional) a data frame mapping each gRNA ID to its target. Relevant only if a CRISPR modality is present within the data. (See note.)
+#' `create_odm_from_cellranger()` initializes an `odm` object from the output of one or more calls to cellranger count. The number of `odm` objects returned corresponds to the number of modalities in the dataset.
 #'
-#' @return list containing the odm object(s) and cellwise covariates
+#' @note The `grna_target_data_frame` is relevant only for CRISPR screen data (i.e., data for which the "CRISPR Guide Capture" modality is present). In single-cell CRISPR screens, gRNAs are delivered to cells via a viral vector. Some recent single-cell CRISPR screens involve a special design in which each viral vector harbors multiple gRNAs. For example, [Replogle 2022](https://pubmed.ncbi.nlm.nih.gov/35688146/) conducted a screen in which each viral vector contained two gRNAs, each targeting the same site. In such screens, users may wish to "collapse" the gRNA count matrix by summing over the UMI counts of gRNAs contained on the same vector. To do so, users can pass the argument `grna_target_data_frame`, which is a data frame containing two columns: `grna_id` and `vector_id`. `grna_id` should coincide with the gRNA IDs as contained within the `features.tsv` file, and `vector_id` should be a string indicating the vector to which a given gRNA ID belongs. The expression vectors of gRNAs contained within the same vector are summed.
+#'
+#' @param directories_to_load a character vector of directories containing the output of one or more calls to cellranger count. Each directory should contain the files "matrix.mtx.gz" and "features.tsv.gz" (and optionally "barcodes.tsv.gz").
+#' @param directory_to_write a string indicating the directory in which to write the backing .odm files
+#' @param write_cellwise_covariates (optional; default `TRUE`) a boolean indicating whether to write the cellwise covariates to disk (`TRUE`) in addition to returning the cellwise covariates as a data frame
+#' @param chunk_size (optional; default `1000L`) an integer specifying the chunk size to use to store the data in the backing HDF5 file
+#' @param compression_level (optional; default `3L`) an integer specifying the compression level to use to store the data in the backing HDF5 file
+#' @param grna_target_data_frame (optional) a data frame mapping each gRNA ID to its target. Relevant only if the CRISPR modality is present within the data. (See note.)
+#'
+#' @return list containing the odm object(s) and cellwise covariates.
 #' @export
 #'
 #' @examples
@@ -57,6 +61,9 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
                                   colClasses = c("character", "character", "character"),
                                   col.names = c("feature_id", "feature_name", "modality"), header = FALSE)
   modality_names <- unique(feature_df$modality)
+  if (!(all(modality_names %in% c("Gene Expression", "CRISPR Guide Capture")))) {
+    stop("The modality names must be 'Gene Expression' or 'CRISPR Guide Capture'.")
+  }
 
   # 4. determine the start idx of each modality in the feature df
   modality_start_idx_features <- sapply(modality_names, function(modality_name) {

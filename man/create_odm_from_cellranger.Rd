@@ -2,7 +2,7 @@
 % Please edit documentation in R/import_from_cellranger.R
 \name{create_odm_from_cellranger}
 \alias{create_odm_from_cellranger}
-\title{Create ODM from cellranger}
+\title{Create ODM from Cell Ranger}
 \usage{
 create_odm_from_cellranger(
   directories_to_load,
@@ -14,23 +14,26 @@ create_odm_from_cellranger(
 )
 }
 \arguments{
-\item{directories_to_load}{directories containing the expression data}
+\item{directories_to_load}{a character vector of directories containing the output of one or more calls to cellranger count. Each directory should contain the files "matrix.mtx.gz" and "features.tsv.gz" (and optionally "barcodes.tsv.gz").}
 
-\item{directory_to_write}{directory in which to write the initialized \code{.odm} files and \code{cellwise_covariates.rds} file}
+\item{directory_to_write}{a string indicating the directory in which to write the backing .odm files}
 
-\item{write_cellwise_covariates}{boolean indicating whether to write the cellwise covariates to disk in \code{.rds} format}
+\item{write_cellwise_covariates}{(optional; default \code{TRUE}) a boolean indicating whether to write the cellwise covariates to disk (\code{TRUE}) in addition to returning the cellwise covariates as a data frame}
 
-\item{chunk_size}{chunk size to use in the backing HDF5 file}
+\item{chunk_size}{(optional; default \code{1000L}) an integer specifying the chunk size to use to store the data in the backing HDF5 file}
 
-\item{compression_level}{compression level to use in the backing HDF5 file}
+\item{compression_level}{(optional; default \code{3L}) an integer specifying the compression level to use to store the data in the backing HDF5 file}
 
-\item{grna_target_data_frame}{(optional) a data frame mapping each gRNA ID to its target. Relevant only if a CRISPR modality is present within the data. (See note.)}
+\item{grna_target_data_frame}{(optional) a data frame mapping each gRNA ID to its target. Relevant only if the CRISPR modality is present within the data. (See note.)}
 }
 \value{
-list containing the odm object(s) and cellwise covariates
+list containing the odm object(s) and cellwise covariates.
 }
 \description{
-Create ODM from cellranger
+\code{create_odm_from_cellranger()} initializes an \code{odm} object from the output of one or more calls to cellranger count. The number of \code{odm} objects returned corresponds to the number of modalities in the dataset.
+}
+\note{
+The \code{grna_target_data_frame} is relevant only for CRISPR screen data (i.e., data for which the "CRISPR Guide Capture" modality is present). In single-cell CRISPR screens, gRNAs are delivered to cells via a viral vector. Some recent single-cell CRISPR screens involve a special design in which each viral vector harbors multiple gRNAs. For example, \href{https://pubmed.ncbi.nlm.nih.gov/35688146/}{Replogle 2022} conducted a screen in which each viral vector contained two gRNAs, each targeting the same site. In such screens, users may wish to "collapse" the gRNA count matrix by summing over the UMI counts of gRNAs contained on the same vector. To do so, users can pass the argument \code{grna_target_data_frame}, which is a data frame containing two columns: \code{grna_id} and \code{vector_id}. \code{grna_id} should coincide with the gRNA IDs as contained within the \code{features.tsv} file, and \code{vector_id} should be a string indicating the vector to which a given gRNA ID belongs. The expression vectors of gRNAs contained within the same vector are summed.
 }
 \examples{
 library(sceptredata)

@@ -1,3 +1,7 @@
+my_seed <- as.integer(Sys.time() |> format("%H%M%S"))
+print(paste0("seed: ", my_seed))
+set.seed(my_seed)
+
 test_that("import data from cellranger", {
   ########################
   # define test parameters
