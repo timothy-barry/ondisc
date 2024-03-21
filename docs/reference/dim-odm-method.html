@@ -83,6 +83,34 @@
     <p>Users also can call <code><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol()</a></code> and <code><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow()</a></code> to return the number of rows (i.e., features) and columns (i.e., cells), respectively, of an <code>odm</code>.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sceptredata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">directories_to_load</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"sceptredata"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span> <span class="st">"/highmoi_example/gem_group_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">directory_to_write</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_odm_from_cellranger.html">create_odm_from_cellranger</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  directories_to_load <span class="op">=</span> <span class="va">directories_to_load</span>,</span></span>
+<span class="r-in"><span>  directory_to_write <span class="op">=</span> <span class="va">directory_to_write</span>,</span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Round 1/2 processing of the input files.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Processing file 1 of 2.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Processing file 2 of 2.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Round 2/2 processing of the input files.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.</span>
+<span class="r-in"><span><span class="va">gene_odm</span> <span class="op">&lt;-</span> <span class="va">out_list</span><span class="op">$</span><span class="va">gene</span></span></span>
+<span class="r-in"><span><span class="co"># return the dimension, number of rows, and number of columns</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">gene_odm</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   526 45919</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">gene_odm</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 526</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">gene_odm</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 45919</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -9,7 +9,7 @@ setClass("odm",
 
 #' Initialize an ondisc matrix
 #'
-#' Initializes an object of class `odm` from a backing .odm file.
+#' Initializes an object of class `odm` from a backing `.odm` file.
 #'
 #' This function is portable: one can create a `.odm` file (via `create_odm_from_cellranger()`), transfer the `.odm` file to another computer, and then load the `.odm` file (via `initialize_odm_from_backing_file()`) on the second computer.
 #'
@@ -74,6 +74,21 @@ initialize_odm_from_backing_file <- function(odm_file) {
 #' @param j not used
 #' @param drop not used
 #' @export
+#' @examples
+#' library(sceptredata)
+#' directories_to_load <- paste0(
+#'  system.file("extdata", package = "sceptredata"),
+#'  "/highmoi_example/gem_group_", c(1, 2)
+#' )
+#' directory_to_write <- tempdir()
+#' out_list <- create_odm_from_cellranger(
+#'   directories_to_load = directories_to_load,
+#'   directory_to_write = directory_to_write,
+#' )
+#' gene_odm <- out_list$gene
+#' # extract rows into memory by index and ID
+#' v1 <- gene_odm[10L,]
+#' v2 <- gene_odm["ENSG00000173825",]
 setMethod(f = "[",
           signature = signature(x = "odm", i = "ANY", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) {
@@ -107,12 +122,28 @@ setMethod(f = "show", signature = "odm", definition = function(object) {
 
 #' Rownames
 #'
+#' Return the rownames (i.e., feature IDs) of an `odm`
+#'
 #' @param x an object of class `odm`
 #'
-#' @return the dimnames of the `odm`
+#' @return the rownames of the `odm`
 #' @aliases rownames
 #' @rdname rownames-odm-method
 #' @export
+#' @examples
+#' library(sceptredata)
+#' directories_to_load <- paste0(
+#'  system.file("extdata", package = "sceptredata"),
+#'  "/highmoi_example/gem_group_", c(1, 2)
+#' )
+#' directory_to_write <- tempdir()
+#' out_list <- create_odm_from_cellranger(
+#'   directories_to_load = directories_to_load,
+#'   directory_to_write = directory_to_write,
+#' )
+#' gene_odm <- out_list$gene
+#' # return the rownames
+#' rownames(gene_odm) |> head()
 setMethod(f = "dimnames", signature = "odm", definition = function(x) list(x@feature_ids, NULL))
 
 
@@ -126,4 +157,20 @@ setMethod(f = "dimnames", signature = "odm", definition = function(x) list(x@fea
 #'
 #' @return the dimension of the `odm`
 #' @export
+#' @examples
+#' library(sceptredata)
+#' directories_to_load <- paste0(
+#'  system.file("extdata", package = "sceptredata"),
+#'  "/highmoi_example/gem_group_", c(1, 2)
+#' )
+#' directory_to_write <- tempdir()
+#' out_list <- create_odm_from_cellranger(
+#'   directories_to_load = directories_to_load,
+#'   directory_to_write = directory_to_write,
+#' )
+#' gene_odm <- out_list$gene
+#' # return the dimension, number of rows, and number of columns
+#' dim(gene_odm)
+#' nrow(gene_odm)
+#' ncol(gene_odm)
 setMethod(f = "dim", signature = "odm", definition = function(x) x@dimension)

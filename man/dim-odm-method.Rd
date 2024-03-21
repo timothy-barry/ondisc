@@ -18,3 +18,20 @@ Returns the dimension (i.e., number of features by number of cells) of an \code{
 \details{
 Users also can call \code{ncol()} and \code{nrow()} to return the number of rows (i.e., features) and columns (i.e., cells), respectively, of an \code{odm}.
 }
+\examples{
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+gene_odm <- out_list$gene
+# return the dimension, number of rows, and number of columns
+dim(gene_odm)
+nrow(gene_odm)
+ncol(gene_odm)
+}

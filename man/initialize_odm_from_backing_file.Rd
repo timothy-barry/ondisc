@@ -13,7 +13,7 @@ initialize_odm_from_backing_file(odm_file)
 an object of class \code{odm}
 }
 \description{
-Initializes an object of class \code{odm} from a backing .odm file.
+Initializes an object of class \code{odm} from a backing \code{.odm} file.
 }
 \details{
 This function is portable: one can create a \code{.odm} file (via \code{create_odm_from_cellranger()}), transfer the \code{.odm} file to another computer, and then load the \code{.odm} file (via \code{initialize_odm_from_backing_file()}) on the second computer.

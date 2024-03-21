@@ -18,3 +18,19 @@
 \description{
 The operator \code{[} can be called on an \code{odm} to load a row of an \code{odm} into memory.
 }
+\examples{
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+gene_odm <- out_list$gene
+# extract rows into memory by index and ID
+v1 <- gene_odm[10L,]
+v2 <- gene_odm["ENSG00000173825",]
+}
