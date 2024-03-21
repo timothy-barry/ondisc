@@ -11,12 +11,34 @@ setClass("odm",
 #'
 #' Initializes an object of class `odm` from a backing .odm file.
 #'
-#' @param odm_file file path to the backing `.odm` file
+#' This function is portable: one can create a `.odm` file (via `create_odm_from_cellranger()`), transfer the `.odm` file to another computer, and then load the `.odm` file (via `initialize_odm_from_backing_file()`) on the second computer.
 #'
-#' @note The file path `odm_file` should be the fully qualified file path to the backing .odm file. In particular, `odm_file` should not contain the home directory symbol (`~`) or current directory symbol (`.`).
+#' @param odm_file file path to the backing `.odm` file
 #'
 #' @return an object of class `odm`
 #' @export
+#' @examples
+#' library(sceptredata)
+#' directories_to_load <- paste0(
+#'  system.file("extdata", package = "sceptredata"),
+#'  "/highmoi_example/gem_group_", c(1, 2)
+#' )
+#' directory_to_write <- tempdir()
+#' out_list <- create_odm_from_cellranger(
+#'   directories_to_load = directories_to_load,
+#'   directory_to_write = directory_to_write,
+#' )
+#' gene_odm <- out_list$gene
+#' gene_odm
+#'
+#' # delete the gene_odm object
+#' rm(gene_odm)
+#'
+#' # reinitialize the gene_odm object
+#' gene_odm <- initialize_odm_from_backing_file(
+#'   paste0(tempdir(), "/gene.odm")
+#' )
+#' gene_odm
 initialize_odm_from_backing_file <- function(odm_file) {
   # 0. checks on odm_file
   odm_file <- expand_tilde(odm_file)
@@ -83,13 +105,13 @@ setMethod(f = "show", signature = "odm", definition = function(object) {
 })
 
 
-#' dimnames
-#'
-#' Returns the dimnames of an `odm`.
+#' Rownames
 #'
 #' @param x an object of class `odm`
 #'
 #' @return the dimnames of the `odm`
+#' @aliases rownames
+#' @rdname rownames-odm-method
 #' @export
 setMethod(f = "dimnames", signature = "odm", definition = function(x) list(x@feature_ids, NULL))
 
@@ -97,6 +119,8 @@ setMethod(f = "dimnames", signature = "odm", definition = function(x) list(x@fea
 #' dim
 #'
 #' Returns the dimension (i.e., number of features by number of cells) of an `odm`.
+#'
+#' Users also can call `ncol()` and `nrow()` to return the number of rows (i.e., features) and columns (i.e., cells), respectively, of an `odm`.
 #'
 #' @param x an object of class `odm`
 #'

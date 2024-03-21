@@ -2,7 +2,8 @@
 % Please edit documentation in R/s4_class.R
 \name{dimnames,odm-method}
 \alias{dimnames,odm-method}
-\title{dimnames}
+\alias{rownames}
+\title{Rownames}
 \usage{
 \S4method{dimnames}{odm}(x)
 }
@@ -13,5 +14,5 @@
 the dimnames of the \code{odm}
 }
 \description{
-Returns the dimnames of an \code{odm}.
+Rownames
 }

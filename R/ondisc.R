@@ -25,7 +25,7 @@ utils::globalVariables(c("feature_idx", "vector_idx", "j", "x", "vector_id", "gr
 #' ncol(gene_odm)
 #'
 #' # obtain rownames (i.e., the feature IDs)
-#' rownames(gene_odm)
+#' rownames(gene_odm) |> head()
 #'
 #' # extract row into memory, first by integer and then by string
 #' expression_vector_1 <- gene_odm[10,]
@@ -38,5 +38,6 @@ utils::globalVariables(c("feature_idx", "vector_idx", "j", "x", "vector_id", "gr
 #' gene_odm <- initialize_odm_from_backing_file(
 #'   paste0(tempdir(), "/gene.odm")
 #' )
+#' gene_odm
 #' @import Rhdf5lib
 "_PACKAGE"

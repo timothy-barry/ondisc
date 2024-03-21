@@ -78,10 +78,49 @@
 
     </div>
     <div class="section level2">
-    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>The file path <code>odm_file</code> should be the fully qualified file path to the backing .odm file. In particular, <code>odm_file</code> should not contain the home directory symbol (<code>~</code>) or current directory symbol (<code>.</code>).</p>
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>This function is portable: one can create a <code>.odm</code> file (via <code><a href="create_odm_from_cellranger.html">create_odm_from_cellranger()</a></code>), transfer the <code>.odm</code> file to another computer, and then load the <code>.odm</code> file (via <code>initialize_odm_from_backing_file()</code>) on the second computer.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sceptredata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">directories_to_load</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"sceptredata"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span> <span class="st">"/highmoi_example/gem_group_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">directory_to_write</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_odm_from_cellranger.html">create_odm_from_cellranger</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  directories_to_load <span class="op">=</span> <span class="va">directories_to_load</span>,</span></span>
+<span class="r-in"><span>  directory_to_write <span class="op">=</span> <span class="va">directory_to_write</span>,</span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Round 1/2 processing of the input files.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Processing file 1 of 2.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Processing file 2 of 2.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Round 2/2 processing of the input files.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.</span>
+<span class="r-in"><span><span class="va">gene_odm</span> <span class="op">&lt;-</span> <span class="va">out_list</span><span class="op">$</span><span class="va">gene</span></span></span>
+<span class="r-in"><span><span class="va">gene_odm</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> An object of class <span style="color: #0000BB;">odm</span> with the following attributes:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	• <span style="color: #0000BB;">526</span> features</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	• <span style="color: #0000BB;">45919</span> cells</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	• Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpWOImNq/gene.odm</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># delete the gene_odm object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">gene_odm</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># reinitialize the gene_odm object</span></span></span>
+<span class="r-in"><span><span class="va">gene_odm</span> <span class="op">&lt;-</span> <span class="fu">initialize_odm_from_backing_file</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"/gene.odm"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gene_odm</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> An object of class <span style="color: #0000BB;">odm</span> with the following attributes:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	• <span style="color: #0000BB;">526</span> features</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	• <span style="color: #0000BB;">45919</span> cells</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	• Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpWOImNq/gene.odm</span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

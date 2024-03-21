@@ -17,7 +17,7 @@ Authors@R:
             family = "Katsevich",
             role = c("aut", "ths"),
             email = "ekatsevi@wharton.upenn.edu"))
-Description: Single-cell datasets are growing in size, posing challenges as well as opportunities to genomics researchers. `ondisc` is an R package for computing on large-scale single-cell data. `ondisc` enables the analysis of single-cell data out-of-core on a laptop or distributed across multiple nodes on a computing cluster. In both settings `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` is oriented toward single-cell differential expression, single-cell co-expresssion, and single-cell CRISPR screen analyses.
+Description: Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. `ondisc` is an R package for computing on large-scale single-cell data. `ondisc` enables the analysis of single-cell data out-of-core on a laptop or distributed across multiple nodes on a computing cluster. In both of these settings `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` is oriented toward single-cell differential expression, single-cell co-expresssion, and single-cell CRISPR screen analyses.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

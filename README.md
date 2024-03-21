@@ -8,7 +8,7 @@
 ## <span style="font-size:60px;">`ondisc`</span>
 
 Single-cell datasets are growing in size, posing challenges as well as
-opportunities to genomics researchers. `ondisc` is an R package for
+opportunities for genomics researchers. `ondisc` is an R package for
 computing on large-scale single-cell data. `ondisc` enables users to
 analyze single-cell data out-of-core on a laptop or distributed across
 multiple nodes on a computing cluster. In both of these settings

@@ -15,6 +15,29 @@ an object of class \code{odm}
 \description{
 Initializes an object of class \code{odm} from a backing .odm file.
 }
-\note{
-The file path \code{odm_file} should be the fully qualified file path to the backing .odm file. In particular, \code{odm_file} should not contain the home directory symbol (\code{~}) or current directory symbol (\code{.}).
+\details{
+This function is portable: one can create a \code{.odm} file (via \code{create_odm_from_cellranger()}), transfer the \code{.odm} file to another computer, and then load the \code{.odm} file (via \code{initialize_odm_from_backing_file()}) on the second computer.
+}
+\examples{
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+gene_odm <- out_list$gene
+gene_odm
+
+# delete the gene_odm object
+rm(gene_odm)
+
+# reinitialize the gene_odm object
+gene_odm <- initialize_odm_from_backing_file(
+  paste0(tempdir(), "/gene.odm")
+)
+gene_odm
 }

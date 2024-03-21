@@ -6,7 +6,7 @@
 \alias{ondisc-package}
 \title{ondisc: Algorithms and data structures for large single-cell expression matrices}
 \description{
-Single-cell datasets are growing in size, posing challenges as well as opportunities to genomics researchers. `ondisc` is an R package for computing on large-scale single-cell data. `ondisc` enables the analysis of single-cell data out-of-core on a laptop or distributed across multiple nodes on a computing cluster. In both settings `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` is oriented toward single-cell differential expression, single-cell co-expresssion, and single-cell CRISPR screen analyses.
+Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. `ondisc` is an R package for computing on large-scale single-cell data. `ondisc` enables the analysis of single-cell data out-of-core on a laptop or distributed across multiple nodes on a computing cluster. In both of these settings `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` is oriented toward single-cell differential expression, single-cell co-expresssion, and single-cell CRISPR screen analyses.
 }
 \examples{
 # initialize odm objects from Cell Ranger output; also, compute the cellwise covariates
@@ -31,7 +31,7 @@ nrow(gene_odm)
 ncol(gene_odm)
 
 # obtain rownames (i.e., the feature IDs)
-rownames(gene_odm)
+rownames(gene_odm) |> head()
 
 # extract row into memory, first by integer and then by string
 expression_vector_1 <- gene_odm[10,]
@@ -44,6 +44,7 @@ rm(gene_odm)
 gene_odm <- initialize_odm_from_backing_file(
   paste0(tempdir(), "/gene.odm")
 )
+gene_odm
 }
 \author{
 \strong{Maintainer}: Timothy Barry \email{tbarry@hsph.harvard.edu} (\href{https://orcid.org/0000-0002-4356-627X}{ORCID})

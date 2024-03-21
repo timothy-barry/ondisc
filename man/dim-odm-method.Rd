@@ -15,3 +15,6 @@ the dimension of the \code{odm}
 \description{
 Returns the dimension (i.e., number of features by number of cells) of an \code{odm}.
 }
+\details{
+Users also can call \code{ncol()} and \code{nrow()} to return the number of rows (i.e., features) and columns (i.e., cells), respectively, of an \code{odm}.
+}
