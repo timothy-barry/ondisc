@@ -2,6 +2,7 @@
 
 export(create_odm_from_cellranger)
 export(initialize_odm_from_backing_file)
+export(write_example_cellranger_dataset)
 exportMethods("[")
 exportMethods(dim)
 exportMethods(dimnames)

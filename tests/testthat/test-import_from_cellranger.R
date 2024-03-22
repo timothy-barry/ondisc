@@ -25,14 +25,14 @@ test_that("import data from cellranger", {
                                         n_col = n_col,
                                         p_zero = runif(1),
                                         p_set_col_zero = runif(1),
-                                        p_set_row_zero = runif(1)) |> add_row_names(TRUE)
+                                        p_set_row_zero = runif(1)) |> add_row_names("gene")
     grna_matrix <- create_random_matrix(n_row = n_rows[2],
                                         n_col = n_col,
                                         p_zero = runif(1),
                                         p_set_col_zero = runif(1),
-                                        p_set_row_zero = runif(1)) |> add_row_names(FALSE)
+                                        p_set_row_zero = runif(1)) |> add_row_names("grna")
     gene_names <- generate_gene_names(gene_matrix, frac_mito = runif(1, min = 0, max = max_mito_genes))
-    batch <- generate_batch(gene_matrix, sample(x = seq(1, max_n_batches), size = 1))
+    batch <- generate_batch(ncol(gene_matrix), sample(x = seq(1, max_n_batches), size = 1))
     curr_base_directory <- create_new_directory()
     write_sceptre_object_to_cellranger_format(gene_matrix = gene_matrix,
                                               gene_names = gene_names,
@@ -176,7 +176,7 @@ test_that("import data from r matrix", {
                                         p_zero = runif(1),
                                         p_set_col_zero = runif(1),
                                         p_set_row_zero = runif(1),
-                                        column_access = FALSE) |> add_row_names(TRUE)
+                                        column_access = FALSE) |> add_row_names("gene")
     return(gene_matrix)
   })
 
