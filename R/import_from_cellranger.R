@@ -36,7 +36,7 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
 
   # 1. check that directories exist
   for (curr_directory in directories_to_load) {
-    if (!dir.exists(curr_directory)) stop(paste0("The directory ", curr_directory, " does not exist."))
+    if (!dir.exists(curr_directory)) stop("The directory ", curr_directory, " does not exist.")
   }
 
   # 2. create the list of features and matrix files (exclude cell barcodes)
@@ -46,10 +46,10 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
     out <- vapply(grep_strs, function(grep_str) {
       file_names <- grep(pattern = grep_str, x = fs, value = TRUE)
       if (length(file_names) >= 2L) {
-        stop(paste0("There are multiple ", grep_str, " files within the directory ", curr_directory, "."))
+        stop("There are multiple ", grep_str, " files within the directory ", curr_directory, ".")
       }
       if (length(file_names) == 0L) {
-        stop(paste0("The directory ", curr_directory, " contains zero ", grep_str, " files."))
+        stop("The directory ", curr_directory, " contains zero ", grep_str, " files.")
       }
       return(paste0(curr_directory, "/", file_names))
     }, FUN.VALUE = character(1)) |> stats::setNames(c("features", "matrix"))

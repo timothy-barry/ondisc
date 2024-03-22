@@ -43,10 +43,10 @@ initialize_odm_from_backing_file <- function(odm_file) {
   # 0. checks on odm_file
   odm_file <- expand_tilde(odm_file)
   if (!file.exists(odm_file)) {
-    stop(paste0(odm_file, " does not exist."))
+    stop(odm_file, " does not exist.")
   }
   if (!(methods::is(odm_file, "character") && length(odm_file) == 1)) {
-    stop(paste0(odm_file, " must be a single string."))
+    stop(odm_file, " must be a single string.")
   }
 
   # initialize the odm
@@ -74,6 +74,7 @@ initialize_odm_from_backing_file <- function(odm_file) {
 #' @param j not used
 #' @param drop not used
 #' @export
+#' @return a (numeric) expression vector
 #' @examples
 #' library(sceptredata)
 #' directories_to_load <- paste0(

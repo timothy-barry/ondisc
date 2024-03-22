@@ -15,6 +15,9 @@
 
 \item{drop}{not used}
 }
+\value{
+a (numeric) expression vector
+}
 \description{
 The operator \code{[} can be called on an \code{odm} to load a row of an \code{odm} into memory.
 }
