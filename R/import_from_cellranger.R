@@ -61,7 +61,7 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
                                   colClasses = c("character", "character", "character"),
                                   col.names = c("feature_id", "feature_name", "modality"), header = FALSE)
   modality_names <- unique(feature_df$modality)
-  if (!(all(modality_names %in% c("Gene Expression", "CRISPR Guide Capture")))) {
+  if (!(all(modality_names %in% c("Gene Expression", "CRISPR Guide Capture", "Antibody Capture")))) {
     stop("The modality names must be 'Gene Expression' or 'CRISPR Guide Capture'.")
   }
 

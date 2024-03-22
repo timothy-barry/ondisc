@@ -16,17 +16,14 @@ get_mtx_metadata <- function(mtx_file, n_cells_col_id = 2L) {
 initialize_cellwise_covariates <- function(modality_names, n_cells) {
   possible_covariates <- c("n_umis", "n_nonzero", "p_mito", "feature_w_max_expression", "frac_umis_max_feature")
   covariates_to_compute <- list("Gene Expression" = c("n_umis", "n_nonzero", "p_mito"),
-                                "CRISPR Guide Capture" = c("n_umis", "n_nonzero", "feature_w_max_expression", "frac_umis_max_feature"))
+                                "CRISPR Guide Capture" = c("n_umis", "n_nonzero", "feature_w_max_expression", "frac_umis_max_feature"),
+                                "Antibody Capture" = c("n_umis", "n_nonzero"))
   out <- lapply(modality_names, function(modality_name) {
     # evaluate the boolean vector for the modality
-    bool_vect <- if (modality_name %in% names(covariates_to_compute)) {
-      curr_covariates <- covariates_to_compute[[modality_name]]
-      vapply(possible_covariates, function(possible_covariate) {
-        possible_covariate %in% curr_covariates
-      }, FUN.VALUE = logical(1))
-    } else {
-      rep(TRUE, length(possible_covariates)) |> stats::setNames(possible_covariates)
-    }
+    curr_covariates <- covariates_to_compute[[modality_name]]
+    bool_vect <- vapply(possible_covariates, function(possible_covariate) {
+      possible_covariate %in% curr_covariates
+    }, FUN.VALUE = logical(1))
     covariate_list <- list(
       n_umis = integer(length = if (bool_vect[["n_umis"]]) n_cells else 0L),
       n_nonzero = integer(length = if (bool_vect[["n_nonzero"]]) n_cells else 0L),

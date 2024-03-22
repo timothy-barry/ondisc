@@ -16,18 +16,27 @@ write_example_cellranger_dataset(
 )
 }
 \arguments{
+\item{n_features}{number of features per matrix}
+
 \item{n_cells}{number of cells}
 
 \item{n_batch}{number of batches}
 
-\item{modalities}{string indicating the modalities to create}
+\item{modalities}{a character vector indicating the modalities to create. The vector should contain the elements "gene", "grna", or "protein".}
 
 \item{dir_to_write}{the directory in which to write the files}
 
-\item{n_feature_vect}{number of features per matrix}
+\item{p_zero}{(optional) the fraction of entries to set randomly to zero}
+
+\item{p_set_col_zero}{(optional) the fraction of columns to set randomly to zero}
+
+\item{p_set_row_zero}{(optional) the fraction of rows to set randomly to zero}
+}
+\value{
+a list containing (i) a list of the synthetic expression matrices, (ii) a character vector containing the names of the genes (or NULL if a gene modality was not created), and (iii) a factor vector specifying the batch of each cell
 }
 \description{
-Write example cellranger dataset
+Creates and writes an example cellranger dataset to disk
 }
 \examples{
 n_features <- c(1000, 40, 400)
@@ -35,5 +44,13 @@ modalities <- c("gene", "protein", "grna")
 n_cells <- 10000
 n_batch <- 2
 dir_to_write <- tempdir()
-write_example_cellranger_dataset(n_features, n_cells, n_batch, modalities, dir_to_write)
+p_set_col_zero <- 0
+out <- write_example_cellranger_dataset(
+  n_features = n_features,
+  n_cells = n_cells,
+  n_batch = n_batch,
+  modalities = modalities,
+  dir_to_write = dir_to_write,
+  p_set_col_zero = p_set_col_zero
+)
 }

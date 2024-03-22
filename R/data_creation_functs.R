@@ -142,13 +142,18 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 
 #' Write example cellranger dataset
 #'
-#' @param n_feature_vect number of features per matrix
+#' Creates and writes an example cellranger dataset to disk
+#'
+#' @param n_features number of features per matrix
 #' @param n_cells number of cells
 #' @param n_batch number of batches
-#' @param modalities string indicating the modalities to create
+#' @param modalities a character vector indicating the modalities to create. The vector should contain the elements "gene", "grna", or "protein".
 #' @param dir_to_write the directory in which to write the files
+#' @param p_zero (optional) the fraction of entries to set randomly to zero
+#' @param p_set_col_zero (optional) the fraction of columns to set randomly to zero
+#' @param p_set_row_zero (optional) the fraction of rows to set randomly to zero
 #'
-#' @return NULL
+#' @return a list containing (i) a list of the synthetic expression matrices, (ii) a character vector containing the names of the genes (or NULL if a gene modality was not created), and (iii) a factor vector specifying the batch of each cell
 #' @export
 #'
 #' @examples
@@ -157,7 +162,15 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 #' n_cells <- 10000
 #' n_batch <- 2
 #' dir_to_write <- tempdir()
-#' write_example_cellranger_dataset(n_features, n_cells, n_batch, modalities, dir_to_write)
+#' p_set_col_zero <- 0
+#' out <- write_example_cellranger_dataset(
+#'   n_features = n_features,
+#'   n_cells = n_cells,
+#'   n_batch = n_batch,
+#'   modalities = modalities,
+#'   dir_to_write = dir_to_write,
+#'   p_set_col_zero = p_set_col_zero
+#' )
 write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modalities, dir_to_write,
                                              p_zero = NULL, p_set_col_zero = NULL, p_set_row_zero = NULL) {
   if (!all(modalities %in% c("gene", "grna", "protein"))) {
@@ -186,13 +199,16 @@ write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modal
   if ("gene" %in% modalities) {
     gene_names <- generate_gene_names(mat = mats[["gene"]],
                                       frac_mito = runif(1, min = 0, max = 0.5))
+  } else {
+    gene_names <- NULL
   }
+
   # generate the batch
-  batch <- generate_batch(n_cells, sample(x = seq(1, n_batch), size = 1))
+  batch <- sample(generate_batch(n_cells, n_batch))
 
   # write the data
-  write_sceptre_object_to_cellranger_format_v2(mats = mats,
-                                               gene_names = gene_names,
-                                               directory = dir_to_write,
-                                               batch = batch)
+  write_sceptre_object_to_cellranger_format_v2(mats = mats, gene_names = gene_names,
+                                               directory = dir_to_write, batch = batch)
+
+  return(list(matrix_list = mats, gene_names = gene_names, batch = batch))
 }
