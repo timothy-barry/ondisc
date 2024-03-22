@@ -40,10 +40,10 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
   }
 
   # 2. create the list of features and matrix files (exclude cell barcodes)
-  input_files <- sapply(X = directories_to_load, function(curr_directory) {
+  input_files <- lapply(X = directories_to_load, function(curr_directory) {
     fs <- list.files(curr_directory)
     grep_strs <- c("*features.tsv($|.gz)", "*matrix.mtx($|.gz)")
-    out <- sapply(grep_strs, function(grep_str) {
+    out <- vapply(grep_strs, function(grep_str) {
       file_names <- grep(pattern = grep_str, x = fs, value = TRUE)
       if (length(file_names) >= 2L) {
         stop(paste0("There are multiple ", grep_str, " files within the directory ", curr_directory, "."))
@@ -52,9 +52,9 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
         stop(paste0("The directory ", curr_directory, " contains zero ", grep_str, " files."))
       }
       return(paste0(curr_directory, "/", file_names))
-    }) |> stats::setNames(c("features", "matrix"))
-  }, simplify = FALSE) |> stats::setNames(NULL)
-  matrix_fps <- sapply(X = input_files, FUN = function(i) i[["matrix"]])
+    }, FUN.VALUE = character(1)) |> stats::setNames(c("features", "matrix"))
+  }) |> stats::setNames(NULL)
+  matrix_fps <- vapply(X = input_files, FUN = function(i) i[["matrix"]], FUN.VALUE = character(1))
 
   # 3. obtain the feature data frame
   feature_df <- data.table::fread(file = input_files[[1]][["features"]],
@@ -66,9 +66,9 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
   }
 
   # 4. determine the start idx of each modality in the feature df
-  modality_start_idx_features <- sapply(modality_names, function(modality_name) {
+  modality_start_idx_features <- vapply(modality_names, function(modality_name) {
     feature_df[list(modality_name), which = TRUE, mult = "first", on = "modality"] - 1L
-  })
+  }, FUN.VALUE = integer(1))
   modality_start_idx_features <- c(modality_start_idx_features, nrow(feature_df))
 
   # 5. obtain the feature ids of each modality
@@ -113,10 +113,10 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
 
   # 11. obtain file paths to odms
   new_modality_names <- update_modality_names(modality_names)
-  file_names_in <- sapply(new_modality_names, function(new_modality_name) {
+  file_names_in <- vapply(new_modality_names, function(new_modality_name) {
     if (!dir.exists(directory_to_write)) dir.create(directory_to_write, recursive = TRUE)
     paste0(directory_to_write, "/", new_modality_name, ".odm")
-  })
+  }, FUN.VALUE = character(1))
 
   # 12. sample integer id
   integer_id <- sample(x = seq(0L, .Machine$integer.max), size = 1L)

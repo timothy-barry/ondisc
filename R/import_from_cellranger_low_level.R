@@ -21,7 +21,9 @@ initialize_cellwise_covariates <- function(modality_names, n_cells) {
     # evaluate the boolean vector for the modality
     bool_vect <- if (modality_name %in% names(covariates_to_compute)) {
       curr_covariates <- covariates_to_compute[[modality_name]]
-      sapply(possible_covariates, function(possible_covariate) possible_covariate %in% curr_covariates)
+      vapply(possible_covariates, function(possible_covariate) {
+        possible_covariate %in% curr_covariates
+      }, FUN.VALUE = logical(1))
     } else {
       rep(TRUE, length(possible_covariates)) |> stats::setNames(possible_covariates)
     }
@@ -114,13 +116,13 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
     data.table::setkey(dt, feature_idx) # radix sort on feature_idx
 
     # 3. determine the start idx of the different modalities; convert into a list
-    modality_start_mtx <- c(sapply(seq_along(modality_names), function(k) {
+    modality_start_mtx <- c(vapply(seq_along(modality_names), function(k) {
       modality_start_idx <- modality_start_idx_features[[k]]
       dt[list(modality_start_idx), which = TRUE, mult = "first", roll = -Inf] - 1L # binary search for start idxs
-    }), nrow(dt))
-    modality_start_mtx <- sapply(seq_along(modality_names), function(k) {
+    }, FUN.VALUE = integer(1)), nrow(dt))
+    modality_start_mtx <- lapply(seq_along(modality_names), function(k) {
       c(modality_start_mtx[k], modality_start_mtx[k + 1L] - 1L)
-    }, simplify = FALSE) |> stats::setNames(modality_names)
+    }) |> stats::setNames(modality_names)
     modality_start_idx_mtx_list[[i]] <- modality_start_mtx
 
     # 4. (possibly) collapse grna counts

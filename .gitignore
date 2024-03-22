@@ -6,3 +6,6 @@
 .quarto
 src/*.o
 src/ondiscLite.so
+inst/doc
+/doc/
+/Meta/

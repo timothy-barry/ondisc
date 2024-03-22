@@ -46,6 +46,15 @@ gene_odm <- initialize_odm_from_backing_file(
 )
 gene_odm
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://timothy-barry.github.io/ondisc/}
+  \item \url{https://timothy-barry.github.io/sceptre-book/}
+  \item Report bugs at \url{https://github.com/timothy-barry/ondisc/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Timothy Barry \email{tbarry@hsph.harvard.edu} (\href{https://orcid.org/0000-0002-4356-627X}{ORCID})
 

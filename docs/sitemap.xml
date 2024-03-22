@@ -10,6 +10,12 @@
     <loc>https://katsevich-lab.github.io/sceptre/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://katsevich-lab.github.io/sceptre/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://katsevich-lab.github.io/sceptre/articles/ondisc.html</loc>
+  </url>
+  <url>
     <loc>https://katsevich-lab.github.io/sceptre/authors.html</loc>
   </url>
   <url>
@@ -32,6 +38,9 @@
   </url>
   <url>
     <loc>https://katsevich-lab.github.io/sceptre/reference/ondisc-package.html</loc>
+  </url>
+  <url>
+    <loc>https://katsevich-lab.github.io/sceptre/reference/rownames-odm-method.html</loc>
   </url>
   <url>
     <loc>https://katsevich-lab.github.io/sceptre/reference/sub-odm-ANY-missing-missing-method.html</loc>
