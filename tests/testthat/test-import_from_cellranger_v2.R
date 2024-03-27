@@ -11,8 +11,8 @@ test_that("import data from cellranger v2", {
   n_cols_range <- c(10L, 10000L)
   max_mito_genes <- 0.1
   max_n_batches <- 5
-  # trial_w_vector <- sample(x = seq(1, n_trials), size = 1L, replace = FALSE)
-  trial_w_vector <- n_trials + 1L # do not use vector for now
+  trial_w_vector <- sample(x = seq(1, n_trials), size = 1L, replace = FALSE)
+  # trial_w_vector <- n_trials + 1L # do not use vector for now
 
   #################
   # create the data
