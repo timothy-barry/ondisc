@@ -204,11 +204,12 @@ write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modal
   }
 
   # generate the batch
-  batch <- sample(generate_batch(n_cells, n_batch))
+  batch <- generate_batch(n_cells, n_batch)
 
   # write the data
   write_sceptre_object_to_cellranger_format_v2(mats = mats, gene_names = gene_names,
                                                directory = dir_to_write, batch = batch)
 
+  # return the data
   return(list(matrix_list = mats, gene_names = gene_names, batch = batch))
 }

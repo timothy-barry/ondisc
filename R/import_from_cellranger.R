@@ -86,7 +86,7 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
   # 7. determine idxs of MT- features
   mt_feature_idxs <- lapply(seq_along(modality_names), function(k) {
     curr_modality_features <- feature_names[seq(modality_start_idx_features[k], modality_start_idx_features[k + 1L] - 1L) + 1L]
-    grep(pattern = "^MT-", x = curr_modality_features, ignore.case = TRUE) - 1L - modality_start_idx_features[k]
+    grep(pattern = "^MT-", x = curr_modality_features, ignore.case = TRUE) - 1L # - modality_start_idx_features[k]
   }) |> stats::setNames(modality_names)
 
   # 8 prepare feature_idx to vector_idx map
