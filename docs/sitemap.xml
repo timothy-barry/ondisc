@@ -22,7 +22,13 @@
     <loc>https://katsevich-lab.github.io/sceptre/index.html</loc>
   </url>
   <url>
+    <loc>https://katsevich-lab.github.io/sceptre/news/index.html</loc>
+  </url>
+  <url>
     <loc>https://katsevich-lab.github.io/sceptre/reference/create_odm_from_cellranger.html</loc>
+  </url>
+  <url>
+    <loc>https://katsevich-lab.github.io/sceptre/reference/create_odm_from_r_matrix.html</loc>
   </url>
   <url>
     <loc>https://katsevich-lab.github.io/sceptre/reference/dim-odm-method.html</loc>
@@ -44,5 +50,8 @@
   </url>
   <url>
     <loc>https://katsevich-lab.github.io/sceptre/reference/sub-odm-ANY-missing-missing-method.html</loc>
+  </url>
+  <url>
+    <loc>https://katsevich-lab.github.io/sceptre/reference/write_example_cellranger_dataset.html</loc>
   </url>
 </urlset>

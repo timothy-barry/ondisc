@@ -150,7 +150,7 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 
 #' Write example cellranger dataset
 #'
-#' Creates and writes an example cellranger dataset to disk
+#' `write_example_cellranger_dataset()` creates an example Cell Ranger dataset.
 #'
 #' @param n_features number of features per matrix
 #' @param n_cells number of cells

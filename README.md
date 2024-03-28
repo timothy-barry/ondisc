@@ -9,14 +9,14 @@
 
 Single-cell datasets are growing in size, posing challenges as well as
 opportunities for genomics researchers. `ondisc` is an R package for
-computing on large-scale single-cell data. `ondisc` enables users to
-analyze single-cell data out-of-core on a laptop or distributed across
-multiple nodes on a computing cluster. In both of these settings
-`ondisc` requires only a few gigabytes of memory, even if the input data
-are tens of gigabytes in size. `ondisc` is oriented toward single-cell
-differential expression, single-cell co-expresssion, and single-cell
-CRISPR screen analyses. `ondisc` is powered by several novel, highly
-efficient algorithms for large, sparse matrices.
+computing on large-scale single-cell data, enabling users to analyze
+data out-of-core on a laptop or distributed across multiple nodes on a
+computing cluster. In both of these settings `ondisc` requires only a
+few gigabytes of memory, even if the input data are tens of gigabytes in
+size. `ondisc` is oriented toward single-cell differential expression,
+single-cell gene co-expresssion, and single-cell CRISPR screen analyses.
+`ondisc` is powered by several novel, efficient algorithms for large,
+sparse matrices.
 
 `ondisc` is a companion package to
 [`sceptre`](https://katsevich-lab.github.io/sceptre/), an R package for

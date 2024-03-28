@@ -36,7 +36,7 @@ write_example_cellranger_dataset(
 a list containing (i) a list of the synthetic expression matrices, (ii) a character vector containing the names of the genes (or NULL if a gene modality was not created), and (iii) a factor vector specifying the batch of each cell
 }
 \description{
-Creates and writes an example cellranger dataset to disk
+\code{write_example_cellranger_dataset()} creates an example Cell Ranger dataset.
 }
 \examples{
 n_features <- c(1000, 40, 400)
