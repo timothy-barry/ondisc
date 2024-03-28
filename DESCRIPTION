@@ -30,15 +30,16 @@ Imports:
     methods,
     Rcpp,
     Rhdf5lib,
-    dplyr
+    dplyr,
+    readr
 SystemRequirements: GNU make
 Suggests: 
     knitr,
     Matrix,
     R.utils,
-    readr,
     rmarkdown,
     sceptredata,
+    sceptre,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 URL: https://timothy-barry.github.io/ondisc/, https://timothy-barry.github.io/sceptre-book/
