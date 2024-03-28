@@ -12,6 +12,7 @@
 #' @param integer_id integer ID to write to the backing `.odm` file; users need not specify this argument.
 #'
 #' @return an odm object representing the data
+#' @export
 #'
 #' @examples
 #' library(Matrix)

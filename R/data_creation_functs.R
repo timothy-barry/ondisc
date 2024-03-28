@@ -23,7 +23,7 @@ create_random_matrix <- function(n_row, n_col, p_zero = 0.9, p_set_col_zero = 0.
   } else if (matrix_class == "CsparseMatrix") {
     out <- Matrix::Matrix(r, sparse = TRUE)
   } else if (matrix_class == "RsparseMatrix") {
-    out <- as(r, "RsparseMatrix")
+    out <- methods::as(r, "RsparseMatrix")
   } else {
     stop("`matrix_class` not recognized.")
   }
@@ -108,7 +108,7 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 
   # 3. construct the modality names
   modality_names <- names(mats)
-  modality_names_df <- sapply(X = seq_along(modality_names), FUN = function(i) {
+  modality_names_df <- lapply(X = seq_along(modality_names), FUN = function(i) {
     modality_name <- modality_names[i]
     n_feats <- nrow(mats[[i]])
     switch(EXPR = modality_name,
@@ -193,9 +193,9 @@ write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modal
 
   # set the p_zero, p_set_col_zero, and p_set_row_col_zero parameters
   set.seed(4)
-  if (is.null(p_zero)) p_zero <- min(runif(1), 0.9)
-  if (is.null(p_set_col_zero)) p_set_col_zero <- min(runif(1), 0.9)
-  if (is.null(p_set_row_zero)) p_set_row_zero <- min(runif(1), 0.9)
+  if (is.null(p_zero)) p_zero <- min(stats::runif(1), 0.9)
+  if (is.null(p_set_col_zero)) p_set_col_zero <- min(stats::runif(1), 0.9)
+  if (is.null(p_set_row_zero)) p_set_row_zero <- min(stats::runif(1), 0.9)
   # generate the example matrices
   mats <- lapply(seq_along(modalities), function(i) {
     modality <- modalities[i]
@@ -206,7 +206,7 @@ write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modal
   # generate the gene names (if gene modality supplied)
   if ("gene" %in% modalities) {
     gene_names <- generate_gene_names(mat = mats[["gene"]],
-                                      frac_mito = runif(1, min = 0, max = 0.5))
+                                      frac_mito = stats::runif(1, min = 0, max = 0.5))
   } else {
     gene_names <- NULL
   }
