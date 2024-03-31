@@ -129,16 +129,21 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
   feature_df <- data.frame(id = ids_df, name = names_df,
                            modality = modality_names_df)
 
-  # 3. split the matrices according to batch; loop over the batches and save the matrix and features file
+  # 5. construct the barcoes df
+  barcode_df <- data.frame(cell_id = paste0("cell_", seq_len(ncol(combined_mat))))
+
+  # 6. split the matrices according to batch; loop over the batches and save the matrix and features file
   batch_levels_v <- as.character(unique(batch)) |> sort()
 
   for (i in seq_along(batch_levels_v)) {
     batch_level <- batch_levels_v[i]
     mat_sub <- combined_mat[, batch_level == batch]
+    barcode_df_sub <- barcode_df[batch_level == batch,,drop = FALSE]
     dir_name <- paste0(directory, "/", batch_level)
     dir.create(dir_name)
     Matrix::writeMM(obj = mat_sub, file = paste0(dir_name, "/matrix.mtx"))
     readr::write_tsv(x = feature_df, file = paste0(dir_name, "/features.tsv"), col_names = FALSE)
+    readr::write_tsv(x = barcode_df_sub, file = paste0(dir_name, "/barcodes.tsv"), col_names = FALSE)
     curr_files <- list.files(dir_name, full.names = TRUE)
     for (curr_file in curr_files) {
       R.utils::gzip(filename = curr_file, destname = paste0(curr_file, ".gz"))
@@ -179,7 +184,7 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 #'   dir_to_write = dir_to_write,
 #'   p_set_col_zero = p_set_col_zero
 #' )
-write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modalities, dir_to_write,
+write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modalities, directory_to_write,
                                              p_zero = NULL, p_set_col_zero = NULL, p_set_row_zero = NULL) {
   if (!all(modalities %in% c("gene", "grna", "protein"))) {
     stop("`modalities` must be a vector containing the strings 'gene', 'grna', or 'protein'.")
@@ -216,7 +221,7 @@ write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modal
 
   # write the data
   write_sceptre_object_to_cellranger_format_v2(mats = mats, gene_names = gene_names,
-                                               directory = dir_to_write, batch = batch)
+                                               directory = directory_to_write, batch = batch)
 
   # return the data
   return(list(matrix_list = mats, gene_names = gene_names, batch = batch))

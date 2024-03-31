@@ -1,17 +1,12 @@
----
-title: "ondisc"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{ondisc}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+--- 
+title: "Getting started with ondisc" 
+output: rmarkdown::html_vignette 
+vignette: > 
+  %\VignetteIndexEntry{Getting started with ondisc} 
+  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEncoding{UTF-8} 
+--- 
 
-Install the package as follows.
-
-```{r,eval=FALSE}
-# install.packages("BiocManager")
-BiocManager::install("Rhdf5lib", type = "source") # Rhdf5lib
-devtools::install_github("timothy-barry/ondisc") # ondisc
+```{r}
+library(sessioninfo); session_info()
 ```
-

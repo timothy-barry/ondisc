@@ -31,7 +31,7 @@ test_that("import data from cellranger v2", {
                                                   n_cells = n_cells,
                                                   n_batch = n_batch,
                                                   modalities = modalities,
-                                                  dir_to_write = curr_base_directory,
+                                                  directory_to_write = curr_base_directory,
                                                   p_zero = min(runif(1), 0.9),
                                                   p_set_col_zero = min(runif(1), 0.9),
                                                   p_set_row_zero = min(runif(1), 0.9))

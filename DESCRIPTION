@@ -1,6 +1,6 @@
 Package: ondisc
 Title: Algorithms and data structures for large single-cell expression matrices
-Version: 0.1.0
+Version: 1.1.0
 Authors@R: 
     c(person(given = "Timothy",
             family = "Barry",

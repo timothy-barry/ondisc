@@ -9,7 +9,7 @@ write_example_cellranger_dataset(
   n_cells,
   n_batch,
   modalities,
-  dir_to_write,
+  directory_to_write,
   p_zero = NULL,
   p_set_col_zero = NULL,
   p_set_row_zero = NULL
@@ -24,13 +24,13 @@ write_example_cellranger_dataset(
 
 \item{modalities}{a character vector indicating the modalities to create. The vector should contain the elements "gene", "grna", or "protein".}
 
-\item{dir_to_write}{the directory in which to write the files}
-
 \item{p_zero}{(optional) the fraction of entries to set randomly to zero}
 
 \item{p_set_col_zero}{(optional) the fraction of columns to set randomly to zero}
 
 \item{p_set_row_zero}{(optional) the fraction of rows to set randomly to zero}
+
+\item{dir_to_write}{the directory in which to write the files}
 }
 \value{
 a list containing (i) a list of the synthetic expression matrices, (ii) a character vector containing the names of the genes (or NULL if a gene modality was not created), and (iii) a factor vector specifying the batch of each cell
