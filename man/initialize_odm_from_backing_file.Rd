@@ -2,21 +2,21 @@
 % Please edit documentation in R/s4_class.R
 \name{initialize_odm_from_backing_file}
 \alias{initialize_odm_from_backing_file}
-\title{Initialize an ondisc matrix}
+\title{Initialize an \code{odm} object}
 \usage{
 initialize_odm_from_backing_file(odm_file)
 }
 \arguments{
-\item{odm_file}{file path to the backing \code{.odm} file}
+\item{odm_file}{file path to a backing \code{.odm} file.}
 }
 \value{
-an object of class \code{odm}
+an \code{odm} object
 }
 \description{
-Initializes an object of class \code{odm} from a backing \code{.odm} file.
+\code{initialize_odm_from_backing_file()} initializes an \code{odm} object from a backing \code{.odm} file.
 }
 \details{
-This function is portable: one can create a \code{.odm} file (via \code{create_odm_from_cellranger()}), transfer the \code{.odm} file to another computer, and then load the \code{.odm} file (via \code{initialize_odm_from_backing_file()}) on the second computer.
+\code{initialize_odm_from_backing_file()} is portable: ther user can create an \code{.odm} file (via \code{create_odm_from_cellranger()} or \code{create_odm_from_r_matrix()}) on one computer, transfer the \code{.odm} file to another computer, and then load the \code{.odm} file (via \code{initialize_odm_from_backing_file()}) on the second computer.
 }
 \examples{
 library(sceptredata)

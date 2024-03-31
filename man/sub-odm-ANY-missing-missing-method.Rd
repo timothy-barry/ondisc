@@ -2,24 +2,24 @@
 % Please edit documentation in R/s4_class.R
 \name{[,odm,ANY,missing,missing-method}
 \alias{[,odm,ANY,missing,missing-method}
-\title{Load a row of an \code{odm} into memory}
+\title{Load a row of an \code{odm} object into memory}
 \usage{
 \S4method{[}{odm,ANY,missing,missing}(x, i, j, drop)
 }
 \arguments{
 \item{x}{an object of class \code{odm}}
 
-\item{i}{the index of the row to load into memory. \code{i} can be either an integer (specifying the integer-based index of the row to load into memory) or a string (specifying the row to load into memory by feature ID).}
+\item{i}{the index of the row to load into memory. \code{i} can be either an integer (specifying the integer-based index of the row to load into memory) or a string (specifying the feature ID of the row to load into memory).}
 
 \item{j}{not used}
 
 \item{drop}{not used}
 }
 \value{
-a (numeric) expression vector
+an expression vector (of class \code{numeric})
 }
 \description{
-The operator \code{[} can be called on an \code{odm} to load a row of an \code{odm} into memory.
+The operator \code{[} loads a specified row of an \code{odm} object into memory. The \code{odm} object can be indexed either by integer or feature ID.
 }
 \examples{
 library(sceptredata)

@@ -153,20 +153,20 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 }
 
 
-#' Write example cellranger dataset
+#' Write example Cell Ranger dataset
 #'
-#' `write_example_cellranger_dataset()` creates an example Cell Ranger dataset.
+#' `write_example_cellranger_dataset()` creates an example dataset and writes the dataset to disk in Cell Ranger format. The dataset can be unimodal or multimodal, containing some subset of the gene expression, gRNA expression, and protein expression modalities.
 #'
-#' @param n_features number of features per matrix
-#' @param n_cells number of cells
-#' @param n_batch number of batches
-#' @param modalities a character vector indicating the modalities to create. The vector should contain the elements "gene", "grna", or "protein".
-#' @param dir_to_write the directory in which to write the files
-#' @param p_zero (optional) the fraction of entries to set randomly to zero
-#' @param p_set_col_zero (optional) the fraction of columns to set randomly to zero
-#' @param p_set_row_zero (optional) the fraction of rows to set randomly to zero
+#' @param n_features an integer vector specifying the number of features to simulate for each modality.
+#' @param n_cells an integer specifying the number of cells to simulate.
+#' @param n_batch an integer specifying the number of batches to simulate. Cells from different batches are written to different directories.
+#' @param modalities a character vector indicating the modalities to simulate. The vector should contain some subset of the strings "gene", "grna", and "protein".
+#' @param directory_to_write the directory in which to write the Cell Ranger feature barcode files.
+#' @param p_zero (optional; default random) the fraction of entries to set randomly to zero.
+#' @param p_set_col_zero (optional; default random) the fraction of columns to set randomly to zero.
+#' @param p_set_row_zero (optional; default random) the fraction of rows to set randomly to zero.
 #'
-#' @return a list containing (i) a list of the synthetic expression matrices, (ii) a character vector containing the names of the genes (or NULL if a gene modality was not created), and (iii) a factor vector specifying the batch of each cell
+#' @return a list containing (i) a list of the simulated expression matrices, (ii) a character vector containing the names of the genes (or `NULL` if the gene modality was not simulated), and (iii) a character vector specifying the batch of each cell.
 #' @export
 #'
 #' @examples
@@ -174,16 +174,22 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 #' modalities <- c("gene", "protein", "grna")
 #' n_cells <- 10000
 #' n_batch <- 2
-#' dir_to_write <- tempdir()
+#' directory_to_write <- tempdir()
 #' p_set_col_zero <- 0
 #' out <- write_example_cellranger_dataset(
 #'   n_features = n_features,
 #'   n_cells = n_cells,
 #'   n_batch = n_batch,
 #'   modalities = modalities,
-#'   dir_to_write = dir_to_write,
+#'   directory_to_write = directory_to_write,
 #'   p_set_col_zero = p_set_col_zero
 #' )
+#'
+#' # directories written to directory_to_write
+#' fs <- list.files(directory_to_write, pattern = "batch*", full.names = TRUE)
+#' # files contained within the directories
+#' list.files(fs[1])
+#' list.files(fs[2])
 write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modalities, directory_to_write,
                                              p_zero = NULL, p_set_col_zero = NULL, p_set_row_zero = NULL) {
   if (!all(modalities %in% c("gene", "grna", "protein"))) {

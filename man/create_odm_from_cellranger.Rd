@@ -14,26 +14,28 @@ create_odm_from_cellranger(
 )
 }
 \arguments{
-\item{directories_to_load}{a character vector of directories containing the output of one or more calls to cellranger count. Each directory should contain the files "matrix.mtx.gz" and "features.tsv.gz" (and optionally "barcodes.tsv.gz").}
+\item{directories_to_load}{a character vector specifying the locations of the directories to load. Each directory should contain the files "matrix.mtx.gz" and "features.tsv.gz" (and optionally "barcodes.tsv.gz", which is ignored).}
 
-\item{directory_to_write}{a string indicating the directory in which to write the backing .odm files}
+\item{directory_to_write}{a string indicating the directory in which to write the backing .odm files.}
 
-\item{write_cellwise_covariates}{(optional; default \code{TRUE}) a boolean indicating whether to write the cellwise covariates to disk (\code{TRUE}) in addition to returning the cellwise covariates as a data frame}
+\item{write_cellwise_covariates}{(optional; default \code{TRUE}) a logical value indicating whether to write the cellwise covariate data frame to disk (\code{TRUE}) in addition to returning it from \code{create_odm_from_cellranger()}.}
 
-\item{chunk_size}{(optional; default \code{1000L}) an integer specifying the chunk size to use to store the data in the backing HDF5 file}
+\item{chunk_size}{(optional; default \code{1000L}) a positive integer specifying the chunk size to use to store the data in the backing HDF5 file.}
 
-\item{compression_level}{(optional; default \code{3L}) an integer specifying the compression level to use to store the data in the backing HDF5 file}
+\item{compression_level}{(optional; default \code{3L}) an integer in the inveral [0, 9] specifying the compression level to use to store the data in the backing HDF5 file.}
 
 \item{grna_target_data_frame}{(optional) a data frame mapping each gRNA ID to its target. Relevant only if the CRISPR modality is present within the data. (See note.)}
 }
 \value{
-list containing the odm object(s) and cellwise covariates.
+a list containing the odm object(s) and cellwise covariates.
 }
 \description{
-\code{create_odm_from_cellranger()} initializes an \code{odm} object from the output of one or more calls to cellranger count. The number of \code{odm} objects returned corresponds to the number of modalities in the dataset.
+\code{create_odm_from_cellranger()} initializes an \code{odm} object, taking as input the output of one or more calls to Cell Ranger count. The number of \code{odm} objects returned corresponds to the number of modalities in the input data. Additionally, the cell-wise covariate data frame is computed and returned. \code{create_odm_from_cellranger()} supports the Cell Ranger modalities "Gene Expression", "CRISPR Guide Capture", and "Antibody Capture".
 }
 \note{
 The \code{grna_target_data_frame} is relevant only for CRISPR screen data (i.e., data for which the "CRISPR Guide Capture" modality is present). In single-cell CRISPR screens, gRNAs are delivered to cells via a viral vector. Some recent single-cell CRISPR screens involve a special design in which each viral vector harbors multiple gRNAs. For example, \href{https://pubmed.ncbi.nlm.nih.gov/35688146/}{Replogle 2022} conducted a screen in which each viral vector contained two gRNAs, each targeting the same site. In such screens, users may wish to "collapse" the gRNA count matrix by summing over the UMI counts of gRNAs contained on the same vector. To do so, users can pass the argument \code{grna_target_data_frame}, which is a data frame containing two columns: \code{grna_id} and \code{vector_id}. \code{grna_id} should coincide with the gRNA IDs as contained within the \code{features.tsv} file, and \code{vector_id} should be a string indicating the vector to which a given gRNA ID belongs. The expression vectors of gRNAs contained within the same vector are summed.
+
+The arguments \code{chunk_size} and \code{compression_level} control the extent to which the backing \code{.odm} files are compressed, with higher values corresponding to smaller file sizes (albeit possibly longer read and write times).
 }
 \examples{
 library(sceptredata)

@@ -7,15 +7,15 @@ setClass("odm",
                       integer_id = "integer"))
 
 
-#' Initialize an ondisc matrix
+#' Initialize an `odm` object
 #'
-#' Initializes an object of class `odm` from a backing `.odm` file.
+#' `initialize_odm_from_backing_file()` initializes an `odm` object from a backing `.odm` file.
 #'
-#' This function is portable: one can create a `.odm` file (via `create_odm_from_cellranger()`), transfer the `.odm` file to another computer, and then load the `.odm` file (via `initialize_odm_from_backing_file()`) on the second computer.
+#' `initialize_odm_from_backing_file()` is portable: ther user can create an `.odm` file (via `create_odm_from_cellranger()` or `create_odm_from_r_matrix()`) on one computer, transfer the `.odm` file to another computer, and then load the `.odm` file (via `initialize_odm_from_backing_file()`) on the second computer.
 #'
-#' @param odm_file file path to the backing `.odm` file
+#' @param odm_file file path to a backing `.odm` file.
 #'
-#' @return an object of class `odm`
+#' @return an `odm` object
 #' @export
 #' @examples
 #' library(sceptredata)
@@ -65,16 +65,16 @@ initialize_odm_from_backing_file <- function(odm_file) {
 }
 
 
-#' Load a row of an `odm` into memory
+#' Load a row of an `odm` object into memory
 #'
-#' The operator `[` can be called on an `odm` to load a row of an `odm` into memory.
+#' The operator `[` loads a specified row of an `odm` object into memory. The `odm` object can be indexed either by integer or feature ID.
 #'
 #' @param x an object of class `odm`
-#' @param i the index of the row to load into memory. `i` can be either an integer (specifying the integer-based index of the row to load into memory) or a string (specifying the row to load into memory by feature ID).
+#' @param i the index of the row to load into memory. `i` can be either an integer (specifying the integer-based index of the row to load into memory) or a string (specifying the feature ID of the row to load into memory).
 #' @param j not used
 #' @param drop not used
 #' @export
-#' @return a (numeric) expression vector
+#' @return an expression vector (of class `numeric`)
 #' @examples
 #' library(sceptredata)
 #' directories_to_load <- paste0(
@@ -121,13 +121,13 @@ setMethod(f = "show", signature = "odm", definition = function(object) {
 })
 
 
-#' Rownames
+#' Return the rownames of an `odm` object
 #'
-#' Return the rownames (i.e., feature IDs) of an `odm`
+#' `rownames()` returns the rownames (i.e., feature IDs) of an `odm` object.
 #'
 #' @param x an object of class `odm`
 #'
-#' @return the rownames of the `odm`
+#' @return the rownames of an `odm` object
 #' @aliases rownames
 #' @rdname rownames-odm-method
 #' @export
@@ -148,15 +148,13 @@ setMethod(f = "show", signature = "odm", definition = function(object) {
 setMethod(f = "dimnames", signature = "odm", definition = function(x) list(x@feature_ids, NULL))
 
 
-#' dim
+#' Return the number of columns and rows of an `odm` object
 #'
-#' Returns the dimension (i.e., number of features by number of cells) of an `odm`.
-#'
-#' Users also can call `ncol()` and `nrow()` to return the number of rows (i.e., features) and columns (i.e., cells), respectively, of an `odm`.
+#'  `ncol()` and `nrow()` return the number of rows (i.e., features) and columns (i.e., cells), respectively, contained within an `odm` object. `dim()` returns an integer vector of length two whose first and second entries, respectively, indicate the number of rows and columns in an `odm` object.
 #'
 #' @param x an object of class `odm`
 #'
-#' @return the dimension of the `odm`
+#' @return the dimension of the `odm` object
 #' @export
 #' @examples
 #' library(sceptredata)

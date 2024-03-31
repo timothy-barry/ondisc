@@ -2,7 +2,7 @@
 % Please edit documentation in R/s4_class.R
 \name{dim,odm-method}
 \alias{dim,odm-method}
-\title{dim}
+\title{Return the number of columns and rows of an \code{odm} object}
 \usage{
 \S4method{dim}{odm}(x)
 }
@@ -10,13 +10,10 @@
 \item{x}{an object of class \code{odm}}
 }
 \value{
-the dimension of the \code{odm}
+the dimension of the \code{odm} object
 }
 \description{
-Returns the dimension (i.e., number of features by number of cells) of an \code{odm}.
-}
-\details{
-Users also can call \code{ncol()} and \code{nrow()} to return the number of rows (i.e., features) and columns (i.e., cells), respectively, of an \code{odm}.
+\code{ncol()} and \code{nrow()} return the number of rows (i.e., features) and columns (i.e., cells), respectively, contained within an \code{odm} object. \code{dim()} returns an integer vector of length two whose first and second entries, respectively, indicate the number of rows and columns in an \code{odm} object.
 }
 \examples{
 library(sceptredata)

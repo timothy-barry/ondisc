@@ -3,7 +3,7 @@
 \name{dimnames,odm-method}
 \alias{dimnames,odm-method}
 \alias{rownames}
-\title{Rownames}
+\title{Return the rownames of an \code{odm} object}
 \usage{
 \S4method{dimnames}{odm}(x)
 }
@@ -11,10 +11,10 @@
 \item{x}{an object of class \code{odm}}
 }
 \value{
-the rownames of the \code{odm}
+the rownames of an \code{odm} object
 }
 \description{
-Return the rownames (i.e., feature IDs) of an \code{odm}
+\code{rownames()} returns the rownames (i.e., feature IDs) of an \code{odm} object.
 }
 \examples{
 library(sceptredata)

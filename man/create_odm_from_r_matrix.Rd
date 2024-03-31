@@ -13,34 +13,32 @@ create_odm_from_r_matrix(
 )
 }
 \arguments{
-\item{mat}{an R matrix of class "matrix", "dgCMatrix", "dgRMatrix", or "dgTMatrix"}
+\item{mat}{an R matrix of class \code{"matrix"}, \code{"dgCMatrix"}, \code{"dgRMatrix"}, or \code{"dgTMatrix"}.}
 
-\item{file_to_write}{file path specifying the location in which to write the backing \code{.odm} file}
+\item{file_to_write}{a fully-qualified file path specifying the location in which to write the backing \code{.odm} file.}
 
-\item{chunk_size}{chunk size to use in the backing HDF5 file}
+\item{chunk_size}{(optional; default \code{1000L}) a positive integer specifying the chunk size to use to store the data in the backing HDF5 file.}
 
-\item{compression_level}{compression level to use in the backing HDF5 file}
+\item{compression_level}{(optional; default \code{3L}) an integer in the inveral [0, 9] specifying the compression level to use to store the data in the backing HDF5 file.}
 
-\item{integer_id}{integer ID to write to the backing \code{.odm} file; users need not specify this argument.}
+\item{integer_id}{integer ID to write to the backing \code{.odm} file; users can ignore this argument.}
 }
 \value{
-an odm object representing the data
+an \code{odm} object
 }
 \description{
-\code{create_odm_from_r_matrix()} creates an \code{odm} object from an input R matrix.
+\code{create_odm_from_r_matrix()} converts R matrix (stored in standard dense format or sparse format) into an \code{odm} object.
 }
 \note{
-Users do not need to specify the \code{integer_id} argument; this argument is used by functions within the \code{sceptre} package that call \code{create_odm_from_r_matrix()}.
+The arguments \code{chunk_size} and \code{compression_level} control the extent to which the backing \code{.odm} files are compressed, with higher values corresponding to smaller file sizes (albeit possibly longer read and write times).
 }
 \examples{
-library(Matrix)
-set.seed(4)
-n_row <- 500
-n_col <- 800
-v <- rpois(n = n_row * n_col, lambda = 1)
-v[rbinom(n = n_row * n_col, size = 1, prob = 0.8) == 1] <- 0L
-mat <- matrix(data = v, nrow = n_row, ncol = n_col)
-rownames(mat) <- paste0("gene_", seq_len(nrow(mat)))
-file_to_write <- paste0(tempdir(), "/gene.odm")
-odm <- create_odm_from_r_matrix(mat, file_to_write)
+library(sceptredata)
+data(lowmoi_example_data)
+gene_matrix <- lowmoi_example_data$response_matrix
+file_to_write <- paste0(tempdir(), "gene.odm")
+odm_object <- create_odm_from_r_matrix(
+  mat = gene_matrix,
+  file_to_write = file_to_write
+)
 }

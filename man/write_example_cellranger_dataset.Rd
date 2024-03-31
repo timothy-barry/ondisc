@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_creation_functs.R
 \name{write_example_cellranger_dataset}
 \alias{write_example_cellranger_dataset}
-\title{Write example cellranger dataset}
+\title{Write example Cell Ranger dataset}
 \usage{
 write_example_cellranger_dataset(
   n_features,
@@ -16,41 +16,47 @@ write_example_cellranger_dataset(
 )
 }
 \arguments{
-\item{n_features}{number of features per matrix}
+\item{n_features}{an integer vector specifying the number of features to simulate for each modality.}
 
-\item{n_cells}{number of cells}
+\item{n_cells}{an integer specifying the number of cells to simulate.}
 
-\item{n_batch}{number of batches}
+\item{n_batch}{an integer specifying the number of batches to simulate. Cells from different batches are written to different directories.}
 
-\item{modalities}{a character vector indicating the modalities to create. The vector should contain the elements "gene", "grna", or "protein".}
+\item{modalities}{a character vector indicating the modalities to simulate. The vector should contain some subset of the strings "gene", "grna", and "protein".}
 
-\item{p_zero}{(optional) the fraction of entries to set randomly to zero}
+\item{directory_to_write}{the directory in which to write the Cell Ranger feature barcode files.}
 
-\item{p_set_col_zero}{(optional) the fraction of columns to set randomly to zero}
+\item{p_zero}{(optional; default random) the fraction of entries to set randomly to zero.}
 
-\item{p_set_row_zero}{(optional) the fraction of rows to set randomly to zero}
+\item{p_set_col_zero}{(optional; default random) the fraction of columns to set randomly to zero.}
 
-\item{dir_to_write}{the directory in which to write the files}
+\item{p_set_row_zero}{(optional; default random) the fraction of rows to set randomly to zero.}
 }
 \value{
-a list containing (i) a list of the synthetic expression matrices, (ii) a character vector containing the names of the genes (or NULL if a gene modality was not created), and (iii) a factor vector specifying the batch of each cell
+a list containing (i) a list of the simulated expression matrices, (ii) a character vector containing the names of the genes (or \code{NULL} if the gene modality was not simulated), and (iii) a character vector specifying the batch of each cell.
 }
 \description{
-\code{write_example_cellranger_dataset()} creates an example Cell Ranger dataset.
+\code{write_example_cellranger_dataset()} creates an example dataset and writes the dataset to disk in Cell Ranger format. The dataset can be unimodal or multimodal, containing some subset of the gene expression, gRNA expression, and protein expression modalities.
 }
 \examples{
 n_features <- c(1000, 40, 400)
 modalities <- c("gene", "protein", "grna")
 n_cells <- 10000
 n_batch <- 2
-dir_to_write <- tempdir()
+directory_to_write <- tempdir()
 p_set_col_zero <- 0
 out <- write_example_cellranger_dataset(
   n_features = n_features,
   n_cells = n_cells,
   n_batch = n_batch,
   modalities = modalities,
-  dir_to_write = dir_to_write,
+  directory_to_write = directory_to_write,
   p_set_col_zero = p_set_col_zero
 )
+
+# directories written to directory_to_write
+fs <- list.files(directory_to_write, pattern = "batch*", full.names = TRUE)
+# files contained within the directories
+list.files(fs[1])
+list.files(fs[2])
 }
