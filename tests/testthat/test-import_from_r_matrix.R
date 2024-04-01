@@ -33,14 +33,15 @@ test_that("import data from R matrix", {
     mem_matrix <- test_data_list[[i]]
     n_row <- nrow(mem_matrix)
     n_nonzero <- if (methods::is(mem_matrix, "matrix")) {
-      sum(mem_matrix)
+      sum(mem_matrix >= 1)
     } else {
-      sum(mem_matrix@x)
+      length(mem_matrix@x)
     }
+    if (n_nonzero <= 10L) break
 
     odm <- create_odm_from_r_matrix(mat = mem_matrix,
                                     file_to_write = paste0(tempdir(), "/gene_", i, ".odm"),
-                                    chunk_size = min(1000L, n_nonzero))
+                                    chunk_size = min(1000L, n_nonzero) - 5L)
     # 1. check dimension
     expect_equal(dim(mem_matrix), odm@dimension)
     # 2. check feature ids

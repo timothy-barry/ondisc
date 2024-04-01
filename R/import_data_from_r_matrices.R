@@ -1,15 +1,11 @@
 #' Create ODM from R matrix
 #'
-#' `create_odm_from_r_matrix()` converts R matrix (stored in standard dense format or sparse format) into an `odm` object.
-#'
-#' @note
-#' The arguments `chunk_size` and `compression_level` control the extent to which the backing `.odm` files are compressed, with higher values corresponding to smaller file sizes (albeit possibly longer read and write times).
+#' `create_odm_from_r_matrix()` converts an R matrix (stored in standard dense format or sparse format) into an `odm` object.
 #'
 #' @param mat an R matrix of class `"matrix"`, `"dgCMatrix"`, `"dgRMatrix"`, or `"dgTMatrix"`.
 #' @param file_to_write a fully-qualified file path specifying the location in which to write the backing `.odm` file.
 #' @param chunk_size (optional; default `1000L`) a positive integer specifying the chunk size to use to store the data in the backing HDF5 file.
 #' @param compression_level (optional; default `3L`) an integer in the inveral \[0, 9\] specifying the compression level to use to store the data in the backing HDF5 file.
-#' @param integer_id integer ID to write to the backing `.odm` file; users can ignore this argument.
 #'
 #' @return an `odm` object
 #' @export
@@ -23,7 +19,13 @@
 #'   mat = gene_matrix,
 #'   file_to_write = file_to_write
 #' )
-create_odm_from_r_matrix <- function(mat, file_to_write, chunk_size = 1000L, compression_level = 3L, integer_id = 0L) {
+create_odm_from_r_matrix <- function(mat, file_to_write, chunk_size = 1000L, compression_level = 3L) {
+  create_odm_from_r_matrix_internal(mat = mat, file_to_write = file_to_write,
+                                    chunk_size = chunk_size, compression_level = compression_level)
+}
+
+
+create_odm_from_r_matrix_internal <- function(mat, file_to_write, chunk_size = 1000L, compression_level = 3L, integer_id = 0L) {
   # convert the matrix into a dgRMatrix using the sceptre function
   mat <- sceptre:::set_matrix_accessibility(mat)
 

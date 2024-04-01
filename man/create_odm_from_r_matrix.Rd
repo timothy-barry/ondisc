@@ -8,8 +8,7 @@ create_odm_from_r_matrix(
   mat,
   file_to_write,
   chunk_size = 1000L,
-  compression_level = 3L,
-  integer_id = 0L
+  compression_level = 3L
 )
 }
 \arguments{
@@ -20,17 +19,12 @@ create_odm_from_r_matrix(
 \item{chunk_size}{(optional; default \code{1000L}) a positive integer specifying the chunk size to use to store the data in the backing HDF5 file.}
 
 \item{compression_level}{(optional; default \code{3L}) an integer in the inveral [0, 9] specifying the compression level to use to store the data in the backing HDF5 file.}
-
-\item{integer_id}{integer ID to write to the backing \code{.odm} file; users can ignore this argument.}
 }
 \value{
 an \code{odm} object
 }
 \description{
-\code{create_odm_from_r_matrix()} converts R matrix (stored in standard dense format or sparse format) into an \code{odm} object.
-}
-\note{
-The arguments \code{chunk_size} and \code{compression_level} control the extent to which the backing \code{.odm} files are compressed, with higher values corresponding to smaller file sizes (albeit possibly longer read and write times).
+\code{create_odm_from_r_matrix()} converts an R matrix (stored in standard dense format or sparse format) into an \code{odm} object.
 }
 \examples{
 library(sceptredata)
