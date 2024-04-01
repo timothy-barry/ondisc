@@ -39,6 +39,7 @@ a list containing (i) a list of the simulated expression matrices, (ii) a charac
 \code{write_example_cellranger_dataset()} creates an example dataset and writes the dataset to disk in Cell Ranger format. The dataset can be unimodal or multimodal, containing some subset of the gene expression, gRNA expression, and protein expression modalities.
 }
 \examples{
+set.seed(4)
 n_features <- c(1000, 40, 400)
 modalities <- c("gene", "protein", "grna")
 n_cells <- 10000
