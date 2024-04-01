@@ -11,7 +11,7 @@ setClass("odm",
 #'
 #' `initialize_odm_from_backing_file()` initializes an `odm` object from a backing `.odm` file.
 #'
-#' `initialize_odm_from_backing_file()` is portable: ther user can create an `.odm` file (via `create_odm_from_cellranger()` or `create_odm_from_r_matrix()`) on one computer, transfer the `.odm` file to another computer, and then load the `.odm` file (via `initialize_odm_from_backing_file()`) on the second computer.
+#' `initialize_odm_from_backing_file()` is portable: the user can create an `.odm` file (via `create_odm_from_cellranger()` or `create_odm_from_r_matrix()`) on one computer, transfer the `.odm` file to another computer, and then load the `.odm` file (via `initialize_odm_from_backing_file()`) on the second computer.
 #'
 #' @param odm_file file path to a backing `.odm` file.
 #'

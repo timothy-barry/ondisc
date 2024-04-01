@@ -110,7 +110,7 @@ expression_vector <- gene_odm["ENSG00000117222",]
 head(expression_vector)
 ```
 
-Indexing into an `odm` object by column is not supported. Finally, `odm` objects take up very little space, as the data are stored on-disk rather than in-memory. For example, `gene_odm` takes up only 40 kilobytes of memory.
+Indexing into an `odm` object by column is not supported. Finally, `odm` objects take up very little space, as the data are stored on disk rather than in-memory. For example, `gene_odm` takes up only 40 kilobytes of memory.
 
 ```{r}
 object.size(gene_odm) |> format(units = "Kb")
@@ -180,7 +180,7 @@ list.files(temp_dir, pattern = "*.odm")
 
 ## The cell-wise covariate data frame
 
-As part of importing the data, `create_odm_from_r_matrix()` computes the cell-wise covariates. We print the first few rows of the cell-wise covariate data frame corresponding to the synthetic data below.
+As part of importing the data, `create_odm_from_cellranger()` computes the cell-wise covariates. We print the first few rows of the cell-wise covariate data frame corresponding to the synthetic data below.
 
 ```{r}
 cellwise_covariates <- out_list[["cellwise_covariates"]]
@@ -224,7 +224,7 @@ gene_odm <- initialize_odm_from_backing_file(
 gene_odm
 ```
 
-`.odm` files are portable. Thus, a user can create an `.odm` file on one computer, move the `.odm` file to another computer, and then open the `.odm` file on the second computer.
+`.odm` files are portable. Thus, a user can create an `.odm` file on one computer, move the `.odm` file to another computer, and then open the `.odm` file on the second computer. Note that `odm` objects themselves are not portable; thus, to move an `odm` object from one computer to another, the user should transfer the underlying `.odm` file to the second computer and then open the `.odm` file on the second computer via `initialize_odm_from_backing_file()`.
 
 ## Initializing an `odm` object via `create_odm_from_r_matrix()`
 

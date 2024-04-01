@@ -234,7 +234,7 @@ contained within the matrix, as well as the file path to the
 <pre><code><span><span class="co">## An object of class <span style="color: #0000BB;">odm</span> with the following attributes:</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">526</span> features</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">45919</span> cells</span></span>
-<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/gene.odm</span></span></span></code></pre>
+<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpiobX7h/gene.odm</span></span></span></code></pre>
 <p><code>odm</code> objects support several key matrix operations,
 including <code><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol()</a></code>, <code><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow()</a></code>,
 <code><a href="../reference/rownames-odm-method.html">rownames()</a></code>, and <code>[,]</code>. <code><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol()</a></code> and
@@ -267,7 +267,7 @@ integer index or feature ID, as follows.</p>
 <pre><code><span><span class="co">## [1] 2 1 0 1 1 0</span></span></code></pre>
 <p>Indexing into an <code>odm</code> object by column is not supported.
 Finally, <code>odm</code> objects take up very little space, as the data
-are stored on-disk rather than in-memory. For example,
+are stored on disk rather than in-memory. For example,
 <code>gene_odm</code> takes up only 40 kilobytes of memory.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">gene_odm</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span>units <span class="op">=</span> <span class="st">"Kb"</span><span class="op">)</span></span></code></pre></div>
@@ -340,9 +340,9 @@ within <code>temp_dir</code>:</p>
 <span>  full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">directories_to_load</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/batch_1"</span></span>
-<span><span class="co">## [2] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/batch_2"</span></span>
-<span><span class="co">## [3] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/batch_3"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpiobX7h/batch_1"</span></span>
+<span><span class="co">## [2] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpiobX7h/batch_2"</span></span>
+<span><span class="co">## [3] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpiobX7h/batch_3"</span></span></code></pre>
 <p>Each of these directories contains the files
 <code>matrix.mtx.gz</code>, <code>features.tsv.gz</code>, and
 <code>barcodes.tsv.gz</code>. For example, the contents of the
@@ -377,7 +377,7 @@ overwritten.)</p>
 <h2 id="the-cell-wise-covariate-data-frame">The cell-wise covariate data frame<a class="anchor" aria-label="anchor" href="#the-cell-wise-covariate-data-frame"></a>
 </h2>
 <p>As part of importing the data,
-<code><a href="../reference/create_odm_from_r_matrix.html">create_odm_from_r_matrix()</a></code> computes the cell-wise
+<code><a href="../reference/create_odm_from_cellranger.html">create_odm_from_cellranger()</a></code> computes the cell-wise
 covariates. We print the first few rows of the cell-wise covariate data
 frame corresponding to the synthetic data below.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
@@ -458,11 +458,15 @@ the gene expression matrix that we created in the previous step.</p>
 <pre><code><span><span class="co">## An object of class <span style="color: #0000BB;">odm</span> with the following attributes:</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">500</span> features</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">10000</span> cells</span></span>
-<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/gene.odm</span></span></span></code></pre>
+<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpiobX7h/gene.odm</span></span></span></code></pre>
 <p><code>.odm</code> files are portable. Thus, a user can create an
 <code>.odm</code> file on one computer, move the <code>.odm</code> file
 to another computer, and then open the <code>.odm</code> file on the
-second computer.</p>
+second computer. Note that <code>odm</code> objects themselves are not
+portable; thus, to move an <code>odm</code> object from one computer to
+another, the user should transfer the underlying <code>.odm</code> file
+to the second computer and then open the <code>.odm</code> file on the
+second computer via <code><a href="../reference/initialize_odm_from_backing_file.html">initialize_odm_from_backing_file()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="initializing-an-odm-object-via-create_odm_from_r_matrix">Initializing an <code>odm</code> object via
@@ -504,7 +508,7 @@ setting <code>file_to_write</code> to
 <pre><code><span><span class="co">## An object of class <span style="color: #0000BB;">odm</span> with the following attributes:</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">299</span> features</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">20729</span> cells</span></span>
-<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/gene.odm</span></span></span></code></pre>
+<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpiobX7h/gene.odm</span></span></span></code></pre>
 <p>Moreover, the file <code>gene.odm</code> has been written to
 <code>temp_dir</code>. (The previous <code>gene.odm</code> file is
 overwritten.)</p>
@@ -535,7 +539,7 @@ longer read and write times).</p>
 <span><span class="co">##  collate  en_US.UTF-8</span></span>
 <span><span class="co">##  ctype    en_US.UTF-8</span></span>
 <span><span class="co">##  tz       America/New_York</span></span>
-<span><span class="co">##  date     2024-03-31</span></span>
+<span><span class="co">##  date     2024-04-01</span></span>
 <span><span class="co">##  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -597,7 +601,7 @@ longer read and write times).</p>
 <span><span class="co">##  xfun          0.43     <span style="color: #555555;">2024-03-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">##  yaml          2.3.8    <span style="color: #555555;">2023-12-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #555555;"> [1] /private/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T/RtmpxbOz5L/temp_libpath49d42a355e37</span></span></span>
+<span><span class="co">## <span style="color: #555555;"> [1] /private/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T/RtmpdxMnom/temp_libpathc48b16002173</span></span></span>
 <span><span class="co">## <span style="color: #555555;"> [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library</span></span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre>
