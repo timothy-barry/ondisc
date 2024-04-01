@@ -170,6 +170,7 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 #' @export
 #'
 #' @examples
+#' set.seed(4)
 #' n_features <- c(1000, 40, 400)
 #' modalities <- c("gene", "protein", "grna")
 #' n_cells <- 10000
@@ -203,7 +204,6 @@ write_example_cellranger_dataset <- function(n_features, n_cells, n_batch, modal
   }
 
   # set the p_zero, p_set_col_zero, and p_set_row_col_zero parameters
-  set.seed(4)
   if (is.null(p_zero)) p_zero <- min(stats::runif(1), 0.9)
   if (is.null(p_set_col_zero)) p_set_col_zero <- min(stats::runif(1), 0.9)
   if (is.null(p_set_row_zero)) p_set_row_zero <- min(stats::runif(1), 0.9)

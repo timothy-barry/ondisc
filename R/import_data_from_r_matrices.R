@@ -1,4 +1,4 @@
-#' Create ODM from R matrix
+#' Create `odm` object from R matrix
 #'
 #' `create_odm_from_r_matrix()` converts an R matrix (stored in standard dense format or sparse format) into an `odm` object.
 #'
@@ -14,7 +14,7 @@
 #' library(sceptredata)
 #' data(lowmoi_example_data)
 #' gene_matrix <- lowmoi_example_data$response_matrix
-#' file_to_write <- paste0(tempdir(), "gene.odm")
+#' file_to_write <- paste0(tempdir(), "/gene.odm")
 #' odm_object <- create_odm_from_r_matrix(
 #'   mat = gene_matrix,
 #'   file_to_write = file_to_write

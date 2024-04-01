@@ -2,7 +2,7 @@
 % Please edit documentation in R/import_from_cellranger.R
 \name{create_odm_from_cellranger}
 \alias{create_odm_from_cellranger}
-\title{Create ODM from Cell Ranger}
+\title{Create \code{odm} object from Cell Ranger}
 \usage{
 create_odm_from_cellranger(
   directories_to_load,

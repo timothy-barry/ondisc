@@ -1,4 +1,4 @@
-#' Create ODM from Cell Ranger
+#' Create `odm` object from Cell Ranger
 #'
 #' `create_odm_from_cellranger()` initializes an `odm` object, taking as input the output of one or more calls to Cell Ranger count. The number of `odm` objects returned corresponds to the number of modalities in the input data. Additionally, the cell-wise covariate data frame is computed and returned. `create_odm_from_cellranger()` supports the Cell Ranger modalities "Gene Expression", "CRISPR Guide Capture", and "Antibody Capture".
 #'

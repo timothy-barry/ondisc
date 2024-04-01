@@ -2,7 +2,7 @@
 % Please edit documentation in R/import_data_from_r_matrices.R
 \name{create_odm_from_r_matrix}
 \alias{create_odm_from_r_matrix}
-\title{Create ODM from R matrix}
+\title{Create \code{odm} object from R matrix}
 \usage{
 create_odm_from_r_matrix(
   mat,
@@ -30,7 +30,7 @@ an \code{odm} object
 library(sceptredata)
 data(lowmoi_example_data)
 gene_matrix <- lowmoi_example_data$response_matrix
-file_to_write <- paste0(tempdir(), "gene.odm")
+file_to_write <- paste0(tempdir(), "/gene.odm")
 odm_object <- create_odm_from_r_matrix(
   mat = gene_matrix,
   file_to_write = file_to_write
