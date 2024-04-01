@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ondisc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -234,7 +234,7 @@ contained within the matrix, as well as the file path to the
 <pre><code><span><span class="co">## An object of class <span style="color: #0000BB;">odm</span> with the following attributes:</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">526</span> features</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">45919</span> cells</span></span>
-<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpxnheIW/gene.odm</span></span></span></code></pre>
+<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/gene.odm</span></span></span></code></pre>
 <p><code>odm</code> objects support several key matrix operations,
 including <code><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol()</a></code>, <code><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow()</a></code>,
 <code><a href="../reference/rownames-odm-method.html">rownames()</a></code>, and <code>[,]</code>. <code><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol()</a></code> and
@@ -340,9 +340,9 @@ within <code>temp_dir</code>:</p>
 <span>  full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">directories_to_load</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpxnheIW/batch_1"</span></span>
-<span><span class="co">## [2] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpxnheIW/batch_2"</span></span>
-<span><span class="co">## [3] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpxnheIW/batch_3"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/batch_1"</span></span>
+<span><span class="co">## [2] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/batch_2"</span></span>
+<span><span class="co">## [3] "/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/batch_3"</span></span></code></pre>
 <p>Each of these directories contains the files
 <code>matrix.mtx.gz</code>, <code>features.tsv.gz</code>, and
 <code>barcodes.tsv.gz</code>. For example, the contents of the
@@ -458,7 +458,7 @@ the gene expression matrix that we created in the previous step.</p>
 <pre><code><span><span class="co">## An object of class <span style="color: #0000BB;">odm</span> with the following attributes:</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">500</span> features</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">10000</span> cells</span></span>
-<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpxnheIW/gene.odm</span></span></span></code></pre>
+<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/gene.odm</span></span></span></code></pre>
 <p><code>.odm</code> files are portable. Thus, a user can create an
 <code>.odm</code> file on one computer, move the <code>.odm</code> file
 to another computer, and then open the <code>.odm</code> file on the
@@ -504,7 +504,7 @@ setting <code>file_to_write</code> to
 <pre><code><span><span class="co">## An object of class <span style="color: #0000BB;">odm</span> with the following attributes:</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">299</span> features</span></span>
 <span><span class="co">##  • <span style="color: #0000BB;">20729</span> cells</span></span>
-<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpxnheIW/gene.odm</span></span></span></code></pre>
+<span><span class="co">##  • Backing file: <span style="color: #0000BB;">/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T//RtmpdquUwo/gene.odm</span></span></span></code></pre>
 <p>Moreover, the file <code>gene.odm</code> has been written to
 <code>temp_dir</code>. (The previous <code>gene.odm</code> file is
 overwritten.)</p>
@@ -566,7 +566,7 @@ longer read and write times).</p>
 <span><span class="co">##  magrittr      2.0.3    <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
 <span><span class="co">##  Matrix        1.6-5    <span style="color: #555555;">2024-01-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
 <span><span class="co">##  memoise       2.0.1    <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">##  ondisc      * 1.1.0    <span style="color: #555555;">2024-04-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  ondisc      * 1.2.0    <span style="color: #555555;">2024-04-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">##  pillar        1.9.0    <span style="color: #555555;">2023-03-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
 <span><span class="co">##  pkgconfig     2.0.3    <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
 <span><span class="co">##  pkgdown       2.0.7    <span style="color: #555555;">2022-12-14</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
@@ -597,7 +597,7 @@ longer read and write times).</p>
 <span><span class="co">##  xfun          0.43     <span style="color: #555555;">2024-03-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">##  yaml          2.3.8    <span style="color: #555555;">2023-12-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #555555;"> [1] /private/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T/RtmpeYrl1M/temp_libpath3ce835f4c6e3</span></span></span>
+<span><span class="co">## <span style="color: #555555;"> [1] /private/var/folders/7v/5sqjgh8j28lgf8qx3gbtq1h00000gp/T/RtmpxbOz5L/temp_libpath49d42a355e37</span></span></span>
 <span><span class="co">## <span style="color: #555555;"> [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library</span></span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre>

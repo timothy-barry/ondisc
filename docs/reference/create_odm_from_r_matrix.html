@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ondisc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,6 +104,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://timothy-barry.github.io/sceptre-book/" class="external-link">sceptredata</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lowmoi_example_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">gene_matrix</span> <span class="op">&lt;-</span> <span class="va">lowmoi_example_data</span><span class="op">$</span><span class="va">response_matrix</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Matrix</span>
 <span class="r-in"><span><span class="va">file_to_write</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"/gene.odm"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">odm_object</span> <span class="op">&lt;-</span> <span class="fu">create_odm_from_r_matrix</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  mat <span class="op">=</span> <span class="va">gene_matrix</span>,</span></span>
