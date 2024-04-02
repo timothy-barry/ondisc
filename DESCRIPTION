@@ -42,6 +42,7 @@ Suggests:
     sceptredata,
     sceptre,
     testthat (>= 3.0.0)
+Remotes: github::katsevich-lab/sceptre, github::katsevich-lab/sceptredata
 Config/testthat/edition: 3
 URL: https://timothy-barry.github.io/ondisc/, https://timothy-barry.github.io/sceptre-book/
 BugReports: https://github.com/timothy-barry/ondisc/issues
