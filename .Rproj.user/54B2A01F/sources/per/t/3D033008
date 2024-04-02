@@ -1,0 +1,26 @@
+{
+    "id": "3D033008",
+    "path": "~/research_code/ondisc/R/import_from_cellranger_low_level.R",
+    "project_path": "R/import_from_cellranger_low_level.R",
+    "type": "r_source",
+    "hash": "3866505932",
+    "contents": "",
+    "dirty": false,
+    "created": 1709136041721.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "69,36",
+        "scrollLine": "66"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1709090523,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1709090523,
+    "read_only": false,
+    "read_only_alternatives": []
+}

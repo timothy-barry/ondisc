@@ -1,0 +1,26 @@
+{
+    "id": "4F9FE1EA",
+    "path": "~/research_code/ondisc/tests/testthat/test-import_from_cellranger.R",
+    "project_path": "tests/testthat/test-import_from_cellranger.R",
+    "type": "r_source",
+    "hash": "1396334438",
+    "contents": "",
+    "dirty": false,
+    "created": 1709136153829.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "93,28",
+        "scrollLine": "75"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1709090523,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1709090523,
+    "read_only": false,
+    "read_only_alternatives": []
+}

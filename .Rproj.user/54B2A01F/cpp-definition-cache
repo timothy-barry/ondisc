@@ -1,0 +1,348 @@
+[
+    {
+        "file": "/Users/tib163/research_code/ondisc/src/h5_import_data_functs.cpp",
+        "file_last_write": 1709090523.0,
+        "definitions": [
+            {
+                "usr": "c:@F@update_n_features_vector#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#S0_#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "update_n_features_vector(IntegerVector, IntegerVector, int, int, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_import_data_functs.cpp",
+                "line": 9,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@decrement_vector#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "decrement_vector(IntegerVector)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_import_data_functs.cpp",
+                "line": 18,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@add_value_to_vector#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "add_value_to_vector(IntegerVector, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_import_data_functs.cpp",
+                "line": 25,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@compute_cellwise_covariates#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#S0_#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#S0_#S1_#S0_#S0_#S0_#S0_#I#I#I#I#I#b#b#b#b#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "compute_cellwise_covariates(IntegerVector, IntegerVector, NumericVector, IntegerVector, NumericVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, int, int, int, int, int, bool, bool, bool, bool, bool)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_import_data_functs.cpp",
+                "line": 32,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@write_to_csr#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#I#I#I#I#I#*$@S@SEXPREC#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#S6_#S6_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "write_to_csr(const std::string &, int, int, int, int, int, SEXP, IntegerVector, IntegerVector, IntegerVector)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_import_data_functs.cpp",
+                "line": 82,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/tib163/research_code/ondisc/src/h5_initialize_functs.cpp",
+        "file_last_write": 1709089732.0,
+        "definitions": [
+            {
+                "usr": "c:@F@convert_string_vector_to_c_array#$@N@Rcpp@S@Vector>#VI16#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "convert_string_vector_to_c_array(StringVector)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_initialize_functs.cpp",
+                "line": 8,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@free_c_string_array#**C#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "free_c_string_array(char **, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_initialize_functs.cpp",
+                "line": 21,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@create_odm_helper#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#$@N@Rcpp@S@Vector>#VI16#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@std@N@__1@S@vector>#k#$@N@std@N@__1@S@allocator>#k#k#I#I#I#I#I#&1$@N@std@N@__1@S@vector>#I#$@N@std@N@__1@S@allocator>#I#b#S8_#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "create_odm_helper(const std::string &, StringVector, const std::vector<unsigned long long> &, unsigned long long, int, int, int, int, int, const std::vector<int> &, bool, const std::vector<int> &, bool)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_initialize_functs.cpp",
+                "line": 28,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@create_odm#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI16#@N@Rcpp@ST>1#T@PreserveStorage#I#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "create_odm(const std::string &, IntegerVector, StringVector, int, int, int, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_initialize_functs.cpp",
+                "line": 124,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@create_odm_r_matrix_cpp#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#$@N@Rcpp@S@Vector>#VI16#@N@Rcpp@ST>1#T@PreserveStorage#I#I#I#I#I#&1$@N@std@N@__1@S@vector>#I#$@N@std@N@__1@S@allocator>#I#S5_#S5_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "create_odm_r_matrix_cpp(const std::string &, StringVector, int, int, int, int, int, const std::vector<int> &, const std::vector<int> &, const std::vector<int> &)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_initialize_functs.cpp",
+                "line": 150,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/tib163/research_code/ondisc/src/h5_load_row.cpp",
+        "file_last_write": 1707939655.0,
+        "definitions": [
+            {
+                "usr": "c:@F@load_row_cpp#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#*$@S@SEXPREC#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "load_row_cpp(const std::string &, SEXP, int, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_load_row.cpp",
+                "line": 9,
+                "column": 15,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/tib163/research_code/ondisc/src/h5_simple_read.cpp",
+        "file_last_write": 1709089732.0,
+        "definitions": [
+            {
+                "usr": "c:@F@read_integer_vector#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#S0_#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "read_integer_vector(const std::string &, const std::string &, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_simple_read.cpp",
+                "line": 13,
+                "column": 15,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@read_feature_ids#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "read_feature_ids(const std::string &, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_simple_read.cpp",
+                "line": 36,
+                "column": 14,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@read_row_ptr#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "read_row_ptr(const std::string &, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/h5_simple_read.cpp",
+                "line": 67,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
+        "file_last_write": 1709089732.0,
+        "definitions": [
+            {
+                "usr": "c:@F@threshold_count_matrix_cpp#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#*$@S@SEXPREC#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "threshold_count_matrix_cpp(const std::string &, SEXP, int, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
+                "line": 9,
+                "column": 15,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@load_nonzero_posits_odm#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#*$@S@SEXPREC#I#&$@N@std@N@__1@S@vector>#b#$@N@std@N@__1@S@allocator>#b#S6_#&$@N@std@N@__1@S@vector>#I#$@N@std@N@__1@S@allocator>#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "load_nonzero_posits_odm(const std::string &, SEXP, int, std::vector<bool> &, std::vector<bool> &, std::vector<int> &)",
+                "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
+                "line": 22,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#*$@S@SEXPREC#I#I#I#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S6_#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#S7_#S7_#b#S7_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc(const std::string &, SEXP, int, int, int, List, List, IntegerVector, IntegerVector, IntegerVector, bool, IntegerVector)",
+                "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
+                "line": 34,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@compute_n_trt_cells_matrix_ondisc#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#*$@S@SEXPREC#I#I#I#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "compute_n_trt_cells_matrix_ondisc(const std::string &, SEXP, int, int, int, List, IntegerVector)",
+                "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
+                "line": 97,
+                "column": 15,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@compute_n_ok_pairs_ondisc#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#*$@S@SEXPREC#I#I#I#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#S7_#S7_#b#S7_#S7_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "compute_n_ok_pairs_ondisc(const std::string &, SEXP, int, int, int, List, IntegerVector, IntegerVector, IntegerVector, bool, IntegerVector, IntegerVector)",
+                "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
+                "line": 130,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/tib163/research_code/ondisc/src/shared_functs.cpp",
+        "file_last_write": 1707939655.0,
+        "definitions": [
+            {
+                "usr": "c:@F@compute_row_ptr#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "compute_row_ptr(IntegerVector)",
+                "file": "/Users/tib163/research_code/ondisc/src/shared_functs.cpp",
+                "line": 6,
+                "column": 33,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@sparse_vector",
+                "kind": 3,
+                "parent_name": "",
+                "name": "sparse_vector",
+                "file": "/Users/tib163/research_code/ondisc/src/shared_functs.cpp",
+                "line": 18,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@load_sparse_row_low_level#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#*$@S@SEXPREC#I#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "load_sparse_row_low_level(const std::string &, SEXP, int, bool)",
+                "file": "/Users/tib163/research_code/ondisc/src/shared_functs.cpp",
+                "line": 23,
+                "column": 15,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/tib163/research_code/ondisc/src/shared_functs.h",
+        "file_last_write": 1707939655.0,
+        "definitions": [
+            {
+                "usr": "c:shared_functs.h@73@macro@COMPUTE_ROW_PTR",
+                "kind": 9,
+                "parent_name": "",
+                "name": "COMPUTE_ROW_PTR",
+                "file": "/Users/tib163/research_code/ondisc/src/shared_functs.h",
+                "line": 5,
+                "column": 9,
+                "hidden": false
+            },
+            {
+                "usr": "c:shared_functs.h@210@macro@SPARSE_VECTOR",
+                "kind": 9,
+                "parent_name": "",
+                "name": "SPARSE_VECTOR",
+                "file": "/Users/tib163/research_code/ondisc/src/shared_functs.h",
+                "line": 10,
+                "column": 9,
+                "hidden": false
+            },
+            {
+                "usr": "c:shared_functs.h@325@macro@LOAD_SPARSE_ROW_LOW_LEVEL",
+                "kind": 9,
+                "parent_name": "",
+                "name": "LOAD_SPARSE_ROW_LOW_LEVEL",
+                "file": "/Users/tib163/research_code/ondisc/src/shared_functs.h",
+                "line": 17,
+                "column": 9,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@sparse_vector",
+                "kind": 3,
+                "parent_name": "",
+                "name": "sparse_vector",
+                "file": "/Users/tib163/research_code/ondisc/src/shared_functs.h",
+                "line": 11,
+                "column": 8,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/tib163/research_code/ondisc/src/utility_functs.cpp",
+        "file_last_write": 1709090523.0,
+        "definitions": [
+            {
+                "usr": "c:@F@init_ull_vect#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "init_ull_vect(int)",
+                "file": "/Users/tib163/research_code/ondisc/src/utility_functs.cpp",
+                "line": 5,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@print_ull_vect#*$@S@SEXPREC#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "print_ull_vect(SEXP)",
+                "file": "/Users/tib163/research_code/ondisc/src/utility_functs.cpp",
+                "line": 13,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@update_dt_column#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#S0_#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "update_dt_column(IntegerVector, IntegerVector, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/utility_functs.cpp",
+                "line": 23,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    }
+]

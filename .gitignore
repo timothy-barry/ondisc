@@ -1,11 +1,1 @@
-.Rproj.user
-.Rhistory
-.Rdata
-.httr-oauth
-.DS_Store
-.quarto
-src/*.o
-src/ondiscLite.so
-inst/doc
-/doc/
-/Meta/
+*.html
