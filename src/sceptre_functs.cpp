@@ -172,3 +172,24 @@ List compute_n_ok_pairs_ondisc(const std::string& file_name_in, SEXP f_row_ptr, 
 
   return List::create(Named("n_nonzero_trt") = n_nonzero_trt, Named("n_nonzero_cntrl") = n_nonzero_cntrl);
 }
+
+
+// [[Rcpp::export]]
+IntegerVector obtain_pointer_vector(IntegerVector i, int dim) {
+  IntegerVector p(dim + 1);
+  p[0] = 0;
+  // special case of dim = 1
+  if (dim == 1) {
+    p[1] = i.size();
+  } else {
+    int curr_idx = 0, counter = 0, j = 0;
+    for (curr_idx = 0; curr_idx < dim; curr_idx ++) {
+      while (i[j] == curr_idx) {
+        counter ++;
+        j ++;
+      }
+      p[curr_idx + 1] = counter;
+    }
+  }
+  return p;
+}

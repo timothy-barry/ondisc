@@ -169,7 +169,7 @@
     },
     {
         "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
-        "file_last_write": 1711936249.0,
+        "file_last_write": 1712110999.0,
         "definitions": [
             {
                 "usr": "c:@F@threshold_count_matrix_cpp#&1$@N@std@N@__1@S@basic_string>#C#$@N@std@N@__1@S@char_traits>#C#$@N@std@N@__1@S@allocator>#C#*$@S@SEXPREC#I#I#",
@@ -219,6 +219,16 @@
                 "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
                 "line": 130,
                 "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@obtain_pointer_vector#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "obtain_pointer_vector(IntegerVector, int)",
+                "file": "/Users/tib163/research_code/ondisc/src/sceptre_functs.cpp",
+                "line": 178,
+                "column": 15,
                 "hidden": false
             }
         ],

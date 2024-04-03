@@ -253,6 +253,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// obtain_pointer_vector
+IntegerVector obtain_pointer_vector(IntegerVector i, int dim);
+RcppExport SEXP _ondisc_obtain_pointer_vector(SEXP iSEXP, SEXP dimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type i(iSEXP);
+    Rcpp::traits::input_parameter< int >::type dim(dimSEXP);
+    rcpp_result_gen = Rcpp::wrap(obtain_pointer_vector(i, dim));
+    return rcpp_result_gen;
+END_RCPP
+}
 // init_ull_vect
 SEXP init_ull_vect(int size);
 RcppExport SEXP _ondisc_init_ull_vect(SEXP sizeSEXP) {
@@ -303,6 +315,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc", (DL_FUNC) &_ondisc_compute_nt_nonzero_matrix_and_n_ok_pairs_ondisc, 12},
     {"_ondisc_compute_n_trt_cells_matrix_ondisc", (DL_FUNC) &_ondisc_compute_n_trt_cells_matrix_ondisc, 7},
     {"_ondisc_compute_n_ok_pairs_ondisc", (DL_FUNC) &_ondisc_compute_n_ok_pairs_ondisc, 12},
+    {"_ondisc_obtain_pointer_vector", (DL_FUNC) &_ondisc_obtain_pointer_vector, 2},
     {"_ondisc_init_ull_vect", (DL_FUNC) &_ondisc_init_ull_vect, 1},
     {"_ondisc_print_ull_vect", (DL_FUNC) &_ondisc_print_ull_vect, 1},
     {"_ondisc_update_dt_column", (DL_FUNC) &_ondisc_update_dt_column, 3},

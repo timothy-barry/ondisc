@@ -40,7 +40,6 @@ Suggests:
     R.utils,
     rmarkdown,
     sceptredata,
-    sceptre,
     testthat (>= 3.0.0)
 Remotes: github::katsevich-lab/sceptre, github::katsevich-lab/sceptredata
 Config/testthat/edition: 3
