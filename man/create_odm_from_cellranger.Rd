@@ -10,7 +10,8 @@ create_odm_from_cellranger(
   write_cellwise_covariates = TRUE,
   chunk_size = 1000L,
   compression_level = 3L,
-  grna_target_data_frame = NULL
+  grna_target_data_frame = NULL,
+  compute_cell_cycle = FALSE
 )
 }
 \arguments{
@@ -25,9 +26,11 @@ create_odm_from_cellranger(
 \item{compression_level}{(optional; default \code{3L}) an integer in the inveral [0, 9] specifying the compression level to use to store the data in the backing HDF5 file.}
 
 \item{grna_target_data_frame}{(optional) a data frame mapping each gRNA ID to its target. Relevant only if the CRISPR modality is present within the data. (See note.)}
+
+\item{compute_cell_cycle}{(optional; default \code{FALSE}) a logical value indicating whether to compute cell cycle scores during import. Uses Seurat's default parameters and gene sets.}
 }
 \value{
-a list containing the odm object(s) and cellwise covariates.
+a list containing the odm object(s) and cellwise covariates. If \code{compute_cell_cycle = TRUE}, the cellwise covariates will include columns \code{gene_s_score}, \code{gene_g2m_score}, and \code{gene_phase}.
 }
 \description{
 \code{create_odm_from_cellranger()} initializes an \code{odm} object, taking as input the output of one or more calls to Cell Ranger count. The number of \code{odm} objects returned corresponds to the number of modalities in the input data. Additionally, the cell-wise covariate data frame is computed and returned. \code{create_odm_from_cellranger()} supports the Cell Ranger modalities "Gene Expression", "CRISPR Guide Capture", and "Antibody Capture".

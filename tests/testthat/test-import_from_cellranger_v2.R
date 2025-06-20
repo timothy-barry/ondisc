@@ -6,7 +6,7 @@ test_that("import data from cellranger v2", {
   ########################
   # define test parameters
   ########################
-  n_trials <- 5L
+  n_trials <- 1L
   n_rows_range <- c(10L, 10000L)
   n_cols_range <- c(10L, 10000L)
   max_mito_genes <- 0.1

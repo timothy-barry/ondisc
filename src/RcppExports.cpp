@@ -73,6 +73,49 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// compute_normalized_gene_expression_stats
+void compute_normalized_gene_expression_stats(NumericVector gene_norm_sum, IntegerVector feature_idx, IntegerVector j, IntegerVector x, IntegerVector n_umis, int start_idx, int end_idx, int feature_offset, double scale_factor);
+RcppExport SEXP _ondisc_compute_normalized_gene_expression_stats(SEXP gene_norm_sumSEXP, SEXP feature_idxSEXP, SEXP jSEXP, SEXP xSEXP, SEXP n_umisSEXP, SEXP start_idxSEXP, SEXP end_idxSEXP, SEXP feature_offsetSEXP, SEXP scale_factorSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type gene_norm_sum(gene_norm_sumSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type feature_idx(feature_idxSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type j(jSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type n_umis(n_umisSEXP);
+    Rcpp::traits::input_parameter< int >::type start_idx(start_idxSEXP);
+    Rcpp::traits::input_parameter< int >::type end_idx(end_idxSEXP);
+    Rcpp::traits::input_parameter< int >::type feature_offset(feature_offsetSEXP);
+    Rcpp::traits::input_parameter< double >::type scale_factor(scale_factorSEXP);
+    compute_normalized_gene_expression_stats(gene_norm_sum, feature_idx, j, x, n_umis, start_idx, end_idx, feature_offset, scale_factor);
+    return R_NilValue;
+END_RCPP
+}
+// compute_cell_cycle_scores
+void compute_cell_cycle_scores(NumericVector s_scores, NumericVector g2m_scores, IntegerVector s_gene_indices, IntegerVector g2m_gene_indices, IntegerVector s_control_indices, IntegerVector g2m_control_indices, IntegerVector feature_idx, IntegerVector j, IntegerVector x, IntegerVector n_umis, int start_idx, int end_idx, int feature_offset, int cell_offset, int n_cells, double scale_factor);
+RcppExport SEXP _ondisc_compute_cell_cycle_scores(SEXP s_scoresSEXP, SEXP g2m_scoresSEXP, SEXP s_gene_indicesSEXP, SEXP g2m_gene_indicesSEXP, SEXP s_control_indicesSEXP, SEXP g2m_control_indicesSEXP, SEXP feature_idxSEXP, SEXP jSEXP, SEXP xSEXP, SEXP n_umisSEXP, SEXP start_idxSEXP, SEXP end_idxSEXP, SEXP feature_offsetSEXP, SEXP cell_offsetSEXP, SEXP n_cellsSEXP, SEXP scale_factorSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type s_scores(s_scoresSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type g2m_scores(g2m_scoresSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type s_gene_indices(s_gene_indicesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type g2m_gene_indices(g2m_gene_indicesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type s_control_indices(s_control_indicesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type g2m_control_indices(g2m_control_indicesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type feature_idx(feature_idxSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type j(jSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type n_umis(n_umisSEXP);
+    Rcpp::traits::input_parameter< int >::type start_idx(start_idxSEXP);
+    Rcpp::traits::input_parameter< int >::type end_idx(end_idxSEXP);
+    Rcpp::traits::input_parameter< int >::type feature_offset(feature_offsetSEXP);
+    Rcpp::traits::input_parameter< int >::type cell_offset(cell_offsetSEXP);
+    Rcpp::traits::input_parameter< int >::type n_cells(n_cellsSEXP);
+    Rcpp::traits::input_parameter< double >::type scale_factor(scale_factorSEXP);
+    compute_cell_cycle_scores(s_scores, g2m_scores, s_gene_indices, g2m_gene_indices, s_control_indices, g2m_control_indices, feature_idx, j, x, n_umis, start_idx, end_idx, feature_offset, cell_offset, n_cells, scale_factor);
+    return R_NilValue;
+END_RCPP
+}
 // write_to_csr
 void write_to_csr(const std::string& file_name_in, int start_idx, int end_idx, int feature_offset, int cell_offset, int n_features, SEXP f_row_ptr, IntegerVector feature_idx, IntegerVector m_j, IntegerVector m_x);
 RcppExport SEXP _ondisc_write_to_csr(SEXP file_name_inSEXP, SEXP start_idxSEXP, SEXP end_idxSEXP, SEXP feature_offsetSEXP, SEXP cell_offsetSEXP, SEXP n_featuresSEXP, SEXP f_row_ptrSEXP, SEXP feature_idxSEXP, SEXP m_jSEXP, SEXP m_xSEXP) {
@@ -304,6 +347,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_decrement_vector", (DL_FUNC) &_ondisc_decrement_vector, 1},
     {"_ondisc_add_value_to_vector", (DL_FUNC) &_ondisc_add_value_to_vector, 2},
     {"_ondisc_compute_cellwise_covariates", (DL_FUNC) &_ondisc_compute_cellwise_covariates, 19},
+    {"_ondisc_compute_normalized_gene_expression_stats", (DL_FUNC) &_ondisc_compute_normalized_gene_expression_stats, 9},
+    {"_ondisc_compute_cell_cycle_scores", (DL_FUNC) &_ondisc_compute_cell_cycle_scores, 16},
     {"_ondisc_write_to_csr", (DL_FUNC) &_ondisc_write_to_csr, 10},
     {"_ondisc_create_odm", (DL_FUNC) &_ondisc_create_odm, 7},
     {"_ondisc_create_odm_r_matrix_cpp", (DL_FUNC) &_ondisc_create_odm_r_matrix_cpp, 10},

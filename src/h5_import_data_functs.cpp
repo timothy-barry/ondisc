@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include "H5Cpp.h"
 #include "shared_functs.h"
+#include <unordered_set>
 using namespace H5;
 using namespace Rcpp;
 
@@ -74,6 +75,121 @@ void compute_cellwise_covariates(IntegerVector n_umis, IntegerVector n_nonzero,
     }
   }
 
+  return;
+}
+
+
+
+// [[Rcpp::export]]
+void compute_normalized_gene_expression_stats(
+    NumericVector gene_norm_sum,
+    IntegerVector feature_idx,
+    IntegerVector j,
+    IntegerVector x,
+    IntegerVector n_umis,
+    int start_idx,
+    int end_idx,
+    int feature_offset,
+    double scale_factor = 10000.0
+) {
+  // Only accumulate sum of normalized expression for non-zero entries
+  // Zeros contribute 0 to the sum: log1p((0 / n_umis) * scale_factor) = 0
+  // Mean will be computed in R by dividing by total number of cells
+  for (int i = start_idx; i <= end_idx; i++) {
+    int curr_feature_idx = feature_idx[i] - feature_offset;
+    int curr_cell_idx = j[i];
+    int curr_x = x[i];
+    
+    // Normalize expression: log1p((count / n_umis) * scale_factor)
+    double normalized_expr = log1p((double(curr_x) / n_umis[curr_cell_idx]) * scale_factor);
+    
+    gene_norm_sum[curr_feature_idx] += normalized_expr;
+  }
+  return;
+}
+
+
+// [[Rcpp::export]]
+void compute_cell_cycle_scores(
+    NumericVector s_scores,
+    NumericVector g2m_scores,
+    IntegerVector s_gene_indices,
+    IntegerVector g2m_gene_indices,
+    IntegerVector s_control_indices,
+    IntegerVector g2m_control_indices,
+    IntegerVector feature_idx,
+    IntegerVector j,
+    IntegerVector x,
+    IntegerVector n_umis,
+    int start_idx,
+    int end_idx,
+    int feature_offset,
+    int cell_offset,
+    int n_cells,
+    double scale_factor = 10000.0
+) {
+  // Initialize accumulators for each cell
+  std::vector<double> s_target_sum(n_cells, 0.0);
+  std::vector<double> g2m_target_sum(n_cells, 0.0);
+  std::vector<double> s_control_sum(n_cells, 0.0);
+  std::vector<double> g2m_control_sum(n_cells, 0.0);
+  
+  // Create lookup sets for fast membership testing
+  std::unordered_set<int> s_genes(s_gene_indices.begin(), s_gene_indices.end());
+  std::unordered_set<int> g2m_genes(g2m_gene_indices.begin(), g2m_gene_indices.end());
+  std::unordered_set<int> s_controls(s_control_indices.begin(), s_control_indices.end());
+  std::unordered_set<int> g2m_controls(g2m_control_indices.begin(), g2m_control_indices.end());
+  
+  // Process all non-zero entries
+  for (int i = start_idx; i <= end_idx; i++) {
+    int curr_feature_idx = feature_idx[i] - feature_offset;
+    int curr_cell_idx = j[i] - cell_offset;
+    int curr_x = x[i];
+    
+    // Skip if cell index is out of range
+    if (curr_cell_idx < 0 || curr_cell_idx >= n_cells) continue;
+    
+    // Normalize expression: log1p((count / n_umis) * scale_factor)
+    // This exactly matches Seurat's LogNormalize
+    // j[i] is the global cell index after adjustment, use it directly for n_umis
+    double normalized_expr = log1p((double(curr_x) / n_umis[j[i]]) * scale_factor);
+    
+    // Accumulate for S genes and controls
+    if (s_genes.count(curr_feature_idx)) {
+      s_target_sum[curr_cell_idx] += normalized_expr;
+    }
+    if (s_controls.count(curr_feature_idx)) {
+      s_control_sum[curr_cell_idx] += normalized_expr;
+    }
+    
+    // Accumulate for G2M genes and controls
+    if (g2m_genes.count(curr_feature_idx)) {
+      g2m_target_sum[curr_cell_idx] += normalized_expr;
+    }
+    if (g2m_controls.count(curr_feature_idx)) {
+      g2m_control_sum[curr_cell_idx] += normalized_expr;
+    }
+  }
+  
+  // Compute final scores: mean(target) - mean(control)
+  // CRITICAL: Compute means over ALL genes in module (including zeros), not just non-zero genes
+  for (int cell_idx = 0; cell_idx < n_cells; cell_idx++) {
+    // S genes: divide by total number of S genes, not just expressed ones
+    double s_target_mean = s_target_sum[cell_idx] / s_gene_indices.size();
+    
+    // S controls: divide by total number of S control genes, not just expressed ones  
+    double s_control_mean = s_control_sum[cell_idx] / s_control_indices.size();
+    
+    // G2M genes: divide by total number of G2M genes, not just expressed ones
+    double g2m_target_mean = g2m_target_sum[cell_idx] / g2m_gene_indices.size();
+    
+    // G2M controls: divide by total number of G2M control genes, not just expressed ones
+    double g2m_control_mean = g2m_control_sum[cell_idx] / g2m_control_indices.size();
+    
+    s_scores[cell_idx + cell_offset] = s_target_mean - s_control_mean;
+    g2m_scores[cell_idx + cell_offset] = g2m_target_mean - g2m_control_mean;
+  }
+  
   return;
 }
 
