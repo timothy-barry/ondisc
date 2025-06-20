@@ -46,7 +46,7 @@ initialize_cellwise_covariates <- function(modality_names, n_cells, compute_cell
 }
 
 
-preprare_output_covariate_dt <- function(cellwise_covariates, new_modality_names, n_cells_per_batch, modality_feature_ids) {
+prepare_output_covariate_dt <- function(cellwise_covariates, new_modality_names, n_cells_per_batch, modality_feature_ids) {
   names(cellwise_covariates) <- new_modality_names
   l <- list()
   for (i in seq_along(new_modality_names)) {
@@ -88,8 +88,7 @@ initialize_odms <- function(modality_names, file_names_in, n_nonzero_features_ve
 
 process_input_files_round_1 <- function(matrix_fps, modality_names, modality_start_idx_features,
                                         feature_idx_to_vector_idx_map, n_features_per_modality,
-                                        compute_cell_cycle = FALSE, gene_expression_sum = NULL, gene_expression_count = NULL,
-                                        gene_norm_sum = NULL, cc_scale_factor = 10000) {
+                                        compute_cell_cycle = FALSE, cc_scale_factor = 10000) {
   # 0. initialize the outputs:
   # a. modality_start_idx_mtx_list
   # b. n_nonzero_features_vector_list
@@ -102,6 +101,14 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
   }) |> stats::setNames(modality_names)
   n_cells_per_batch <- integer(length = length(matrix_fps))
   collapse_grna_counts <- !is.null(feature_idx_to_vector_idx_map)
+  
+  # Initialize gene_norm_sum if cell cycle scoring is requested
+  gene_norm_sum <- NULL
+  if (compute_cell_cycle && "Gene Expression" %in% modality_names) {
+    ge_idx <- which(modality_names == "Gene Expression")
+    n_ge_features <- n_features_per_modality[ge_idx]
+    gene_norm_sum <- rep(0.0, n_ge_features)
+  }
 
   cat("Round 1/2 processing of the input files.\n")
   for (i in seq_along(matrix_fps)) {
@@ -168,17 +175,6 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
           batch_n_umis[cell_idx] <- batch_n_umis[cell_idx] + dt_full$x[row_idx]
         }
         
-        # Now compute raw gene expression statistics
-        compute_gene_expression_stats(
-          gene_sum = gene_expression_sum,
-          gene_count = gene_expression_count,
-          feature_idx = dt_full$feature_idx,
-          x = dt_full$x,
-          start_idx = ge_start_idx,
-          end_idx = ge_end_idx,
-          feature_offset = modality_start_idx_features[[ge_idx]]
-        )
-        
         # Compute normalized gene expression statistics
         compute_normalized_gene_expression_stats(
           gene_norm_sum = gene_norm_sum,
@@ -211,7 +207,8 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
   return(list(modality_start_idx_mtx_list = modality_start_idx_mtx_list,
               n_nonzero_features_vector_list = n_nonzero_features_vector_list,
               n_cells = sum(n_cells_per_batch),
-              n_cells_per_batch = n_cells_per_batch))
+              n_cells_per_batch = n_cells_per_batch,
+              gene_norm_sum = gene_norm_sum))
 }
 
 

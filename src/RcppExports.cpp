@@ -73,22 +73,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// compute_gene_expression_stats
-void compute_gene_expression_stats(NumericVector gene_sum, IntegerVector gene_count, IntegerVector feature_idx, IntegerVector x, int start_idx, int end_idx, int feature_offset);
-RcppExport SEXP _ondisc_compute_gene_expression_stats(SEXP gene_sumSEXP, SEXP gene_countSEXP, SEXP feature_idxSEXP, SEXP xSEXP, SEXP start_idxSEXP, SEXP end_idxSEXP, SEXP feature_offsetSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type gene_sum(gene_sumSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type gene_count(gene_countSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type feature_idx(feature_idxSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type start_idx(start_idxSEXP);
-    Rcpp::traits::input_parameter< int >::type end_idx(end_idxSEXP);
-    Rcpp::traits::input_parameter< int >::type feature_offset(feature_offsetSEXP);
-    compute_gene_expression_stats(gene_sum, gene_count, feature_idx, x, start_idx, end_idx, feature_offset);
-    return R_NilValue;
-END_RCPP
-}
 // compute_normalized_gene_expression_stats
 void compute_normalized_gene_expression_stats(NumericVector gene_norm_sum, IntegerVector feature_idx, IntegerVector j, IntegerVector x, IntegerVector n_umis, int start_idx, int end_idx, int feature_offset, double scale_factor);
 RcppExport SEXP _ondisc_compute_normalized_gene_expression_stats(SEXP gene_norm_sumSEXP, SEXP feature_idxSEXP, SEXP jSEXP, SEXP xSEXP, SEXP n_umisSEXP, SEXP start_idxSEXP, SEXP end_idxSEXP, SEXP feature_offsetSEXP, SEXP scale_factorSEXP) {
@@ -363,7 +347,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ondisc_decrement_vector", (DL_FUNC) &_ondisc_decrement_vector, 1},
     {"_ondisc_add_value_to_vector", (DL_FUNC) &_ondisc_add_value_to_vector, 2},
     {"_ondisc_compute_cellwise_covariates", (DL_FUNC) &_ondisc_compute_cellwise_covariates, 19},
-    {"_ondisc_compute_gene_expression_stats", (DL_FUNC) &_ondisc_compute_gene_expression_stats, 7},
     {"_ondisc_compute_normalized_gene_expression_stats", (DL_FUNC) &_ondisc_compute_normalized_gene_expression_stats, 9},
     {"_ondisc_compute_cell_cycle_scores", (DL_FUNC) &_ondisc_compute_cell_cycle_scores, 16},
     {"_ondisc_write_to_csr", (DL_FUNC) &_ondisc_write_to_csr, 10},

@@ -79,26 +79,6 @@ void compute_cellwise_covariates(IntegerVector n_umis, IntegerVector n_nonzero,
 }
 
 
-// [[Rcpp::export]]
-void compute_gene_expression_stats(
-    NumericVector gene_sum,
-    IntegerVector gene_count,
-    IntegerVector feature_idx,
-    IntegerVector x,
-    int start_idx,
-    int end_idx,
-    int feature_offset
-) {
-  for (int i = start_idx; i <= end_idx; i++) {
-    int curr_feature_idx = feature_idx[i] - feature_offset;
-    int curr_x = x[i];
-    
-    gene_sum[curr_feature_idx] += curr_x;
-    gene_count[curr_feature_idx] += 1;
-  }
-  return;
-}
-
 
 // [[Rcpp::export]]
 void compute_normalized_gene_expression_stats(

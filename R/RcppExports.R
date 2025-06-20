@@ -17,10 +17,6 @@ compute_cellwise_covariates <- function(n_umis, n_nonzero, p_mito, feature_w_max
     invisible(.Call(`_ondisc_compute_cellwise_covariates`, n_umis, n_nonzero, p_mito, feature_w_max_expression, frac_umis_max_feature, feature_idx, j, x, mt_feature_idxs, start_idx, end_idx, feature_offset, cell_offset, n_cells, compute_n_umis, compute_n_nonzero, compute_p_mito, compute_feature_w_max_expression, compute_frac_umis_max_feature))
 }
 
-compute_gene_expression_stats <- function(gene_sum, gene_count, feature_idx, x, start_idx, end_idx, feature_offset) {
-    invisible(.Call(`_ondisc_compute_gene_expression_stats`, gene_sum, gene_count, feature_idx, x, start_idx, end_idx, feature_offset))
-}
-
 compute_normalized_gene_expression_stats <- function(gene_norm_sum, feature_idx, j, x, n_umis, start_idx, end_idx, feature_offset, scale_factor = 10000.0) {
     invisible(.Call(`_ondisc_compute_normalized_gene_expression_stats`, gene_norm_sum, feature_idx, j, x, n_umis, start_idx, end_idx, feature_offset, scale_factor))
 }
