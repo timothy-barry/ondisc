@@ -11,8 +11,9 @@
 #' @param chunk_size (optional; default `1000L`) a positive integer specifying the chunk size to use to store the data in the backing HDF5 file.
 #' @param compression_level (optional; default `3L`) an integer in the inveral \[0, 9\] specifying the compression level to use to store the data in the backing HDF5 file.
 #' @param grna_target_data_frame (optional) a data frame mapping each gRNA ID to its target. Relevant only if the CRISPR modality is present within the data. (See note.)
+#' @param compute_cell_cycle (optional; default `FALSE`) a logical value indicating whether to compute cell cycle scores during import. Uses Seurat's default parameters and gene sets.
 #'
-#' @return a list containing the odm object(s) and cellwise covariates.
+#' @return a list containing the odm object(s) and cellwise covariates. If `compute_cell_cycle = TRUE`, the cellwise covariates will include columns `gene_s_score`, `gene_g2m_score`, and `gene_phase`.
 #' @export
 #'
 #' @examples
@@ -27,7 +28,16 @@
 #'   directory_to_write = directory_to_write,
 #' )
 create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE,
-                                       chunk_size = 1000L, compression_level = 3L, grna_target_data_frame = NULL) {
+                                       chunk_size = 1000L, compression_level = 3L, grna_target_data_frame = NULL,
+                                       compute_cell_cycle = FALSE) {
+  
+  # Cell cycle scoring parameters (Seurat defaults)
+  s_genes <- NULL
+  g2m_genes <- NULL
+  cc_ctrl_genes <- 100L  # Note: may need reduction for small datasets (100 * n_target_genes control genes needed)
+  cc_nbin <- 24L
+  cc_scale_factor <- 10000
+  cc_seed <- 1L
   # 0. check that directory to write is valid; create it if it does not yet exist
   directory_to_write <- expand_tilde(directory_to_write)
   if (is.null(directory_to_write)) {
@@ -90,9 +100,65 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
     grep(pattern = "^MT-", x = curr_modality_features, ignore.case = TRUE) - 1L # - modality_start_idx_features[k]
   }) |> stats::setNames(modality_names)
 
+  # 7.5. Compute n_features_per_modality first (needed for cell cycle setup)
+  n_features_per_modality <- diff(modality_start_idx_features)
+
+  # 7.6. prepare cell cycle scoring parameters if requested
+  cc_gene_indices <- NULL
+  gene_expression_sum <- NULL
+  gene_expression_count <- NULL
+  
+  if (compute_cell_cycle) {
+    # Check if Gene Expression modality is present
+    if (!"Gene Expression" %in% modality_names) {
+      stop("Cell cycle scoring requires Gene Expression modality data.")
+    }
+    
+    # Use default gene sets if not provided
+    if (is.null(s_genes) || is.null(g2m_genes)) {
+      if (!exists("cc_genes_updated_2019")) {
+        data("cc_genes_updated_2019", package = "ondisc", envir = environment())
+      }
+      if (is.null(s_genes)) s_genes <- cc_genes_updated_2019$s_genes
+      if (is.null(g2m_genes)) g2m_genes <- cc_genes_updated_2019$g2m_genes
+    }
+    
+    # Validate gene lists
+    if (length(s_genes) < 3 || length(g2m_genes) < 3) {
+      stop("Need at least 3 genes in each cell cycle gene set")
+    }
+    
+    # Prepare gene indices for Gene Expression modality only
+    ge_idx <- which(modality_names == "Gene Expression")
+    ge_feature_ids <- modality_feature_ids[[ge_idx]]
+    ge_feature_names <- modality_feature_names[[ge_idx]]
+    
+    cc_gene_indices <- prepare_cell_cycle_gene_indices(
+      s_genes = s_genes,
+      g2m_genes = g2m_genes,
+      feature_ids = ge_feature_ids,
+      feature_names = ge_feature_names,
+      verbose = TRUE
+    )
+    
+    # Check if we found enough genes
+    if (length(cc_gene_indices$s_gene_indices) < 3 || length(cc_gene_indices$g2m_gene_indices) < 3) {
+      stop("Insufficient cell cycle genes found in dataset. Need at least 3 genes per phase.")
+    }
+    
+    # Initialize vectors for collecting gene expression statistics during Round 1
+    # FIXED: Only allocate space for Gene Expression features, not all features
+    ge_idx <- which(modality_names == "Gene Expression")
+    n_ge_features <- n_features_per_modality[ge_idx]
+    gene_expression_sum <- rep(0.0, n_ge_features)
+    gene_expression_count <- rep(0L, n_ge_features)
+    
+    # Also collect normalized expression statistics for proper control gene binning
+    gene_norm_sum <- rep(0.0, n_ge_features)
+  }
+
   # 8 prepare feature_idx to vector_idx map
   feature_idx_to_vector_idx_map <- NULL
-  n_features_per_modality <- diff(modality_start_idx_features)
   if (!is.null(grna_target_data_frame)) {
     feature_idx_to_vector_idx_map <- generate_grna_idx_to_vector_idx_map(grna_target_data_frame = grna_target_data_frame,
                                                                          modality_start_idx_features = modality_start_idx_features,
@@ -106,11 +172,46 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
                                              modality_names = modality_names,
                                              modality_start_idx_features = modality_start_idx_features,
                                              feature_idx_to_vector_idx_map = feature_idx_to_vector_idx_map,
-                                             n_features_per_modality = n_features_per_modality)
+                                             n_features_per_modality = n_features_per_modality,
+                                             compute_cell_cycle = compute_cell_cycle,
+                                             gene_expression_sum = gene_expression_sum,
+                                             gene_expression_count = gene_expression_count,
+                                             gene_norm_sum = gene_norm_sum,
+                                             cc_scale_factor = cc_scale_factor)
+
+  # 9.5. compute cell cycle control genes if requested
+  cc_control_genes <- NULL
+  if (compute_cell_cycle) {
+    # Use normalized gene means for proper binning (matching Seurat)
+    # Divide by total number of cells (including zeros), not just non-zero cells
+    normalized_gene_means <- gene_norm_sum / round_1_out$n_cells
+    
+    ge_gene_means <- normalized_gene_means
+    
+    # Adjust indices to be relative to Gene Expression modality (0-based)
+    cc_gene_indices_adjusted <- list(
+      s_gene_indices = cc_gene_indices$s_gene_indices,
+      g2m_gene_indices = cc_gene_indices$g2m_gene_indices
+    )
+    
+    cc_control_genes <- compute_cell_cycle_control_genes(
+      gene_means = ge_gene_means,
+      s_gene_indices = cc_gene_indices_adjusted$s_gene_indices,
+      g2m_gene_indices = cc_gene_indices_adjusted$g2m_gene_indices,
+      nbin = cc_nbin,
+      ctrl = cc_ctrl_genes,
+      seed = cc_seed
+    )
+    
+    cat("Cell cycle control gene selection:\n")
+    cat("  S control genes:", length(cc_control_genes$s_control_indices), "\n")
+    cat("  G2M control genes:", length(cc_control_genes$g2m_control_indices), "\n")
+  }
 
   # 10. initialize cellwise covariates
   cellwise_covariates <- initialize_cellwise_covariates(modality_names = modality_names,
-                                                        n_cells = round_1_out$n_cells)
+                                                        n_cells = round_1_out$n_cells,
+                                                        compute_cell_cycle = compute_cell_cycle)
 
   # 11. obtain file paths to odms
   new_modality_names <- update_modality_names(modality_names)
@@ -141,8 +242,23 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
                               modality_start_idx_mtx_list = round_1_out$modality_start_idx_mtx_list,
                               mt_feature_idxs = mt_feature_idxs,
                               cellwise_covariates = cellwise_covariates,
-                              feature_idx_to_vector_idx_map = feature_idx_to_vector_idx_map)
+                              feature_idx_to_vector_idx_map = feature_idx_to_vector_idx_map,
+                              compute_cell_cycle = compute_cell_cycle,
+                              cc_gene_indices = cc_gene_indices,
+                              cc_control_genes = cc_control_genes,
+                              cc_scale_factor = cc_scale_factor)
   gc() |> invisible()
+
+  # 14.5. assign cell cycle phases if cell cycle scoring was performed
+  if (compute_cell_cycle && "Gene Expression" %in% modality_names) {
+    ge_idx <- which(modality_names == "Gene Expression")
+    s_scores <- cellwise_covariates[[ge_idx]]$covariate_list$s_score
+    g2m_scores <- cellwise_covariates[[ge_idx]]$covariate_list$g2m_score
+    phases <- assign_cell_cycle_phase(s_scores, g2m_scores)
+    # Add phase as a new covariate
+    cellwise_covariates[[ge_idx]]$covariate_list$phase <- phases
+    cellwise_covariates[[ge_idx]]$bool_vect[["phase"]] <- TRUE
+  }
 
   # 15. save the covariates
   dt <- preprare_output_covariate_dt(cellwise_covariates = cellwise_covariates,
