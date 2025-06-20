@@ -12,3 +12,5 @@
 ^codecov\.yml$
 ^\.travis\.yml$
 ^vignettes/articles$
+^CLAUDE\.md$
+^\.claude$

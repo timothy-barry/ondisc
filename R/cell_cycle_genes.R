@@ -8,7 +8,7 @@
 #'   \item{s_genes}{43 genes associated with S-phase}
 #'   \item{g2m_genes}{54 genes associated with G2M-phase}
 #' }
-#' 
+#'
 #' @section Updated symbols:
 #' The following symbols were updated from the original gene sets:
 #' \describe{
@@ -35,7 +35,7 @@
 #' data("cc_genes_updated_2019", package = "ondisc")
 #' length(cc_genes_updated_2019$s_genes)   # 43 S-phase genes
 #' length(cc_genes_updated_2019$g2m_genes) # 54 G2M-phase genes
-#' 
+#'
 #' @export
 "cc_genes_updated_2019"
 
@@ -47,7 +47,7 @@ cc_genes_updated_2019 <- list(
 
 #' Validate and prepare cell cycle gene sets
 #'
-#' Internal function to validate user-provided gene sets and map them to 
+#' Internal function to validate user-provided gene sets and map them to
 #' feature indices for efficient computation during import.
 #'
 #' @param s_genes character vector of S phase genes
@@ -74,46 +74,46 @@ prepare_cell_cycle_gene_indices <- function(s_genes, g2m_genes, feature_ids, fea
     name_matches <- match(genes, feature_names)
     # Then try feature_ids as backup
     id_matches <- match(genes, feature_ids)
-    
+
     # Combine matches, preferring feature_name matches
     indices <- ifelse(!is.na(name_matches), name_matches, id_matches)
     found_genes <- genes[!is.na(indices)]
     missing_genes <- genes[is.na(indices)]
-    
+
     # Convert to 0-based indexing for C++
     indices_0based <- indices[!is.na(indices)] - 1L
-    
+
     return(list(
       indices = indices_0based,
       found_genes = found_genes,
       missing_genes = missing_genes
     ))
   }
-  
+
   # Process S phase genes
   s_result <- find_gene_indices(s_genes, feature_ids, feature_names)
-  
+
   # Process G2/M phase genes
   g2m_result <- find_gene_indices(g2m_genes, feature_ids, feature_names)
-  
+
   if (verbose) {
     cat("Cell cycle gene mapping:\n")
     cat("  S phase genes: ", length(s_result$found_genes), "/", length(s_genes), " found\n")
     cat("  G2/M phase genes: ", length(g2m_result$found_genes), "/", length(g2m_genes), " found\n")
-    
+
     if (length(s_result$missing_genes) > 0) {
-      cat("  Missing S genes: ", paste(head(s_result$missing_genes, 5), collapse = ", "))
+      cat("  Missing S genes: ", paste(utils::head(s_result$missing_genes, 5), collapse = ", "))
       if (length(s_result$missing_genes) > 5) cat(", ...")
       cat("\n")
     }
-    
+
     if (length(g2m_result$missing_genes) > 0) {
-      cat("  Missing G2/M genes: ", paste(head(g2m_result$missing_genes, 5), collapse = ", "))
+      cat("  Missing G2/M genes: ", paste(utils::head(g2m_result$missing_genes, 5), collapse = ", "))
       if (length(g2m_result$missing_genes) > 5) cat(", ...")
       cat("\n")
     }
   }
-  
+
   # Check if we have enough genes for scoring
   if (length(s_result$indices) < 5) {
     warning("Only ", length(s_result$indices), " S phase genes found. Cell cycle scoring may be unreliable.")
@@ -121,7 +121,7 @@ prepare_cell_cycle_gene_indices <- function(s_genes, g2m_genes, feature_ids, fea
   if (length(g2m_result$indices) < 5) {
     warning("Only ", length(g2m_result$indices), " G2/M phase genes found. Cell cycle scoring may be unreliable.")
   }
-  
+
   return(list(
     s_gene_indices = s_result$indices,
     g2m_gene_indices = g2m_result$indices,
@@ -152,26 +152,25 @@ compute_cell_cycle_control_genes <- function(
   seed = 1L
 ) {
   set.seed(seed)
-  
+
   # Match Seurat's exact approach
   # 1. Order gene means (Seurat: data.avg <- data.avg[order(data.avg)])
   data.avg <- gene_means[order(gene_means)]
-  
+
   # 2. Use cut_number with noise exactly like Seurat
   # Seurat: cut_number(x = data.avg + rnorm(n = length(data.avg))/1e30, n = nbin, labels = FALSE, right = FALSE)
-  library(ggplot2)
-  data.cut <- cut_number(x = data.avg + rnorm(n = length(data.avg))/1e30, n = nbin, labels = FALSE, right = FALSE)
+  data.cut <- ggplot2::cut_number(x = data.avg + stats::rnorm(n = length(data.avg))/1e30, n = nbin, labels = FALSE, right = FALSE)
   names(data.cut) <- names(data.avg)
-  
+
   # 3. Convert back to original gene indices
   # Create mapping from ordered indices back to original 0-based indices
   order_to_original <- order(gene_means) - 1  # Convert to 0-based
-  
+
   # Helper function matching Seurat's exact logic
   sample_control_genes_seurat <- function(target_indices) {
     ctrl.use <- c()
     all_target_indices <- c(s_gene_indices, g2m_gene_indices)  # All target genes to exclude
-    
+
     for (target_idx in target_indices) {
       # Find this gene in the ordered list
       target_gene_ordered_pos <- which(order_to_original == target_idx)
@@ -181,10 +180,10 @@ compute_cell_cycle_control_genes <- function(
         same_bin_genes_ordered <- which(data.cut == target_bin)
         # Convert back to original 0-based indices
         same_bin_genes_original <- order_to_original[same_bin_genes_ordered]
-        
+
         # EXCLUDE target genes from potential controls (like Seurat does!)
         potential_controls <- setdiff(same_bin_genes_original, all_target_indices)
-        
+
         # Sample ctrl genes from remaining candidates
         if (length(potential_controls) >= ctrl) {
           sampled <- sample(potential_controls, ctrl, replace = FALSE)
@@ -196,7 +195,7 @@ compute_cell_cycle_control_genes <- function(
     }
     return(unique(ctrl.use))
   }
-  
+
   list(
     s_control_indices = sample_control_genes_seurat(s_gene_indices),
     g2m_control_indices = sample_control_genes_seurat(g2m_gene_indices)
@@ -212,11 +211,11 @@ compute_cell_cycle_control_genes <- function(
 #' @keywords internal
 assign_cell_cycle_phase <- function(s_scores, g2m_scores) {
   phases <- character(length(s_scores))
-  
+
   for (i in seq_along(s_scores)) {
     s <- s_scores[i]
     g2m <- g2m_scores[i]
-    
+
     if (s < 0 && g2m < 0) {
       phases[i] <- "G1"
     } else if (abs(s - g2m) < 1e-10) {  # Handle floating point equality
@@ -227,7 +226,7 @@ assign_cell_cycle_phase <- function(s_scores, g2m_scores) {
       phases[i] <- "G2M"
     }
   }
-  
+
   # Convert to factor for memory efficiency
   return(factor(phases, levels = c("G1", "S", "G2M", "Undecided")))
 }

@@ -23,7 +23,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 LinkingTo: Rcpp, Rhdf5lib
 biocViews: DataImport, SingleCell, DifferentialExpression, CRISPR
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports: 
     crayon,
     data.table,
@@ -31,6 +31,7 @@ Imports:
     Rcpp,
     Rhdf5lib,
     dplyr,
+    ggplot2,
     readr
 SystemRequirements: GNU make
 Suggests:
@@ -40,6 +41,7 @@ Suggests:
     R.utils,
     rmarkdown,
     sceptredata,
+    Seurat,
     testthat (>= 3.0.0)
 Remotes: github::katsevich-lab/sceptre, github::katsevich-lab/sceptredata
 Config/testthat/edition: 3

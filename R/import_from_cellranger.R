@@ -97,18 +97,15 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
   if (compute_cell_cycle) {
     # Cell cycle scoring parameters (Seurat defaults)
     # NOTE: These could be exposed as function parameters in the future
-    cc_ctrl_genes <- 100L  # Number of control genes per target gene
-    cc_nbin <- 24L         # Number of expression bins for control gene selection
+    cc_ctrl_genes <- 100L     # Number of control genes per target gene
+    cc_nbin <- 24L            # Number of expression bins for control gene selection
     cc_scale_factor <- 10000  # Scaling factor for normalization
-    cc_seed <- 1L          # Random seed for reproducible control gene selection
+    cc_seed <- 1L             # Random seed for reproducible control gene selection
 
     # Check if Gene Expression modality is present
     if (!"Gene Expression" %in% modality_names) {
       stop("Cell cycle scoring requires Gene Expression modality data.")
     }
-
-    # Use default gene sets
-    data("cc_genes_updated_2019", package = "ondisc", envir = environment())
 
     # Prepare gene indices for Gene Expression modality
     ge_idx <- which(modality_names == "Gene Expression")

@@ -18,7 +18,7 @@ initialize_cellwise_covariates <- function(modality_names, n_cells, compute_cell
   covariates_to_compute <- list("Gene Expression" = c("n_umis", "n_nonzero", "p_mito"),
                                 "CRISPR Guide Capture" = c("n_umis", "n_nonzero", "feature_w_max_expression", "frac_umis_max_feature"),
                                 "Antibody Capture" = c("n_umis", "n_nonzero"))
-  
+
   # Add cell cycle covariates to Gene Expression if requested
   if (compute_cell_cycle && "Gene Expression" %in% modality_names) {
     covariates_to_compute[["Gene Expression"]] <- c(covariates_to_compute[["Gene Expression"]], "s_score", "g2m_score")
@@ -101,7 +101,7 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
   }) |> stats::setNames(modality_names)
   n_cells_per_batch <- integer(length = length(matrix_fps))
   collapse_grna_counts <- !is.null(feature_idx_to_vector_idx_map)
-  
+
   # Initialize gene_norm_sum if cell cycle scoring is requested
   gene_norm_sum <- NULL
   if (compute_cell_cycle && "Gene Expression" %in% modality_names) {
@@ -118,9 +118,24 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
     mtx_metadata <- get_mtx_metadata(matrix_fp)
     n_cells_per_batch[i] <- mtx_metadata$n_cells
 
-    # 2. load the feature idxs, decrement, and sort
-    my_col_names <- if (collapse_grna_counts) c("feature_idx", "j") else "feature_idx"
-    my_col_classes <- if (collapse_grna_counts) c("integer", "integer", "NULL") else c("integer", "NULL", "NULL")
+    # 2. load the matrix data - determine columns based on needed functionality
+    need_cell_idx <- collapse_grna_counts
+    need_umi_counts <- compute_cell_cycle && "Gene Expression" %in% modality_names
+
+    if (need_umi_counts) {
+      # Read all three columns when cell cycle scoring is enabled
+      my_col_names <- c("feature_idx", "j", "x")
+      my_col_classes <- c("integer", "integer", "integer")
+    } else if (need_cell_idx) {
+      # Read feature and cell indices when gRNA collapsing is needed
+      my_col_names <- c("feature_idx", "j")
+      my_col_classes <- c("integer", "integer", "NULL")
+    } else {
+      # Read only feature indices for basic processing
+      my_col_names <- "feature_idx"
+      my_col_classes <- c("integer", "NULL", "NULL")
+    }
+
     dt <- data.table::fread(file = matrix_fp,
                             skip = mtx_metadata$n_to_skip,
                             col.names = my_col_names,
@@ -147,40 +162,31 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
                                                  round_1 = TRUE)
     }
 
-    # 4.5. (optionally) collect gene expression statistics for cell cycle scoring
+    # 5. (optionally) collect gene expression statistics for cell cycle scoring
     if (compute_cell_cycle && "Gene Expression" %in% modality_names) {
-      # For normalized statistics, we need UMI totals per cell first
-      # Read the data with all values
-      dt_full <- data.table::fread(file = matrix_fp,
-                                  skip = mtx_metadata$n_to_skip,
-                                  col.names = c("feature_idx", "j", "x"),
-                                  colClasses = c("integer", "integer", "integer"),
-                                  showProgress = FALSE, nThread = 1)
-      decrement_vector(dt_full$feature_idx)
-      
       # Find Gene Expression modality range
       ge_idx <- which(modality_names == "Gene Expression")
       ge_start_idx <- modality_start_mtx[[ge_idx]][1]
       ge_end_idx <- modality_start_mtx[[ge_idx]][2]
-      
+
       if (ge_end_idx >= ge_start_idx) {
         # First, compute UMI totals per cell for this batch
         current_n_cells <- n_cells_per_batch[i]
         batch_n_umis <- integer(current_n_cells)
-        
+
         # Accumulate UMI totals for Gene Expression genes only
         # Note: ge_start_idx and ge_end_idx are 0-based indices into the data table
         for (row_idx in (ge_start_idx + 1):(ge_end_idx + 1)) {  # Convert to 1-based for R indexing
-          cell_idx <- dt_full$j[row_idx] + 1  # Convert 0-based cell index to 1-based
-          batch_n_umis[cell_idx] <- batch_n_umis[cell_idx] + dt_full$x[row_idx]
+          cell_idx <- dt$j[row_idx] + 1  # Convert 0-based cell index to 1-based
+          batch_n_umis[cell_idx] <- batch_n_umis[cell_idx] + dt$x[row_idx]
         }
-        
+
         # Compute normalized gene expression statistics
         compute_normalized_gene_expression_stats(
           gene_norm_sum = gene_norm_sum,
-          feature_idx = dt_full$feature_idx,
-          j = dt_full$j,
-          x = dt_full$x,
+          feature_idx = dt$feature_idx,
+          j = dt$j,
+          x = dt$x,
           n_umis = batch_n_umis,
           start_idx = ge_start_idx,
           end_idx = ge_end_idx,
@@ -188,10 +194,9 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
           scale_factor = cc_scale_factor
         )
       }
-      rm(dt_full); gc() |> invisible()
     }
 
-    # 5. update n_nonzero_features_vector for each modality
+    # 6. update n_nonzero_features_vector for each modality
     for (k in seq_along(modality_names)) {
       start_idx <- modality_start_mtx[[k]][1]
       end_idx <- modality_start_mtx[[k]][2]
@@ -277,7 +282,7 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
       start_idx <- modality_start_mtx[[ge_idx]][1]
       end_idx <- modality_start_mtx[[ge_idx]][2]
       feature_offset <- modality_start_idx_features[[ge_idx]]
-      
+
       compute_cell_cycle_scores(
         s_scores = cellwise_covariates[[ge_idx]]$covariate_list$s_score,
         g2m_scores = cellwise_covariates[[ge_idx]]$covariate_list$g2m_score,
