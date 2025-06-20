@@ -117,9 +117,12 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
       verbose = TRUE
     )
 
-    # Check if we found enough genes
+    # Check if we found enough genes - if not, disable cell cycle scoring
     if (length(cc_gene_indices$s_gene_indices) < 3 || length(cc_gene_indices$g2m_gene_indices) < 3) {
-      stop("Insufficient cell cycle genes found in dataset. Need at least 3 genes per phase.")
+      warning("Insufficient cell cycle genes found in dataset (need at least 3 genes per phase). ",
+              "Cell cycle scoring disabled.")
+      compute_cell_cycle <- FALSE
+      cc_gene_indices <- NULL
     }
   }
 

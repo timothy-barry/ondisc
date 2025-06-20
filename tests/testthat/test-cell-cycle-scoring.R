@@ -94,11 +94,79 @@ test_that("Basic cell cycle scoring functionality", {
   expect_true(all(is.finite(s_scores)))
   expect_true(all(is.finite(g2m_scores)))
   expect_true(all(phases %in% c("G1", "S", "G2M", "Undecided")))
+  
+  # Test that non-cell-cycle covariates are identical between the two runs
+  no_cc_covariates <- result_no_cc$cellwise_covariates
+  with_cc_covariates <- result_with_cc$cellwise_covariates
+  common_cols <- setdiff(colnames(no_cc_covariates), c("gene_s_score", "gene_g2m_score", "gene_phase"))
+  
+  for (col in common_cols) {
+    expect_equal(no_cc_covariates[[col]], with_cc_covariates[[col]],
+                 info = paste("Column", col, "should be identical between runs"))
+  }
 
   # Clean up
   unlink(temp_input_dir, recursive = TRUE)
   unlink(paste0(temp_output_dir, "_no_cc"), recursive = TRUE)
   unlink(paste0(temp_output_dir, "_with_cc"), recursive = TRUE)
+})
+
+test_that("Graceful handling of insufficient cell cycle genes", {
+  # Test that cell cycle scoring is disabled when insufficient genes are found
+  set.seed(789)
+
+  temp_input_dir <- tempfile()
+  temp_output_dir <- tempfile()
+
+  # Create dataset with only 1 S gene and 2 G2M genes (insufficient)
+  data("cc_genes_updated_2019", package = "ondisc")
+  insufficient_s_genes <- cc_genes_updated_2019$s_genes[1]  # Only 1 S gene
+  insufficient_g2m_genes <- cc_genes_updated_2019$g2m_genes[1:2]  # Only 2 G2M genes
+  other_genes <- paste0("GENE_", 1:47)  # Fill to 50 total genes
+  all_genes <- c(insufficient_s_genes, insufficient_g2m_genes, other_genes)
+
+  # Create synthetic dataset
+  out <- write_example_cellranger_dataset(
+    n_features = 50,
+    n_cells = 20,
+    n_batch = 1,
+    modalities = "gene",
+    directory_to_write = temp_input_dir,
+    p_zero = 0.7
+  )
+
+  # Modify features file to include insufficient cell cycle genes
+  batch_dir <- list.files(temp_input_dir, pattern = "batch_", full.names = TRUE)[1]
+  features_file <- file.path(batch_dir, "features.tsv.gz")
+  features_df <- readr::read_tsv(features_file, col_names = c("id", "name", "modality"),
+                                 show_col_types = FALSE)
+  features_df$name <- all_genes
+
+  temp_features_file <- file.path(batch_dir, "features_temp.tsv")
+  readr::write_tsv(features_df, temp_features_file, col_names = FALSE)
+  file.remove(features_file)
+  R.utils::gzip(temp_features_file, destname = features_file)
+
+  # Test with cell cycle enabled - should produce warning and disable cell cycle
+  expect_warning(
+    result <- create_odm_from_cellranger(
+      directories_to_load = batch_dir,
+      directory_to_write = temp_output_dir,
+      compute_cell_cycle = TRUE,
+      chunk_size = 10L
+    ),
+    "Insufficient cell cycle genes found.*Cell cycle scoring disabled"
+  )
+
+  # Check that cell cycle columns are NOT present
+  result_cols <- colnames(result$cellwise_covariates)
+  expect_false("gene_s_score" %in% result_cols)
+  expect_false("gene_g2m_score" %in% result_cols)
+  expect_false("gene_phase" %in% result_cols)
+
+  # Clean up
+  unlink(temp_input_dir, recursive = TRUE)
+  unlink(temp_output_dir, recursive = TRUE)
 })
 
 test_that("C++ cell cycle scoring logic", {

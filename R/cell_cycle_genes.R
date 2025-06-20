@@ -68,15 +68,9 @@ cc_genes_updated_2019 <- list(
 #'
 #' @keywords internal
 prepare_cell_cycle_gene_indices <- function(s_genes, g2m_genes, feature_ids, feature_names, verbose = TRUE) {
-  # Try to match genes by both feature_ids and feature_names
+  # Match genes by feature_names
   find_gene_indices <- function(genes, feature_ids, feature_names) {
-    # First try feature_names (more common for cell cycle genes)
-    name_matches <- match(genes, feature_names)
-    # Then try feature_ids as backup
-    id_matches <- match(genes, feature_ids)
-
-    # Combine matches, preferring feature_name matches
-    indices <- ifelse(!is.na(name_matches), name_matches, id_matches)
+    indices <- match(genes, feature_names)
     found_genes <- genes[!is.na(indices)]
     missing_genes <- genes[is.na(indices)]
 
@@ -114,13 +108,6 @@ prepare_cell_cycle_gene_indices <- function(s_genes, g2m_genes, feature_ids, fea
     }
   }
 
-  # Check if we have enough genes for scoring
-  if (length(s_result$indices) < 5) {
-    warning("Only ", length(s_result$indices), " S phase genes found. Cell cycle scoring may be unreliable.")
-  }
-  if (length(g2m_result$indices) < 5) {
-    warning("Only ", length(g2m_result$indices), " G2/M phase genes found. Cell cycle scoring may be unreliable.")
-  }
 
   return(list(
     s_gene_indices = s_result$indices,
