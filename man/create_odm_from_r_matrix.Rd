@@ -27,12 +27,17 @@ an \code{odm} object
 \code{create_odm_from_r_matrix()} converts an R matrix (stored in standard dense format or sparse format) into an \code{odm} object.
 }
 \examples{
-library(sceptredata)
-data(lowmoi_example_data)
-gene_matrix <- lowmoi_example_data$response_matrix
+set.seed(4)
+x <- rpois(100, lambda = 1)
+gene_matrix <- matrix(
+  x,
+  nrow = 5L,
+  dimnames = list(paste0("gene_", seq_len(5L)), paste0("cell_", seq_len(20L)))
+)
 file_to_write <- paste0(tempdir(), "/gene.odm")
 odm_object <- create_odm_from_r_matrix(
   mat = gene_matrix,
-  file_to_write = file_to_write
+  file_to_write = file_to_write,
+  chunk_size = 5L
 )
 }

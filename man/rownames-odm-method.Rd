@@ -17,10 +17,9 @@ the rownames of an \code{odm} object
 \code{rownames()} returns the rownames (i.e., feature IDs) of an \code{odm} object.
 }
 \examples{
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(

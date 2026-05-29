@@ -1,0 +1,47 @@
+Package: ondisc
+Title: Algorithms and data structures for large single-cell expression
+        matrices
+Version: 1.2.0
+Authors@R: 
+    c(person(given = "Timothy",
+            family = "Barry",
+            role = c("aut", "cre"),
+            email = "tbarry@hsph.harvard.edu",
+            comment=c(ORCID="0000-0002-4356-627X")),
+      person(given = "Songcheng",
+             family = "Dai",
+             role = "ctb"),
+      person(given = "Yixuan",
+             family = "Qiu",
+             role = "ctb"),
+      person(given = "Eugene",
+            family = "Katsevich",
+            role = c("aut", "ths"),
+            email = "ekatsevi@wharton.upenn.edu"))
+Description: Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. `ondisc` is an R package that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds processors on a cluster or cloud. In both of these settings, `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` mainly is oriented toward single-cell CRISPR screen analysis, but ondisc also can be used for single-cell differential expression and single-cell co-expression analyses. ondisc is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+LinkingTo: Rcpp, Rhdf5lib
+biocViews: DataImport, SingleCell, DifferentialExpression, CRISPR
+RoxygenNote: 7.3.1
+Imports: crayon, data.table, methods, Rcpp, Rhdf5lib, dplyr, readr
+SystemRequirements: GNU make
+Suggests: sessioninfo, knitr, Matrix, R.utils, rmarkdown, sceptredata,
+        testthat (>= 3.0.0)
+Remotes: github::katsevich-lab/sceptre,
+        github::katsevich-lab/sceptredata
+Config/testthat/edition: 3
+URL: https://timothy-barry.github.io/ondisc/,
+        https://timothy-barry.github.io/sceptre-book/
+BugReports: https://github.com/timothy-barry/ondisc/issues
+VignetteBuilder: knitr
+NeedsCompilation: yes
+Packaged: 2026-05-14 18:39:20 UTC; timbarry
+Author: Timothy Barry [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-4356-627X>),
+  Songcheng Dai [ctb],
+  Yixuan Qiu [ctb],
+  Eugene Katsevich [aut, ths]
+Maintainer: Timothy Barry <tbarry@hsph.harvard.edu>
+Depends: R (>= 4.1.0)

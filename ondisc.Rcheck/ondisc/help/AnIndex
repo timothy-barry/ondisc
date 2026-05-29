@@ -1,0 +1,10 @@
+ondisc-package	ondisc-package
+create_odm_from_cellranger	create_odm_from_cellranger
+create_odm_from_r_matrix	create_odm_from_r_matrix
+dim,odm-method	dim-odm-method
+dimnames,odm-method	rownames-odm-method
+initialize_odm_from_backing_file	initialize_odm_from_backing_file
+ondisc	ondisc-package
+rownames	rownames-odm-method
+write_example_cellranger_dataset	write_example_cellranger_dataset
+[,odm,ANY,missing,missing-method	sub-odm-ANY-missing-missing-method

@@ -1,0 +1,487 @@
+\nonstopmode{}
+\documentclass[a4paper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\makeatletter\@ifl@t@r\fmtversion{2018/04/01}{}{\usepackage[utf8]{inputenc}}\makeatother
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `ondisc'}}
+\par\bigskip{\large \today}
+\end{center}
+\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdftitle = {ondisc: Algorithms and data structures for large single-cell expression matrices}}}{}
+\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdfauthor = {Timothy Barry; Eugene Katsevich}}}{}
+\begin{description}
+\raggedright{}
+\item[Title]\AsIs{Algorithms and data structures for large single-cell expression
+matrices}
+\item[Version]\AsIs{1.2.0}
+\item[Description]\AsIs{Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. `ondisc` is an R package that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds processors on a cluster or cloud. In both of these settings, `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` mainly is oriented toward single-cell CRISPR screen analysis, but ondisc also can be used for single-cell differential expression and single-cell co-expression analyses. ondisc is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices.}
+\item[License]\AsIs{MIT + file LICENSE}
+\item[Encoding]\AsIs{UTF-8}
+\item[Roxygen]\AsIs{list(markdown = TRUE)}
+\item[LinkingTo]\AsIs{Rcpp, Rhdf5lib}
+\item[biocViews]\AsIs{DataImport, SingleCell, DifferentialExpression, CRISPR}
+\item[RoxygenNote]\AsIs{7.3.1}
+\item[Imports]\AsIs{crayon, data.table, methods, Rcpp, Rhdf5lib, dplyr, readr}
+\item[SystemRequirements]\AsIs{GNU make}
+\item[Suggests]\AsIs{sessioninfo, knitr, Matrix, R.utils, rmarkdown, sceptredata,
+testthat (>= 3.0.0)}
+\item[Remotes]\AsIs{github::katsevich-lab/sceptre,
+github::katsevich-lab/sceptredata}
+\item[Config/testthat/edition]\AsIs{3}
+\item[URL]\AsIs{}\url{https://timothy-barry.github.io/ondisc/}\AsIs{,
+}\url{https://timothy-barry.github.io/sceptre-book/}\AsIs{}
+\item[BugReports]\AsIs{}\url{https://github.com/timothy-barry/ondisc/issues}\AsIs{}
+\item[VignetteBuilder]\AsIs{knitr}
+\item[NeedsCompilation]\AsIs{yes}
+\item[Author]\AsIs{Timothy Barry [aut, cre] (ORCID:
+  <}\url{https://orcid.org/0000-0002-4356-627X}\AsIs{>),
+Songcheng Dai [ctb],
+Yixuan Qiu [ctb],
+Eugene Katsevich [aut, ths]}
+\item[Maintainer]\AsIs{Timothy Barry }\email{tbarry@hsph.harvard.edu}\AsIs{}
+\item[Depends]\AsIs{R (>= 4.1.0)}
+\end{description}
+\Rdcontents{Contents}
+\HeaderA{ondisc-package}{ondisc: Algorithms and data structures for large single-cell expression matrices}{ondisc.Rdash.package}
+\aliasA{ondisc}{ondisc-package}{ondisc}
+%
+\begin{Description}
+Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. `ondisc` is an R package that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds processors on a cluster or cloud. In both of these settings, `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` mainly is oriented toward single-cell CRISPR screen analysis, but ondisc also can be used for single-cell differential expression and single-cell co-expression analyses. ondisc is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices.
+\end{Description}
+%
+\begin{Author}
+\strong{Maintainer}: Timothy Barry \email{tbarry@hsph.harvard.edu} (\Rhref{https://orcid.org/0000-0002-4356-627X}{ORCID})
+
+Authors:
+\begin{itemize}
+
+\item{} Eugene Katsevich \email{ekatsevi@wharton.upenn.edu} [thesis advisor]
+
+\end{itemize}
+
+
+Other contributors:
+\begin{itemize}
+
+\item{} Songcheng Dai [contributor]
+\item{} Yixuan Qiu [contributor]
+
+\end{itemize}
+
+
+\end{Author}
+%
+\begin{SeeAlso}
+Useful links:
+\begin{itemize}
+
+\item{} \url{https://timothy-barry.github.io/ondisc/}
+\item{} \url{https://timothy-barry.github.io/sceptre-book/}
+\item{} Report bugs at \url{https://github.com/timothy-barry/ondisc/issues}
+
+\end{itemize}
+
+
+\end{SeeAlso}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# initialize odm objects from Cell Ranger output; also, compute the cellwise covariates
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+
+# extract the odm corresponding to the gene modality
+gene_odm <- out_list$gene
+gene_odm
+
+# obtain dimension information
+dim(gene_odm)
+nrow(gene_odm)
+ncol(gene_odm)
+
+# obtain rownames (i.e., the feature IDs)
+rownames(gene_odm) |> head()
+
+# extract row into memory, first by integer and then by string
+expression_vector_1 <- gene_odm[10,]
+expression_vector_2 <- gene_odm["ENSG00000135046",]
+
+# delete the gene_odm object
+rm(gene_odm)
+
+# reinitialize the gene_odm object
+gene_odm <- initialize_odm_from_backing_file(
+  paste0(tempdir(), "/gene.odm")
+)
+gene_odm
+\end{ExampleCode}
+\end{Examples}
+\HeaderA{[,odm,ANY,missing,missing-method}{Load a row of an \code{odm} object into memory}{[,odm,ANY,missing,missing.Rdash.method}
+%
+\begin{Description}
+The operator \code{[} loads a specified row of an \code{odm} object into memory. The \code{odm} object can be indexed either by integer or feature ID.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+## S4 method for signature 'odm,ANY,missing,missing'
+x[i, j, drop]
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] an object of class \code{odm}
+
+\item[\code{i}] the index of the row to load into memory. \code{i} can be either an integer (specifying the integer-based index of the row to load into memory) or a string (specifying the feature ID of the row to load into memory).
+
+\item[\code{j}] not used
+
+\item[\code{drop}] not used
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+an expression vector (of class \code{numeric})
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+gene_odm <- out_list$gene
+# extract rows into memory by index and ID
+v1 <- gene_odm[10L,]
+v2 <- gene_odm["ENSG00000173825",]
+\end{ExampleCode}
+\end{Examples}
+\HeaderA{create\_odm\_from\_cellranger}{Create \code{odm} object from Cell Ranger}{create.Rul.odm.Rul.from.Rul.cellranger}
+%
+\begin{Description}
+\code{create\_odm\_from\_cellranger()} initializes an \code{odm} object, taking as input the output of one or more calls to Cell Ranger count. The number of \code{odm} objects returned corresponds to the number of modalities in the input data. Additionally, the cell-wise covariate data frame is computed and returned. \code{create\_odm\_from\_cellranger()} supports the Cell Ranger modalities "Gene Expression", "CRISPR Guide Capture", and "Antibody Capture".
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create_odm_from_cellranger(
+  directories_to_load,
+  directory_to_write,
+  write_cellwise_covariates = TRUE,
+  chunk_size = 1000L,
+  compression_level = 3L,
+  grna_target_data_frame = NULL
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{directories\_to\_load}] a character vector specifying the locations of the directories to load. Each directory should contain the files "matrix.mtx.gz" and "features.tsv.gz" (and optionally "barcodes.tsv.gz", which is ignored).
+
+\item[\code{directory\_to\_write}] a string indicating the directory in which to write the backing .odm files.
+
+\item[\code{write\_cellwise\_covariates}] (optional; default \code{TRUE}) a logical value indicating whether to write the cellwise covariate data frame to disk (\code{TRUE}) in addition to returning it from \code{create\_odm\_from\_cellranger()}.
+
+\item[\code{chunk\_size}] (optional; default \code{1000L}) a positive integer specifying the chunk size to use to store the data in the backing HDF5 file.
+
+\item[\code{compression\_level}] (optional; default \code{3L}) an integer in the inveral [0, 9] specifying the compression level to use to store the data in the backing HDF5 file.
+
+\item[\code{grna\_target\_data\_frame}] (optional) a data frame mapping each gRNA ID to its target. Relevant only if the CRISPR modality is present within the data. (See note.)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+a list containing the odm object(s) and cellwise covariates.
+\end{Value}
+%
+\begin{Note}
+The \code{grna\_target\_data\_frame} is relevant only for CRISPR screen data (i.e., data for which the "CRISPR Guide Capture" modality is present). In single-cell CRISPR screens, gRNAs are delivered to cells via a viral vector. Some recent single-cell CRISPR screens involve a special design in which each viral vector harbors multiple gRNAs. For example, \Rhref{https://pubmed.ncbi.nlm.nih.gov/35688146/}{Replogle 2022} conducted a screen in which each viral vector contained two gRNAs, each targeting the same site. In such screens, users may wish to "collapse" the gRNA count matrix by summing over the UMI counts of gRNAs contained on the same vector. To do so, users can pass the argument \code{grna\_target\_data\_frame}, which is a data frame containing two columns: \code{grna\_id} and \code{vector\_id}. \code{grna\_id} should coincide with the gRNA IDs as contained within the \code{features.tsv} file, and \code{vector\_id} should be a string indicating the vector to which a given gRNA ID belongs. The expression vectors of gRNAs contained within the same vector are summed.
+
+The arguments \code{chunk\_size} and \code{compression\_level} control the extent to which the backing \code{.odm} files are compressed, with higher values corresponding to smaller file sizes (albeit possibly longer read and write times).
+\end{Note}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+\end{ExampleCode}
+\end{Examples}
+\HeaderA{create\_odm\_from\_r\_matrix}{Create \code{odm} object from R matrix}{create.Rul.odm.Rul.from.Rul.r.Rul.matrix}
+%
+\begin{Description}
+\code{create\_odm\_from\_r\_matrix()} converts an R matrix (stored in standard dense format or sparse format) into an \code{odm} object.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create_odm_from_r_matrix(
+  mat,
+  file_to_write,
+  chunk_size = 1000L,
+  compression_level = 3L
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{mat}] an R matrix of class \code{"matrix"}, \code{"dgCMatrix"}, \code{"dgRMatrix"}, or \code{"dgTMatrix"}.
+
+\item[\code{file\_to\_write}] a fully-qualified file path specifying the location in which to write the backing \code{.odm} file.
+
+\item[\code{chunk\_size}] (optional; default \code{1000L}) a positive integer specifying the chunk size to use to store the data in the backing HDF5 file.
+
+\item[\code{compression\_level}] (optional; default \code{3L}) an integer in the inveral [0, 9] specifying the compression level to use to store the data in the backing HDF5 file.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+an \code{odm} object
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(sceptredata)
+data(lowmoi_example_data)
+gene_matrix <- lowmoi_example_data$response_matrix
+file_to_write <- paste0(tempdir(), "/gene.odm")
+odm_object <- create_odm_from_r_matrix(
+  mat = gene_matrix,
+  file_to_write = file_to_write
+)
+\end{ExampleCode}
+\end{Examples}
+\HeaderA{dim,odm-method}{Return the number of columns and rows of an \code{odm} object}{dim,odm.Rdash.method}
+%
+\begin{Description}
+\code{ncol()} and \code{nrow()} return the number of rows (i.e., features) and columns (i.e., cells), respectively, contained within an \code{odm} object. \code{dim()} returns an integer vector of length two whose first and second entries, respectively, indicate the number of rows and columns in an \code{odm} object.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+## S4 method for signature 'odm'
+dim(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] an object of class \code{odm}
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+the dimension of the \code{odm} object
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+gene_odm <- out_list$gene
+# return the dimension, number of rows, and number of columns
+dim(gene_odm)
+nrow(gene_odm)
+ncol(gene_odm)
+\end{ExampleCode}
+\end{Examples}
+\HeaderA{dimnames,odm-method}{Return the rownames of an \code{odm} object}{dimnames,odm.Rdash.method}
+\aliasA{rownames}{dimnames,odm-method}{rownames}
+%
+\begin{Description}
+\code{rownames()} returns the rownames (i.e., feature IDs) of an \code{odm} object.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+## S4 method for signature 'odm'
+dimnames(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] an object of class \code{odm}
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+the rownames of an \code{odm} object
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+gene_odm <- out_list$gene
+# return the rownames
+rownames(gene_odm) |> head()
+\end{ExampleCode}
+\end{Examples}
+\HeaderA{initialize\_odm\_from\_backing\_file}{Initialize an \code{odm} object}{initialize.Rul.odm.Rul.from.Rul.backing.Rul.file}
+%
+\begin{Description}
+\code{initialize\_odm\_from\_backing\_file()} initializes an \code{odm} object from a backing \code{.odm} file.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+initialize_odm_from_backing_file(odm_file)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{odm\_file}] file path to a backing \code{.odm} file.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}
+\code{initialize\_odm\_from\_backing\_file()} is portable: the user can create an \code{.odm} file (via \code{create\_odm\_from\_cellranger()} or \code{create\_odm\_from\_r\_matrix()}) on one computer, transfer the \code{.odm} file to another computer, and then load the \code{.odm} file (via \code{initialize\_odm\_from\_backing\_file()}) on the second computer.
+\end{Details}
+%
+\begin{Value}
+an \code{odm} object
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(sceptredata)
+directories_to_load <- paste0(
+ system.file("extdata", package = "sceptredata"),
+ "/highmoi_example/gem_group_", c(1, 2)
+)
+directory_to_write <- tempdir()
+out_list <- create_odm_from_cellranger(
+  directories_to_load = directories_to_load,
+  directory_to_write = directory_to_write,
+)
+gene_odm <- out_list$gene
+gene_odm
+
+# delete the gene_odm object
+rm(gene_odm)
+
+# reinitialize the gene_odm object
+gene_odm <- initialize_odm_from_backing_file(
+  paste0(tempdir(), "/gene.odm")
+)
+gene_odm
+\end{ExampleCode}
+\end{Examples}
+\HeaderA{write\_example\_cellranger\_dataset}{Write example Cell Ranger dataset}{write.Rul.example.Rul.cellranger.Rul.dataset}
+%
+\begin{Description}
+\code{write\_example\_cellranger\_dataset()} creates an example dataset and writes the dataset to disk in Cell Ranger format. The dataset can be unimodal or multimodal, containing some subset of the gene expression, gRNA expression, and protein expression modalities.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+write_example_cellranger_dataset(
+  n_features,
+  n_cells,
+  n_batch,
+  modalities,
+  directory_to_write,
+  p_zero = NULL,
+  p_set_col_zero = NULL,
+  p_set_row_zero = NULL
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{n\_features}] an integer vector specifying the number of features to simulate for each modality.
+
+\item[\code{n\_cells}] an integer specifying the number of cells to simulate.
+
+\item[\code{n\_batch}] an integer specifying the number of batches to simulate. Cells from different batches are written to different directories.
+
+\item[\code{modalities}] a character vector indicating the modalities to simulate. The vector should contain some subset of the strings "gene", "grna", and "protein".
+
+\item[\code{directory\_to\_write}] the directory in which to write the Cell Ranger feature barcode files.
+
+\item[\code{p\_zero}] (optional; default random) the fraction of entries to set randomly to zero.
+
+\item[\code{p\_set\_col\_zero}] (optional; default random) the fraction of columns to set randomly to zero.
+
+\item[\code{p\_set\_row\_zero}] (optional; default random) the fraction of rows to set randomly to zero.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+a list containing (i) a list of the simulated expression matrices, (ii) a character vector containing the names of the genes (or \code{NULL} if the gene modality was not simulated), and (iii) a character vector specifying the batch of each cell.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+set.seed(4)
+n_features <- c(1000, 40, 400)
+modalities <- c("gene", "protein", "grna")
+n_cells <- 10000
+n_batch <- 2
+directory_to_write <- tempdir()
+p_set_col_zero <- 0
+out <- write_example_cellranger_dataset(
+  n_features = n_features,
+  n_cells = n_cells,
+  n_batch = n_batch,
+  modalities = modalities,
+  directory_to_write = directory_to_write,
+  p_set_col_zero = p_set_col_zero
+)
+
+# directories written to directory_to_write
+fs <- list.files(directory_to_write, pattern = "batch*", full.names = TRUE)
+# files contained within the directories
+list.files(fs[1])
+list.files(fs[2])
+\end{ExampleCode}
+\end{Examples}
+\printindex{}
+\end{document}

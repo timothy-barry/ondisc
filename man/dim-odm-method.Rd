@@ -16,10 +16,9 @@ the dimension of the \code{odm} object
 \code{ncol()} and \code{nrow()} return the number of rows (i.e., features) and columns (i.e., cells), respectively, contained within an \code{odm} object. \code{dim()} returns an integer vector of length two whose first and second entries, respectively, indicate the number of rows and columns in an \code{odm} object.
 }
 \examples{
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(

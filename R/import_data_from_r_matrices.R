@@ -11,13 +11,18 @@
 #' @export
 #'
 #' @examples
-#' library(sceptredata)
-#' data(lowmoi_example_data)
-#' gene_matrix <- lowmoi_example_data$response_matrix
+#' set.seed(4)
+#' x <- rpois(100, lambda = 1)
+#' gene_matrix <- matrix(
+#'   x,
+#'   nrow = 5L,
+#'   dimnames = list(paste0("gene_", seq_len(5L)), paste0("cell_", seq_len(20L)))
+#' )
 #' file_to_write <- paste0(tempdir(), "/gene.odm")
 #' odm_object <- create_odm_from_r_matrix(
 #'   mat = gene_matrix,
-#'   file_to_write = file_to_write
+#'   file_to_write = file_to_write,
+#'   chunk_size = 5L
 #' )
 create_odm_from_r_matrix <- function(mat, file_to_write, chunk_size = 1000L, compression_level = 3L) {
   create_odm_from_r_matrix_internal(mat = mat, file_to_write = file_to_write,
@@ -26,8 +31,8 @@ create_odm_from_r_matrix <- function(mat, file_to_write, chunk_size = 1000L, com
 
 
 create_odm_from_r_matrix_internal <- function(mat, file_to_write, chunk_size = 1000L, compression_level = 3L, integer_id = 0L) {
-  # convert the matrix into a dgRMatrix using the sceptre function
-  mat <- sceptre:::set_matrix_accessibility(mat)
+  # convert the matrix into a row-accessible sparse format
+  mat <- set_matrix_accessibility(mat)
 
   # expand tilde for the file to write
   file_to_write <- expand_tilde(file_to_write)
@@ -88,7 +93,7 @@ set_matrix_accessibility <- function(matrix_in, make_row_accessible = TRUE) {
       i <- matrix_in@i
       j <- matrix_in@j
     } else if (methods::is(matrix_in, "matrix")) {
-      matrix_in <- methods::as(matrix_in, "TsparseMatrix")
+      matrix_in <- methods::as(Matrix::Matrix(matrix_in, sparse = TRUE), "TsparseMatrix")
       i <- matrix_in@i
       j <- matrix_in@j
     } else if (methods::is(matrix_in, "dgCMatrix")) {

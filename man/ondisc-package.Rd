@@ -10,10 +10,9 @@ Single-cell datasets are growing in size, posing challenges as well as opportuni
 }
 \examples{
 # initialize odm objects from Cell Ranger output; also, compute the cellwise covariates
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(
@@ -35,7 +34,7 @@ rownames(gene_odm) |> head()
 
 # extract row into memory, first by integer and then by string
 expression_vector_1 <- gene_odm[10,]
-expression_vector_2 <- gene_odm["ENSG00000135046",]
+expression_vector_2 <- gene_odm[rownames(gene_odm)[10],]
 
 # delete the gene_odm object
 rm(gene_odm)

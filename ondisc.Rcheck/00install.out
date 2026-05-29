@@ -1,0 +1,100 @@
+* installing *source* package ‘ondisc’ ...
+** this is package ‘ondisc’ version ‘1.2.0’
+** using staged installation
+** libs
+using C++ compiler: ‘Apple clang version 21.0.0 (clang-2100.0.123.102)’
+using SDK: ‘MacOSX26.4.sdk’
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -O3 -Wall  -c RcppExports.cpp -o RcppExports.o
+In file included from RcppExports.cpp:4:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp.h:27:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/RcppCommon.h:30:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp/r/headers.h:70:
+In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
+/Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
+   62 | #  pragma clang diagnostic ignored "-Wfixed-enum-extension"
+      |                                    ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -O3 -Wall  -c h5_import_data_functs.cpp -o h5_import_data_functs.o
+In file included from h5_import_data_functs.cpp:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp.h:27:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/RcppCommon.h:30:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp/r/headers.h:70:
+In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
+/Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
+   62 | #  pragma clang diagnostic ignored "-Wfixed-enum-extension"
+      |                                    ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -O3 -Wall  -c h5_initialize_functs.cpp -o h5_initialize_functs.o
+In file included from h5_initialize_functs.cpp:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp.h:27:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/RcppCommon.h:30:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp/r/headers.h:70:
+In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
+/Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
+   62 | #  pragma clang diagnostic ignored "-Wfixed-enum-extension"
+      |                                    ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -O3 -Wall  -c h5_load_row.cpp -o h5_load_row.o
+In file included from h5_load_row.cpp:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp.h:27:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/RcppCommon.h:30:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp/r/headers.h:70:
+In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
+/Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
+   62 | #  pragma clang diagnostic ignored "-Wfixed-enum-extension"
+      |                                    ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -O3 -Wall  -c h5_simple_read.cpp -o h5_simple_read.o
+In file included from h5_simple_read.cpp:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp.h:27:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/RcppCommon.h:30:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp/r/headers.h:70:
+In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
+/Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
+   62 | #  pragma clang diagnostic ignored "-Wfixed-enum-extension"
+      |                                    ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -O3 -Wall  -c sceptre_functs.cpp -o sceptre_functs.o
+In file included from sceptre_functs.cpp:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp.h:27:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/RcppCommon.h:30:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp/r/headers.h:70:
+In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
+/Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
+   62 | #  pragma clang diagnostic ignored "-Wfixed-enum-extension"
+      |                                    ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -O3 -Wall  -c shared_functs.cpp -o shared_functs.o
+In file included from shared_functs.cpp:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp.h:27:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/RcppCommon.h:30:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp/r/headers.h:70:
+In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
+/Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
+   62 | #  pragma clang diagnostic ignored "-Wfixed-enum-extension"
+      |                                    ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -O3 -Wall  -c utility_functs.cpp -o utility_functs.o
+In file included from utility_functs.cpp:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp.h:27:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/RcppCommon.h:30:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include/Rcpp/r/headers.h:70:
+In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
+/Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
+   62 | #  pragma clang diagnostic ignored "-Wfixed-enum-extension"
+      |                                    ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o ondisc.so RcppExports.o h5_import_data_functs.o h5_initialize_functs.o h5_load_row.o h5_simple_read.o sceptre_functs.o shared_functs.o utility_functs.o /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/lib/libhdf5_cpp.a /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/lib/libhdf5.a -L/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/lib -lcrypto -lcurl -lsz -laec -lz -ldl -lm -F/Library/Frameworks/R.framework/.. -framework R
+installing to /Users/timbarry/research_code/ondisc/ondisc.Rcheck/00LOCK-ondisc/00new/ondisc/libs
+** R
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+*** copying figures
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (ondisc)

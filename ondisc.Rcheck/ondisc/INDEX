@@ -1,0 +1,15 @@
+[,odm,ANY,missing,missing-method
+                        Load a row of an 'odm' object into memory
+create_odm_from_cellranger
+                        Create 'odm' object from Cell Ranger
+create_odm_from_r_matrix
+                        Create 'odm' object from R matrix
+dim,odm-method          Return the number of columns and rows of an
+                        'odm' object
+dimnames,odm-method     Return the rownames of an 'odm' object
+initialize_odm_from_backing_file
+                        Initialize an 'odm' object
+ondisc-package          ondisc: Algorithms and data structures for
+                        large single-cell expression matrices
+write_example_cellranger_dataset
+                        Write example Cell Ranger dataset

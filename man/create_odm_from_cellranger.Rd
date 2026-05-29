@@ -38,10 +38,9 @@ The \code{grna_target_data_frame} is relevant only for CRISPR screen data (i.e.,
 The arguments \code{chunk_size} and \code{compression_level} control the extent to which the backing \code{.odm} files are compressed, with higher values corresponding to smaller file sizes (albeit possibly longer read and write times).
 }
 \examples{
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(

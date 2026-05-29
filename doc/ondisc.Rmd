@@ -8,36 +8,34 @@ vignette: >
 --- 
  
 
-[`ondisc`](https://timothy-barry.github.io/ondisc/) is a companion R package to `sceptre` that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds processors on a cluster or cloud. In both of these settings, `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` mainly is oriented toward single-cell CRISPR screen analysis, but `ondisc` also can be used for single-cell differential expression and single-cell co-expression analyses. `ondisc` is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices. Although `ondisc` and `sceptre` work best in conjunction, `ondisc` can be used independently of `sceptre` (and conversely, `sceptre` can be used independently of `ondisc`).
+[`ondisc`](https://timothy-barry.github.io/ondisc/) is an R package that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds processors on a cluster or cloud. In both of these settings, `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` mainly is oriented toward single-cell CRISPR screen analysis, but `ondisc` also can be used for single-cell differential expression and single-cell co-expression analyses. `ondisc` is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices. Although `ondisc` and `sceptre` work best in conjunction, `ondisc` can be used independently of `sceptre` (and conversely, `sceptre` can be used independently of `ondisc`).
 
-Users can install `ondisc` using the code below. `ondisc` depends on the Bioconductor package `Rhdf5lib`, which should be installed from source before installing `ondisc`. Users also should install `sceptredata`, which contains the example data used in this vignette.
+Users can install `ondisc` using the code below. `ondisc` depends on the Bioconductor package `Rhdf5lib`, which should be installed from source before installing `ondisc`.
 
 ```{r,eval=FALSE}
 # install.packages("BiocManager"); install.packages("devtools")
 BiocManager::install("Rhdf5lib", type = "source") # Rhdf5lib
 devtools::install_github("timothy-barry/ondisc") # ondisc
-devtools::install_github("katsevich-lab/sceptredata") # sceptredata
 ```
 
-See the [frequently asked questions page](https://timothy-barry.github.io/sceptre-book/faq.html) for tips on installing `ondisc` such that it runs as fast as possible. We can load `ondisc` and `sceptredata` by calling `library()`.
+See the [frequently asked questions page](https://timothy-barry.github.io/sceptre-book/faq.html) for tips on installing `ondisc` such that it runs as fast as possible. We can load `ondisc` by calling `library()`.
 
 ```{r}
 library(ondisc)
-library(sceptredata)
 ```
 
 The interface to `ondisc` is simple and minimal. The package contains only one class: `odm` (short for "`ondisc` matrix"). An `odm` object represents a single-cell expression matrix stored *on disk* (as opposed to *in memory*). `odm` objects can be used to store expression matrices that are too large to fit in memory. Users can create an `odm` object via one of two functions: `create_odm_from_cellranger()` or `create_odm_from_r_matrix()`. The former takes the output of one or more calls to Cell Ranger count as input, while the latter takes an R matrix (stored in standard format or sparse format) as input. Users can interface with an `odm` object using several functions, including the bracket (`[,]`) operator, which loads a specified subset of the expression matrix into memory.
 
 ## Initializing an `odm` object via `create_odm_from_cellranger()`
 
-`ondisc` provides two functions for initializing an `odm` object: `create_odm_from_cellranger()` and `create_odm_from_r_matrix()`. The former is considerably more scalable and memory-efficient than the latter; thus, we recommend that users employ `create_odm_from_cellranger()` when possible. We illustrate use of `create_odm_from_cellranger()` on an example single-cell CRISPR screen dataset stored in the `sceptredata` package. The example data contain two modalities, namely a gene modality and a CRISPR gRNA modality. There are 526 genes, 95 gRNAs, and 45,919 cells in the data. Users can read more about the example data by evaluating `vignette("sceptredata")` or `?highmoi_example_data` in the console. `create_odm_from_cellranger()` takes several arguments: `directories_to_load`, `directory_to_write`, `write_cellwise_covariates`, `chunk_size`, `compression_level`, and `grna_target_data_frame`. Only the first two of these arguments are required; the rest are set to reasonable defaults. We describe the `directories_to_load` and `directory_to_write ` arguments below.
+`ondisc` provides two functions for initializing an `odm` object: `create_odm_from_cellranger()` and `create_odm_from_r_matrix()`. The former is considerably more scalable and memory-efficient than the latter; thus, we recommend that users employ `create_odm_from_cellranger()` when possible. We illustrate use of `create_odm_from_cellranger()` on an example single-cell CRISPR screen dataset stored in `ondisc`. The example data contain two modalities, namely a gene modality and a CRISPR gRNA modality. There are 100 genes, 60 gRNAs, and 500 cells in the data. `create_odm_from_cellranger()` takes several arguments: `directories_to_load`, `directory_to_write`, `write_cellwise_covariates`, `chunk_size`, `compression_level`, and `grna_target_data_frame`. Only the first two of these arguments are required; the rest are set to reasonable defaults. We describe the `directories_to_load` and `directory_to_write ` arguments below.
 
 `directories_to_load` is a character vector specifying the locations of one or more directories outputted by Cell Ranger count. Below, we set `directories_to_load` to the (machine-specific) location of the example data on disk.
 
 ```{r}
 directories_to_load <- paste0(
-  system.file("extdata", package = "sceptredata"), 
-  "/highmoi_example/gem_group_", 1:2
+  system.file("extdata", "highmoi_example", package = "ondisc"), 
+  "/gem_group_", 1:2
 )
 directories_to_load # file paths to the example data on your computer
 ```
@@ -106,7 +104,7 @@ Finally, the bracket operator (`[,]`) loads a specified row of the expression ma
 expression_vector <- gene_odm[2,]
 head(expression_vector)
 
-expression_vector <- gene_odm["ENSG00000117222",]
+expression_vector <- gene_odm[rownames(gene_odm)[2],]
 head(expression_vector)
 ```
 
@@ -126,13 +124,13 @@ object.size(gene_odm) |> format(units = "Kb")
 | `CRISPR Guide Capture`    | `grna`                 |
 | `Antibody Capture`        | `protein`              |
 
-We provide an example of using `create_odm_from_cellranger()` to import a dataset containing three modalities: gene expression, gRNA expression, and protein expression. We use a synthetic dataset for this purpose (so as to reduce the amount of data stored within the `sceptredata` package). To this end we call the function `write_example_cellranger_dataset()`, which creates a synthetic single-cell dataset, writing the dataset to disk in Cell Ranger feature barcode format. (See `?write_example_cellranger_dataset()` for more information about this function.) We create a synthetic single-cell dataset consisting of 500 genes, 50 gRNAs, 20 proteins, and 10,000 cells. Furthermore, we specify that the cells are sequenced across three batches. We write the synthetic dataset to the directory `temp_dir`.
+We provide an example of using `create_odm_from_cellranger()` to import a dataset containing three modalities: gene expression, gRNA expression, and protein expression. We use a synthetic dataset for this purpose. To this end we call the function `write_example_cellranger_dataset()`, which creates a synthetic single-cell dataset, writing the dataset to disk in Cell Ranger feature barcode format. (See `?write_example_cellranger_dataset()` for more information about this function.) We create a synthetic single-cell dataset consisting of 100 genes, 20 gRNAs, 10 proteins, and 500 cells. Furthermore, we specify that the cells are sequenced across three batches. We write the synthetic dataset to the directory `temp_dir`.
 
 ```{r}
 set.seed(4)
 example_data <- write_example_cellranger_dataset(
-  n_features = c(500, 50, 20),
-  n_cells = 10000,
+  n_features = c(100, 20, 10),
+  n_cells = 500,
   n_batch = 3,
   modalities = c("gene", "grna", "protein"),
   directory_to_write = temp_dir ,
@@ -228,20 +226,24 @@ gene_odm
 
 ## Initializing an `odm` object via `create_odm_from_r_matrix()`
 
-We recommend that users create an `odm` object via `create_odm_from_cellranger()`, as this function is highly scalable and typically requires only a couple gigabytes of memory. However, users also can convert an R matrix into an `odm` object via the function `create_odm_from_r_matrix()`. `create_odm_from_r_matrix()` takes two main arguments: `mat` and `file_to_write`. `mat` is a standard R matrix (of type `"matrix"`) or a sparse R matrix (of type `"dgCMatrix"`, `"dgRMatrix"`, or `"dgTMatrix"`). `mat` should contain row names giving the ID of each feature. Next, `file_to_write` is a fully-qualified file path specifying the location in which to write the backing `.odm` file. We provide an example of calling `create_odm_from_r_matrix()` on a gene-by-cell expression matrix contained in the `sceptredata` package.
+We recommend that users create an `odm` object via `create_odm_from_cellranger()`, as this function is highly scalable and typically requires only a couple gigabytes of memory. However, users also can convert an R matrix into an `odm` object via the function `create_odm_from_r_matrix()`. `create_odm_from_r_matrix()` takes two main arguments: `mat` and `file_to_write`. `mat` is a standard R matrix (of type `"matrix"`) or a sparse R matrix (of type `"dgCMatrix"`, `"dgRMatrix"`, or `"dgTMatrix"`). `mat` should contain row names giving the ID of each feature. Next, `file_to_write` is a fully-qualified file path specifying the location in which to write the backing `.odm` file. We provide an example of calling `create_odm_from_r_matrix()` on a small gene-by-cell expression matrix.
 
 ```{r}
-data(lowmoi_example_data)
-gene_mat <- lowmoi_example_data$response_matrix
+gene_mat <- matrix(
+  c(1L, 0L, 3L, 0L, 2L, 0L, 4L, 5L, 0L, 6L, 0L, 7L),
+  nrow = 3L,
+  dimnames = list(paste0("gene_", 1:3), paste0("cell_", 1:4))
+)
 ```
 
-`gene_mat` is a gene expression matrix containing 299 genes and 20,729 cells. (Users can evaluate `?lowmoi_example_data` to see more information about this matrix.) We pass this matrix to `create_odm_from_r_matrix()`, setting `file_to_write` to `paste0(temp_dir, "/gene.odm")`.
+`gene_mat` is a gene expression matrix containing 3 genes and 4 cells. We pass this matrix to `create_odm_from_r_matrix()`, setting `file_to_write` to `paste0(temp_dir, "/gene.odm")`.
 
 ```{r}
 file_to_write <- paste0(temp_dir, "/gene.odm")
 gene_odm <- create_odm_from_r_matrix(
   mat = gene_mat,
-  file_to_write = file_to_write
+  file_to_write = file_to_write,
+  chunk_size = 5L
 )
 ```
 
