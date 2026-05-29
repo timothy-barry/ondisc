@@ -171,9 +171,9 @@ write_sceptre_object_to_cellranger_format_v2 <- function(mats, gene_names, direc
 #'
 #' @examples
 #' set.seed(4)
-#' n_features <- c(1000, 40, 400)
+#' n_features <- c(30, 8, 6)
 #' modalities <- c("gene", "protein", "grna")
-#' n_cells <- 10000
+#' n_cells <- 60
 #' n_batch <- 2
 #' directory_to_write <- tempdir()
 #' p_set_col_zero <- 0
