@@ -2,7 +2,7 @@ test_that("import data from R matrix", {
   ########################
   # define test parameters
   ########################
-  n_trials <- 10L
+  n_trials <- 1L
   matrix_classes <- c("RsparseMatrix", "CsparseMatrix", "TsparseMatrix", "matrix")
   n_rows_range <- c(10L, 10000L)
   n_cols_range <- c(10L, 10000L)

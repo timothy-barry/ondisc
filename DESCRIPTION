@@ -1,6 +1,8 @@
 Package: ondisc
-Title: Algorithms and data structures for large single-cell expression matrices
+Title: Algorithms and Data Structures for Large Single-Cell Expression Matrices
 Version: 1.3.0
+Depends:
+    R (>= 4.1.0)
 Authors@R: 
     c(person(given = "Timothy",
             family = "Barry",
@@ -31,12 +33,12 @@ Imports:
     Rcpp,
     Rhdf5lib,
     dplyr,
-    readr
+    readr,
+    Matrix
 SystemRequirements: GNU make
 Suggests:
     sessioninfo,
     knitr,
-    Matrix,
     R.utils,
     rmarkdown,
     testthat (>= 3.0.0)

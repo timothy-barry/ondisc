@@ -9,6 +9,8 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^.*\.Rcheck$
+^.*\.tar\.gz$
 ^codecov\.yml$
 ^\.travis\.yml$
 ^vignettes/articles$
