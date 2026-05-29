@@ -19,89 +19,17 @@ Type 'q()' to quit R.
 > library(ondisc)
 > 
 > test_check("ondisc")
-[1] "seed: 144037"
+[1] "seed: 104336"
 [1] "Generating example dataset 1."
-[1] "Generating example dataset 2."
-[1] "Generating example dataset 3."
-[1] "Generating example dataset 4."
-[1] "Generating example dataset 5."
 [1] "Testing import from cellranger for dataset 1"
 Round 1/2 processing of the input files.
-	Processing file 1 of 5.
-	Processing file 2 of 5.
-	Processing file 3 of 5.
-	Processing file 4 of 5.
-	Processing file 5 of 5.
+	Processing file 1 of 1.
 Round 2/2 processing of the input files.
-	Processing file 1 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 2 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 3 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 4 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 5 of 5. Computing cellwise covariates. Writing to disk.
-[1] "Testing import from cellranger for dataset 2"
-Round 1/2 processing of the input files.
-	Processing file 1 of 5.
-	Processing file 2 of 5.
-	Processing file 3 of 5.
-	Processing file 4 of 5.
-	Processing file 5 of 5.
-Round 2/2 processing of the input files.
-	Processing file 1 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 2 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 3 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 4 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 5 of 5. Computing cellwise covariates. Writing to disk.
-[1] "Testing import from cellranger for dataset 3"
-Round 1/2 processing of the input files.
-	Processing file 1 of 3.
-	Processing file 2 of 3.
-	Processing file 3 of 3.
-Round 2/2 processing of the input files.
-	Processing file 1 of 3. Computing cellwise covariates. Writing to disk.
-	Processing file 2 of 3. Computing cellwise covariates. Writing to disk.
-	Processing file 3 of 3. Computing cellwise covariates. Writing to disk.
-[1] "Testing import from cellranger for dataset 4"
-Round 1/2 processing of the input files.
-	Processing file 1 of 2.
-	Processing file 2 of 2.
-Round 2/2 processing of the input files.
-	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.
-	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.
-[1] "Testing import from cellranger for dataset 5"
-Round 1/2 processing of the input files.
-	Processing file 1 of 5.
-	Processing file 2 of 5.
-	Processing file 3 of 5.
-	Processing file 4 of 5.
-	Processing file 5 of 5.
-Round 2/2 processing of the input files.
-	Processing file 1 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 2 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 3 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 4 of 5. Computing cellwise covariates. Writing to disk.
-	Processing file 5 of 5. Computing cellwise covariates. Writing to disk.
+	Processing file 1 of 1. Computing cellwise covariates. Writing to disk.
 [1] "Generating example dataset 1."
-[1] "Generating example dataset 2."
-[1] "Generating example dataset 3."
-[1] "Generating example dataset 4."
-[1] "Generating example dataset 5."
-[1] "Generating example dataset 6."
-[1] "Generating example dataset 7."
-[1] "Generating example dataset 8."
-[1] "Generating example dataset 9."
-[1] "Generating example dataset 10."
 [1] "Testing import from R matrix for dataset 1"
-[1] "Testing import from R matrix for dataset 2"
-[1] "Testing import from R matrix for dataset 3"
-[1] "Testing import from R matrix for dataset 4"
-[1] "Testing import from R matrix for dataset 5"
-[1] "Testing import from R matrix for dataset 6"
-[1] "Testing import from R matrix for dataset 7"
-[1] "Testing import from R matrix for dataset 8"
-[1] "Testing import from R matrix for dataset 9"
-[1] "Testing import from R matrix for dataset 10"
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 1109 ]
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 199 ]
 > 
 > proc.time()
    user  system elapsed 
-367.699 211.103 595.905 
+ 32.702   5.756  37.708 

@@ -9,7 +9,7 @@ dim,odm-method          Return the number of columns and rows of an
 dimnames,odm-method     Return the rownames of an 'odm' object
 initialize_odm_from_backing_file
                         Initialize an 'odm' object
-ondisc-package          ondisc: Algorithms and data structures for
-                        large single-cell expression matrices
+ondisc-package          ondisc: Algorithms and Data Structures for
+                        Large Single-Cell Expression Matrices
 write_example_cellranger_dataset
                         Write example Cell Ranger dataset

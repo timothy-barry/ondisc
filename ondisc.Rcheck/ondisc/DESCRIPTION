@@ -1,7 +1,8 @@
 Package: ondisc
-Title: Algorithms and data structures for large single-cell expression
-        matrices
-Version: 1.2.0
+Title: Algorithms and Data Structures for Large Single-Cell Expression
+        Matrices
+Version: 1.3.0
+Depends: R (>= 4.1.0)
 Authors@R: 
     c(person(given = "Timothy",
             family = "Barry",
@@ -24,25 +25,22 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 LinkingTo: Rcpp, Rhdf5lib
 biocViews: DataImport, SingleCell, DifferentialExpression, CRISPR
-RoxygenNote: 7.3.1
-Imports: crayon, data.table, methods, Rcpp, Rhdf5lib, dplyr, readr
+RoxygenNote: 7.3.2
+Imports: crayon, data.table, methods, Rcpp, Rhdf5lib, dplyr, readr,
+        Matrix
 SystemRequirements: GNU make
-Suggests: sessioninfo, knitr, Matrix, R.utils, rmarkdown, sceptredata,
-        testthat (>= 3.0.0)
-Remotes: github::katsevich-lab/sceptre,
-        github::katsevich-lab/sceptredata
+Suggests: sessioninfo, knitr, R.utils, rmarkdown, testthat (>= 3.0.0)
 Config/testthat/edition: 3
 URL: https://timothy-barry.github.io/ondisc/,
         https://timothy-barry.github.io/sceptre-book/
 BugReports: https://github.com/timothy-barry/ondisc/issues
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2026-05-14 18:39:20 UTC; timbarry
+Packaged: 2026-05-29 14:42:13 UTC; timbarry
 Author: Timothy Barry [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-4356-627X>),
   Songcheng Dai [ctb],
   Yixuan Qiu [ctb],
   Eugene Katsevich [aut, ths]
 Maintainer: Timothy Barry <tbarry@hsph.harvard.edu>
-Depends: R (>= 4.1.0)
-Built: R 4.5.1; aarch64-apple-darwin20; 2026-05-14 18:40:19 UTC; unix
+Built: R 4.5.1; aarch64-apple-darwin20; 2026-05-29 14:43:12 UTC; unix

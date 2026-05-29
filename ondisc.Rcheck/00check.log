@@ -4,69 +4,31 @@
 * R was compiled by
     Apple clang version 16.0.0 (clang-1600.0.26.6)
     GNU Fortran (GCC) 14.2.0
-* running under: macOS Tahoe 26.4.1
+* running under: macOS Tahoe 26.5
 * using session charset: UTF-8
 * using option ‘--as-cran’
 * checking for file ‘ondisc/DESCRIPTION’ ... OK
-* this is package ‘ondisc’ version ‘1.2.0’
+* this is package ‘ondisc’ version ‘1.3.0’
 * package encoding: UTF-8
-* checking CRAN incoming feasibility ... NOTE
+* checking CRAN incoming feasibility ... [5s/54s] NOTE
 Maintainer: ‘Timothy Barry <tbarry@hsph.harvard.edu>’
 
-Unknown, possibly misspelled, fields in DESCRIPTION:
-  ‘Remotes’
+New submission
 
-Package has a VignetteBuilder field but no prebuilt vignette index.
+Package was archived on CRAN
 
-Found the following (possibly) invalid URLs:
-  URL: https://github.com/timothy-barry/ondisc/issues
-    From: DESCRIPTION
-          man/ondisc-package.Rd
-    Status: Error
-    Message: libcurl error code 6:
-      	Could not resolve host: github.com
-  URL: https://orcid.org/0000-0002-4356-627X
-    From: man/ondisc-package.Rd
-    Status: Error
-    Message: libcurl error code 6:
-      	Could not resolve host: orcid.org
-  URL: https://pubmed.ncbi.nlm.nih.gov/35688146/
-    From: man/create_odm_from_cellranger.Rd
-    Status: Error
-    Message: libcurl error code 6:
-      	Could not resolve host: pubmed.ncbi.nlm.nih.gov
-  URL: https://timothy-barry.github.io/ondisc/
-    From: DESCRIPTION
-          man/ondisc-package.Rd
-    Status: Error
-    Message: libcurl error code 6:
-      	Could not resolve host: timothy-barry.github.io
-  URL: https://timothy-barry.github.io/sceptre-book/
-    From: DESCRIPTION
-          man/ondisc-package.Rd
-    Status: Error
-    Message: libcurl error code 6:
-      	Could not resolve host: timothy-barry.github.io
-Please use DOIs for the following publisher URLs:
-  https://pubmed.ncbi.nlm.nih.gov/35688146/
-
-Found the following (possibly) invalid ORCID iD:
-  iD: 0000-0002-4356-627X	(from: DESCRIPTION)
-
-The Title field should be in title case. Current version is:
-  ‘Algorithms and data structures for large single-cell expression matrices’
-In title case that is:
-  ‘Algorithms and Data Structures for Large Single-Cell Expression Matrices’
+CRAN repository db overrides:
+  X-CRAN-Comment: Archived on 2025-02-02 as issues were not corrected
+    in time.
 * checking package namespace information ... OK
-* checking package dependencies ... INFO
-Package suggested but not available for checking: ‘sceptredata’
+* checking package dependencies ... OK
 * checking if this is a source package ... OK
 * checking if there is a namespace ... OK
 * checking for executable files ... OK
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package ‘ondisc’ can be installed ... [9s/11s] WARNING
+* checking whether package ‘ondisc’ can be installed ... WARNING
 Found the following significant warnings:
   /Library/Frameworks/R.framework/Resources/include/R_ext/Boolean.h:62:36: warning: unknown warning group '-Wfixed-enum-extension', ignored [-Wunknown-warning-option]
 See ‘/Users/timbarry/research_code/ondisc/ondisc.Rcheck/00install.out’ for details.
@@ -76,6 +38,7 @@ See ‘/Users/timbarry/research_code/ondisc/ondisc.Rcheck/00install.out’ for d
 * checking package directory ... OK
 * checking for future file timestamps ... NOTE
 unable to verify current time
+* checking ‘build’ directory ... OK
 * checking DESCRIPTION meta-information ... OK
 * checking top-level files ... NOTE
 Files ‘README.md’ or ‘NEWS.md’ cannot be checked without ‘pandoc’ being installed.
@@ -90,8 +53,7 @@ Files ‘README.md’ or ‘NEWS.md’ cannot be checked without ‘pandoc’ be
 * checking whether the namespace can be loaded with stated dependencies ... OK
 * checking whether the namespace can be unloaded cleanly ... OK
 * checking use of S3 registration ... OK
-* checking dependencies in R code ... WARNING
-'::' or ':::' import not declared from: ‘sceptre’
+* checking dependencies in R code ... OK
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
@@ -116,74 +78,21 @@ GNU make is a SystemRequirements.
 * checking pragmas in C/C++ headers and code ... OK
 * checking compilation flags used ... OK
 * checking compiled code ... OK
-* checking files in ‘vignettes’ ... WARNING
-Files in the 'vignettes' directory but no files in 'inst/doc':
-  ‘ondisc.Rmd’ ‘update_vignette.sh’
-* checking examples ... ERROR
-Running examples in ‘ondisc-Ex.R’ failed
-The error most likely occurred in:
-
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
-> ### Name: create_odm_from_cellranger
-> ### Title: Create 'odm' object from Cell Ranger
-> ### Aliases: create_odm_from_cellranger
-> 
-> ### ** Examples
-> 
-> library(sceptredata)
-Error in library(sceptredata) : there is no package called ‘sceptredata’
-Execution halted
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
 * checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... [579s/596s] OK
-  Running ‘testthat.R’ [579s/596s]
+* checking tests ... [39s/38s] OK
+  Running ‘testthat.R’ [39s/38s]
 * checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... WARNING
-Directory 'inst/doc' does not exist.
-Package vignette without corresponding single PDF/HTML:
-  ‘ondisc.Rmd’
-* checking re-building of vignette outputs ... ERROR
-Error(s) in re-building vignettes:
-  ...
---- re-building ‘ondisc.Rmd’ using rmarkdown
-Pandoc is required to build R Markdown vignettes but not available. Please make sure it is installed.
-
-Quitting from ondisc.Rmd:24-27 [unnamed-chunk-2]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<error/rlang_error>
-Error in `library()`:
-! there is no package called 'sceptredata'
----
-Backtrace:
-    ▆
- 1. └─base::library(sceptredata)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Error: processing vignette 'ondisc.Rmd' failed with diagnostics:
-there is no package called 'sceptredata'
---- failed re-building ‘ondisc.Rmd’
-
-SUMMARY: processing the following file failed:
-  ‘ondisc.Rmd’
-
-Error: Vignette re-building failed.
-Execution halted
-
-* checking PDF version of manual ... WARNING
-LaTeX errors when creating PDF version.
-This typically indicates Rd problems.
-LaTeX errors found:
-!pdfTeX error: pdflatex (file tcrm1000): Font tcrm1000 at 600 not found
- ==> Fatal error occurred, no output PDF file produced!
-* checking PDF version of manual without index ... ERROR
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* checking PDF version of manual ... OK
 * checking HTML version of manual ... NOTE
 Skipping checking HTML validation: 'tidy' doesn't look like recent enough HTML Tidy.
 Please obtain a recent version of HTML Tidy by downloading a binary
 release or compiling the source code from <https://www.html-tidy.org/>.
-* checking for non-standard things in the check directory ... NOTE
-Found the following files/directories:
-  ‘ondisc-manual.tex’
-* checking for detritus in the temp directory ... NOTE
-Found the following files/directories:
-  ‘xcrun_db’
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
 * DONE
-Status: 3 ERRORs, 5 WARNINGs, 6 NOTEs
+Status: 1 WARNING, 4 NOTEs

@@ -30,10 +30,9 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(
@@ -58,13 +57,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-library(sceptredata)
-data(lowmoi_example_data)
-gene_matrix <- lowmoi_example_data$response_matrix
+set.seed(4)
+x <- rpois(100, lambda = 1)
+gene_matrix <- matrix(
+  x,
+  nrow = 5L,
+  dimnames = list(paste0("gene_", seq_len(5L)), paste0("cell_", seq_len(20L)))
+)
 file_to_write <- paste0(tempdir(), "/gene.odm")
 odm_object <- create_odm_from_r_matrix(
   mat = gene_matrix,
-  file_to_write = file_to_write
+  file_to_write = file_to_write,
+  chunk_size = 5L
 )
 
 
@@ -84,10 +88,9 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(
@@ -117,10 +120,9 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(
@@ -151,17 +153,16 @@ flush(stderr()); flush(stdout())
 
 base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: ondisc-package
-### Title: ondisc: Algorithms and data structures for large single-cell
-###   expression matrices
+### Title: ondisc: Algorithms and Data Structures for Large Single-Cell
+###   Expression Matrices
 ### Aliases: ondisc ondisc-package
 
 ### ** Examples
 
 # initialize odm objects from Cell Ranger output; also, compute the cellwise covariates
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(
@@ -183,7 +184,7 @@ rownames(gene_odm) |> head()
 
 # extract row into memory, first by integer and then by string
 expression_vector_1 <- gene_odm[10,]
-expression_vector_2 <- gene_odm["ENSG00000135046",]
+expression_vector_2 <- gene_odm[rownames(gene_odm)[10],]
 
 # delete the gene_odm object
 rm(gene_odm)
@@ -211,10 +212,9 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(
@@ -242,10 +242,9 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(
@@ -255,7 +254,7 @@ out_list <- create_odm_from_cellranger(
 gene_odm <- out_list$gene
 # extract rows into memory by index and ID
 v1 <- gene_odm[10L,]
-v2 <- gene_odm["ENSG00000173825",]
+v2 <- gene_odm[rownames(gene_odm)[10],]
 
 
 
@@ -275,9 +274,9 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### ** Examples
 
 set.seed(4)
-n_features <- c(1000, 40, 400)
+n_features <- c(30, 8, 6)
 modalities <- c("gene", "protein", "grna")
-n_cells <- 10000
+n_cells <- 60
 n_batch <- 2
 directory_to_write <- tempdir()
 p_set_col_zero <- 0

@@ -1,5 +1,5 @@
 * installing *source* package ‘ondisc’ ...
-** this is package ‘ondisc’ version ‘1.2.0’
+** this is package ‘ondisc’ version ‘1.3.0’
 ** using staged installation
 ** libs
 using C++ compiler: ‘Apple clang version 21.0.0 (clang-2100.0.123.102)’
@@ -87,6 +87,7 @@ In file included from /Library/Frameworks/R.framework/Resources/include/R.h:70:
 clang++ -arch arm64 -std=gnu++17 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o ondisc.so RcppExports.o h5_import_data_functs.o h5_initialize_functs.o h5_load_row.o h5_simple_read.o sceptre_functs.o shared_functs.o utility_functs.o /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/lib/libhdf5_cpp.a /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/lib/libhdf5.a -L/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rhdf5lib/lib -lcrypto -lcurl -lsz -laec -lz -ldl -lm -F/Library/Frameworks/R.framework/.. -framework R
 installing to /Users/timbarry/research_code/ondisc/ondisc.Rcheck/00LOCK-ondisc/00new/ondisc/libs
 ** R
+** inst
 ** byte-compile and prepare package for lazy loading
 ** help
 *** installing help indices

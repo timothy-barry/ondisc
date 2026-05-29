@@ -49,6 +49,347 @@ Type 'q()' to quit R.
 > 
 > ### ** Examples
 > 
-> library(sceptredata)
-Error in library(sceptredata) : there is no package called ‘sceptredata’
-Execution halted
+> directories_to_load <- file.path(
++  system.file("extdata", "highmoi_example", package = "ondisc"),
++  paste0("gem_group_", c(1, 2))
++ )
+> directory_to_write <- tempdir()
+> out_list <- create_odm_from_cellranger(
++   directories_to_load = directories_to_load,
++   directory_to_write = directory_to_write,
++ )
+Round 1/2 processing of the input files.
+	Processing file 1 of 2.
+	Processing file 2 of 2.
+Round 2/2 processing of the input files.
+	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.
+	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create_odm_from_cellranger", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("create_odm_from_r_matrix")
+> ### * create_odm_from_r_matrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: create_odm_from_r_matrix
+> ### Title: Create 'odm' object from R matrix
+> ### Aliases: create_odm_from_r_matrix
+> 
+> ### ** Examples
+> 
+> set.seed(4)
+> x <- rpois(100, lambda = 1)
+> gene_matrix <- matrix(
++   x,
++   nrow = 5L,
++   dimnames = list(paste0("gene_", seq_len(5L)), paste0("cell_", seq_len(20L)))
++ )
+> file_to_write <- paste0(tempdir(), "/gene.odm")
+> odm_object <- create_odm_from_r_matrix(
++   mat = gene_matrix,
++   file_to_write = file_to_write,
++   chunk_size = 5L
++ )
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("create_odm_from_r_matrix", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("dim-odm-method")
+> ### * dim-odm-method
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dim,odm-method
+> ### Title: Return the number of columns and rows of an 'odm' object
+> ### Aliases: dim,odm-method
+> 
+> ### ** Examples
+> 
+> directories_to_load <- file.path(
++  system.file("extdata", "highmoi_example", package = "ondisc"),
++  paste0("gem_group_", c(1, 2))
++ )
+> directory_to_write <- tempdir()
+> out_list <- create_odm_from_cellranger(
++   directories_to_load = directories_to_load,
++   directory_to_write = directory_to_write,
++ )
+Round 1/2 processing of the input files.
+	Processing file 1 of 2.
+	Processing file 2 of 2.
+Round 2/2 processing of the input files.
+	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.
+	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.
+> gene_odm <- out_list$gene
+> # return the dimension, number of rows, and number of columns
+> dim(gene_odm)
+[1] 100 500
+> nrow(gene_odm)
+[1] 100
+> ncol(gene_odm)
+[1] 500
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("dim-odm-method", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("initialize_odm_from_backing_file")
+> ### * initialize_odm_from_backing_file
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: initialize_odm_from_backing_file
+> ### Title: Initialize an 'odm' object
+> ### Aliases: initialize_odm_from_backing_file
+> 
+> ### ** Examples
+> 
+> directories_to_load <- file.path(
++  system.file("extdata", "highmoi_example", package = "ondisc"),
++  paste0("gem_group_", c(1, 2))
++ )
+> directory_to_write <- tempdir()
+> out_list <- create_odm_from_cellranger(
++   directories_to_load = directories_to_load,
++   directory_to_write = directory_to_write,
++ )
+Round 1/2 processing of the input files.
+	Processing file 1 of 2.
+	Processing file 2 of 2.
+Round 2/2 processing of the input files.
+	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.
+	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.
+> gene_odm <- out_list$gene
+> gene_odm
+An object of class odm with the following attributes:
+	• 100 features
+	• 500 cells
+	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmpYSmn0r/working_dir/Rtmpox2qTZ/gene.odm> 
+> # delete the gene_odm object
+> rm(gene_odm)
+> 
+> # reinitialize the gene_odm object
+> gene_odm <- initialize_odm_from_backing_file(
++   paste0(tempdir(), "/gene.odm")
++ )
+> gene_odm
+An object of class odm with the following attributes:
+	• 100 features
+	• 500 cells
+	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmpYSmn0r/working_dir/Rtmpox2qTZ/gene.odm> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("initialize_odm_from_backing_file", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ondisc-package")
+> ### * ondisc-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ondisc-package
+> ### Title: ondisc: Algorithms and Data Structures for Large Single-Cell
+> ###   Expression Matrices
+> ### Aliases: ondisc ondisc-package
+> 
+> ### ** Examples
+> 
+> # initialize odm objects from Cell Ranger output; also, compute the cellwise covariates
+> directories_to_load <- file.path(
++  system.file("extdata", "highmoi_example", package = "ondisc"),
++  paste0("gem_group_", c(1, 2))
++ )
+> directory_to_write <- tempdir()
+> out_list <- create_odm_from_cellranger(
++   directories_to_load = directories_to_load,
++   directory_to_write = directory_to_write,
++ )
+Round 1/2 processing of the input files.
+	Processing file 1 of 2.
+	Processing file 2 of 2.
+Round 2/2 processing of the input files.
+	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.
+	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.
+> 
+> # extract the odm corresponding to the gene modality
+> gene_odm <- out_list$gene
+> gene_odm
+An object of class odm with the following attributes:
+	• 100 features
+	• 500 cells
+	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmpYSmn0r/working_dir/Rtmpox2qTZ/gene.odm> 
+> # obtain dimension information
+> dim(gene_odm)
+[1] 100 500
+> nrow(gene_odm)
+[1] 100
+> ncol(gene_odm)
+[1] 500
+> 
+> # obtain rownames (i.e., the feature IDs)
+> rownames(gene_odm) |> head()
+[1] "ENSG00000100218" "ENSG00000253546" "ENSG00000185340" "ENSG00000223726"
+[5] "ENSG00000099958" "ENSG00000234208"
+> 
+> # extract row into memory, first by integer and then by string
+> expression_vector_1 <- gene_odm[10,]
+> expression_vector_2 <- gene_odm[rownames(gene_odm)[10],]
+> 
+> # delete the gene_odm object
+> rm(gene_odm)
+> 
+> # reinitialize the gene_odm object
+> gene_odm <- initialize_odm_from_backing_file(
++   paste0(tempdir(), "/gene.odm")
++ )
+> gene_odm
+An object of class odm with the following attributes:
+	• 100 features
+	• 500 cells
+	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmpYSmn0r/working_dir/Rtmpox2qTZ/gene.odm> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ondisc-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("rownames-odm-method")
+> ### * rownames-odm-method
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: dimnames,odm-method
+> ### Title: Return the rownames of an 'odm' object
+> ### Aliases: dimnames,odm-method rownames
+> 
+> ### ** Examples
+> 
+> directories_to_load <- file.path(
++  system.file("extdata", "highmoi_example", package = "ondisc"),
++  paste0("gem_group_", c(1, 2))
++ )
+> directory_to_write <- tempdir()
+> out_list <- create_odm_from_cellranger(
++   directories_to_load = directories_to_load,
++   directory_to_write = directory_to_write,
++ )
+Round 1/2 processing of the input files.
+	Processing file 1 of 2.
+	Processing file 2 of 2.
+Round 2/2 processing of the input files.
+	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.
+	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.
+> gene_odm <- out_list$gene
+> # return the rownames
+> rownames(gene_odm) |> head()
+[1] "ENSG00000100218" "ENSG00000253546" "ENSG00000185340" "ENSG00000223726"
+[5] "ENSG00000099958" "ENSG00000234208"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("rownames-odm-method", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sub-odm-ANY-missing-missing-method")
+> ### * sub-odm-ANY-missing-missing-method
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: [,odm,ANY,missing,missing-method
+> ### Title: Load a row of an 'odm' object into memory
+> ### Aliases: [,odm,ANY,missing,missing-method
+> 
+> ### ** Examples
+> 
+> directories_to_load <- file.path(
++  system.file("extdata", "highmoi_example", package = "ondisc"),
++  paste0("gem_group_", c(1, 2))
++ )
+> directory_to_write <- tempdir()
+> out_list <- create_odm_from_cellranger(
++   directories_to_load = directories_to_load,
++   directory_to_write = directory_to_write,
++ )
+Round 1/2 processing of the input files.
+	Processing file 1 of 2.
+	Processing file 2 of 2.
+Round 2/2 processing of the input files.
+	Processing file 1 of 2. Computing cellwise covariates. Writing to disk.
+	Processing file 2 of 2. Computing cellwise covariates. Writing to disk.
+> gene_odm <- out_list$gene
+> # extract rows into memory by index and ID
+> v1 <- gene_odm[10L,]
+> v2 <- gene_odm[rownames(gene_odm)[10],]
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sub-odm-ANY-missing-missing-method", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("write_example_cellranger_dataset")
+> ### * write_example_cellranger_dataset
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: write_example_cellranger_dataset
+> ### Title: Write example Cell Ranger dataset
+> ### Aliases: write_example_cellranger_dataset
+> 
+> ### ** Examples
+> 
+> set.seed(4)
+> n_features <- c(30, 8, 6)
+> modalities <- c("gene", "protein", "grna")
+> n_cells <- 60
+> n_batch <- 2
+> directory_to_write <- tempdir()
+> p_set_col_zero <- 0
+> out <- write_example_cellranger_dataset(
++   n_features = n_features,
++   n_cells = n_cells,
++   n_batch = n_batch,
++   modalities = modalities,
++   directory_to_write = directory_to_write,
++   p_set_col_zero = p_set_col_zero
++ )
+> 
+> # directories written to directory_to_write
+> fs <- list.files(directory_to_write, pattern = "batch*", full.names = TRUE)
+> # files contained within the directories
+> list.files(fs[1])
+[1] "barcodes.tsv.gz" "features.tsv.gz" "matrix.mtx.gz"  
+> list.files(fs[2])
+[1] "barcodes.tsv.gz" "features.tsv.gz" "matrix.mtx.gz"  
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("write_example_cellranger_dataset", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.298 0.109 2.434 0.001 0.002 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

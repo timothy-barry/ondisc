@@ -40,9 +40,9 @@ a list containing (i) a list of the simulated expression matrices, (ii) a charac
 }
 \examples{
 set.seed(4)
-n_features <- c(1000, 40, 400)
+n_features <- c(30, 8, 6)
 modalities <- c("gene", "protein", "grna")
-n_cells <- 10000
+n_cells <- 60
 n_batch <- 2
 directory_to_write <- tempdir()
 p_set_col_zero <- 0

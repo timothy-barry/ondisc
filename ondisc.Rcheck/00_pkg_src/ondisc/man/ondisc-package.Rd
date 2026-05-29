@@ -4,16 +4,15 @@
 \name{ondisc-package}
 \alias{ondisc}
 \alias{ondisc-package}
-\title{ondisc: Algorithms and data structures for large single-cell expression matrices}
+\title{ondisc: Algorithms and Data Structures for Large Single-Cell Expression Matrices}
 \description{
 Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. `ondisc` is an R package that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds processors on a cluster or cloud. In both of these settings, `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` mainly is oriented toward single-cell CRISPR screen analysis, but ondisc also can be used for single-cell differential expression and single-cell co-expression analyses. ondisc is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices.
 }
 \examples{
 # initialize odm objects from Cell Ranger output; also, compute the cellwise covariates
-library(sceptredata)
-directories_to_load <- paste0(
- system.file("extdata", package = "sceptredata"),
- "/highmoi_example/gem_group_", c(1, 2)
+directories_to_load <- file.path(
+ system.file("extdata", "highmoi_example", package = "ondisc"),
+ paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
 out_list <- create_odm_from_cellranger(
@@ -35,7 +34,7 @@ rownames(gene_odm) |> head()
 
 # extract row into memory, first by integer and then by string
 expression_vector_1 <- gene_odm[10,]
-expression_vector_2 <- gene_odm["ENSG00000135046",]
+expression_vector_2 <- gene_odm[rownames(gene_odm)[10],]
 
 # delete the gene_odm object
 rm(gene_odm)

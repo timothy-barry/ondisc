@@ -184,7 +184,7 @@ IntegerVector obtain_pointer_vector(IntegerVector i, int dim) {
   } else {
     int curr_idx = 0, counter = 0, j = 0;
     for (curr_idx = 0; curr_idx < dim; curr_idx ++) {
-      while (i[j] == curr_idx) {
+      while (j < i.size() && i[j] == curr_idx) {
         counter ++;
         j ++;
       }

@@ -18,10 +18,9 @@ setClass("odm",
 #' @return an `odm` object
 #' @export
 #' @examples
-#' library(sceptredata)
-#' directories_to_load <- paste0(
-#'  system.file("extdata", package = "sceptredata"),
-#'  "/highmoi_example/gem_group_", c(1, 2)
+#' directories_to_load <- file.path(
+#'  system.file("extdata", "highmoi_example", package = "ondisc"),
+#'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
 #' out_list <- create_odm_from_cellranger(
@@ -76,10 +75,9 @@ initialize_odm_from_backing_file <- function(odm_file) {
 #' @export
 #' @return an expression vector (of class `numeric`)
 #' @examples
-#' library(sceptredata)
-#' directories_to_load <- paste0(
-#'  system.file("extdata", package = "sceptredata"),
-#'  "/highmoi_example/gem_group_", c(1, 2)
+#' directories_to_load <- file.path(
+#'  system.file("extdata", "highmoi_example", package = "ondisc"),
+#'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
 #' out_list <- create_odm_from_cellranger(
@@ -89,7 +87,7 @@ initialize_odm_from_backing_file <- function(odm_file) {
 #' gene_odm <- out_list$gene
 #' # extract rows into memory by index and ID
 #' v1 <- gene_odm[10L,]
-#' v2 <- gene_odm["ENSG00000173825",]
+#' v2 <- gene_odm[rownames(gene_odm)[10],]
 setMethod(f = "[",
           signature = signature(x = "odm", i = "ANY", j = "missing", drop = "missing"),
           definition = function(x, i, j, drop) {
@@ -132,10 +130,9 @@ setMethod(f = "show", signature = "odm", definition = function(object) {
 #' @rdname rownames-odm-method
 #' @export
 #' @examples
-#' library(sceptredata)
-#' directories_to_load <- paste0(
-#'  system.file("extdata", package = "sceptredata"),
-#'  "/highmoi_example/gem_group_", c(1, 2)
+#' directories_to_load <- file.path(
+#'  system.file("extdata", "highmoi_example", package = "ondisc"),
+#'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
 #' out_list <- create_odm_from_cellranger(
@@ -157,10 +154,9 @@ setMethod(f = "dimnames", signature = "odm", definition = function(x) list(x@fea
 #' @return the dimension of the `odm` object
 #' @export
 #' @examples
-#' library(sceptredata)
-#' directories_to_load <- paste0(
-#'  system.file("extdata", package = "sceptredata"),
-#'  "/highmoi_example/gem_group_", c(1, 2)
+#' directories_to_load <- file.path(
+#'  system.file("extdata", "highmoi_example", package = "ondisc"),
+#'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
 #' out_list <- create_odm_from_cellranger(
