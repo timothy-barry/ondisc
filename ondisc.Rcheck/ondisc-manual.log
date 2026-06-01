@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.29)  29 MAY 2026 10:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.29)  1 JUN 2026 10:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -290,7 +290,7 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (/Users/timbarry/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count315
-) (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmpYSmn0r/Rd2pdf84ce7de05ef8/Rd2.aux)
+) (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmppnD4xD/Rd2pdfb12f3dcc4d20/Rd2.aux)
 \openout1 = `Rd2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -312,7 +312,7 @@ LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 Package hyperref Info: Link coloring ON on input line 8.
- (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmpYSmn0r/Rd2pdf84ce7de05ef8/Rd2.out) (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmpYSmn0r/Rd2pdf84ce7de05ef8/Rd2.out)
+ (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmppnD4xD/Rd2pdfb12f3dcc4d20/Rd2.out) (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmppnD4xD/Rd2pdfb12f3dcc4d20/Rd2.out)
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
@@ -347,7 +347,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 34.
  (/Users/timbarry/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmpYSmn0r/Rd2pdf84ce7de05ef8/Rd2.toc [1
+) (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmppnD4xD/Rd2pdfb12f3dcc4d20/Rd2.toc [1
 
 
 {/Users/timbarry/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/timbarry/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/timbarry/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
@@ -379,7 +379,7 @@ Overfull \hbox (103.19904pt too wide) in paragraph at lines 336--337
 
 [7] [8] [9]
 No file Rd2.ind.
-[10] (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmpYSmn0r/Rd2pdf84ce7de05ef8/Rd2.aux)
+[10] (/private/var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T/RtmppnD4xD/Rd2pdfb12f3dcc4d20/Rd2.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -396,7 +396,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  92i,6n,95p,1123b,782s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </Users/timbarry/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></Users/timbarry/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/timbarry/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/timbarry/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/timbarry/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/timbarry/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (10 pages, 99498 bytes).
+Output written on Rd2.pdf (10 pages, 99597 bytes).
 PDF statistics:
  204 PDF objects out of 1000 (max. 8388607)
  178 compressed objects within 2 object streams

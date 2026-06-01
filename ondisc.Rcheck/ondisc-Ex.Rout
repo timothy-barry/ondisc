@@ -174,7 +174,7 @@ Round 2/2 processing of the input files.
 An object of class odm with the following attributes:
 	• 100 features
 	• 500 cells
-	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmpYSmn0r/working_dir/Rtmpox2qTZ/gene.odm> 
+	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmppnD4xD/working_dir/Rtmp3sfQPo/gene.odm> 
 > # delete the gene_odm object
 > rm(gene_odm)
 > 
@@ -186,7 +186,7 @@ An object of class odm with the following attributes:
 An object of class odm with the following attributes:
 	• 100 features
 	• 500 cells
-	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmpYSmn0r/working_dir/Rtmpox2qTZ/gene.odm> 
+	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmppnD4xD/working_dir/Rtmp3sfQPo/gene.odm> 
 > 
 > 
 > base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
@@ -228,7 +228,7 @@ Round 2/2 processing of the input files.
 An object of class odm with the following attributes:
 	• 100 features
 	• 500 cells
-	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmpYSmn0r/working_dir/Rtmpox2qTZ/gene.odm> 
+	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmppnD4xD/working_dir/Rtmp3sfQPo/gene.odm> 
 > # obtain dimension information
 > dim(gene_odm)
 [1] 100 500
@@ -257,7 +257,7 @@ An object of class odm with the following attributes:
 An object of class odm with the following attributes:
 	• 100 features
 	• 500 cells
-	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmpYSmn0r/working_dir/Rtmpox2qTZ/gene.odm> 
+	• Backing file: /var/folders/mp/qgnyl4ss2cl9p399f3vpwqpc0000gn/T//RtmppnD4xD/working_dir/Rtmp3sfQPo/gene.odm> 
 > 
 > 
 > base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
@@ -383,7 +383,7 @@ Round 2/2 processing of the input files.
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  2.298 0.109 2.434 0.001 0.002 
+Time elapsed:  2.203 0.097 2.308 0.001 0.002 
 > grDevices::dev.off()
 null device 
           1 

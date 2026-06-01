@@ -19,17 +19,23 @@ Type 'q()' to quit R.
 > library(ondisc)
 > 
 > test_check("ondisc")
-[1] "seed: 104336"
+[1] "seed: 102650"
 [1] "Generating example dataset 1."
 [1] "Testing import from cellranger for dataset 1"
 Round 1/2 processing of the input files.
-	Processing file 1 of 1.
+	Processing file 1 of 4.
+	Processing file 2 of 4.
+	Processing file 3 of 4.
+	Processing file 4 of 4.
 Round 2/2 processing of the input files.
-	Processing file 1 of 1. Computing cellwise covariates. Writing to disk.
+	Processing file 1 of 4. Computing cellwise covariates. Writing to disk.
+	Processing file 2 of 4. Computing cellwise covariates. Writing to disk.
+	Processing file 3 of 4. Computing cellwise covariates. Writing to disk.
+	Processing file 4 of 4. Computing cellwise covariates. Writing to disk.
 [1] "Generating example dataset 1."
 [1] "Testing import from R matrix for dataset 1"
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 199 ]
 > 
 > proc.time()
    user  system elapsed 
- 32.702   5.756  37.708 
+ 15.932   2.104  18.043 

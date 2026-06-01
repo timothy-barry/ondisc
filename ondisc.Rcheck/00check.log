@@ -8,9 +8,9 @@
 * using session charset: UTF-8
 * using option ‘--as-cran’
 * checking for file ‘ondisc/DESCRIPTION’ ... OK
-* this is package ‘ondisc’ version ‘1.3.0’
+* this is package ‘ondisc’ version ‘1.3.1’
 * package encoding: UTF-8
-* checking CRAN incoming feasibility ... [5s/54s] NOTE
+* checking CRAN incoming feasibility ... [4s/22s] NOTE
 Maintainer: ‘Timothy Barry <tbarry@hsph.harvard.edu>’
 
 New submission
@@ -82,8 +82,8 @@ GNU make is a SystemRequirements.
 * checking files in ‘vignettes’ ... OK
 * checking examples ... OK
 * checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... [39s/38s] OK
-  Running ‘testthat.R’ [39s/38s]
+* checking tests ... [18s/18s] OK
+  Running ‘testthat.R’ [18s/18s]
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes ... OK
 * checking re-building of vignette outputs ... OK

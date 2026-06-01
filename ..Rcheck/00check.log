@@ -4,7 +4,7 @@
 * R was compiled by
     Apple clang version 16.0.0 (clang-1600.0.26.6)
     GNU Fortran (GCC) 14.2.0
-* running under: macOS Tahoe 26.4.1
+* running under: macOS Tahoe 26.5
 * using session charset: UTF-8
 * using option ‘--as-cran’
 * checking for file ‘./DESCRIPTION’ ... ERROR
