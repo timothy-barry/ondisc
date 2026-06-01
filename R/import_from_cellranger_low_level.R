@@ -151,11 +151,11 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
 
 
 process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_names, modality_start_idx_features,
-                                        row_ptr_list, modality_start_idx_mtx_list, mt_feature_idxs,
+                                        n_features_per_modality, row_ptr_list, modality_start_idx_mtx_list, mt_feature_idxs,
                                         cellwise_covariates, feature_idx_to_vector_idx_map) {
   cat("Round 2/2 processing of the input files.\n")
   n_cum_cells <- 0L
-  n_features <- diff(modality_start_idx_features) |> stats::setNames(modality_names)
+  n_features <- n_features_per_modality |> stats::setNames(modality_names)
   for (i in seq_along(matrix_fps)) {
     cat(paste0("\tProcessing file ", i , " of ", length(matrix_fps), ". "))
     # 1. set the matrix fp and obtain the metadata
