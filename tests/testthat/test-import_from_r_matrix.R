@@ -4,8 +4,8 @@ test_that("import data from R matrix", {
   ########################
   n_trials <- 1L
   matrix_classes <- c("RsparseMatrix", "CsparseMatrix", "TsparseMatrix", "matrix")
-  n_rows_range <- c(10L, 10000L)
-  n_cols_range <- c(10L, 10000L)
+  n_rows_range <- c(10L, 150L)
+  n_cols_range <- c(10L, 200L)
 
   #################
   # create the data

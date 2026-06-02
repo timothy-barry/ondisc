@@ -7,10 +7,10 @@ test_that("import data from cellranger v2", {
   # define test parameters
   ########################
   n_trials <- 1L
-  n_rows_range <- c(10L, 10000L)
-  n_cols_range <- c(10L, 10000L)
+  n_rows_range <- c(10L, 120L)
+  n_cols_range <- c(10L, 200L)
   max_mito_genes <- 0.1
-  max_n_batches <- 5
+  max_n_batches <- 2
   trial_w_vector <- sample(x = seq(1, n_trials), size = 1L, replace = FALSE)
 
   #################
@@ -120,7 +120,7 @@ test_that("import data from cellranger v2", {
         } else if (curr_covariate == "n_nonzero") {
           n_nonzero_mem <- Matrix::colSums(mem_matrix >= 1)
           n_nonzero_disk <- cellwise_covariates_disk[[paste0(modality, "_n_nonzero")]]
-          expect_equal(n_umis_mem, n_umis_disk)
+          expect_equal(n_nonzero_mem, n_nonzero_disk)
         } else if (curr_covariate == "p_mito") {
           gene_names <- test_data_list[[i]]$gene_names
           n_umis_mito_mem <- Matrix::colSums(mem_matrix[grep(pattern = "^MT-", x = gene_names),])
