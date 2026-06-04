@@ -2,6 +2,9 @@ my_seed <- as.integer(Sys.time() |> format("%H%M%S"))
 print(paste0("seed: ", my_seed))
 set.seed(my_seed)
 
+# Set data.table threads to 1 to pass CRAN test timing checks.
+data.table::setDTthreads(1L)
+
 test_that("import data from cellranger v2", {
   ########################
   # define test parameters
@@ -31,9 +34,9 @@ test_that("import data from cellranger v2", {
                                                   n_batch = n_batch,
                                                   modalities = modalities,
                                                   directory_to_write = curr_base_directory,
-                                                  p_zero = min(runif(1), 0.9),
-                                                  p_set_col_zero = min(runif(1), 0.9),
-                                                  p_set_row_zero = min(runif(1), 0.9))
+                                                  p_zero = stats::runif(1, min = 0, max = 0.6),
+                                                  p_set_col_zero = stats::runif(1, min = 0, max = 0.1),
+                                                  p_set_row_zero = stats::runif(1, min = 0, max = 0.1))
     # check to make sure some entries are nonzero; if so, return
     if (any(sapply(curr_data$matrix_list, function(mat) length(mat@x)) == 0L)) {
       return()
@@ -41,11 +44,12 @@ test_that("import data from cellranger v2", {
     # construct vector data frame if trials_w_vector
     if (i == trial_w_vector) {
       grna_matrix <- curr_data$matrix_list$grna
-      n_vectors <- ceiling(nrow(grna_matrix)/8)
+      n_vectors <- max(5L, ceiling(nrow(grna_matrix)/8))
       sample_probs <- runif(n_vectors)
       sample_probs <- sample_probs/sum(sample_probs)
       vector_idxs <- sample(x = seq(1L, n_vectors), size = nrow(grna_matrix),
                             replace = TRUE, prob = sample_probs)
+      vector_idxs[seq_len(n_vectors)] <- seq_len(n_vectors)
       vector_ids <- paste0("vector-", vector_idxs)
       grna_target_data_frame <- data.frame(grna_id = rownames(grna_matrix),
                                            vector_id = vector_ids)

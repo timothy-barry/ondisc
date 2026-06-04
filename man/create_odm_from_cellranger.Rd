@@ -43,8 +43,11 @@ directories_to_load <- file.path(
  paste0("gem_group_", c(1, 2))
 )
 directory_to_write <- tempdir()
+# Set data.table threads to 1 to pass CRAN example timing checks.
+old_threads <- data.table::setDTthreads(1L)
 out_list <- create_odm_from_cellranger(
   directories_to_load = directories_to_load,
   directory_to_write = directory_to_write,
 )
+data.table::setDTthreads(old_threads)
 }

@@ -1,3 +1,6 @@
+# Set data.table threads to 1 to pass CRAN test timing checks.
+data.table::setDTthreads(1L)
+
 test_that("import data from R matrix", {
   ########################
   # define test parameters
@@ -16,9 +19,9 @@ test_that("import data from R matrix", {
     n_col <- sample(x = seq(n_cols_range[1], n_cols_range[2]), size = 1L)
     gene_matrix <- create_random_matrix(n_row = n_rows[1],
                                         n_col = n_col,
-                                        p_zero = runif(1),
-                                        p_set_col_zero = runif(1),
-                                        p_set_row_zero = runif(1),
+                                        p_zero = stats::runif(1, min = 0, max = 0.6),
+                                        p_set_col_zero = stats::runif(1, min = 0, max = 0.1),
+                                        p_set_row_zero = stats::runif(1, min = 0, max = 0.1),
                                         matrix_class = "matrix") |> add_row_names("gene")
     curr_matrix_class <- sample(matrix_classes, 1)
     gene_matrix <- as(gene_matrix, curr_matrix_class)

@@ -108,7 +108,7 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
                             skip = mtx_metadata$n_to_skip,
                             col.names = my_col_names,
                             colClasses = my_col_classes,
-                            showProgress = FALSE, nThread = 1)
+                            showProgress = FALSE)
     decrement_vector(dt$feature_idx) # decrement feature idx
     data.table::setkey(dt, feature_idx) # radix sort on feature_idx
 
@@ -166,7 +166,7 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
     dt <- data.table::fread(file = matrix_fp, skip = mtx_metadata$n_to_skip,
                             col.names = c("feature_idx", "j", "x"),
                             colClasses = c("integer", "integer", "integer"),
-                            showProgress = FALSE, nThread = 1)
+                            showProgress = FALSE)
     decrement_vector(dt$feature_idx) # decrement feature_idx
     add_value_to_vector(dt$j, n_cum_cells - 1L)
     data.table::setorderv(dt, cols = c("feature_idx", "j")) # radix sort on feature_idx, cell_idx

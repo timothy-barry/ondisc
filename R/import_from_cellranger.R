@@ -21,10 +21,13 @@
 #'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
+#' # Set data.table threads to 1 to pass CRAN example timing checks.
+#' old_threads <- data.table::setDTthreads(1L)
 #' out_list <- create_odm_from_cellranger(
 #'   directories_to_load = directories_to_load,
 #'   directory_to_write = directory_to_write,
 #' )
+#' data.table::setDTthreads(old_threads)
 create_odm_from_cellranger <- function(directories_to_load, directory_to_write, write_cellwise_covariates = TRUE,
                                        chunk_size = 1000L, compression_level = 3L, grna_target_data_frame = NULL) {
   # 0. check that directory to write is valid; create it if it does not yet exist
@@ -59,7 +62,8 @@ create_odm_from_cellranger <- function(directories_to_load, directory_to_write, 
   # 3. obtain the feature data frame
   feature_df <- data.table::fread(file = input_files[[1]][["features"]],
                                   colClasses = c("character", "character", "character"),
-                                  col.names = c("feature_id", "feature_name", "modality"), header = FALSE)
+                                  col.names = c("feature_id", "feature_name", "modality"),
+                                  header = FALSE)
   modality_names <- unique(feature_df$modality)
   if (!(all(modality_names %in% c("Gene Expression", "CRISPR Guide Capture", "Antibody Capture")))) {
     stop("The modality names must be 'Gene Expression' or 'CRISPR Guide Capture'.")

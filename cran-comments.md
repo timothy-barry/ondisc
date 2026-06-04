@@ -5,3 +5,5 @@ The 1.3.x updates remove the GitHub packages `sceptre` and `sceptredata` as depe
 Version 1.3.1 fixed an AddressSanitizer heap-buffer-overflow in `write_to_csr()` triggered when importing Cell Ranger data with collapsed gRNA vector counts.
 
 Version 1.3.2 further reduces test runtime by shrinking randomized test matrices in response to CRAN feedback.
+
+Version 1.3.3 ensures that Cell Ranger import examples run with a single data.table thread, addressing a Debian NOTE about CPU time exceeding elapsed time in examples.

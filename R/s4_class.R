@@ -23,10 +23,13 @@ setClass("odm",
 #'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
+#' # Set data.table threads to 1 to pass CRAN example timing checks.
+#' old_threads <- data.table::setDTthreads(1L)
 #' out_list <- create_odm_from_cellranger(
 #'   directories_to_load = directories_to_load,
 #'   directory_to_write = directory_to_write,
 #' )
+#' data.table::setDTthreads(old_threads)
 #' gene_odm <- out_list$gene
 #' gene_odm
 #'
@@ -80,10 +83,13 @@ initialize_odm_from_backing_file <- function(odm_file) {
 #'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
+#' # Set data.table threads to 1 to pass CRAN example timing checks.
+#' old_threads <- data.table::setDTthreads(1L)
 #' out_list <- create_odm_from_cellranger(
 #'   directories_to_load = directories_to_load,
 #'   directory_to_write = directory_to_write,
 #' )
+#' data.table::setDTthreads(old_threads)
 #' gene_odm <- out_list$gene
 #' # extract rows into memory by index and ID
 #' v1 <- gene_odm[10L,]
@@ -135,10 +141,13 @@ setMethod(f = "show", signature = "odm", definition = function(object) {
 #'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
+#' # Set data.table threads to 1 to pass CRAN example timing checks.
+#' old_threads <- data.table::setDTthreads(1L)
 #' out_list <- create_odm_from_cellranger(
 #'   directories_to_load = directories_to_load,
 #'   directory_to_write = directory_to_write,
 #' )
+#' data.table::setDTthreads(old_threads)
 #' gene_odm <- out_list$gene
 #' # return the rownames
 #' rownames(gene_odm) |> head()
@@ -159,10 +168,13 @@ setMethod(f = "dimnames", signature = "odm", definition = function(x) list(x@fea
 #'  paste0("gem_group_", c(1, 2))
 #' )
 #' directory_to_write <- tempdir()
+#' # Set data.table threads to 1 to pass CRAN example timing checks.
+#' old_threads <- data.table::setDTthreads(1L)
 #' out_list <- create_odm_from_cellranger(
 #'   directories_to_load = directories_to_load,
 #'   directory_to_write = directory_to_write,
 #' )
+#' data.table::setDTthreads(old_threads)
 #' gene_odm <- out_list$gene
 #' # return the dimension, number of rows, and number of columns
 #' dim(gene_odm)
