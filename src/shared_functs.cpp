@@ -25,6 +25,10 @@ sparse_vector load_sparse_row_low_level(const std::string& file_name_in, SEXP f_
   Rcpp::XPtr<std::vector<unsigned long long>> f_ptr(f_row_ptr);
   hsize_t start_pos = (*f_ptr)[row_idx];
   hsize_t n_entries = (*f_ptr)[row_idx + 1] - start_pos;
+  if (n_entries == 0) {
+    sparse_vector out;
+    return out;
+  }
 
   // 2. open the file
   const H5std_string file_name(&file_name_in[0]);

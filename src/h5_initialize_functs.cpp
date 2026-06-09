@@ -55,7 +55,7 @@ void create_odm_helper(const std::string& file_name_in, StringVector feature_ids
   j_prop.setChunk(1, &chunk_size_ull);
   j_prop.setDeflate(compression_level);
   DataSet j_dataset = file.createDataSet(j_name, PredType::NATIVE_INT, j_dataspace, j_prop);
-  if (write_j) j_dataset.write(&j[0], PredType::NATIVE_INT);
+  if (write_j && !j.empty()) j_dataset.write(j.data(), PredType::NATIVE_INT);
   // close dataset and dataspace
   j_dataset.close(); j_dataspace.close(), j_prop.close();
 
@@ -69,7 +69,7 @@ void create_odm_helper(const std::string& file_name_in, StringVector feature_ids
   x_prop.setChunk(1, &chunk_size_ull);
   x_prop.setDeflate(compression_level);
   DataSet x_dataset = file.createDataSet(x_name, PredType::NATIVE_INT, x_dataspace, x_prop);
-  if (write_x) x_dataset.write(&x[0], PredType::NATIVE_INT);
+  if (write_x && !x.empty()) x_dataset.write(x.data(), PredType::NATIVE_INT);
   // close dataset and dataspace
   x_dataset.close(); x_dataspace.close(), x_prop.close();
 

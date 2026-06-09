@@ -1,6 +1,6 @@
 Package: ondisc
 Title: Algorithms and Data Structures for Large Single-Cell Expression Matrices
-Version: 1.3.4
+Version: 1.3.5
 Depends:
     R (>= 4.1.0)
 Authors@R: 

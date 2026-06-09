@@ -23,6 +23,7 @@ test_that("import data from R matrix", {
                                         p_set_col_zero = stats::runif(1, min = 0, max = 0.1),
                                         p_set_row_zero = stats::runif(1, min = 0, max = 0.1),
                                         matrix_class = "matrix") |> add_row_names("gene")
+    gene_matrix[1L,] <- 0L
     curr_matrix_class <- sample(matrix_classes, 1)
     gene_matrix <- as(gene_matrix, curr_matrix_class)
     return(gene_matrix)
