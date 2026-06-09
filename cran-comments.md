@@ -7,3 +7,5 @@ Version 1.3.1 fixed an AddressSanitizer heap-buffer-overflow in `write_to_csr()`
 Version 1.3.2 further reduces test runtime by shrinking randomized test matrices in response to CRAN feedback.
 
 Version 1.3.3 ensures that Cell Ranger import examples run with a single data.table thread, addressing a Debian NOTE about CPU time exceeding elapsed time in examples.
+
+Version 1.3.4 addresses CRAN manual review comments by using CRAN-compatible quotation marks and DOI formatting in DESCRIPTION, replacing unsuppressible progress output with message(), and removing a global-environment cleanup line from the vignette.

@@ -6,7 +6,7 @@
 \alias{ondisc-package}
 \title{ondisc: Algorithms and Data Structures for Large Single-Cell Expression Matrices}
 \description{
-Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. `ondisc` is an R package that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds processors on a cluster or cloud. In both of these settings, `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` mainly is oriented toward single-cell CRISPR screen analysis, but ondisc also can be used for single-cell differential expression and single-cell co-expression analyses. ondisc is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices.
+Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. 'ondisc' is an R package that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds of processors on a cluster or cloud. In both of these settings, 'ondisc' requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. 'ondisc' mainly is oriented toward single-cell CRISPR screen analysis, but also can be used for single-cell differential expression and single-cell co-expression analyses. 'ondisc' is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices. See Barry et al. (2024) \doi{10.1186/s13059-024-03254-2}.
 }
 \examples{
 # initialize odm objects from Cell Ranger output; also, compute the cellwise covariates

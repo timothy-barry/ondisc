@@ -1,6 +1,6 @@
 Package: ondisc
 Title: Algorithms and Data Structures for Large Single-Cell Expression Matrices
-Version: 1.3.3
+Version: 1.3.4
 Depends:
     R (>= 4.1.0)
 Authors@R: 
@@ -19,7 +19,17 @@ Authors@R:
             family = "Katsevich",
             role = c("aut", "ths"),
             email = "ekatsevi@wharton.upenn.edu"))
-Description: Single-cell datasets are growing in size, posing challenges as well as opportunities for genomics researchers. `ondisc` is an R package that facilitates analysis of large-scale single-cell data out-of-core on a laptop or distributed across tens to hundreds processors on a cluster or cloud. In both of these settings, `ondisc` requires only a few gigabytes of memory, even if the input data are tens of gigabytes in size. `ondisc` mainly is oriented toward single-cell CRISPR screen analysis, but ondisc also can be used for single-cell differential expression and single-cell co-expression analyses. ondisc is powered by several new, efficient algorithms for manipulating and querying large, sparse expression matrices.
+Description: Single-cell datasets are growing in size, posing challenges
+    as well as opportunities for genomics researchers. 'ondisc' is an R
+    package that facilitates analysis of large-scale single-cell data
+    out-of-core on a laptop or distributed across tens to hundreds of
+    processors on a cluster or cloud. In both of these settings, 'ondisc'
+    requires only a few gigabytes of memory, even if the input data are tens
+    of gigabytes in size. 'ondisc' mainly is oriented toward single-cell
+    CRISPR screen analysis, but also can be used for single-cell differential
+    expression and single-cell co-expression analyses. 'ondisc' is powered by
+    several new, efficient algorithms for manipulating and querying large,
+    sparse expression matrices.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

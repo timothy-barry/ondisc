@@ -93,9 +93,9 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
   n_cells_per_batch <- integer(length = length(matrix_fps))
   collapse_grna_counts <- !is.null(feature_idx_to_vector_idx_map)
 
-  cat("Round 1/2 processing of the input files.\n")
+  message("Round 1/2 processing of the input files.")
   for (i in seq_along(matrix_fps)) {
-    cat(paste0("\tProcessing file ", i , " of ", length(matrix_fps), ".\n"))
+    message("\tProcessing file ", i , " of ", length(matrix_fps), ".")
     # 1. set the matrix fp and obtain the metadata
     matrix_fp <- matrix_fps[i]
     mtx_metadata <- get_mtx_metadata(matrix_fp)
@@ -153,11 +153,11 @@ process_input_files_round_1 <- function(matrix_fps, modality_names, modality_sta
 process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_names, modality_start_idx_features,
                                         n_features_per_modality, row_ptr_list, modality_start_idx_mtx_list, mt_feature_idxs,
                                         cellwise_covariates, feature_idx_to_vector_idx_map) {
-  cat("Round 2/2 processing of the input files.\n")
+  message("Round 2/2 processing of the input files.")
   n_cum_cells <- 0L
   n_features <- n_features_per_modality |> stats::setNames(modality_names)
   for (i in seq_along(matrix_fps)) {
-    cat(paste0("\tProcessing file ", i , " of ", length(matrix_fps), ". "))
+    message("\tProcessing file ", i , " of ", length(matrix_fps), ". Computing cellwise covariates. Writing to disk.")
     # 1. set the matrix fp and obtain the metadata
     matrix_fp <- matrix_fps[i]
     mtx_metadata <- get_mtx_metadata(matrix_fp)
@@ -181,7 +181,6 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
     }
 
     # 4. compute the cell-wise covariates for each modality
-    cat("Computing cellwise covariates. ")
     for (k in seq_along(modality_names)) {
       start_idx <- modality_start_mtx[[k]][1]
       end_idx <- modality_start_mtx[[k]][2]
@@ -208,7 +207,6 @@ process_input_files_round_2 <- function(matrix_fps, file_names_in, modality_name
     }
 
     # 5. Write the data to disk in CSR format
-    cat("Writing to disk.\n")
     for (k in seq_along(modality_names)) {
       start_idx <- modality_start_mtx[[k]][1]
       end_idx <- modality_start_mtx[[k]][2]

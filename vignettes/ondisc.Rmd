@@ -210,10 +210,9 @@ The modality to which a given covariate corresponds ("gene", "grna", or "protein
 
 ## Reading an `.odm` file into R
 
-Users can read an `.odm` file into R by calling the function `initialize_odm_from_backing_file()`. Below, we delete all variables from the global namespace. Then, we call `initialize_odm_from_backing_file()` on the file `gene.odm` stored within `temp_dir`, which loads the gene expression matrix that we created in the previous step.
+Users can read an `.odm` file into R by calling the function `initialize_odm_from_backing_file()`. Below, we call `initialize_odm_from_backing_file()` on the file `gene.odm` stored within `temp_dir`, which loads the gene expression matrix that we created in the previous step.
 
 ```{r}
-rm(list = ls()) # delete all variables
 temp_dir <- tempdir()
 gene_odm <- initialize_odm_from_backing_file(
   paste0(temp_dir, "/gene.odm")
